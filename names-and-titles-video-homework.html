@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Names &amp; Titles – Video and Vocabulary</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f4f5fb; --card:#fff; --ink:#1f2340; --muted:#6b7090; --line:#e3e5f1;
+  --c1:#5b5bd6; --c2:#0e9f8e; --c3:#e8741a;
+  --ok:#1f9d55; --okbg:#e6f7ed; --bad:#d64545; --badbg:#fdecec;
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 48px}
+
+/* player */
+.hero{background:linear-gradient(135deg,#25285a,#3b2f7a 60%,#5b3a8f);color:#fff;padding:22px 16px 26px}
+.hero-in{max-width:820px;margin:0 auto}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;opacity:.75;margin:0 0 10px}
+.player{display:flex;gap:16px;align-items:center;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:14px}
+.cover{width:92px;height:92px;border-radius:14px;object-fit:cover;flex:none;box-shadow:0 6px 18px rgba(0,0,0,.35)}
+.pl-main{flex:1;min-width:0}
+.song{font-size:20px;font-weight:700;margin:0;line-height:1.25}
+.sub{font-size:13px;opacity:.75;margin:2px 0 10px}
+.seek{display:flex;align-items:center;gap:10px}
+.time{font-size:12px;font-variant-numeric:tabular-nums;opacity:.85;min-width:36px}
+input[type=range]{-webkit-appearance:none;appearance:none;flex:1;height:6px;border-radius:6px;background:rgba(255,255,255,.28);outline:none;margin:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;height:16px;border-radius:50%;background:#fff;border:0;box-shadow:0 1px 4px rgba(0,0,0,.4);cursor:pointer}
+input[type=range]::-moz-range-thumb{width:16px;height:16px;border-radius:50%;background:#fff;border:0;cursor:pointer}
+.ctrls{display:flex;align-items:center;gap:10px;margin-top:10px}
+.cbtn{border:0;background:rgba(255,255,255,.16);color:#fff;border-radius:999px;height:38px;min-width:38px;padding:0 12px;font:600 13px Poppins,system-ui,sans-serif;cursor:pointer}
+.cbtn:hover{background:rgba(255,255,255,.26)}
+.play{width:48px;height:48px;background:#fff;color:#3b2f7a;font-size:18px;padding:0}
+.play:hover{background:#f0ecff}
+.hint{font-size:13px;opacity:.8;margin:12px 2px 0}
+
+/* top form */
+.namebar{margin:18px 0 6px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.namebar label{font-weight:600;font-size:14px}
+.namebar input{flex:1;min-width:180px;padding:10px 14px;border:1.5px solid var(--line);border-radius:12px;font:inherit;background:#fff}
+.namebar input:focus{outline:none;border-color:var(--c1)}
+
+/* progress */
+.bar{position:sticky;top:0;z-index:20;background:rgba(244,245,251,.92);backdrop-filter:blur(6px);padding:10px 0;margin-top:6px}
+.bar-in{display:flex;align-items:center;gap:12px}
+.track{flex:1;height:10px;background:#dfe2f2;border-radius:10px;overflow:hidden}
+.fill{height:100%;width:0;background:linear-gradient(90deg,var(--c1),var(--c2));border-radius:10px;transition:width .35s}
+.bar-txt{font-weight:700;font-size:14px;font-variant-numeric:tabular-nums;white-space:nowrap}
+
+/* cards */
+.card{background:var(--card);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 4px 18px rgba(31,35,64,.07);border-top:6px solid var(--c)}
+.card h2{margin:0 0 4px;font-size:19px;display:flex;align-items:center;gap:10px}
+.num{background:var(--c);color:#fff;width:32px;height:32px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:15px;flex:none}
+.inst{margin:0 0 16px;color:var(--muted);font-size:14px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+.btn{border:0;border-radius:12px;padding:10px 18px;font:600 14px Poppins,system-ui,sans-serif;cursor:pointer;background:var(--c);color:#fff}
+.btn.sec{background:#eef0fa;color:var(--ink)}
+.btn:hover{filter:brightness(.95)}
+.score{font-weight:700;font-size:15px;margin-left:auto;color:var(--c)}
+.msg{margin:8px 0 0;font-size:13px;color:var(--muted);min-height:18px}
+
+/* task 1 */
+.q{padding:14px 0;border-bottom:1px dashed var(--line)}
+.q:last-child{border-bottom:0}
+.q p{margin:0 0 10px;font-weight:600}
+.pills{display:flex;flex-direction:column;gap:8px}
+.pill{text-align:left;border:1.5px solid var(--line);background:#fff;color:var(--ink);border-radius:12px;padding:10px 14px;font:400 14px Poppins,system-ui,sans-serif;cursor:pointer}
+.pill:hover{border-color:var(--c)}
+.pill.sel{border-color:var(--c);background:#eef0ff;font-weight:500}
+.pill.ok{border-color:var(--ok);background:var(--okbg);color:#0f5f33;font-weight:600}
+.pill.bad{border-color:var(--bad);background:var(--badbg);color:#8a1f1f;font-weight:600}
+.fb{margin-top:8px;font-size:13px;font-weight:600}
+.fbok{color:var(--ok)}.fbbad{color:var(--bad)}
+.q.empty{outline:2px solid var(--bad);outline-offset:6px;border-radius:8px}
+
+/* task 2 */
+.row2{display:flex;gap:14px;align-items:center;padding:10px 0;border-bottom:1px dashed var(--line)}
+.row2:last-child{border-bottom:0}
+.row2 .ph{flex:0 0 40%;font-weight:600}
+.row2 .ph em{font-style:normal;color:var(--c)}
+select{flex:1;min-width:0;padding:10px 12px;border:1.5px solid var(--line);border-radius:12px;font:400 14px Poppins,system-ui,sans-serif;background:#fff;color:var(--ink)}
+select:focus{outline:none;border-color:var(--c)}
+select.ok{border-color:var(--ok);background:var(--okbg)}
+select.bad{border-color:var(--bad);background:var(--badbg)}
+
+/* task 3 */
+.bank{display:flex;flex-wrap:wrap;gap:8px;background:#fff6ee;border:1.5px dashed #f0b98a;border-radius:14px;padding:12px;margin-bottom:16px}
+.bank span{background:#fff;border:1px solid #f0b98a;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:500}
+.bank b{width:100%;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:#b25a12}
+.text3 p{margin:0 0 14px}
+.text3 h3{margin:0 0 10px;font-size:16px}
+.gap{display:inline-block;vertical-align:baseline;margin:2px 2px}
+.gap .n{font-size:11px;font-weight:700;color:var(--c);margin-right:3px;vertical-align:super}
+.gap input{width:var(--w,12ch);max-width:100%;border:0;border-bottom:2px solid var(--c);background:#fff7f0;padding:3px 6px;font:500 15px Poppins,system-ui,sans-serif;color:var(--ink);border-radius:6px 6px 0 0}
+.gap input:focus{outline:none;background:#ffeedd}
+.gap input.ok{border-bottom-color:var(--ok);background:var(--okbg)}
+.gap input.bad{border-bottom-color:var(--bad);background:var(--badbg)}
+
+/* finish */
+.finish{background:var(--card);border-radius:20px;padding:22px;margin:16px 0;box-shadow:0 4px 18px rgba(31,35,64,.07);text-align:center}
+.finish h2{margin:0 0 6px;font-size:18px}
+.finish p{margin:0 0 14px;color:var(--muted);font-size:14px}
+.big{background:#25285a;color:#fff;border:0;border-radius:14px;padding:14px 26px;font:700 15px Poppins,system-ui,sans-serif;cursor:pointer}
+.big:hover{background:#34387a}
+.copied{display:block;margin-top:10px;color:var(--ok);font-weight:600;font-size:14px;min-height:20px}
+
+@media (max-width:600px){
+  .player{flex-direction:column;align-items:stretch;text-align:left}
+  .cover{width:100%;height:auto;aspect-ratio:1/1;max-height:200px;object-fit:cover}
+  .row2{flex-direction:column;align-items:stretch;gap:6px}
+  .row2 .ph{flex:none}
+  .card{padding:18px 16px}
+}
+
+.video{position:relative;width:100%;padding-top:56.25%;border-radius:18px;overflow:hidden;background:#000;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlink{display:inline-block;margin-top:12px;color:#fff;font-size:13px;opacity:.9}
+.vlink a{color:#fff;font-weight:600}
+.why{margin-top:8px;padding:9px 12px;border-radius:10px;font-size:13px;line-height:1.5;border-left:4px solid var(--line);background:#f6f7fc}
+.why:empty{display:none}
+.whyok{border-left-color:var(--ok);background:var(--okbg);color:#14532d}
+.whybad{border-left-color:var(--bad);background:var(--badbg);color:#7f1d1d}
+.mk{display:inline-block;min-width:1.1em;font-weight:700}.mk:empty{display:none}
+.pill{width:100%}
+.sw{flex:1;min-width:0}.sw select{width:100%}
+.ctx{font-size:12.5px;color:var(--muted);margin:2px 0 0;font-weight:400;font-style:italic}
+.ph{flex:0 0 42%}
+.s3{padding:12px 0;border-bottom:1px dashed var(--line)}.s3:last-child{border-bottom:0}
+.s3 .line{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.s3 .no{font-weight:700;color:var(--c);min-width:1.6em}
+.s3 input{border:0;border-bottom:2px solid var(--c);background:#fff7f0;padding:3px 6px;font:500 15px Poppins,system-ui,sans-serif;color:var(--ink);border-radius:6px 6px 0 0;max-width:100%}
+.s3 input.ok{border-bottom-color:var(--ok);background:var(--okbg)}
+.s3 input.bad{border-bottom-color:var(--bad);background:var(--badbg)}
+@media (max-width:600px){.ph{flex:none}}
+</style></head><body>
+<header class="hero"><div class="hero-in">
+<p class="kicker">Video · listening &amp; vocabulary</p>
+<h1 class="song" style="margin-bottom:12px">Names &amp; Titles: how do you address people?</h1>
+<div class="video"><iframe src="https://www.youtube.com/embed/bHaPGxVt_zg?rel=0" title="Video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe></div>
+<span class="vlink">Video not playing here? <a href="https://youtu.be/bHaPGxVt_zg" target="_blank" rel="noopener">Open it on YouTube</a></span>
+<p class="hint">Watch the clip (about 3 minutes) as many times as you need, then do the three tasks. After you press Check, each answer comes with an explanation.</p>
+</div></header>
+<main class="wrap">
+<div class="namebar"><label for="name">Your name:</label><input id="name" type="text" placeholder="Type your name" autocomplete="name"></div>
+<div class="bar"><div class="bar-in"><div class="track"><div class="fill" id="fill"></div></div><div class="bar-txt" id="bartxt">0 / 0</div></div></div>
+<section class="card" id="t1" style="--c:var(--c1)"><h2><span class="num">1</span> Understanding the video</h2><p class="inst">Choose the best answer. After Check, the right answer turns green, a wrong one turns red, and you see WHY.</p><div class="body"><div class="q"><p>1. Where does the comedian say he is really from?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>From Greeley, the town where the show takes place.</button><button type="button" class="pill"><span class="mk"></span>From Finland.</button><button type="button" class="pill"><span class="mk"></span>From Canada, near the US border.</button></div><div class="why"></div></div><div class="q"><p>2. What is the main difference between Finland and the US that he talks about?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>In Finland people use each other&#x27;s names much less when they talk.</button><button type="button" class="pill"><span class="mk"></span>In Finland people talk much more than in the US.</button><button type="button" class="pill"><span class="mk"></span>In the US people never use titles like &quot;sir&quot;.</button></div><div class="why"></div></div><div class="q"><p>3. Why, according to the comedian, don&#x27;t Finns use people&#x27;s names?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>They think using names is rude.</button><button type="button" class="pill"><span class="mk"></span>They are afraid of getting a name wrong, which would be embarrassing.</button><button type="button" class="pill"><span class="mk"></span>Finnish names are too long to remember.</button></div><div class="why"></div></div><div class="q"><p>4. What would a Finn say instead of &quot;Can you pass the salt, Steve?&quot;</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>&quot;Salt.&quot; (or, to be polite, &quot;Salt would be nice.&quot;)</button><button type="button" class="pill"><span class="mk"></span>&quot;Excuse me, sir, the salt please.&quot;</button><button type="button" class="pill"><span class="mk"></span>Nothing. A Finn would take the salt himself.</button></div><div class="why"></div></div><div class="q"><p>5. Why would &quot;Mr. Last Name&quot; sound strange in Finland?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>Because Finns have no last names.</button><button type="button" class="pill"><span class="mk"></span>Because it sounds like you are joking about the person; it is too formal, almost Shakespearean.</button><button type="button" class="pill"><span class="mk"></span>Because it is only used for doctors.</button></div><div class="why"></div></div><div class="q"><p>6. What went wrong when the police officer stopped him?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>He drove too fast and argued about the ticket.</button><button type="button" class="pill"><span class="mk"></span>He forgot that you must address an officer formally and answered in an odd, unprepared way.</button><button type="button" class="pill"><span class="mk"></span>He did not have his driving licence.</button></div><div class="why"></div></div><div class="q"><p>7. When do Finns really need to use someone&#x27;s name, according to him?</p><div class="pills"><button type="button" class="pill"><span class="mk"></span>When they meet a new neighbour.</button><button type="button" class="pill"><span class="mk"></span>When they are at school.</button><button type="button" class="pill"><span class="mk"></span>When someone is lost in the woods.</button></div><div class="why"></div></div></div><div class="btns"><button type="button" class="btn chk">Check</button><button type="button" class="btn sec show">Show answers</button><button type="button" class="btn sec again">Try again</button><span class="score"></span></div><p class="msg"></p></section><section class="card" id="t2" style="--c:var(--c2)"><h2><span class="num">2</span> What do these words mean?</h2><p class="inst">Each phrase is from the video, with the sentence it was used in. Choose the correct meaning in the drop-down menu.</p><div class="body"><div class="row2"><div class="ph">1. <em>address people</em><div class="ctx">&quot;…you address people differently.&quot;</div></div><div class="sw"><select aria-label="Meaning of address people"><option value="-1">— choose the meaning —</option><option value="0">speak to people using a name or a title</option><option value="1">write a person&#x27;s home address on an envelope</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">2. <em>formally</em><div class="ctx">&quot;…sometimes you have to address people formally.&quot;</div></div><div class="sw"><select aria-label="Meaning of formally"><option value="-1">— choose the meaning —</option><option value="0">in a loud, funny way</option><option value="1">in an official, polite way, with titles</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">3. <em>first name</em><div class="ctx">&quot;…it&#x27;s always first name.&quot;</div></div><div class="sw"><select aria-label="Meaning of first name"><option value="-1">— choose the meaning —</option><option value="0">the name you are given at birth, e.g. Steve</option><option value="1">the first name on an alphabetical list</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">4. <em>got pulled over</em><div class="ctx">&quot;…I got pulled over by a police officer.&quot;</div></div><div class="sw"><select aria-label="Meaning of got pulled over"><option value="-1">— choose the meaning —</option><option value="0">was told by the police to stop the car at the side of the road</option><option value="1">was helped by the police to cross the road</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">5. <em>making fun of them</em><div class="ctx">&quot;…it sounds like you&#x27;re making fun of them.&quot;</div></div><div class="sw"><select aria-label="Meaning of making fun of them"><option value="-1">— choose the meaning —</option><option value="0">making them feel proud</option><option value="1">laughing at them or joking about them in an unkind way</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">6. <em>Shakespearean</em><div class="ctx">&quot;It sounds so formal. It&#x27;s like Shakespearean.&quot;</div></div><div class="sw"><select aria-label="Meaning of Shakespearean"><option value="-1">— choose the meaning —</option><option value="0">very formal and old-fashioned, like the language of Shakespeare&#x27;s plays</option><option value="1">very silly and childish</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">7. <em>polite</em><div class="ctx">&quot;…if you want to be polite, we can say, &#x27;Salt would be nice.&#x27;&quot;</div></div><div class="sw"><select aria-label="Meaning of polite"><option value="-1">— choose the meaning —</option><option value="0">showing good manners and respect to other people</option><option value="1">very quiet and shy</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">8. <em>too embarrassing</em><div class="ctx">&quot;…we might get it wrong, and then it&#x27;s too embarrassing.&quot;</div></div><div class="sw"><select aria-label="Meaning of too embarrassing"><option value="-1">— choose the meaning —</option><option value="0">making you feel awkward and ashamed</option><option value="1">making you feel bored</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">9. <em>get it wrong</em><div class="ctx">&quot;…we might get it wrong.&quot;</div></div><div class="sw"><select aria-label="Meaning of get it wrong"><option value="-1">— choose the meaning —</option><option value="0">make a mistake about something</option><option value="1">forget something completely</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">10. <em>no need for</em><div class="ctx">&quot;There&#x27;s no need for names, you know.&quot;</div></div><div class="sw"><select aria-label="Meaning of no need for"><option value="-1">— choose the meaning —</option><option value="0">names are not necessary</option><option value="1">names are forbidden</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">11. <em>lost in the woods</em><div class="ctx">&quot;…when they are lost in the woods.&quot;</div></div><div class="sw"><select aria-label="Meaning of lost in the woods"><option value="-1">— choose the meaning —</option><option value="0">hiding in a forest on purpose</option><option value="1">unable to find the way out of a forest</option></select><div class="why"></div></div></div><div class="row2"><div class="ph">12. <em>way more than we do</em><div class="ctx">&quot;…you address people way more than we do.&quot;</div></div><div class="sw"><select aria-label="Meaning of way more than we do"><option value="-1">— choose the meaning —</option><option value="0">a little more than we do</option><option value="1">much more than we do</option></select><div class="why"></div></div></div></div><div class="btns"><button type="button" class="btn chk">Check</button><button type="button" class="btn sec show">Show answers</button><button type="button" class="btn sec again">Try again</button><span class="score"></span></div><p class="msg"></p></section><section class="card" id="t3" style="--c:var(--c3)"><h2><span class="num">3</span> Complete the text</h2><p class="inst">Use the phrases from Task 2 to fill the gaps. Keep the form and tense used in the video: think about the subject, verb agreement and the words around the gap.</p><div class="body"><div class="bank"><b>Phrases (change the form to fit the sentence)</b><span>no need for</span><span>address people</span><span>make fun of</span><span>get pulled over</span><span>lost in the woods</span><span>polite</span><span>first name</span><span>Shakespearean</span><span>get it wrong</span><span>embarrassing</span><span>formally</span><span>way more</span></div><div class="text3"><h3>Notes from an exchange student in America</h3><div class="s3"><div class="line"><span class="no">1.</span><span>Americans <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:17ch" aria-label="Gap 1"> differently from Europeans, and I am still learning the rules.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">2.</span><span>With a teacher or a police officer you often have to address them <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:11ch" aria-label="Gap 2">.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">3.</span><span>My American friends call everybody by their <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:13ch" aria-label="Gap 3">, even the boss.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">4.</span><span>Last week my cousin <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:18ch" aria-label="Gap 4"> by a police officer for driving too fast.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">5.</span><span>In my country, calling a teacher &quot;Mr. Smith&quot; can sound like you are <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:16ch" aria-label="Gap 5"> him.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">6.</span><span>It sounds so formal and old-fashioned that it is almost <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:16ch" aria-label="Gap 6">.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">7.</span><span>If you want to be <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:11ch" aria-label="Gap 7">, add &quot;sir&quot; or &quot;ma&#x27;am&quot; when you speak to an adult here.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">8.</span><span>Using the wrong title would be too <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:15ch" aria-label="Gap 8">, so I stay quiet.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">9.</span><span>I am afraid that I might <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:15ch" aria-label="Gap 9"> and use the wrong name.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">10.</span><span>Between close friends there is <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:14ch" aria-label="Gap 10"> formal titles at all.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">11.</span><span>In my family we only shout somebody&#x27;s name when he is <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:20ch" aria-label="Gap 11">.</span></div><div class="why"></div></div><div class="s3"><div class="line"><span class="no">12.</span><span>Here people use names <input type="text" autocomplete="off" autocapitalize="off" spellcheck="false" style="width:11ch" aria-label="Gap 12"> than we do back home.</span></div><div class="why"></div></div></div></div><div class="btns"><button type="button" class="btn chk">Check</button><button type="button" class="btn sec show">Show answers</button><button type="button" class="btn sec again">Try again</button><span class="score"></span></div><p class="msg"></p></section>
+<div class="finish"><h2>Finished?</h2><p>Press the button and paste the result in the chat for your teacher.</p><button type="button" class="big" id="copy">Copy my results</button><span class="copied" id="copied"></span></div>
+</main>
+<script>
+(function(){
+var D={"Q1": [{"q": "Where does the comedian say he is really from?", "o": ["From Greeley, the town where the show takes place.", "From Finland.", "From Canada, near the US border."], "a": 1, "w": ["He jokes about Greeley, but only because he saw the place on Google Maps that day. It is not where he is from.", "He says he comes from \"way further away\" than people think, and that it is Finland. The audience cheers.", "Canada is never mentioned. The place he names is Finland."]}, {"q": "What is the main difference between Finland and the US that he talks about?", "o": ["In Finland people use each other's names much less when they talk.", "In Finland people talk much more than in the US.", "In the US people never use titles like \"sir\"."], "a": 0, "w": ["Right. His whole bit is that Finns hardly ever address people by name, while Americans do it all the time.", "He actually says Finns \"just talk\" and keep it very short (\"Hey. Hey.\"), so this is the opposite of his point.", "The opposite is true: in the US you sometimes MUST use \"sir\", \"officer\" or \"Mr. Last Name\"."]}, {"q": "Why, according to the comedian, don't Finns use people's names?", "o": ["They think using names is rude.", "They are afraid of getting a name wrong, which would be embarrassing.", "Finnish names are too long to remember."], "a": 1, "w": ["He never says it is rude. The reason he gives is a different one.", "This is his joke: a Finn would rather say nothing than risk a wrong name, because that would be \"too embarrassing\".", "Name length is never mentioned in the clip."]}, {"q": "What would a Finn say instead of \"Can you pass the salt, Steve?\"", "o": ["\"Salt.\" (or, to be polite, \"Salt would be nice.\")", "\"Excuse me, sir, the salt please.\"", "Nothing. A Finn would take the salt himself."], "a": 0, "w": ["Correct. Just the object, no name and no long question. \"Salt would be nice\" is the politest version.", "\"Sir\" is exactly the kind of formal address he says Finns don't use.", "He gives two exact versions of what a Finn says, so the Finn does speak, just very briefly."]}, {"q": "Why would \"Mr. Last Name\" sound strange in Finland?", "o": ["Because Finns have no last names.", "Because it sounds like you are joking about the person; it is too formal, almost Shakespearean.", "Because it is only used for doctors."], "a": 1, "w": ["Finns have last names; the point is how the title sounds, not whether names exist.", "Right: in Finland it sounds so formal and old-fashioned that it seems like you are making fun of the person.", "\"Doctor\" appears only in the final joke. \"Mr. Last Name\" is for teachers, a girlfriend's father and similar people."]}, {"q": "What went wrong when the police officer stopped him?", "o": ["He drove too fast and argued about the ticket.", "He forgot that you must address an officer formally and answered in an odd, unprepared way.", "He did not have his driving licence."], "a": 1, "w": ["Speeding is not mentioned. The joke is about how he spoke, not what he did.", "Correct. He had never addressed anybody formally, forgot \"sir\" and \"officer\", and blurted out that he hadn't been drinking.", "A licence is never mentioned in the clip."]}, {"q": "When do Finns really need to use someone's name, according to him?", "o": ["When they meet a new neighbour.", "When they are at school.", "When someone is lost in the woods."], "a": 2, "w": ["He says Finns don't bother with names even then.", "School is not mentioned.", "This is the closing joke: the only moment a name is useful is when you must shout it into the forest."]}], "P2": [{"p": "address people", "ctx": "\"\u2026you address people differently.\"", "o": ["speak to people using a name or a title", "write a person's home address on an envelope"], "a": 0, "w": "As a verb, \"address\" here means HOW you speak to someone: by first name, by \"Mr. Last Name\", by \"sir\".", "n": "That is a different meaning (to address a letter). The comedian is talking about speaking."}, {"p": "formally", "ctx": "\"\u2026sometimes you have to address people formally.\"", "o": ["in a loud, funny way", "in an official, polite way, with titles"], "a": 1, "w": "\"Formally\" is the adverb of \"formal\": official and respectful, e.g. \"sir\", \"Mr. Johnson\", \"Dr. Smith\".", "n": "Formal speech is serious and respectful, not loud or funny."}, {"p": "first name", "ctx": "\"\u2026it's always first name.\"", "o": ["the name you are given at birth, e.g. Steve", "the first name on an alphabetical list"], "a": 0, "w": "Your first name is the personal name that comes before your family name (last name). Finns use only this.", "n": "The list meaning is unrelated. \"First name\" is about a person's name, not about order."}, {"p": "got pulled over", "ctx": "\"\u2026I got pulled over by a police officer.\"", "o": ["was told by the police to stop the car at the side of the road", "was helped by the police to cross the road"], "a": 0, "w": "\"Pull over\" = drive to the side of the road and stop, usually because a police officer orders it. \"Get pulled over\" is the passive form.", "n": "Nobody is helped here; the police stop the driver, usually to check something."}, {"p": "making fun of them", "ctx": "\"\u2026it sounds like you're making fun of them.\"", "o": ["making them feel proud", "laughing at them or joking about them in an unkind way"], "a": 1, "w": "\"Make fun of\" someone = laugh at them or mock them. Using \"Mr. Last Name\" in Finland sounds like mockery.", "n": "The idea is mockery, not praise."}, {"p": "Shakespearean", "ctx": "\"It sounds so formal. It's like Shakespearean.\"", "o": ["very formal and old-fashioned, like the language of Shakespeare's plays", "very silly and childish"], "a": 0, "w": "The adjective comes from Shakespeare: old, grand, formal language. The joke is that \"Mr. Last Name\" feels that stiff.", "n": "He compares the style to old formal English, not to children's talk."}, {"p": "polite", "ctx": "\"\u2026if you want to be polite, we can say, 'Salt would be nice.'\"", "o": ["showing good manners and respect to other people", "very quiet and shy"], "a": 0, "w": "Polite people use good manners (please, thank you, softer requests). \"Salt would be nice\" is a more polite way to ask than just \"Salt\".", "n": "Politeness is about manners, not about being quiet or shy."}, {"p": "too embarrassing", "ctx": "\"\u2026we might get it wrong, and then it's too embarrassing.\"", "o": ["making you feel awkward and ashamed", "making you feel bored"], "a": 0, "w": "Something embarrassing makes you feel uncomfortable or ashamed in front of others. \"Too\" means: more than is acceptable.", "n": "Boredom is a different feeling. Getting a name wrong would make a Finn feel awkward."}, {"p": "get it wrong", "ctx": "\"\u2026we might get it wrong.\"", "o": ["make a mistake about something", "forget something completely"], "a": 0, "w": "\"Get it wrong\" = make a mistake, here: say the wrong name. The opposite is \"get it right\".", "n": "Forgetting would be \"forget\". Here the person tries but makes a mistake."}, {"p": "no need for", "ctx": "\"There's no need for names, you know.\"", "o": ["names are not necessary", "names are forbidden"], "a": 0, "w": "\"No need for X\" = X is not necessary. It does not say X is not allowed.", "n": "Nothing is forbidden; the speaker only says names are unnecessary."}, {"p": "lost in the woods", "ctx": "\"\u2026when they are lost in the woods.\"", "o": ["hiding in a forest on purpose", "unable to find the way out of a forest"], "a": 1, "w": "\"Lost\" = not knowing where you are or how to get out. You shout a lost person's name so they hear you.", "n": "Lost means by accident, not on purpose."}, {"p": "way more than we do", "ctx": "\"\u2026you address people way more than we do.\"", "o": ["a little more than we do", "much more than we do"], "a": 1, "w": "In informal English \"way\" is an intensifier meaning \"much\" / \"far\": way more, way too much, way better.", "n": "\"Way\" makes the difference BIGGER, not smaller."}], "S3": [{"t": "Americans {} differently from Europeans, and I am still learning the rules.", "a": ["address people"], "w": "Present simple with a plural subject (\"Americans\"): no -s, base verb. The phrase is \"address people\"."}, {"t": "With a teacher or a police officer you often have to address them {}.", "a": ["formally"], "w": "An adverb is needed to describe HOW you address them: \"formally\" (not \"formal\")."}, {"t": "My American friends call everybody by their {}, even the boss.", "a": ["first name"], "w": "\"By their first name\": the personal name, singular, after \"their\". The video says \"it's always first name\"."}, {"t": "Last week my cousin {} by a police officer for driving too fast.", "a": ["got pulled over", "was pulled over"], "w": "Past simple passive. The video uses informal \"got pulled over\"; \"was pulled over\" is the formal equivalent."}, {"t": "In my country, calling a teacher \"Mr. Smith\" can sound like you are {} him.", "a": ["making fun of"], "w": "After \"you are\" we need the -ing form: \"making fun of\" + object. The video says \"you're making fun of them\"."}, {"t": "It sounds so formal and old-fashioned that it is almost {}.", "a": ["Shakespearean"], "w": "An adjective after \"is almost\": \"Shakespearean\", written with a capital S because it comes from a name."}, {"t": "If you want to be {}, add \"sir\" or \"ma'am\" when you speak to an adult here.", "a": ["polite"], "w": "After \"to be\" we need an adjective: \"polite\". The video says \"if you want to be polite\"."}, {"t": "Using the wrong title would be too {}, so I stay quiet.", "a": ["embarrassing"], "w": "The -ing adjective describes the thing that causes the feeling (the situation). \"Embarrassed\" would describe the person."}, {"t": "I am afraid that I might {} and use the wrong name.", "a": ["get it wrong"], "w": "After the modal \"might\" we use the base form: \"get it wrong\" (= make a mistake)."}, {"t": "Between close friends there is {} formal titles at all.", "a": ["no need for"], "w": "\"There is no need for + noun\" = it is not necessary. The video: \"There's no need for names\"."}, {"t": "In my family we only shout somebody's name when he is {}.", "a": ["lost in the woods"], "w": "Fixed phrase with \"be\": \"is lost in the woods\" (plural \"woods\" even for one forest)."}, {"t": "Here people use names {} than we do back home.", "a": ["way more"], "w": "\"Way\" is an informal intensifier meaning \"much\", and it goes before \"more\": \"way more than we do\"."}]};
+function q1(s,r){return (r||document).querySelector(s);}
+function qa(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s));}
+function norm(s){return String(s).toLowerCase().replace(/[’‘]/g,"'").replace(/-/g," ").replace(/[.!?,;]+$/,"").replace(/\s+/g," ").replace(/^\s+|\s+$/g,"");}
+function plain(h){return String(h).replace(/<[^>]*>/g,"");}
+var OK="✓ ",NO="✗ ";
+var sections=[];
+function setWhy(el,cls,txt){el.className="why "+cls;el.textContent=txt;}
+function clearWhy(el){el.className="why";el.textContent="";}
+
+/* Task 1 */
+function mk1(){
+  var root=q1("#t1"),qs=qa(".q",root),Q=D.Q1;
+  function sel(i){var ps=qa(".pill",qs[i]);for(var k=0;k<ps.length;k++){if(ps[k].className.indexOf("sel")>-1)return k;}return -1;}
+  function clearQ(i){qa(".pill",qs[i]).forEach(function(p){p.classList.remove("ok");p.classList.remove("bad");q1(".mk",p).textContent="";});clearWhy(q1(".why",qs[i]));}
+  function setSel(i,k){qa(".pill",qs[i]).forEach(function(p,j){if(j===k)p.classList.add("sel");else p.classList.remove("sel");});}
+  function mark(i,isCheck){var it=Q[i],s=sel(i),ps=qa(".pill",qs[i]),w=q1(".why",qs[i]);
+    ps[it.a].classList.add("ok");q1(".mk",ps[it.a]).textContent=OK;
+    if(s===it.a){setWhy(w,"whyok",OK+"Correct! "+it.w[it.a]);}
+    else if(s>=0){ps[s].classList.add("bad");q1(".mk",ps[s]).textContent=NO;setWhy(w,"whybad",NO+"Not this one: "+it.w[s]+" → Correct answer: \""+it.o[it.a]+"\" "+it.w[it.a]);}
+    else{setWhy(w,"whybad",NO+"No answer. Correct: \""+it.o[it.a]+"\" "+it.w[it.a]);}}
+  qs.forEach(function(q,i){qa(".pill",q).forEach(function(p,k){p.addEventListener("click",function(){setSel(i,k);clearQ(i);});});});
+  return {total:Q.length,
+    check:function(){var n=0;qs.forEach(function(q,i){clearQ(i);mark(i,true);if(sel(i)===Q[i].a)n++;});return n;},
+    report:function(){return Q.map(function(it,i){var s=sel(i);return {ok:s===it.a,line:"\""+it.q+"\" – you chose "+(s<0?"nothing":"\""+it.o[s]+"\"")+"; correct: \""+it.o[it.a]+"\""};});},
+    fill:function(){qs.forEach(function(q,i){clearQ(i);setSel(i,Q[i].a);var w=q1(".why",q);ps=qa(".pill",q);setWhy(w,"whyok",OK+Q[i].w[Q[i].a]);});},
+    reset:function(){qs.forEach(function(q,i){clearQ(i);setSel(i,-1);});}
+  };
+}
+/* Task 2 */
+function mk2(){
+  var root=q1("#t2"),rows=qa(".row2",root),P=D.P2;
+  function sel(i){return parseInt(q1("select",rows[i]).value,10);}
+  function clearR(i){var s=q1("select",rows[i]);s.classList.remove("ok");s.classList.remove("bad");clearWhy(q1(".why",rows[i]));}
+  rows.forEach(function(r,i){q1("select",r).addEventListener("change",function(){clearR(i);});});
+  return {total:P.length,
+    check:function(){var n=0;rows.forEach(function(r,i){clearR(i);var s=sel(i),it=P[i],sl=q1("select",r),w=q1(".why",r);
+      if(s===it.a){n++;sl.classList.add("ok");setWhy(w,"whyok",OK+"Correct! "+it.w);}
+      else if(s>=0){sl.classList.add("bad");setWhy(w,"whybad",NO+"Not quite: "+it.n+" → Correct: \""+it.o[it.a]+"\". "+it.w);}
+      else{sl.classList.add("bad");setWhy(w,"whybad",NO+"No answer. Correct: \""+it.o[it.a]+"\". "+it.w);}
+    });return n;},
+    report:function(){return P.map(function(it,i){var s=sel(i);return {ok:s===it.a,line:"\""+it.p+"\" – you chose "+(s<0?"nothing":"\""+it.o[s]+"\"")+"; correct: \""+it.o[it.a]+"\""};});},
+    fill:function(){rows.forEach(function(r,i){clearR(i);q1("select",r).value=String(P[i].a);setWhy(q1(".why",r),"whyok",OK+P[i].w);});},
+    reset:function(){rows.forEach(function(r,i){clearR(i);q1("select",r).value="-1";});}
+  };
+}
+/* Task 3 */
+function mk3(){
+  var root=q1("#t3"),ins=qa("input",root),rows=qa(".s3",root),S=D.S3;
+  function okAns(i){var v=norm(ins[i].value);return S[i].a.some(function(x){return norm(x)===v;});}
+  function clearI(i){ins[i].classList.remove("ok");ins[i].classList.remove("bad");clearWhy(q1(".why",rows[i]));}
+  ins.forEach(function(inp,i){inp.addEventListener("input",function(){clearI(i);});});
+  return {total:S.length,
+    check:function(){var n=0;ins.forEach(function(inp,i){clearI(i);var w=q1(".why",rows[i]);
+      if(okAns(i)){n++;inp.classList.add("ok");setWhy(w,"whyok",OK+"Correct! "+S[i].w);}
+      else{inp.classList.add("bad");setWhy(w,"whybad",NO+"Correct: \""+S[i].a[0]+"\". "+S[i].w);}});return n;},
+    report:function(){return S.map(function(it,i){var v=ins[i].value.replace(/^\s+|\s+$/g,"");return {ok:okAns(i),line:plain(it.t.replace("{}",v?v:"___"))+"   (correct: "+it.a[0]+")"};});},
+    fill:function(){ins.forEach(function(inp,i){clearI(i);inp.value=S[i].a[0];setWhy(q1(".why",rows[i]),"whyok",OK+S[i].w);});},
+    reset:function(){ins.forEach(function(inp,i){clearI(i);inp.value="";});}
+  };
+}
+function record(sec){sec.api.report().forEach(function(r,i){sec.lastOk[i]=r.ok;if(!r.ok){var k=i+"|"+r.line;if(!sec.seen[k]){sec.seen[k]=1;sec.log.push({i:i,line:r.line});}}});}
+function updateBar(){var got=0,tot=0;sections.forEach(function(s){tot+=s.total;if(s.checked&&!s.revealed)got+=s.score;});q1("#bartxt").textContent=got+" / "+tot;q1("#fill").style.width=(tot?got/tot*100:0)+"%";}
+function wire(id,num,label,api){
+  var el=q1("#"+id),sec={id:id,num:num,label:label,total:api.total,score:0,checked:false,revealed:false,api:api,log:[],seen:{},lastOk:[]};
+  var sc=q1(".score",el),msg=q1(".msg",el);
+  q1(".chk",el).addEventListener("click",function(){
+    if(sec.revealed){msg.textContent="The answers are shown. Press Try again to do this task yourself.";return;}
+    try{sec.score=api.check();sec.checked=true;record(sec);sc.textContent=sec.score+" / "+sec.total;msg.textContent=sec.score===sec.total?"Perfect! Read the explanations to remember why.":"Read the explanations under each answer. Press Try again to repeat the task.";}
+    catch(e){msg.textContent="Something went wrong: "+e.message;}
+    updateBar();});
+  q1(".show",el).addEventListener("click",function(){api.fill();sec.revealed=true;sec.checked=false;sec.score=0;sc.textContent="answers shown";msg.textContent="Answers are shown – no score for this task. Press Try again to do it yourself.";updateBar();});
+  q1(".again",el).addEventListener("click",function(){api.reset();sec.revealed=false;sec.checked=false;sec.score=0;sc.textContent="";msg.textContent="";updateBar();});
+  sections.push(sec);
+}
+wire("t1",1,"Understanding the video",mk1());
+wire("t2",2,"Word meanings",mk2());
+wire("t3",3,"Complete the text",mk3());
+updateBar();
+function buildReport(){
+  var name=(q1("#name").value||"").replace(/^\s+|\s+$/g,"")||"(no name)";
+  var out="Names & Titles (video) – "+name+" ("+new Date().toLocaleString()+")\n\n",got=0,tot=0;
+  sections.forEach(function(s){tot+=s.total;var t;if(s.revealed)t="answers shown";else if(!s.checked)t="not checked";else{t=s.score+" / "+s.total;got+=s.score;}out+="Task "+s.num+" "+s.label+": "+t+"\n";});
+  out+="\nTotal: "+got+" / "+tot+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  var any=false;
+  sections.forEach(function(s){if(s.log.length){any=true;out+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(function(e){out+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n";});}});
+  if(!any)out+="\n(no mistakes logged)\n";
+  return out;
+}
+window.HW={sections:sections,buildReport:buildReport};
+q1("#copy").addEventListener("click",function(){
+  var txt=buildReport(),note=q1("#copied");
+  function done(){note.textContent="Copied! Paste it in the chat.";setTimeout(function(){note.textContent="";},4000);}
+  function fb(){var ta=document.createElement("textarea");ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){note.textContent="Could not copy – please select and copy manually.";}document.body.removeChild(ta);}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb);}else fb();
+});
+})();
+</script></body></html>
