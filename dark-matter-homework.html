@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dark Matter Homework</title>
+<style>
+  :root{
+    --bg:#F7F5F0; --card:#fff; --fg:#1A1A1A; --soft:#555; --line:#D4D0C8;
+    --navy:#1A3A5C; --amber:#C4862A; --ok:#2A6B3C; --okbg:#EAF4EE; --bad:#8B2222; --badbg:#FAEAEA;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 Poppins,system-ui,-apple-system,Segoe UI,sans-serif;padding-bottom:60px}
+  .bar{position:sticky;top:0;z-index:5;background:var(--navy);color:#fff;padding:10px 16px;display:flex;justify-content:space-between;align-items:center;gap:12px;font-weight:600}
+  .bar .track{flex:1;height:8px;background:rgba(255,255,255,.25);border-radius:4px;overflow:hidden}
+  .bar .fill{height:100%;width:0;background:var(--amber);transition:width .3s}
+  .wrap{max-width:720px;margin:0 auto;padding:0 16px}
+  h1{font-size:1.7rem;margin:28px 0 4px;color:var(--navy);line-height:1.2}
+  .sub{color:var(--soft);margin:0 0 18px}
+  .name{display:flex;gap:10px;align-items:center;margin-bottom:22px;flex-wrap:wrap}
+  .name input{flex:1;min-width:180px;padding:10px 12px;border:1.5px solid var(--line);border-radius:8px;font:inherit}
+  .task{background:var(--card);border:1px solid var(--line);border-top:6px solid var(--amber);border-radius:14px;padding:20px 18px;margin-bottom:24px}
+  .task.t2{border-top-color:var(--navy)}
+  .task h2{margin:0 0 4px;font-size:1.15rem}
+  .task .hint{margin:0 0 16px;color:var(--soft);font-size:.92rem}
+  .item{padding:12px 0;border-top:1px solid #EEEAE0}
+  .item:first-of-type{border-top:none}
+  .term{font-weight:600;color:var(--navy);margin-bottom:8px}
+  .pills{display:flex;flex-direction:column;gap:8px}
+  .pill{border:1.5px solid var(--line);background:#fff;border-radius:8px;padding:9px 12px;text-align:left;font:inherit;font-size:.95rem;cursor:pointer;color:var(--fg)}
+  .pill:hover{border-color:var(--navy)}
+  .pill.sel{border-color:var(--navy);background:#EAF0F7}
+  .item.ok .pill.sel{border-color:var(--ok);background:var(--okbg);color:var(--ok)}
+  .item.bad .pill.sel{border-color:var(--bad);background:var(--badbg);color:var(--bad)}
+  .bank{display:flex;flex-wrap:wrap;gap:8px;background:#EEE9DE;border:1px solid var(--line);border-radius:8px;padding:12px;margin-bottom:12px}
+  .bank span{background:#fff;border:1.5px solid var(--amber);border-radius:4px;padding:2px 10px;font-size:.9rem;font-weight:500}
+  .sent{line-height:2.1}
+  .sent input{border:none;border-bottom:2px solid var(--amber);background:transparent;font:inherit;font-weight:600;color:var(--navy);width:12.5em;max-width:100%;text-align:center;padding:0 4px;outline:none}
+  .sent input:focus{background:#FBF4E6}
+  .item.ok input{border-color:var(--ok);color:var(--ok)}
+  .item.bad input{border-color:var(--bad);color:var(--bad)}
+  .btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+  button.b{border:none;border-radius:8px;padding:10px 16px;font:inherit;font-size:.85rem;font-weight:600;cursor:pointer}
+  .b.check{background:var(--navy);color:#fff}
+  .b.show{background:transparent;border:1.5px solid var(--line);color:var(--soft)}
+  .b.again{background:transparent;border:1.5px solid var(--line);color:var(--soft)}
+  .score{font-weight:600;color:var(--navy)}
+  .score.msg{color:var(--soft);font-weight:400}
+  .final{text-align:center}
+  .final .b{background:var(--amber);color:#fff;font-size:1rem;padding:14px 26px}
+  .copied{margin-top:10px;color:var(--ok);font-weight:600;min-height:24px}
+</style>
+</head>
+<body>
+
+<div class="bar"><span id="barText">0 / 16</span><div class="track"><div class="fill" id="barFill"></div></div></div>
+
+<div class="wrap">
+  <h1>Dark Matter: Control Practice</h1>
+  <p class="sub">Two short tasks, 8 target words. Press Check after each task, then copy your results at the bottom and send them to me.</p>
+
+  <div class="name"><label for="who"><b>Name:</b></label><input id="who" placeholder="Your name" value="Mikhail"></div>
+
+  <div class="task" id="task1">
+    <h2>Task 1. What does it mean?</h2>
+    <p class="hint">Read the word and pick the correct meaning.</p>
+    <div id="t1items"></div>
+    <div class="btns">
+      <button class="b check" data-act="check">Check</button>
+      <button class="b show" data-act="show">Show answers</button>
+      <button class="b again" data-act="again">Try again</button>
+      <span class="score" id="t1score"></span>
+    </div>
+  </div>
+
+  <div class="task t2" id="task2">
+    <h2>Task 2. Fill the gaps</h2>
+    <p class="hint">Type the right word or phrase from the box. Each one is used once and is already in the right form.</p>
+    <div class="bank" id="bank"></div>
+    <div id="t2items"></div>
+    <div class="btns">
+      <button class="b check" data-act="check">Check</button>
+      <button class="b show" data-act="show">Show answers</button>
+      <button class="b again" data-act="again">Try again</button>
+      <span class="score" id="t2score"></span>
+    </div>
+  </div>
+
+  <div class="final">
+    <button class="b" id="copyBtn">Copy my results</button>
+    <div class="copied" id="copied"></div>
+  </div>
+</div>
+
+<script>
+// ---------- DATA ----------
+const T1 = [
+  {t:"unconditional love", c:"love you get no matter what you do", w:"love you get only when you do well"},
+  {t:"to lean on someone", c:"to count on someone for support", w:"to push someone out of the way"},
+  {t:"to come to terms with", c:"to finally accept something hard", w:"to argue about the terms of a deal"},
+  {t:"entanglement", c:"a complicated connection that is hard to separate", w:"a simple plan with clear steps"},
+  {t:"to map out", c:"to plan something in detail", w:"to forget about something on purpose"},
+  {t:"plague", c:"a deadly disease that spreads fast", w:"a small problem that fixes itself"},
+  {t:"to spike someone's drink", c:"to secretly put something in their drink", w:"to offer them a free drink"},
+  {t:"to blackmail", c:"to threaten to reveal someone's secret to get something", w:"to ask someone politely for a favor"}
+];
+// which position the correct option takes (0 = first, 1 = second), mixed on purpose
+const POS1 = [1,0,1,0,0,1,1,0];
+
+const T2 = [
+  {pre:"My sister and I always ", ans:["lean on"], post:" each other when life gets tough."},
+  {pre:"A dog gives you ", ans:["unconditional"], post:" love: it doesn't care if you are rich or broke."},
+  {pre:"He still can't ", ans:["come to terms with"], post:" the fact that he lost his job."},
+  {pre:"Someone ", ans:["spiked"], post:" my drink at the party, so I felt dizzy all night."},
+  {pre:"In the Middle Ages, a ", ans:["plague"], post:" wiped out a huge part of Europe's population."},
+  {pre:"The thief ", ans:["blackmailed"], post:" the manager: \"Pay me, or everyone sees your emails.\""},
+  {pre:"We have ", ans:["mapped out"], post:" the whole trip, day by day, so there will be no surprises."},
+  {pre:"Their financial ", ans:["entanglement"], post:" with that company made it hard to walk away."}
+];
+const BANK = ["lean on","unconditional","come to terms with","spiked","plague","blackmailed","mapped out","entanglement"];
+
+// ---------- HELPERS ----------
+const $ = s => document.querySelector(s);
+function norm(s){
+  return (s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\s+/g," ").replace(/[.!?,;:]+$/,"").trim();
+}
+function plain(s){ return (s||"").replace(/<[^>]*>/g,""); }
+
+// ---------- TASK 1 ----------
+const t1 = {chosen: T1.map(()=>null)};
+function buildT1(){
+  const box = $("#t1items"); box.innerHTML = "";
+  T1.forEach((it,i)=>{
+    const opts = POS1[i]===0 ? [it.c, it.w] : [it.w, it.c];
+    const div = document.createElement("div"); div.className="item"; div.dataset.i=i;
+    div.innerHTML = '<div class="term">'+(i+1)+'. '+it.t+'</div><div class="pills"></div>';
+    const pills = div.querySelector(".pills");
+    opts.forEach((txt,k)=>{
+      const b = document.createElement("button"); b.className="pill"; b.type="button"; b.textContent=txt;
+      b.dataset.correct = (txt===it.c);
+      b.addEventListener("click",()=>{
+        if(sec1.revealed) return;
+        t1.chosen[i]=txt;
+        pills.querySelectorAll(".pill").forEach(p=>p.classList.remove("sel"));
+        b.classList.add("sel");
+        div.classList.remove("ok","bad");
+      });
+      pills.appendChild(b);
+    });
+    box.appendChild(div);
+  });
+  t1.chosen = T1.map(()=>null);
+}
+const api1 = {
+  total: T1.length,
+  check(){
+    let n=0;
+    document.querySelectorAll("#t1items .item").forEach(div=>{
+      const i=+div.dataset.i; const ok = t1.chosen[i]===T1[i].c;
+      div.classList.remove("ok","bad"); if(t1.chosen[i]!==null) div.classList.add(ok?"ok":"bad");
+      if(ok) n++;
+    });
+    return n;
+  },
+  report(){
+    return T1.map((it,i)=>{
+      const ok = t1.chosen[i]===it.c;
+      return {ok, line: it.t+" = "+(t1.chosen[i]===null?"___":t1.chosen[i])+"   (correct: "+it.c+")"};
+    });
+  },
+  fill(){
+    document.querySelectorAll("#t1items .item").forEach(div=>{
+      const i=+div.dataset.i; t1.chosen[i]=T1[i].c;
+      div.querySelectorAll(".pill").forEach(p=>p.classList.toggle("sel", p.dataset.correct==="true"));
+      div.classList.remove("bad"); div.classList.add("ok");
+    });
+  },
+  reset(){ buildT1(); }
+};
+
+// ---------- TASK 2 ----------
+function buildT2(){
+  const box = $("#t2items"); box.innerHTML = "";
+  T2.forEach((it,i)=>{
+    const div = document.createElement("div"); div.className="item sent"; div.dataset.i=i;
+    div.innerHTML = (i+1)+'. '+it.pre+'<input type="text" autocomplete="off" autocapitalize="off" spellcheck="false">'+it.post;
+    box.appendChild(div);
+  });
+}
+function t2val(i){ return document.querySelectorAll("#t2items input")[i].value; }
+const api2 = {
+  total: T2.length,
+  check(){
+    let n=0;
+    document.querySelectorAll("#t2items .item").forEach(div=>{
+      const i=+div.dataset.i; const v = norm(t2val(i));
+      const ok = T2[i].ans.some(a=>norm(a)===v);
+      div.classList.remove("ok","bad"); if(v!=="") div.classList.add(ok?"ok":"bad");
+      if(ok) n++;
+    });
+    return n;
+  },
+  report(){
+    return T2.map((it,i)=>{
+      const v = t2val(i).trim(); const ok = it.ans.some(a=>norm(a)===norm(v));
+      return {ok, line: plain(it.pre)+(v===""?"___":v)+plain(it.post)+"   (correct: "+it.ans[0]+")"};
+    });
+  },
+  fill(){
+    const ins = document.querySelectorAll("#t2items input");
+    ins.forEach((inp,i)=>{ inp.value=T2[i].ans[0]; inp.parentElement.classList.remove("bad"); inp.parentElement.classList.add("ok"); });
+  },
+  reset(){ buildT2(); }
+};
+
+// ---------- SECTIONS ----------
+const sec1 = {id:"task1", num:1, label:"What does it mean?", total:8, score:0, checked:false, revealed:false, api:api1, log:[], seen:new Set(), lastOk:[], scoreEl:"#t1score"};
+const sec2 = {id:"task2", num:2, label:"Fill the gaps", total:8, score:0, checked:false, revealed:false, api:api2, log:[], seen:new Set(), lastOk:[], scoreEl:"#t2score"};
+const sections = [sec1, sec2];
+
+function record(sec){
+  if(!sec.api.report) return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){ const k=i+"|"+r.line; if(!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i,line:r.line}); } }
+  });
+}
+function updateBar(){
+  const got = sections.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+  const tot = sections.reduce((a,s)=>a+s.total,0);
+  $("#barText").textContent = got+" / "+tot;
+  $("#barFill").style.width = (got/tot*100)+"%";
+}
+function wire(sec){
+  const root = document.getElementById(sec.id), sc = $(sec.scoreEl);
+  root.querySelector('[data-act="check"]').addEventListener("click",()=>{
+    if(sec.revealed){ sc.className="score msg"; sc.textContent="Answers are shown. Press Try again first."; return; }
+    sec.score = sec.api.check(); sec.checked = true; record(sec);
+    sc.className="score"; sc.textContent = sec.score+" / "+sec.total;
+    updateBar();
+  });
+  root.querySelector('[data-act="show"]').addEventListener("click",()=>{
+    sec.api.fill(); sec.revealed = true; sec.checked = false; sec.score = 0;
+    sc.className="score msg"; sc.textContent="Answers shown (no score)";
+    updateBar();
+  });
+  root.querySelector('[data-act="again"]').addEventListener("click",()=>{
+    sec.api.reset(); sec.revealed=false; sec.checked=false; sec.score=0; sec.lastOk=[];
+    sc.textContent=""; updateBar();
+  });
+}
+
+// ---------- REPORT ----------
+function buildReport(){
+  const name = ($("#who").value||"").trim() || "Student";
+  const d = new Date();
+  const stamp = d.toLocaleDateString()+" "+d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  const lines = ["Dark Matter: Control Practice - "+name+" ("+stamp+")",""];
+  let got=0, tot=0;
+  sections.forEach(s=>{
+    const st = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "not checked");
+    lines.push("Task "+s.num+" "+s.label+": "+st);
+    tot += s.total; if(s.checked && !s.revealed) got += s.score;
+  });
+  lines.push("", "Total: "+got+" / "+tot, "", "MISTAKES (every wrong answer, including ones fixed on retry)");
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length) return; any=true;
+    lines.push("", "Task "+s.num+" "+s.label);
+    s.log.forEach(e=>{
+      lines.push("  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]");
+    });
+  });
+  if(!any) lines.push("", "No mistakes logged.");
+  return lines.join("\n");
+}
+window.HW = {sections, buildReport};
+
+// ---------- COPY ----------
+$("#copyBtn").addEventListener("click",()=>{
+  const text = buildReport(), msg = $("#copied");
+  const done = ()=>{ msg.textContent="Copied! Paste it in the chat."; };
+  const fallback = ()=>{
+    const ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0";
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand("copy"); done(); }catch(e){ msg.textContent="Could not copy. Select the text manually."; }
+    document.body.removeChild(ta);
+  };
+  if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done, fallback); } else fallback();
+});
+
+// ---------- INIT ----------
+BANK.forEach(w=>{ const s=document.createElement("span"); s.textContent=w; $("#bank").appendChild(s); });
+buildT1(); buildT2(); sections.forEach(wire); updateBar();
+</script>
+</body>
+</html>
