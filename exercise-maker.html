@@ -36,6 +36,18 @@ textarea{min-height:150px;resize:vertical;font:13px/1.5 ui-monospace,Menlo,Conso
 .chk{display:flex;gap:6px;align-items:center;margin-top:8px;font-size:13px}
 .add{display:flex;gap:8px;margin:6px 0 20px}
 .tabs{display:none}
+#start{position:fixed;inset:0;z-index:50;background:var(--bg);overflow:auto;padding:28px 16px}
+#start[hidden]{display:none}
+.sw{max-width:900px;margin:0 auto}
+.sw h2{font-size:24px;margin:0 0 4px}.sw p.sub{margin:0 0 20px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.tp{text-align:left;background:var(--card);border:2px solid var(--line);border-radius:18px;padding:18px;cursor:pointer;font:inherit;color:var(--ink);display:block;width:100%}
+.tp:hover,.tp:focus-visible{border-color:var(--acc);transform:translateY(-2px)}
+.tp .ic{font-size:30px;line-height:1;display:block;margin-bottom:8px}
+.tp b{display:block;font-size:16px;margin-bottom:4px}
+.tp span.d{display:block;color:var(--muted);font-size:13px;font-weight:400}
+.tp code{display:block;margin-top:10px;font:12px/1.4 ui-monospace,Menlo,Consolas,monospace;background:var(--soft);border-radius:8px;padding:6px 8px;color:var(--ink);font-weight:400;white-space:pre-wrap}
+.sbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
 @media (max-width:860px){
  .main{display:block;height:auto}
  .tabs{display:flex;gap:6px;padding:8px 16px}
@@ -45,6 +57,8 @@ textarea{min-height:150px;resize:vertical;font:13px/1.5 ui-monospace,Menlo,Conso
 </style>
 </head>
 <body>
+<div id="start"><div class="sw"><h2 id="stH">What do you want to make?</h2><p class="sub" id="stS">Step 1: choose a template. Step 2: type your words and sentences.</p><div class="grid" id="grid"></div>
+<div class="sbar"><button type="button" id="stEx">Open the example exercise</button><button type="button" id="stOpen">Open a saved project</button><button type="button" id="stCancel" hidden>Cancel</button></div></div></div>
 <header class="top">
 <h1>Exercise Maker</h1>
 <button class="pri" id="bExport" type="button">⬇ Save exercise as a file (HTML)</button>
@@ -56,7 +70,9 @@ textarea{min-height:150px;resize:vertical;font:13px/1.5 ui-monospace,Menlo,Conso
 <div class="tabs"><button type="button" id="tEdit">Edit</button><button type="button" id="tPrev">Preview</button></div>
 <div class="main">
 <div class="pane edit" id="edit">
- <div class="meta">
+ <div id="tasks"></div>
+ <div class="add"><button class="pri" id="bAdd" type="button">+ Add another task (choose template)</button></div>
+ <details class="meta" open><summary style="cursor:pointer;font-weight:700">Exercise settings: style, title, audio, video</summary>
   <label class="f" for="mStyle">Style (background and colors)</label><select id="mStyle"><option value="classic">1. Classic (violet, light or dark automatically)</option><option value="sunny">2. Sunny (warm paper, orange and pink, round shapes)</option><option value="chalk">3. Chalkboard (dark green board, chalk colors)</option></select>
   <label class="f" for="mTitle">Title</label><input type="text" id="mTitle" placeholder="e.g. Work vocabulary">
   <div class="row2"><div><label class="f" for="mKicker">Small heading above the title</label><input type="text" id="mKicker" placeholder="Interactive exercise"></div>
@@ -64,9 +80,7 @@ textarea{min-height:150px;resize:vertical;font:13px/1.5 ui-monospace,Menlo,Conso
   <label class="f" for="mIntro">Short intro for students (optional)</label><input type="text" id="mIntro" placeholder="Listen, then do the tasks. Press Check to see explanations.">
   <label class="f">Audio file (optional, embedded into the exercise)</label>
   <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><label class="fbtn">Choose audio<input type="file" id="mAudio" accept="audio/*"></label><span id="audioInfo" class="hint" style="margin:0">no audio</span><button class="sm del" id="audioDel" type="button" style="display:none">Remove</button></div>
- </div>
- <div id="tasks"></div>
- <div class="add"><select id="addType" style="max-width:300px"></select><button class="pri" id="bAdd" type="button">+ Add task</button></div>
+ </details>
 </div>
 <div class="pane prev"><div class="prevbar" id="prevbar"><span>Live preview.</span> <button class="sm pri" id="bExport2" type="button">⬇ Save as a file</button></div><iframe id="frame" sandbox="allow-scripts allow-same-origin allow-popups" title="Preview"></iframe></div>
 </div>
@@ -95,7 +109,21 @@ var TYPES={
   ph:"\"Myopic\" can describe a person who plans for the long term. | F | Myopic = short-sighted, thinking only about now."}
 };
 var order=["match","quiz","gap","unjumble","tf"];
-var addType=$("#addType");order.forEach(function(k){var o=el("option","",TYPES[k].label);o.value=k;addType.appendChild(o);});
+var INFO={match:["\u21c4","Match up","Two columns: terms on the left, definitions on the right. Students click pairs.","Recession | A period when the economy shrinks"],
+ quiz:["\u2705","Quiz","Multiple choice. Every option gets its own explanation.","What does X mean?\n* right | why\n- wrong | why"],
+ gap:["\u270f\ufe0f","Missing word","Sentences with gaps. Students type the word. Optional word bank.","She was [laid off] last year."],
+ unjumble:["\ud83d\udd00","Unjumble","Scrambled words, students click them into the right order.","He wants to climb the ladder."],
+ tf:["\u2696\ufe0f","True / False","Statements to judge, with an explanation for each.","Myopic = short-sighted | T | why"]};
+var startMode="new";
+function showStart(mode){startMode=mode;$("#start").hidden=false;$("#stCancel").hidden=mode!=="add";$("#stH").textContent=mode==="add"?"Add a task: choose a template":"What do you want to make?";$("#stS").textContent=mode==="add"?"The new task is added below your current ones.":"Step 1: choose a template. Step 2: type your words and sentences.";$("#stEx").style.display=mode==="add"?"none":"";$("#stOpen").style.display=mode==="add"?"none":"";window.scrollTo(0,0);}
+function pick(type){
+  if(startMode==="new")S.tasks=[newTask(type)];else S.tasks.push(newTask(type));
+  $("#start").hidden=true;renderTasks();refresh();save();
+  var ts=document.querySelectorAll("#tasks .task textarea"),t=ts[ts.length-1];if(t){t.scrollIntoView({block:"center"});t.focus();}}
+var grid=$("#grid");order.forEach(function(k){var b=el("button","tp");b.type="button";var i=el("span","ic",INFO[k][0]);b.appendChild(i);b.appendChild(el("b","",INFO[k][1]));b.appendChild(el("span","d",INFO[k][2]));b.appendChild(el("code","",INFO[k][3]));b.addEventListener("click",function(){pick(k);});grid.appendChild(b);});
+$("#stCancel").addEventListener("click",function(){$("#start").hidden=true;});
+$("#stEx").addEventListener("click",function(){load(EX);});
+$("#stOpen").addEventListener("click",function(){$("#fOpen").click();});
 
 var S={style:"classic",title:"",kicker:"",intro:"",video:"",audio:"",audioName:"",tasks:[]};
 
@@ -209,8 +237,8 @@ function audioUi(){$("#audioInfo").textContent=S.audio?(S.audioName||"audio")+" 
 [["mStyle","style"],["mTitle","title"],["mKicker","kicker"],["mIntro","intro"],["mVideo","video"]].forEach(function(p){$("#"+p[0]).addEventListener(p[0]==="mStyle"?"change":"input",function(){S[p[1]]=this.value;schedule();});});
 $("#mAudio").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){S.audio=r.result;S.audioName=f.name;audioUi();refresh();save();if(f.size>12e6)alert("This audio is large ("+Math.round(f.size/1e6)+" MB). The exported file will be large too. An mp3 at 64-96 kbps works best.");};r.readAsDataURL(f);this.value="";});
 $("#audioDel").addEventListener("click",function(){S.audio="";S.audioName="";audioUi();refresh();save();});
-$("#bAdd").addEventListener("click",function(){S.tasks.push(newTask(addType.value));renderTasks();refresh();save();});
-$("#bNew").addEventListener("click",function(){if(!confirm("Start a new empty exercise? Unsaved work will be lost."))return;S={style:"classic",title:"",kicker:"",intro:"",video:"",audio:"",audioName:"",tasks:[]};syncMeta();renderTasks();refresh();save();});
+$("#bAdd").addEventListener("click",function(){showStart("add");});
+$("#bNew").addEventListener("click",function(){if(!confirm("Start a new empty exercise? Unsaved work will be lost."))return;S={style:"classic",title:"",kicker:"",intro:"",video:"",audio:"",audioName:"",tasks:[]};syncMeta();renderTasks();refresh();save();showStart("new");});
 
 /* ---------- save / open / export ---------- */
 function download(name,text,mime){var b=new Blob([text],{type:mime||"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},500);}
@@ -218,7 +246,7 @@ function slug(){var s=trim(S.title).toLowerCase().replace(/[^a-z0-9]+/g,"-").rep
 function clean(){return {format:"exercise-maker",v:1,state:{style:S.style,title:S.title,kicker:S.kicker,intro:S.intro,video:S.video,audio:S.audio,audioName:S.audioName,tasks:S.tasks.map(function(t){return {type:t.type,title:t.title,inst:t.inst,text:t.text,bank:!!t.bank,leftTitle:t.leftTitle,rightTitle:t.rightTitle};})}};}
 $("#bSave").addEventListener("click",function(){download(slug()+".exercise.json",JSON.stringify(clean()),"application/json");});
 $("#fOpen").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.format!=="exercise-maker")throw 0;load(o.state);}catch(e){alert("This is not an Exercise Maker project file.");}};r.readAsText(f);this.value="";});
-function load(st){S={style:st.style||"classic",title:st.title||"",kicker:st.kicker||"",intro:st.intro||"",video:st.video||"",audio:st.audio||"",audioName:st.audioName||"",tasks:(st.tasks||[]).filter(function(t){return TYPES[t.type];}).map(function(t){var n=newTask(t.type);for(var k in n)if(t[k]!=null)n[k]=t[k];return n;})};syncMeta();renderTasks();refresh();save();}
+function load(st){S={style:st.style||"classic",title:st.title||"",kicker:st.kicker||"",intro:st.intro||"",video:st.video||"",audio:st.audio||"",audioName:st.audioName||"",tasks:(st.tasks||[]).filter(function(t){return TYPES[t.type];}).map(function(t){var n=newTask(t.type);for(var k in n)if(t[k]!=null)n[k]=t[k];return n;})};syncMeta();renderTasks();refresh();save();$("#start").hidden=true;}
 function doExport(){
   var b=build();if(!b.data.tasks.length){alert("Nothing to export yet. Add content to at least one task.");return;}
   var bad=b.warns.reduce(function(n,w){return n+w.length;},0);
@@ -265,9 +293,9 @@ $("#tPrev").addEventListener("click",function(){document.body.classList.add("sho
 
 /* ---------- start ---------- */
 try{var raw=localStorage.getItem("exercise-maker-v1");if(raw){var o=JSON.parse(raw);if(o&&o.format==="exercise-maker"&&o.state&&o.state.tasks&&o.state.tasks.length)S=o.state,S.audio="",S.audioName="";}}catch(e){}
-if(!S.tasks||!S.tasks.length){S=JSON.parse(JSON.stringify(EX));}
+var had=S.tasks&&S.tasks.length;if(!had){S={style:"classic",title:"",kicker:"",intro:"",video:"",audio:"",audioName:"",tasks:[]};}
 S.tasks=S.tasks.map(function(t){var n=newTask(t.type);for(var k in n)if(t[k]!=null)n[k]=t[k];return n;});
-syncMeta();renderTasks();refresh();
+syncMeta();renderTasks();refresh();if(had)$("#start").hidden=true;else showStart("new");
 window.MK={get S(){return S;},build:build,toHtml:toHtml,load:load,EX:EX};
 })();
 </script>
