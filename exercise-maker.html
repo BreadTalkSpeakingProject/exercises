@@ -69,6 +69,12 @@ details.o{margin-top:10px}details.o summary{cursor:pointer;font-weight:600;font-
 .tp span.n{display:block;margin-top:8px;font-size:12px;font-weight:600;color:var(--acc)}
 .sbar{display:flex;gap:8px;flex-wrap:wrap;margin-top:22px}
 .tabs{display:none}
+#toast{position:fixed;left:50%;bottom:20px;transform:translateX(-50%);z-index:90;background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:12px;display:flex;gap:12px;align-items:center;max-width:92vw;box-shadow:0 6px 24px rgba(0,0,0,.3)}
+#toast[hidden],#dlg[hidden]{display:none}
+#dlg{position:fixed;inset:0;z-index:100;background:rgba(0,0,0,.45);display:flex;align-items:center;justify-content:center;padding:16px}
+.dbox{background:var(--card);border-radius:16px;padding:20px;max-width:420px;width:100%}
+.dbox p{margin:0 0 16px;font-size:15px}.dbtn{display:flex;gap:8px;justify-content:flex-end}
+.empty{color:var(--muted);padding:20px;text-align:center;border:2px dashed var(--line);border-radius:14px;margin-bottom:12px}
 @media (max-width:860px){
  .main{display:block;height:auto}
  .tabs{display:flex;gap:6px;padding:8px 16px}
@@ -80,6 +86,8 @@ details.o{margin-top:10px}details.o summary{cursor:pointer;font-weight:600;font-
 </style>
 </head>
 <body>
+<div id="toast" hidden></div>
+<div id="dlg" hidden><div class="dbox"><p id="dlgMsg"></p><div class="dbtn"><button type="button" id="dlgNo">Cancel</button><button type="button" class="pri" id="dlgOk">OK</button></div></div></div>
 <div id="start"><div class="sw"><h2 id="stH">What do you want to make?</h2><p class="sub" id="stS">Step 1: choose a template. Step 2: fill in the form. Students can switch to another template with the same content.</p><div class="grid" id="grid"></div>
 <div class="sbar"><button type="button" id="stEx">Open the example exercise</button><button type="button" id="stOpen">Open a saved project</button><button type="button" id="stCancel" hidden>Cancel</button></div></div></div>
 <header class="top">
@@ -113,6 +121,8 @@ var RT="<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<
 (function(){
 function $(s,r){return (r||document).querySelector(s);}
 function el(t,c,x){var e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e;}
+function toast(msg,undo){var t=$("#toast");t.textContent="";t.appendChild(el("span","",msg));if(undo){var b=el("button","sm","Undo");b.type="button";b.addEventListener("click",function(){undo();t.hidden=true;});t.appendChild(b);}t.hidden=false;clearTimeout(toast._t);toast._t=setTimeout(function(){t.hidden=true;},undo?9000:6000);}
+function ask(msg,ok,cb){var d=$("#dlg");$("#dlgMsg").textContent=msg;$("#dlgOk").textContent=ok;d.hidden=false;$("#dlgOk").onclick=function(){d.hidden=true;cb();};$("#dlgNo").onclick=function(){d.hidden=true;};}
 function trim(s){return String(s==null?"":s).replace(/^\s+|\s+$/g,"");}
 
 var TL={match:"Match up",memory:"Memory pairs",pquiz:"Quiz (from the list)",type:"Type the answer",quizOne:"Quiz",quizList:"Quiz: all at once",gap:"Missing word",choose:"Complete the sentence",unj:"Unjumble",tfOne:"True or false",tfList:"True or false: list"};
@@ -169,7 +179,7 @@ function refresh(){
 /* ---------- editor widgets ---------- */
 function inp(val,ph,on,cls){var i=el("input",cls||"");i.type="text";i.value=val||"";if(ph)i.placeholder=ph;i.addEventListener("input",function(){on(i.value);schedule();});return i;}
 function field(label,val,on,ph){var w=document.createElement("div");w.appendChild(el("label","f",label));w.appendChild(inp(val,ph,on));return w;}
-function xbtn(on){var b=el("button","x","✕");b.type="button";b.title="Delete";b.setAttribute("aria-label","Delete");b.addEventListener("click",on);return b;}
+function xbtn(on){var b=el("button","x","✕");b.type="button";b.title="Delete this row";b.setAttribute("aria-label","Delete this row");b.addEventListener("click",on);return b;}
 function addBtn(txt,on){var b=el("button","sm",txt);b.type="button";b.addEventListener("click",on);return b;}
 function focusNew(host,sel){var all=host.querySelectorAll(sel);var l=all[all.length-1];if(l)l.focus();}
 function enterAdd(i,rows,mk,rr,host,sel,last){i.addEventListener("keydown",function(e){if(e.key==="Enter"&&last){e.preventDefault();rows.push(mk());rr();var r=host.querySelectorAll(".rw,.sr");var f=r[r.length-1].querySelector("input");if(f)f.focus();}});}
@@ -210,12 +220,21 @@ var SPEC={
     if(A.length!==B.length)return {err:"The left box has "+A.length+" lines and the right box has "+B.length+". Make them equal."};
     A.forEach(function(x,i){if(trim(x))add.push({s:trim(x),a:tv(B[i]),w:""});});return {add:add};}}
 };
+function pasteInto(e,t,i,c,cols,mk,rr,conv){
+  var cd=e.clipboardData||window.clipboardData;if(!cd)return;var tx=cd.getData("text");if(!tx)return;
+  var body=tx.replace(/\r/g,"").replace(/\n+$/,"");if(!/[\n\t]/.test(body))return;
+  e.preventDefault();
+  body.split("\n").forEach(function(line,k){var cells=line.split("\t");if(cells.length===1&&c===0&&cols.length>1){var p=splitList(line);if(p[1])cells=p;}
+    var row=t.rows[i+k];if(!row){row=mk();t.rows.push(row);}
+    cells.forEach(function(cell,j){var key=cols[c+j];if(key)row[key]=conv&&conv[key]?conv[key](cell):trim(cell);});});
+  rr();schedule();
+}
 function rowsPairs(t,host){
   function rr(){host.textContent="";
     var h=el("div","rh p");["Keyword","Definition","Note shown after Check (optional)",""].forEach(function(x){h.appendChild(el("span","",x));});host.appendChild(h);
     t.rows.forEach(function(r,i){var d=el("div","rw p"),last=i===t.rows.length-1;
       var a=inp(r.t,"e.g. recession",function(v){r.t=v;}),b=inp(r.d,"e.g. a period when the economy shrinks",function(v){r.d=v;}),c=inp(r.w,"e.g. opposite of a boom",function(v){r.w=v;});
-      [a,b,c].forEach(function(x){enterAdd(x,t.rows,function(){return {t:"",d:"",w:""};},rr,host,"",last&&x===c);});
+      [a,b,c].forEach(function(x,xi){enterAdd(x,t.rows,function(){return {t:"",d:"",w:""};},rr,host,"",last&&x===c);x.addEventListener("paste",function(e){pasteInto(e,t,i,xi,["t","d","w"],function(){return {t:"",d:"",w:""};},rr);});});
       d.appendChild(a);d.appendChild(b);d.appendChild(c);d.appendChild(xbtn(function(){t.rows.splice(i,1);if(!t.rows.length)t.rows.push({t:"",d:"",w:""});rr();schedule();}));host.appendChild(d);});
     var bar=el("div","");bar.appendChild(addBtn("+ Add an item",function(){t.rows.push({t:"",d:"",w:""});rr();focusNew(host,".rw input");}));
     bulkBtn(t,bar,rr,SPEC.pairs);
@@ -229,11 +248,11 @@ function rowsSent(t,host){
   function rr(){host.textContent="";
     t.rows.forEach(function(r,i){var d=el("div","sr"),line=el("div","rw s"),last=i===t.rows.length-1;
       var a=inp(r.s,t.tpl==="unj"?"e.g. She has way too much on her plate.":"e.g. She was [laid off] last year.",function(v){r.s=v;});
-      enterAdd(a,t.rows,function(){return {s:"",w:""};},rr,host,"",last);
+      enterAdd(a,t.rows,function(){return {s:"",w:""};},rr,host,"",last);a.addEventListener("paste",function(e){pasteInto(e,t,i,0,["s","w"],function(){return {s:"",w:""};},rr);});
       line.appendChild(a);line.appendChild(xbtn(function(){t.rows.splice(i,1);if(!t.rows.length)t.rows.push({s:"",w:""});rr();schedule();}));d.appendChild(line);
       var sub=el("div","sub");var why=inp(r.w,"Explanation shown after Check (optional)",function(v){r.w=v;});sub.appendChild(why);
       if(t.tpl!=="unj"){var g=el("button","sm","Make gap");g.type="button";g.title="Select a word in the sentence, then press this";g.addEventListener("mousedown",function(e){e.preventDefault();});
-        g.addEventListener("click",function(){var s=a.selectionStart,e=a.selectionEnd;if(s==null||s===e){alert("First select the missing word in the sentence (with the mouse), then press \"Make gap\".");return;}
+        g.addEventListener("click",function(){var s=a.selectionStart,e=a.selectionEnd;if(s==null||s===e){toast("First select the missing word in the sentence with the mouse, then press Make gap.");return;}
           var v=a.value;r.s=v.slice(0,s)+"["+v.slice(s,e)+"]"+v.slice(e);a.value=r.s;schedule();});sub.appendChild(g);}
       d.appendChild(sub);host.appendChild(d);});
     var bar=el("div","");bar.appendChild(addBtn("+ Add a sentence",function(){t.rows.push({s:"",w:""});rr();var r=host.querySelectorAll(".sr");r[r.length-1].querySelector("input").focus();}));bulkBtn(t,bar,rr,SPEC.sentences);host.appendChild(bar);}
@@ -245,6 +264,8 @@ function rowsTF(t,host){
     t.rows.forEach(function(r,i){var d=el("div","rw t"),last=i===t.rows.length-1;
       var a=inp(r.s,"e.g. Myopic means planning for the long term.",function(v){r.s=v;}),c=inp(r.w,"e.g. It means short-sighted.",function(v){r.w=v;});
       enterAdd(c,t.rows,function(){return {s:"",a:true,w:""};},rr,host,"",last);
+      a.addEventListener("paste",function(e){pasteInto(e,t,i,0,["s","a","w"],function(){return {s:"",a:true,w:""};},rr,{a:function(x){return /^\s*(t|true|yes|y|1)\b/i.test(x);}});});
+      c.addEventListener("paste",function(e){pasteInto(e,t,i,2,["s","a","w"],function(){return {s:"",a:true,w:""};},rr,{a:function(x){return /^\s*(t|true|yes|y|1)\b/i.test(x);}});});
       var sel=el("select");[["True",true],["False",false]].forEach(function(p){var o=el("option","",p[0]);o.value=p[1]?"1":"0";sel.appendChild(o);});sel.value=r.a?"1":"0";sel.addEventListener("change",function(){r.a=sel.value==="1";schedule();});
       d.appendChild(a);d.appendChild(sel);d.appendChild(c);d.appendChild(xbtn(function(){t.rows.splice(i,1);if(!t.rows.length)t.rows.push({s:"",a:true,w:""});rr();schedule();}));host.appendChild(d);});
     var bar=el("div","");bar.appendChild(addBtn("+ Add a statement",function(){t.rows.push({s:"",a:true,w:""});rr();var r=host.querySelectorAll(".rw");r[r.length-1].querySelector("input").focus();}));bulkBtn(t,bar,rr,SPEC.tf);host.appendChild(bar);}
@@ -265,12 +286,13 @@ function rowsQuiz(t,host){
 
 function renderTasks(){
   var host=$("#tasks");host.textContent="";
+  if(!S.tasks.length)host.appendChild(el("div","empty","No activities yet. Press \"+ Add another activity\" below."));
   S.tasks.forEach(function(t,i){
     var c=el("div","task"),h=el("h3");h.appendChild(document.createTextNode((i+1)+". "+TL[t.tpl]+" "));t._c=el("span","cnt","");h.appendChild(t._c);h.appendChild(el("span","sp"));
-    var up=el("button","sm","↑"),dn=el("button","sm","↓"),dl=el("button","sm del","Delete");[up,dn,dl].forEach(function(b){b.type="button";h.appendChild(b);});
+    var up=el("button","sm","↑"),dn=el("button","sm","↓"),dl=el("button","sm del","Delete activity");[up,dn,dl].forEach(function(b){b.type="button";h.appendChild(b);});
     up.addEventListener("click",function(){if(i>0){S.tasks.splice(i-1,0,S.tasks.splice(i,1)[0]);renderTasks();refresh();save();}});
     dn.addEventListener("click",function(){if(i<S.tasks.length-1){S.tasks.splice(i+1,0,S.tasks.splice(i,1)[0]);renderTasks();refresh();save();}});
-    dl.addEventListener("click",function(){if(!confirm("Delete this activity?"))return;S.tasks.splice(i,1);renderTasks();refresh();save();});
+    dl.addEventListener("click",function(){var rem=S.tasks.splice(i,1)[0];renderTasks();refresh();save();toast("Activity deleted.",function(){S.tasks.splice(i,0,rem);renderTasks();refresh();save();});});
     c.appendChild(h);
     var tp=el("div","tpls");tp.appendChild(el("span","hint","Template (your content stays when you switch):"));
     KT[t.kind].forEach(function(k){var b=el("button",k===t.tpl?"on":"",TL[k]);b.type="button";b.addEventListener("click",function(){if(t.tpl!==k){t.tpl=k;renderTasks();refresh();save();}});tp.appendChild(b);});
@@ -308,23 +330,23 @@ function syncMeta(){$("#mStyle").value=S.style||"classic";$("#mSwitch").checked=
 function audioUi(){$("#audioInfo").textContent=S.audio?(S.audioName||"audio")+" ("+Math.round(S.audio.length*0.75/1024)+" KB)":"no audio";$("#audioDel").style.display=S.audio?"":"none";}
 [["mStyle","style"],["mTitle","title"],["mKicker","kicker"],["mIntro","intro"],["mVideo","video"]].forEach(function(p){$("#"+p[0]).addEventListener(p[0]==="mStyle"?"change":"input",function(){S[p[1]]=this.value;schedule();});});
 $("#mSwitch").addEventListener("change",function(){S.sw=this.checked;schedule();});
-$("#mAudio").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){S.audio=r.result;S.audioName=f.name;audioUi();refresh();save();if(f.size>12e6)alert("This audio is large ("+Math.round(f.size/1e6)+" MB). The exported file will be large too. An mp3 at 64-96 kbps works best.");};r.readAsDataURL(f);this.value="";});
+$("#mAudio").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){S.audio=r.result;S.audioName=f.name;audioUi();refresh();save();if(f.size>12e6)toast("This audio is large ("+Math.round(f.size/1e6)+" MB), so the exported file will be large too. An mp3 at 64-96 kbps works best.");};r.readAsDataURL(f);this.value="";});
 $("#audioDel").addEventListener("click",function(){S.audio="";S.audioName="";audioUi();refresh();save();});
-$("#bNew").addEventListener("click",function(){if(!confirm("Start a new empty exercise? Unsaved work will be lost."))return;S=blank();syncMeta();renderTasks();refresh();save();showStart("new");});
+$("#bNew").addEventListener("click",function(){ask("Start a new empty exercise? Anything not saved will be lost.","Start new",function(){S=blank();syncMeta();renderTasks();refresh();save();showStart("new");});});
 
 /* ---------- save / open / export ---------- */
 function download(name,text,mime){var b=new Blob([text],{type:mime||"text/plain"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;document.body.appendChild(a);a.click();setTimeout(function(){URL.revokeObjectURL(a.href);document.body.removeChild(a);},500);}
 function slug(){var s=trim(S.title).toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");return s||"exercise";}
 function snapshot(){return {format:"exercise-maker",v:2,state:{style:S.style,sw:S.sw,title:S.title,kicker:S.kicker,intro:S.intro,video:S.video,audio:S.audio,audioName:S.audioName,tasks:S.tasks.map(function(t){return {kind:t.kind,tpl:t.tpl,title:t.title,inst:t.inst,rows:t.rows,extra:t.extra,wrong:t.wrong,leftTitle:t.leftTitle,rightTitle:t.rightTitle,opts:t.opts};})}};}
 $("#bSave").addEventListener("click",function(){download(slug()+".exercise.json",JSON.stringify(snapshot()),"application/json");});
-$("#fOpen").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.format!=="exercise-maker"||o.v!==2)throw 0;load(o.state);}catch(e){alert("This is not a project file of this version of Exercise Maker.");}};r.readAsText(f);this.value="";});
+$("#fOpen").addEventListener("change",function(){var f=this.files[0];if(!f)return;var r=new FileReader();r.onload=function(){try{var o=JSON.parse(r.result);if(o.format!=="exercise-maker"||o.v!==2)throw 0;load(o.state);}catch(e){toast("This is not a project file of this version of Exercise Maker.");}};r.readAsText(f);this.value="";});
 function load(st){var n=blank();n.style=st.style||"classic";n.sw=st.sw!==false;["title","kicker","intro","video","audio","audioName"].forEach(function(k){n[k]=st[k]||"";});
   n.tasks=(st.tasks||[]).filter(function(t){return KT[t.kind]&&KT[t.kind].indexOf(t.tpl)>=0;}).map(function(t){var x=newTask(t.kind,t.tpl);for(var k in x)if(t[k]!=null)x[k]=t[k];x.opts=Object.assign({shuffle:true,timer:0},t.opts||{});if(!x.rows||!x.rows.length)x.rows=STARTERS[t.kind]();return x;});
   S=n;syncMeta();renderTasks();refresh();save();$("#start").hidden=true;}
-function doExport(){var b=build();if(!b.data.tasks.length){alert("Nothing to export yet. Fill in at least one activity.");return;}
+function doExport(){var b=build();if(!b.data.tasks.length){toast("Nothing to export yet. Fill in at least one activity.");return;}
   var bad=b.warns.reduce(function(n,w){return n+w.length;},0);
-  if(bad&&!confirm(bad+" item(s) have problems and will be skipped (see the orange notes). Export anyway?"))return;
-  download(slug()+"-homework.html",toHtml(b.data),"text/html");}
+  function go(){download(slug()+"-homework.html",toHtml(b.data),"text/html");}
+  if(bad)ask(bad+" item(s) have problems and will be skipped (see the orange notes). Save the file anyway?","Save anyway",go);else go();}
 $("#bExport").addEventListener("click",doExport);$("#bExport2").addEventListener("click",doExport);
 function save(){try{var c=snapshot();c.state.audio="";c.state.audioName="";localStorage.setItem("exercise-maker-v2",JSON.stringify(c));}catch(e){}}
 
@@ -356,7 +378,7 @@ function EX(){return {style:"classic",sw:true,title:"Work & Money: key vocabular
  {s:"An entry-level job usually requires many years of experience.",a:false,w:"Entry-level = for beginners."},
  {s:"A recession is a period of economic decline.",a:true,w:"GDP falls and unemployment usually rises."}]}
 ]};}
-$("#bExample").addEventListener("click",function(){if(S.tasks.length&&!confirm("Replace the current exercise with the example?"))return;load(EX());});
+$("#bExample").addEventListener("click",function(){if(S.tasks.length)ask("Replace the current exercise with the example?","Replace",function(){load(EX());});else load(EX());});
 
 $("#tEdit").addEventListener("click",function(){document.body.classList.remove("showprev");});
 $("#tPrev").addEventListener("click",function(){document.body.classList.add("showprev");refresh();});
