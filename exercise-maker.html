@@ -174,6 +174,42 @@ function addBtn(txt,on){var b=el("button","sm",txt);b.type="button";b.addEventLi
 function focusNew(host,sel){var all=host.querySelectorAll(sel);var l=all[all.length-1];if(l)l.focus();}
 function enterAdd(i,rows,mk,rr,host,sel,last){i.addEventListener("keydown",function(e){if(e.key==="Enter"&&last){e.preventDefault();rows.push(mk());rr();var r=host.querySelectorAll(".rw,.sr");var f=r[r.length-1].querySelector("input");if(f)f.focus();}});}
 
+function lines(v){var l=String(v).replace(/\r/g,"").split("\n");while(l.length&&!trim(l[l.length-1]))l.pop();return l;}
+function bulkBtn(t,bar,rr,spec){
+  bar.appendChild(document.createTextNode(" "));
+  bar.appendChild(addBtn(spec.label,function(){
+    if(bar._box){bar._box.remove();bar._box=null;return;}
+    var box=el("div","sub2");bar._box=box;box.appendChild(el("div","hint",spec.hint));
+    var a=el("textarea"),b=null;a.placeholder=spec.ph1;
+    if(spec.ph2){var g=el("div","row2");b=el("textarea");b.placeholder=spec.ph2;g.appendChild(a);g.appendChild(b);box.appendChild(g);}else box.appendChild(a);
+    var msg=el("div","hint","");msg.style.color="var(--bad)";
+    var go=addBtn("Add to the list",function(){
+      var A=lines(a.value),B=b?lines(b.value):[];
+      if(!A.length){msg.textContent="Paste something into the first box.";return;}
+      var r=spec.apply(A,B);if(r.err){msg.textContent=r.err;return;}
+      t.rows=t.rows.filter(function(x){return !spec.empty(x);}).concat(r.add);if(!t.rows.length)t.rows=spec.starter();
+      bar._box=null;rr();schedule();});
+    box.appendChild(msg);box.appendChild(go);bar.parentNode.insertBefore(box,bar.nextSibling);a.focus();}));
+}
+function splitList(l){l=String(l);if(l.indexOf("\t")>=0){var p=l.split("\t").map(trim);return p;}
+  var seps=[" | "," - "," \u2013 "," \u2014 ","|"," : "];for(var k=0;k<seps.length;k++){var ix=l.indexOf(seps[k]);if(ix>0)return [trim(l.slice(0,ix)),trim(l.slice(ix+seps[k].length))];}return [trim(l),""];}
+var SPEC={
+ pairs:{label:"Paste in bulk (two columns)",hint:"Copy a column of keywords and a column of definitions (from Google Sheets, Excel, Word, a list) and paste each into its own box. Line 1 goes with line 1, line 2 with line 2, and so on. Or paste a whole two-column table (tab-separated, or word - definition) into the left box and leave the right box empty.",ph1:"Keywords, one per line",ph2:"Definitions, one per line (same order)",
+  empty:function(r){return !trim(r.t)&&!trim(r.d);},starter:function(){return [{t:"",d:"",w:""},{t:"",d:"",w:""},{t:"",d:"",w:""}];},
+  apply:function(A,B){var add=[];
+    if(!B.length){A.forEach(function(l){if(!trim(l))return;var p=splitList(l);add.push({t:p[0]||"",d:p[1]||"",w:p[2]||""});});return {add:add};}
+    if(A.length!==B.length)return {err:"The left box has "+A.length+" lines and the right box has "+B.length+". Make them equal so the pairs line up."};
+    A.forEach(function(x,i){if(trim(x)||trim(B[i]))add.push({t:trim(x),d:trim(B[i]),w:""});});return {add:add};}},
+ sentences:{label:"Paste many sentences",hint:"Paste your sentences, one per line. For the gap templates, mark the missing words in [brackets] before pasting or afterwards with \"Make gap\".",ph1:"One sentence per line",
+  empty:function(r){return !trim(r.s);},starter:function(){return [{s:"",w:""},{s:"",w:""},{s:"",w:""}];},
+  apply:function(A){return {add:A.filter(function(l){return trim(l);}).map(function(l){return {s:trim(l),w:""};})};}},
+ tf:{label:"Paste in bulk (statements + answers)",hint:"Paste the statements into the left box and True/False (T or F) for each, in the same order, into the right box. Or paste a table (statement, tab, T or F) into the left box.",ph1:"Statements, one per line",ph2:"T or F for each line, same order",
+  empty:function(r){return !trim(r.s);},starter:function(){return [{s:"",a:true,w:""},{s:"",a:true,w:""},{s:"",a:true,w:""}];},
+  apply:function(A,B){var add=[];function tv(x){return /^\s*(t|true|yes|y|1)\b/i.test(x);}
+    if(!B.length){A.forEach(function(l){if(!trim(l))return;var p=splitList(l);add.push({s:p[0],a:p[1]?tv(p[1]):true,w:p[2]||""});});return {add:add};}
+    if(A.length!==B.length)return {err:"The left box has "+A.length+" lines and the right box has "+B.length+". Make them equal."};
+    A.forEach(function(x,i){if(trim(x))add.push({s:trim(x),a:tv(B[i]),w:""});});return {add:add};}}
+};
 function rowsPairs(t,host){
   function rr(){host.textContent="";
     var h=el("div","rh p");["Keyword","Definition","Note shown after Check (optional)",""].forEach(function(x){h.appendChild(el("span","",x));});host.appendChild(h);
@@ -182,11 +218,7 @@ function rowsPairs(t,host){
       [a,b,c].forEach(function(x){enterAdd(x,t.rows,function(){return {t:"",d:"",w:""};},rr,host,"",last&&x===c);});
       d.appendChild(a);d.appendChild(b);d.appendChild(c);d.appendChild(xbtn(function(){t.rows.splice(i,1);if(!t.rows.length)t.rows.push({t:"",d:"",w:""});rr();schedule();}));host.appendChild(d);});
     var bar=el("div","");bar.appendChild(addBtn("+ Add an item",function(){t.rows.push({t:"",d:"",w:""});rr();focusNew(host,".rw input");}));
-    bar.appendChild(document.createTextNode(" "));
-    bar.appendChild(addBtn("Paste a list",function(){var ta=el("textarea");ta.placeholder="One per line:\nrecession - a period when the economy shrinks\nmyopic - short-sighted\n(a tab or | also works as the separator)";var go=addBtn("Add these lines",function(){
-      var add=[];ta.value.split(/\n/).forEach(function(l){l=trim(l);if(!l)return;var seps=["\t"," | "," - "," – "," — ","|"," : "],p=null;for(var k=0;k<seps.length;k++){var ix=l.indexOf(seps[k]);if(ix>0){p=[l.slice(0,ix),l.slice(ix+seps[k].length)];break;}}if(p)add.push({t:trim(p[0]),d:trim(p[1]),w:""});});
-      t.rows=t.rows.filter(function(r){return trim(r.t)||trim(r.d);}).concat(add);if(!t.rows.length)t.rows.push({t:"",d:"",w:""});box.remove();rr();schedule();});
-      var box=el("div","sub2");box.appendChild(ta);box.appendChild(go);bar.parentNode.insertBefore(box,bar.nextSibling);}));
+    bulkBtn(t,bar,rr,SPEC.pairs);
     host.appendChild(bar);}
   rr();
   if(t.tpl==="match"){var ex=el("div","sub2");ex.appendChild(el("label","f","Extra wrong definitions (optional, they make Match up harder)"));
@@ -204,7 +236,7 @@ function rowsSent(t,host){
         g.addEventListener("click",function(){var s=a.selectionStart,e=a.selectionEnd;if(s==null||s===e){alert("First select the missing word in the sentence (with the mouse), then press \"Make gap\".");return;}
           var v=a.value;r.s=v.slice(0,s)+"["+v.slice(s,e)+"]"+v.slice(e);a.value=r.s;schedule();});sub.appendChild(g);}
       d.appendChild(sub);host.appendChild(d);});
-    host.appendChild(addBtn("+ Add a sentence",function(){t.rows.push({s:"",w:""});rr();var r=host.querySelectorAll(".sr");r[r.length-1].querySelector("input").focus();}));}
+    var bar=el("div","");bar.appendChild(addBtn("+ Add a sentence",function(){t.rows.push({s:"",w:""});rr();var r=host.querySelectorAll(".sr");r[r.length-1].querySelector("input").focus();}));bulkBtn(t,bar,rr,SPEC.sentences);host.appendChild(bar);}
   rr();
 }
 function rowsTF(t,host){
@@ -215,7 +247,7 @@ function rowsTF(t,host){
       enterAdd(c,t.rows,function(){return {s:"",a:true,w:""};},rr,host,"",last);
       var sel=el("select");[["True",true],["False",false]].forEach(function(p){var o=el("option","",p[0]);o.value=p[1]?"1":"0";sel.appendChild(o);});sel.value=r.a?"1":"0";sel.addEventListener("change",function(){r.a=sel.value==="1";schedule();});
       d.appendChild(a);d.appendChild(sel);d.appendChild(c);d.appendChild(xbtn(function(){t.rows.splice(i,1);if(!t.rows.length)t.rows.push({s:"",a:true,w:""});rr();schedule();}));host.appendChild(d);});
-    host.appendChild(addBtn("+ Add a statement",function(){t.rows.push({s:"",a:true,w:""});rr();var r=host.querySelectorAll(".rw");r[r.length-1].querySelector("input").focus();}));}
+    var bar=el("div","");bar.appendChild(addBtn("+ Add a statement",function(){t.rows.push({s:"",a:true,w:""});rr();var r=host.querySelectorAll(".rw");r[r.length-1].querySelector("input").focus();}));bulkBtn(t,bar,rr,SPEC.tf);host.appendChild(bar);}
   rr();
 }
 function rowsQuiz(t,host){
