@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vocabulary Test</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.5 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:30px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);line-height:1.15}
+.sub{font-weight:300;font-size:26px;color:var(--grey-l);margin-top:6px}
+.intro{margin:14px 36px 0;color:var(--grey-l);font-size:15.5px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:60px;text-align:right}
+.ex{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.ex h2{margin:0 0 4px;font-size:20px;font-weight:600;color:var(--grey)}
+.ex .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:6px 18px;align-items:start;padding:8px 0;border-top:1px dotted var(--taupe)}
+.row:first-of-type{border-top:0}
+.ru{padding-top:6px}
+.ru .n{display:inline-block;min-width:26px;color:var(--grey-l);font-size:14px}
+.ans input{font:inherit;width:100%;padding:6px 10px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink)}
+.ans input:focus{outline:2px solid #b9ad99;outline-offset:1px}
+.ans input.ok{background:var(--green);border-color:var(--green-d)}
+.ans input.bad{background:var(--red);border-color:var(--red-d)}
+.fb{font-size:14.5px;margin-top:3px;color:var(--red-d);font-weight:600}
+.fb:empty{display:none}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600;color:var(--ink)}
+.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+@media(max-width:720px){
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:22px}.sub{font-size:20px}
+  .intro,.ex,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .ex{padding:16px 14px}
+  .row{grid-template-columns:1fr;gap:4px}
+  .ru{padding-top:0}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Vocabulary Test</h1><div class="sub">Words from our lessons</div></header>
+<p class="intro">Read the Russian and type the English word or phrase. Press <b>Check</b>: wrong answers show the correct one. Capital letters do not matter.</p>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const DATA=[
+ {t:"Companies",n:"Business words.",items:[
+  ["оборот (выручка)",["turnover"]],
+  ["чистая прибыль",["net profit"]],
+  ["материнская компания",["parent company"]],
+  ["персонал, рабочая сила (все работники компании)",["workforce"]],
+  ["доля рынка",["market share"]],
+  ["головной офис",["head office"]],
+  ["цена акции",["share price"]],
+  ["дочерняя компания",["subsidiary"]],
+  ["оператор контейнерных судов",["container ship operator"],"container-ship operator"],
+  ["генеральный директор (аббревиатура)",["ceo"],"CEO"],
+  ["фармацевтика",["pharmaceuticals","pharmaceutical"],"pharmaceuticals"],
+  ["нефть и газ",["oil and gas"]]
+ ]},
+ {t:"History and sources",n:"Words from the history seminar and lecture.",items:[
+  ["субъективный",["subjective"]],
+  ["объективный",["objective"]],
+  ["законодательный источник",["legislative source"]],
+  ["первичный источник",["primary source"]],
+  ["вторичный источник",["secondary source"]],
+  ["интерпретировать",["interpret"]],
+  ["интерпретация",["interpretation"]],
+  ["упоминать",["mention"]],
+  ["современный (существовавший в то же время)",["contemporary"]],
+  ["учреждение, институт",["institution"]],
+  ["очевидец",["eyewitness"]],
+  ["слух (молва)",["rumor","rumour"],"rumor"],
+  ["доказательство, свидетельство",["evidence"]],
+  ["предвзятый",["biased"]],
+  ["предвзятость",["bias"]],
+  ["доверять (глагол)",["trust"]],
+  ["запись, архивный документ",["record"]],
+  ["быть причастным к, участвовать в",["be involved in","involved in"],"be involved in"],
+  ["хроника, летопись",["chronicle"]],
+  ["эпоха",["epoch"]],
+  ["историография",["historiography"]]
+ ]},
+ {t:"Verbs and adjectives with prepositions",n:"Type the whole phrase with the preposition.",items:[
+  ["тратить (деньги) на",["spend on","spend money on"],"spend (money) on"],
+  ["говорить о",["talk about"]],
+  ["мечтать о",["dream of"]],
+  ["ждать с нетерпением",["look forward to"]],
+  ["обращать внимание на",["pay attention to"]],
+  ["быть известным чем-то",["be famous for","famous for"],"be famous for"],
+  ["быть плохим в (чём-то)",["be bad at","bad at"],"be bad at"],
+  ["гордиться",["be proud of","proud of"],"be proud of"],
+  ["бояться",["be afraid of","afraid of"],"be afraid of"],
+  ["интересоваться",["be interested in","interested in"],"be interested in"],
+  ["быть хорошим в (чём-то)",["be good at","good at"],"be good at"],
+  ["состоять из",["consist of"]]
+ ]},
+ {t:"Trends in data",n:"Words for describing graphs.",items:[
+  ["увеличиваться",["increase","grow"],"increase / grow"],
+  ["уменьшаться, падать",["decrease","drop"],"decrease / drop"],
+  ["удваиваться",["double"]],
+  ["оставаться стабильным",["remain stable"]],
+  ["резко",["sharply"]],
+  ["незначительно, слегка",["slightly"]],
+  ["тенденция",["trend"]],
+  ["график",["graph"]],
+  ["сотовый телефон (американский вариант)",["cellphone","cell phone"],"cellphone"]
+ ]},
+ {t:"Linkers",n:"Type the linker (no comma needed).",items:[
+  ["Для начала (первый пункт)",["to begin with"]],
+  ["Кроме того (добавляет мысль)",["in addition"]],
+  ["Более того (ещё более важный пункт)",["moreover"]],
+  ["Например",["for example","for instance"],"for example / for instance"],
+  ["С одной стороны",["on the one hand"]],
+  ["С другой стороны",["on the other hand"]],
+  ["Однако",["however"]],
+  ["В результате",["as a result"]],
+  ["В заключение",["in conclusion"]]
+ ]},
+ {t:"Other words from our lessons",n:"Words and phrases from our conversations.",items:[
+  ["решать (задачу)",["solve"]],
+  ["отпуск, каникулы (американский вариант)",["vacation"]],
+  ["знания",["knowledge"]],
+  ["страховочная обвязка",["harness"]],
+  ["самостоятельно, без помощи",["on my own","on your own","on his own","on her own","on our own","on their own"],"on my own"],
+  ["морж",["walrus"]],
+  ["морской ёж",["sea urchin"]],
+  ["страховка",["insurance"]]
+ ]}
+];
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/[-,.!?;:]/g," ").replace(/\s+/g," ").trim();
+const secs=[];let uid=0;
+const host=$("#secs");
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+DATA.forEach((d,si)=>{
+  const el=document.createElement("section");el.className="ex";
+  let h="<h2>"+(si+1)+". "+esc(d.t)+"</h2><p class=\"note\">"+esc(d.n)+"</p>";
+  d.items.forEach((it,i)=>{
+    h+="<div class=\"row\"><div class=\"ru\"><span class=\"n\">"+(i+1)+"</span>"+esc(it[0])+"</div><div class=\"ans\"><input type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\" aria-label=\""+esc(it[0])+"\"><div class=\"fb\"></div></div></div>";
+  });
+  h+="<div class=\"tools\"><button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span></div>";
+  el.innerHTML=h;host.appendChild(el);
+  const rows=[].slice.call(el.querySelectorAll(".row"));
+  const sec={num:si+1,label:d.t,total:d.items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],el,items:d.items,
+    inputs:rows.map(r=>r.querySelector("input")),fbs:rows.map(r=>r.querySelector(".fb"))};
+  sec.ok=i=>{const v=norm(sec.inputs[i].value);return v!==""&&sec.items[i][1].some(a=>norm(a)===v)};
+  sec.disp=i=>sec.items[i][2]||sec.items[i][1][0];
+  sec.report=()=>sec.items.map((it,i)=>{const w=sec.inputs[i].value.trim();return {ok:sec.ok(i),line:"\""+it[0]+"\" – you wrote: "+(w?"\""+w+"\"":"(nothing)")+"; correct: \""+sec.disp(i)+"\""}});
+  const res=el.querySelector(".res"),msg=el.querySelector(".msg");
+  el.querySelector("[data-a=check]").addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;
+    sec.items.forEach((it,i)=>{const ok=sec.ok(i);sec.inputs[i].className=ok?"ok":"bad";sec.fbs[i].textContent=ok?"":"✗ correct: "+sec.disp(i);if(ok)sc++;});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  el.querySelector("[data-a=show]").addEventListener("click",()=>{
+    sec.items.forEach((it,i)=>{sec.inputs[i].value=sec.disp(i);sec.inputs[i].className="";sec.fbs[i].textContent=""});
+    sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar();
+  });
+  el.querySelector("[data-a=retry]").addEventListener("click",()=>{
+    sec.inputs.forEach((x,i)=>{x.value="";x.className="";sec.fbs[i].textContent=""});
+    sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar();
+  });
+  secs.push(sec);
+});
+function record(sec){
+  sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;
+    if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line});}}});
+}
+const TOTAL=secs.reduce((a,s)=>a+s.total,0);
+const got=()=>secs.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Vocabulary Test – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  secs.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  secs.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";
+    s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input")),dst=[].slice.call(clone.querySelectorAll("input"));
+  src.forEach((el,i)=>{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")});
+  [].slice.call(clone.querySelectorAll("script,.tools button,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input{pointer-events:none}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="ex log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Vocabulary_Test_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
