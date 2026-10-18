@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Passive Voice Homework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--blue:#e4ecf4;--blue-d:#2f5577}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:30px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);line-height:1.15}
+.sub{font-weight:300;font-size:26px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card h3{margin:18px 0 6px;font-size:16.5px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.rules ol{margin:8px 0 0;padding-left:22px}
+.rules li{margin:8px 0}
+.rules li small{display:block;color:var(--grey-l);font-size:14.5px}
+.ex{display:inline-block;background:#fff;border-radius:8px;padding:1px 9px;margin:2px 0}
+mark.v{background:var(--green);padding:0 3px;border-radius:4px}
+mark.s{background:var(--blue);padding:0 3px;border-radius:4px}
+.tg{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-top:10px}
+.tc{background:#fff;border-radius:12px;padding:14px 16px;border:1px solid var(--line)}
+.tc b.t{display:block;font-size:15px;letter-spacing:.04em;text-transform:uppercase;color:var(--grey);margin-bottom:2px}
+.tc .f{font-weight:600;margin-bottom:8px}
+.tc .l{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--grey-l);margin-top:8px}
+.tc .e{font-size:16px}
+.vt{width:100%;border-collapse:collapse;margin-top:8px;background:#fff;border-radius:10px;overflow:hidden;font-size:15.5px}
+.vt th,.vt td{padding:6px 12px;text-align:left;border-bottom:1px solid var(--line)}
+.vt th{background:#ebe3d0;font-weight:600;color:var(--grey)}
+.q{padding:10px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:26px;color:var(--grey-l);font-size:14px}
+.pills{display:flex;gap:8px;margin:8px 0 0 36px}
+.pill{font:600 15px "Open Sans",system-ui,sans-serif;border:1.5px solid var(--taupe);background:#fff;color:var(--taupe);border-radius:999px;padding:5px 16px;cursor:pointer}
+.pill:hover{background:#f7f3ea}
+.pill.sel{background:var(--taupe);color:#fff}
+.pill.ok{background:var(--green);color:var(--green-d);border-color:var(--green-d)}
+.pill.bad{background:var(--red);color:var(--red-d);border-color:var(--red-d)}
+.pill.key{box-shadow:0 0 0 2px var(--green-d)}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+select.ok,input.gap.ok{background:var(--green);border-color:var(--green-d)}
+select.bad,input.gap.bad{background:var(--red);border-color:var(--red-d)}
+input.gap{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:2px 8px;width:170px;max-width:100%;background:#fff}
+.vb{color:var(--grey-l);font-size:15px}
+.gn{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:20px;height:20px;line-height:20px;text-align:center;font-size:12px;font-weight:600;margin-right:3px;vertical-align:1px}
+.exp{margin:8px 0 0 36px;padding:8px 12px;border-radius:8px;font-size:15px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}
+.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}
+.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.para{margin:0 0 12px}
+.exps{margin:4px 0 14px}
+.exps .exp{margin-left:0}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}
+.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+@media(max-width:720px){
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:21px}.sub{font-size:20px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .tg{grid-template-columns:1fr}
+  .pills,.exp{margin-left:0}
+  input.gap{width:140px}
+  .vt{font-size:13.5px}.vt th,.vt td{padding:5px 5px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Passive Voice</h1><div class="sub">Homework: rules and practice</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+
+<section class="card rules">
+  <h2>Part 1. The rules</h2>
+  <p class="note">Read the rules first. Then look at the examples.</p>
+  <ol>
+    <li><b>Passive voice shows the action, not the doer.</b> We use it when the doer is not known, not important, or when the action or the result is more important.</li>
+    <li><b>The formula is: subject + to be + V3.</b> V3 is the past participle: <i>sold</i>, <i>written</i>, <i>chosen</i>, <i>opened</i>. V3 never changes. Only the form of <i>to be</i> changes.</li>
+    <li><b>The tense is shown by <i>to be</i>.</b> Present Simple: <i>am / is / are</i>. Past Simple: <i>was / were</i>. Future Simple: <i>will be</i>.</li>
+    <li><b><i>To be</i> agrees with the subject of the passive sentence.</b> That is the thing that receives the action, not the doer. One subject: <i>is / was</i>. Many subjects: <i>are / were</i>. <i>I</i>: <i>am / was</i>. <i>Will be</i> is the same for every subject.</li>
+    <li><b>Use <i>by</i> + doer only when the doer is important or interesting.</b> If it is not important, leave it out.</li>
+    <li><b>Negative and questions use <i>to be</i> only.</b> Negative: <i>is not paid, were not sold, will not be opened</i>. Question: <i>Is it paid? Were they sold? Will it be opened?</i></li>
+    <li><b>Only verbs with an object have a passive.</b> <i>The CEO announced the plan</i> becomes <i>The plan was announced</i>. Verbs with no object cannot be passive: <i>The turnover increased. The price dropped. The sales grew. It consists of ten people.</i></li>
+  </ol>
+</section>
+
+<section class="card">
+  <h2>Part 2. The rules with examples</h2>
+  <p class="note">In every pair, the <mark class="s">blue</mark> part is the subject, and the <mark class="v">green</mark> part is the verb.</p>
+  <div class="tg">
+    <div class="tc"><b class="t">Present Simple</b><div class="f">am / is / are + V3</div>
+      <div class="l">Active</div><div class="e"><mark class="s">The company</mark> <mark class="v">sells</mark> its products online.</div>
+      <div class="l">Passive</div><div class="e"><mark class="s">Its products</mark> <mark class="v">are sold</mark> online.</div>
+      <div class="l">Negative / question</div><div class="e">They <mark class="v">are not sold</mark> in shops.<br><mark class="v">Are</mark> they <mark class="v">sold</mark> in shops?</div></div>
+    <div class="tc"><b class="t">Past Simple</b><div class="f">was / were + V3</div>
+      <div class="l">Active</div><div class="e"><mark class="s">The CEO</mark> <mark class="v">announced</mark> the results.</div>
+      <div class="l">Passive</div><div class="e"><mark class="s">The results</mark> <mark class="v">were announced</mark> by the CEO.</div>
+      <div class="l">Negative / question</div><div class="e">The rumor <mark class="v">was not believed</mark>.<br><mark class="v">Was</mark> the rumor <mark class="v">believed</mark>?</div></div>
+    <div class="tc"><b class="t">Future Simple</b><div class="f">will be + V3</div>
+      <div class="l">Active</div><div class="e"><mark class="s">The board</mark> <mark class="v">will choose</mark> a new CEO.</div>
+      <div class="l">Passive</div><div class="e"><mark class="s">A new CEO</mark> <mark class="v">will be chosen</mark> by the board.</div>
+      <div class="l">Negative / question</div><div class="e">It <mark class="v">will not be opened</mark> in May.<br><mark class="v">Will</mark> it <mark class="v">be opened</mark> in May?</div></div>
+  </div>
+  <h3>Agreement: look at the subject, not at the doer</h3>
+  <p><span class="ex">The report <mark class="v">is</mark> written by two <b>analysts</b>.</span> (one report → <i>is</i>)</p>
+  <p><span class="ex">The reports <mark class="v">are</mark> written by the <b>CEO</b>.</span> (many reports → <i>are</i>, even if the CEO is one person)</p>
+  <p><span class="ex">The workforce <mark class="v">is</mark> paid on the 5th.</span> (<i>workforce</i> is singular here → <i>is</i>)</p>
+  <p><span class="ex">I <mark class="v">am</mark> paid on the 10th.</span> (<i>I</i> → <i>am</i>)</p>
+  <h3>No passive for verbs without an object</h3>
+  <p><span class="ex">The share price <mark class="v">dropped</mark> slightly.</span> It is active. We cannot say <i>was dropped</i> here.</p>
+  <h3>Useful V3 forms</h3>
+  <table class="vt"><tr><th>V1</th><th>V2</th><th>V3</th><th>V1</th><th>V2</th><th>V3</th></tr>
+  <tr><td>write</td><td>wrote</td><td>written</td><td>sell</td><td>sold</td><td>sold</td></tr>
+  <tr><td>choose</td><td>chose</td><td>chosen</td><td>pay</td><td>paid</td><td>paid</td></tr>
+  <tr><td>make</td><td>made</td><td>made</td><td>send</td><td>sent</td><td>sent</td></tr>
+  <tr><td>give</td><td>gave</td><td>given</td><td>hold</td><td>held</td><td>held</td></tr>
+  <tr><td>build</td><td>built</td><td>built</td><td>spend</td><td>spent</td><td>spent</td></tr>
+  <tr><td>see</td><td>saw</td><td>seen</td><td>take</td><td>took</td><td>taken</td></tr></table>
+  <p class="note" style="margin-top:8px">Regular verbs take -ed in V2 and V3: <i>open – opened – opened</i>, <i>publish – published – published</i>.</p>
+</section>
+
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/won't/g,"will not").replace(/n't\b/g," not").replace(/'ll\b/g," will").replace(/[.,!?;:]/g," ").replace(/\s+/g," ").trim();
+
+/* ------------------------- DATA ------------------------- */
+const T1=[
+ ["The CEO announced the new strategy at the head office.","A","<b>Active.</b> The subject <i>The CEO</i> does the action: he announced. The verb <i>announced</i> is Past Simple with no <i>was / were</i>, so it is not passive."],
+ ["The new products were presented by the marketing team.","P","<b>Passive.</b> The subject <i>The new products</i> does not present anything: someone presents them. <i>were presented</i> = <i>were</i> + V3, and <i>by the marketing team</i> names the doer."],
+ ["The company's shares are sold on the Moscow Exchange.","P","<b>Passive.</b> Shares do not sell themselves: someone sells them. <i>are sold</i> = <i>are</i> + V3 (Present Simple, plural subject). The doer is not important, so there is no <i>by</i>."],
+ ["Last year, the company's turnover increased sharply.","A","<b>Active.</b> The turnover itself changed, and nobody did anything to it. <i>increased</i> has no object here, so it cannot be passive. There is no <i>was / were</i>."],
+ ["This chronicle was written by a monk in the 12th century.","P","<b>Passive.</b> The chronicle did not write anything: a monk wrote it. <i>was written</i> = <i>was</i> + V3 (<i>write – wrote – written</i>), and <i>by a monk</i> names the doer."],
+ ["An eyewitness described the event to the newspaper.","A","<b>Active.</b> The subject <i>An eyewitness</i> does the action: he or she described. <i>described</i> is Past Simple with no <i>was / were</i>."],
+ ["Historians compare primary and secondary sources.","A","<b>Active.</b> The subject <i>Historians</i> does the action: they compare. <i>compare</i> is Present Simple, and there is no <i>are</i> + V3."],
+ ["Three subsidiaries are owned by the parent company.","P","<b>Passive.</b> The subsidiaries receive the action: someone owns them. <i>are owned</i> = <i>are</i> + V3, and the doer is <i>the parent company</i> (after <i>by</i>)."],
+ ["The parent company owns three subsidiaries.","A","<b>Active.</b> The subject <i>The parent company</i> does the action: it owns. <i>owns</i> is Present Simple, and the subsidiaries are the object, not the subject."],
+ ["The workforce is paid on the 5th of every month.","P","<b>Passive.</b> The workforce receives the action: someone pays the workers. <i>is paid</i> = <i>is</i> + V3 (<i>pay – paid – paid</i>). <i>Workforce</i> is singular, so we use <i>is</i>."],
+ ["The share price dropped slightly in March.","A","<b>Active.</b> The share price itself changed. <i>dropped</i> has no object and no <i>was / were</i>, so it is active."],
+ ["The rumor was repeated by many people.","P","<b>Passive.</b> The rumor did not repeat anything: people repeated it. <i>was repeated</i> = <i>was</i> + V3, and <i>by many people</i> names the doer."]
+];
+/* text, options, correct, why */
+const T2=[
+ ["These cars ___ produced in Kaliningrad every year.",["is","was","are","will be"],"are","<i>These cars</i> is plural, and <i>every year</i> shows Present Simple, so we need <b>are</b>. <i>is</i> is for one thing. <i>was</i> is for the past. <i>will be</i> is for the future."],
+ ["The first model ___ designed in 2015.",["were","is","was","will be"],"was","<i>The first model</i> is one thing, and <i>in 2015</i> is the past, so we need <b>was</b>. <i>were</i> is for many things. <i>is</i> is for the present. <i>will be</i> is for the future."],
+ ["The new factory ___ opened next month.",["was","will be","is","are"],"will be","<i>Next month</i> is the future, so we use <b>will be</b> + V3. <i>was</i> is for the past, and <i>is / are</i> are for the present."],
+ ["Today, all subsidiaries ___ controlled by the parent company.",["are","is","was","will be"],"are","<i>All subsidiaries</i> is plural, and <i>today</i> shows Present Simple, so we need <b>are</b>. <i>is</i> is for one subject. <i>was</i> is for the past. <i>will be</i> is for the future."],
+ ["The annual report ___ published last Friday.",["is","will be","was","were"],"was","<i>Last Friday</i> is the past, and <i>The annual report</i> is one thing, so we need <b>was</b>. <i>were</i> is for many things. <i>is</i> is for the present. <i>will be</i> is for the future."],
+ ["The net profit figures ___ announced tomorrow morning.",["are","were","will be","is"],"will be","<i>Tomorrow</i> is the future, so we use <b>will be</b> + V3. <i>Will be</i> does not change for one or many subjects (<i>figures</i> is plural, but we still say <i>will be</i>)."],
+ ["Several chronicles ___ written in the 14th century.",["was","were","are","will be"],"were","<i>Several chronicles</i> is plural, and <i>in the 14th century</i> is the past, so we need <b>were</b>. <i>was</i> is for one thing. <i>are</i> is for the present. <i>will be</i> is for the future."],
+ ["Usually, every contract ___ checked by two lawyers.",["are","is","was","will be"],"is","<i>Usually</i> shows Present Simple, and <i>every contract</i> is one thing (<i>every</i> + singular), so we need <b>is</b>. <i>are</i> is for many things. <i>was</i> is for the past. <i>will be</i> is for the future."],
+ ["The rumor ___ not believed by the investors last week.",["were","was","is","will be"],"was","<i>Last week</i> is the past, and <i>The rumor</i> is one thing, so we need <b>was</b> (<i>was not believed</i>). <i>were</i> is for many things. <i>is</i> is for the present. <i>will be</i> is for the future."],
+ ["How many cars ___ sold in Russia last year?",["was","are","were","will be"],"were","<i>Cars</i> is plural, and <i>last year</i> is the past, so we need <b>were</b>. In a question, <i>were</i> comes before the subject. <i>was</i> is for one thing, <i>are</i> is for the present, and <i>will be</i> is for the future."],
+ ["Tomorrow, the new price list ___ sent to all customers.",["is","was","will be","were"],"will be","<i>Tomorrow</i> is the future, so we use <b>will be</b> + V3. <i>is</i> is for the present. <i>was / were</i> are for the past."],
+ ["I ___ paid on the 10th of every month.",["is","am","are","was"],"am","The subject is <i>I</i>, and <i>every month</i> shows Present Simple, so we need <b>am</b>. <i>is</i> and <i>are</i> do not go with <i>I</i>. <i>was</i> is for the past."]
+];
+/* T3: paragraphs of sentences; {{k}} = gap k */
+const G=[
+ {v:"found",a:["was founded"],w:"<b>was founded</b>. The company does not start itself: two graduates started it, so the sentence is passive. <i>In 2012</i> is the past, and <i>It</i> is one thing, so we use <i>was</i> + V3. <i>by two university graduates</i> names the doer."},
+ {v:"locate",a:["is located"],w:"<b>is located</b>. The head office does not locate itself: it is placed somewhere, so the sentence is passive. <i>Today</i> shows Present Simple, and <i>head office</i> is singular, so we use <i>is</i> + V3."},
+ {v:"consist",a:["consists"],w:"<b>consists</b>. <i>Consist of</i> is an active verb, and it has no passive. <i>Workforce</i> is a singular noun, so the verb takes <i>-s</i> (<i>consists</i>, not <i>consist</i>). <i>Today</i> shows Present Simple."},
+ {v:"place",a:["are placed"],w:"<b>are placed</b>. Orders do not place themselves: customers place them, so the sentence is passive. <i>Every day</i> shows Present Simple, and <i>orders</i> is plural, so we use <i>are</i> + V3."},
+ {v:"pack",a:["are packed"],w:"<b>are packed</b>. The orders receive the action: workers pack them, so the sentence is passive. <i>Orders</i> is plural and the time is Present Simple, so we use <i>are</i> + V3."},
+ {v:"deliver",a:["are delivered"],w:"<b>are delivered</b>. <i>They</i> means <i>the orders</i> (plural), and the orders receive the action. <i>by couriers</i> names the doer. Present Simple passive: <i>are</i> + V3."},
+ {v:"not / charge",a:["are not charged"],w:"<b>are not charged</b>. <i>Customers</i> receive the action: the company charges them, so the sentence is passive. <i>Customers</i> is plural, so we use <i>are</i>. For the negative we put <i>not</i> after <i>to be</i>: <i>are not</i> + V3."},
+ {v:"increase",a:["increased"],w:"<b>increased</b>. The turnover itself changed, and the sentence has no doer, so it is active. <i>Last year</i> is the past, so we use Past Simple (<i>increased</i>), without <i>was</i>."},
+ {v:"grow",a:["grew"],w:"<b>grew</b>. The net profit itself changed, so the sentence is active. <i>Grow</i> is irregular: <i>grow – grew – grown</i>. <i>Last year</i> is the past, so we use V2: <i>grew</i>."},
+ {v:"sell",a:["are sold"],w:"<b>are sold</b>. Shares do not sell themselves: someone sells them, so the sentence is passive. <i>Today</i> shows Present Simple, and <i>shares</i> is plural, so we use <i>are</i> + V3 (<i>sell – sold – sold</i>)."},
+ {v:"drop",a:["dropped"],w:"<b>dropped</b>. The share price itself changed, so the sentence is active. <i>Last month</i> is the past, so we use Past Simple (<i>dropped</i>)."},
+ {v:"remain",a:["remained"],w:"<b>remained</b>. <i>Remain</i> has no passive, so the sentence is active. <i>Last month</i> is the past, so we use Past Simple (<i>remained</i>)."},
+ {v:"open",a:["will be opened"],w:"<b>will be opened</b>. The subsidiary receives the action: someone opens it, so the sentence is passive. <i>Next year</i> is the future, so we use <i>will be</i> + V3."},
+ {v:"choose",a:["will be chosen"],w:"<b>will be chosen</b>. The CEO receives the action: the board chooses him or her, so the sentence is passive. <i>Next January</i> is the future, so we use <i>will be</i> + V3. <i>Choose</i> is irregular: <i>choose – chose – chosen</i>."}
+];
+const P3=[
+ ["Volna Market is an imaginary Russian online company.","It {{0}} (found, to start a company) in 2012 by two university graduates.","Today, its head office {{1}} (locate) in Kazan, and its workforce {{2}} (consist) of more than 4,000 people."],
+ ["Every day, thousands of orders {{3}} (place) on the website.","The orders {{4}} (pack) in the warehouse, and then they {{5}} (deliver) to customers by couriers.","Customers {{6}} (not / charge) for delivery if the order is bigger than 3,000 roubles."],
+ ["Last year, the company's turnover {{7}} (increase) sharply, and its net profit {{8}} (grow) by 15%.","Today, the company's shares {{9}} (sell) on the Moscow Exchange.","Last month, the share price {{10}} (drop) slightly, but the company's market share {{11}} (remain) stable."],
+ ["Next year, a new subsidiary {{12}} (open) in Novosibirsk.","Next January, the new CEO {{13}} (choose) by the board of directors."]
+];
+
+/* ------------------------- ENGINE ------------------------- */
+const secs=[];const host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div><div class=\"tools\"><button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span></div>";
+  host.appendChild(el);return el;
+}
+function mkSec(num,label,el,items){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items};
+  const res=$(".res",el),msg=$(".msg",el);
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  $("[data-a=check]",el).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",el).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",el).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+  secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,answerText){
+  html=html.replace(/^(<span class=\"gn\">\d+<\/span>\s*)?<b>[^<]*<\/b>\.?\s*/,function(m,g){return g||""});
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(answerText)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(answerText)+"</b>. ";
+  box.innerHTML=head+html;
+}
+
+/* Task 1 */
+(function(){
+  const el=mkCard(1,"Active or passive?","Read each sentence. Is it active or passive? Choose one answer. After <b>Check</b> you will see why.");
+  const body=$(".body",el);const items=[];
+  T1.forEach((d,i)=>{
+    const q=document.createElement("div");q.className="q";
+    q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+esc(d[0])+"</span></div><div class=\"pills\"><button class=\"pill\" data-v=\"A\" type=\"button\">Active</button><button class=\"pill\" data-v=\"P\" type=\"button\">Passive</button></div><div class=\"exp\"></div>";
+    body.appendChild(q);
+    const pills=[].slice.call(q.querySelectorAll(".pill")),box=q.querySelector(".exp");
+    let sel="";const word=v=>v==="A"?"Active":v==="P"?"Passive":"nothing";
+    pills.forEach(p=>p.addEventListener("click",()=>{sel=p.dataset.v;pills.forEach(x=>{x.className="pill"+(x===p?" sel":"")});box.className="exp";box.innerHTML=""}));
+    const clear=()=>{pills.forEach(x=>{x.className="pill"+(x.dataset.v===sel?" sel":"")})};
+    items.push({
+      ok:()=>sel===d[1],
+      line:()=>"\""+d[0]+"\" – you chose "+word(sel)+"; correct: "+word(d[1]),
+      mark:ok=>{pills.forEach(x=>{x.className="pill"+(x.dataset.v===sel?(ok?" ok":" bad"):(x.dataset.v===d[1]&&!ok?" key":""))});setExp(box,ok,d[2],word(d[1]))},
+      show:()=>{sel=d[1];pills.forEach(x=>{x.className="pill"+(x.dataset.v===sel?" sel":"")});setExp(box,null,d[2],word(d[1]))},
+      reset:()=>{sel="";clear();box.className="exp";box.innerHTML=""},
+      el:q
+    });
+  });
+  mkSec(1,"Active or passive?",el,items);
+})();
+
+/* Task 2 */
+(function(){
+  const el=mkCard(2,"Choose the form of to be","Choose the correct form of <i>to be</i> in each sentence. Think about the subject (one or many) and the time (present, past or future). All verbs after the gap are in V3.");
+  const body=$(".body",el);const items=[];
+  T2.forEach((d,i)=>{
+    const q=document.createElement("div");q.className="q";
+    const parts=d[0].split("___");
+    const opts=["<option value=\"\">choose…</option>"].concat(d[1].map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("");
+    q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+esc(parts[0])+"<select aria-label=\"gap "+(i+1)+"\">"+opts+"</select>"+esc(parts[1])+"</span></div><div class=\"exp\"></div>";
+    body.appendChild(q);
+    const sel=q.querySelector("select"),box=q.querySelector(".exp");
+    sel.addEventListener("change",()=>{sel.className="";box.className="exp";box.innerHTML=""});
+    items.push({
+      ok:()=>sel.value===d[2],
+      line:()=>"\""+parts[0]+(sel.value||"___")+parts[1]+"\" – you chose "+(sel.value?"\""+sel.value+"\"":"(nothing)")+"; correct: \""+d[2]+"\"",
+      mark:ok=>{sel.className=ok?"ok":"bad";setExp(box,ok,d[3],d[2])},
+      show:()=>{sel.value=d[2];sel.className="";setExp(box,null,d[3],d[2])},
+      reset:()=>{sel.value="";sel.className="";box.className="exp";box.innerHTML=""}
+    });
+  });
+  mkSec(2,"Choose the form of to be",el,items);
+})();
+
+/* Task 3 */
+(function(){
+  const el=mkCard(3,"Volna Market","Read the text about an imaginary Russian online company. Put each verb in brackets into the correct form: Present Simple, Past Simple or Future Simple. Some sentences are active and some are passive: decide yourself. After <b>Check</b> you will see why.");
+  const body=$(".body",el);const items=[];const inputs=[],boxes=[];
+  const fullSentence=(s,k,val)=>plain(s).replace(/\{\{(\d+)\}\}\s*\([^)]*\)/g,(m,n)=>(+n===k?val:G[+n].a[0]));
+  P3.forEach(par=>{
+    const p=document.createElement("p");p.className="para";
+    p.innerHTML=par.map(s=>esc(s).replace(/\{\{(\d+)\}\}\s*\(([^)]*)\)/g,(m,n,v)=>"<span class=\"gw\"><span class=\"gn\">"+(+n+1)+"</span><input class=\"gap\" type=\"text\" data-k=\""+n+"\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\" aria-label=\"gap "+(+n+1)+"\"> <span class=\"vb\">("+esc(v)+")</span></span>")).join(" ");
+    body.appendChild(p);
+    const ex=document.createElement("div");ex.className="exps";body.appendChild(ex);
+    par.forEach(s=>{(s.match(/\{\{(\d+)\}\}/g)||[]).forEach(m=>{const k=+m.replace(/\D/g,"");const b=document.createElement("div");b.className="exp";b.style.display="none";ex.appendChild(b);boxes[k]=b;})});
+  });
+  const sentOf=k=>{for(const par of P3)for(const s of par)if(s.indexOf("{{"+k+"}}")>=0)return s;return ""};
+  G.forEach((g,k)=>{
+    const inp=body.querySelector("input[data-k=\""+k+"\"]");inputs[k]=inp;const box=boxes[k];
+    inp.addEventListener("input",()=>{inp.className="gap";box.className="exp";box.innerHTML="";box.style.display="none"});
+    items.push({
+      ok:()=>g.a.some(a=>norm(a)===norm(inp.value))&&inp.value.trim()!=="",
+      line:()=>"\""+fullSentence(sentOf(k),k,inp.value.trim()||"___")+"\" – (correct: "+g.a[0]+")",
+      mark:ok=>{inp.className="gap "+(ok?"ok":"bad");box.style.display="";setExp(box,ok,"<span class=\"gn\">"+(k+1)+"</span> "+g.w,g.a[0])},
+      show:()=>{inp.value=g.a[0];inp.className="gap";box.style.display="";setExp(box,null,"<span class=\"gn\">"+(k+1)+"</span> "+g.w,g.a[0])},
+      reset:()=>{inp.value="";inp.className="gap";box.className="exp";box.innerHTML="";box.style.display="none"}
+    });
+  });
+  mkSec(3,"Volna Market",el,items);
+})();
+
+/* ------------------------- BAR / REPORT / SAVE ------------------------- */
+const TOTAL=secs.reduce((a,s)=>a+s.total,0);
+const got=()=>secs.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Passive Voice Homework – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  secs.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  secs.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select")),dst=[].slice.call(clone.querySelectorAll("input,select"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools button,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,.pill{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Passive_Voice_homework_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
