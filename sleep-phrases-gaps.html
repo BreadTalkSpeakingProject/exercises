@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Sleep phrases: fill in the gaps</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--p:#7b3f9e;--p2:#a678c8;--card:#fbf3fb;--panel:#dfe9f6;--ok:#1f9d55;--ok-bg:#dff5e8;--bad:#d04545;--bad-bg:#fbe3e3}
+*{box-sizing:border-box}
+html{background:#a99bc4}
+body{margin:0;min-height:100vh;padding:34px 12px 40px;color:var(--p);
+  font:500 16px/1.4 Fredoka,"Trebuchet MS",system-ui,sans-serif;
+  background:
+   radial-gradient(circle at 12% 6%,rgba(255,255,255,.55) 0 3px,transparent 4px),
+   radial-gradient(circle at 80% 3%,rgba(255,255,255,.5) 0 4px,transparent 5px),
+   radial-gradient(circle at 92% 14%,rgba(255,255,255,.45) 0 3px,transparent 4px),
+   radial-gradient(circle at 4% 40%,rgba(255,255,255,.4) 0 3px,transparent 4px),
+   radial-gradient(circle at 95% 55%,rgba(255,255,255,.4) 0 3px,transparent 4px),
+   linear-gradient(180deg,#8f86b8 0%,#b898b9 45%,#e0a7b4 100%);
+  background-attachment:fixed}
+.wrap{max-width:640px;margin:0 auto;position:relative}
+.badge{position:absolute;left:50%;top:-24px;transform:translateX(-50%);background:var(--p);color:#fff;
+  font-weight:600;font-size:1.6rem;line-height:1;padding:9px 38px;border-radius:50%/50%;border:4px solid #f3e6f4;z-index:2}
+.card{background:var(--card);border-radius:36px;padding:56px 22px 26px;box-shadow:0 10px 30px rgba(60,30,90,.25)}
+h1{margin:0;text-align:center;font-weight:600;font-size:1.75rem;line-height:1.15}
+hr{border:0;border-top:5px solid var(--p2);border-radius:9px;margin:18px 14px 20px}
+.bank{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:44px;padding:8px;border-radius:16px;border:2.5px dashed rgba(123,63,158,.3);margin-bottom:14px}
+.bank.hover{background:rgba(123,63,158,.1)}
+.panel{background:var(--panel);border-radius:30px;padding:22px 20px 20px}
+ul.s{margin:0;padding:0;list-style:none;color:#2a2a35;font-weight:400;font-size:1rem;line-height:2.3}
+ul.s li{position:relative;padding-left:18px;margin:2px 0}
+ul.s li::before{content:"";position:absolute;left:3px;top:1.15em;width:5px;height:5px;border-radius:50%;background:#444}
+.slot{display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;min-width:8.5em;min-height:34px;border:2.5px dashed var(--p2);border-radius:12px;background:rgba(255,255,255,.7);padding:2px;margin:0 3px;position:relative;transition:background .15s}
+.slot.target,.slot.hover{background:#fff;border-color:var(--p)}
+.slot.ok{border-style:solid;border-color:var(--ok);background:var(--ok-bg)}
+.slot.bad{border-style:solid;border-color:var(--bad);background:var(--bad-bg)}
+.mark{position:absolute;right:-8px;top:-12px;width:22px;height:22px;border-radius:50%;background:#fff;font-size:.8rem;font-weight:600;display:none;align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+.slot.ok .mark{display:flex;color:var(--ok)}.slot.bad .mark{display:flex;color:var(--bad)}
+.pill{background:var(--p);color:#fff;border-radius:12px;padding:5px 14px;font-size:.92rem;font-weight:500;line-height:1.2;cursor:grab;user-select:none;-webkit-user-select:none;touch-action:none;text-align:center;box-shadow:0 2px 0 rgba(60,20,90,.35);font-family:inherit}
+.slot .pill{box-shadow:none;padding:3px 10px}
+.pill.sel{outline:3px solid #f2b705;outline-offset:2px}
+.pill.ghosted{opacity:.25}
+.ghost{position:fixed;z-index:50;pointer-events:none;opacity:.92;transform:translate(-50%,-50%) scale(1.06);box-shadow:0 6px 14px rgba(0,0,0,.3)}
+.btns{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;align-items:center;margin-top:18px}
+button.b{font:inherit;font-weight:600;border-radius:14px;padding:8px 22px;border:3px solid var(--p);background:transparent;color:var(--p);cursor:pointer}
+button.b.main{background:var(--p);color:#fff}
+.res{width:100%;text-align:center;font-weight:600;font-size:1.1rem;min-height:1.4em}
+.res.good{color:var(--ok)}
+@media(max-width:480px){.card{padding:52px 12px 22px;border-radius:30px}.panel{padding:16px 12px;border-radius:24px}h1{font-size:1.4rem}ul.s{font-size:.96rem}.slot{min-width:7em}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="badge">5</div>
+  <div class="card">
+    <h1>Fill in the gaps with the phrases from the previous task.</h1>
+    <hr>
+    <div class="bank" id="bank" data-bank="1"></div>
+    <div class="panel"><ul class="s" id="list"></ul></div>
+    <div class="btns">
+      <button class="b main" id="check">Check</button>
+      <button class="b" id="show">Show answers</button>
+      <button class="b" id="retry">Try again</button>
+      <div class="res" id="res" aria-live="polite"></div>
+    </div>
+  </div>
+</div>
+<script>
+const S=[
+ ["I always "," in meetings after lunch — I just can't keep my eyes open.","doze off"],
+ ["My brother "," so loudly that I can hear him through the wall.","snores"],
+ ["If you feel tired in the afternoon, a short "," can really help.","nap"],
+ ["She's such a "," that even the sound of a pin dropping wakes her up.","light sleeper"],
+ ["He's a "," — you could ring a bell next to his ear and he still wouldn't wake up.","heavy sleeper"],
+ ["I was so exhausted last night that I "," and didn't move until morning.","slept like a log"],
+ ["I couldn't sleep at all — I just "," all night.","tossed and turned"],
+ ["My grandmother suffers from ","; she rarely sleeps more than three hours.","insomnia"],
+ ["She covered her mouth with her hand when she started to "," during the lecture.","yawn"]
+];
+const BANK=["yawn","nap","snores","insomnia","light sleeper","tossed and turned","doze off","slept like a log","heavy sleeper"];
+const bank=document.getElementById("bank"),list=document.getElementById("list"),res=document.getElementById("res");
+let sel=null;const slots=[],pills=[];
+function build(){
+  bank.innerHTML="";list.innerHTML="";res.textContent="";res.className="res";slots.length=0;pills.length=0;sel=null;
+  S.forEach(([pre,post,key])=>{
+    const li=document.createElement("li");
+    const s=document.createElement("span");s.className="slot";s.innerHTML='<span class="mark"></span>';
+    li.append(document.createTextNode(pre),s,document.createTextNode(post));
+    list.appendChild(li);
+    const o={el:s,key,pre,post};slots.push(o);
+    s.addEventListener("click",()=>{if(sel){place(sel,o);setSel(null);}});
+  });
+  BANK.forEach(k=>{
+    const p=document.createElement("div");p.className="pill";p.textContent=k;p.tabIndex=0;p.setAttribute("role","button");
+    bank.appendChild(p);pills.push({key:k,el:p});attach(p);
+  });
+}
+const pillOf=el=>pills.find(p=>p.el===el);
+const slotOf=el=>slots.find(s=>s.el===el);
+const filled=s=>!!s.el.querySelector(".pill");
+function setSel(el){if(sel)sel.classList.remove("sel");sel=el;if(el)el.classList.add("sel");
+  slots.forEach(s=>s.el.classList.toggle("target",!!el&&!filled(s)));}
+function clearMarks(){res.textContent="";res.className="res";
+  slots.forEach(s=>{s.el.classList.remove("ok","bad");s.el.querySelector(".mark").textContent="";});}
+function place(pill,slot){clearMarks();const old=slot.el.querySelector(".pill");
+  if(old&&old!==pill)bank.appendChild(old);slot.el.appendChild(pill);}
+function back(pill){clearMarks();bank.appendChild(pill);}
+function hit(x,y){
+  for(const el of document.elementsFromPoint(x,y)){
+    const s=el.closest&&el.closest(".slot");if(s)return {el:s,slot:slotOf(s)};
+    const b=el.closest&&el.closest("#bank");if(b)return {el:b,slot:null};
+  }
+  return null;
+}
+function attach(p){
+  let sx,sy,drag=false,ghost=null,id=null;
+  p.addEventListener("pointerdown",e=>{if(e.button>0)return;id=e.pointerId;sx=e.clientX;sy=e.clientY;drag=false;p.setPointerCapture(id);e.preventDefault();});
+  p.addEventListener("pointermove",e=>{
+    if(id===null||e.pointerId!==id)return;
+    if(!drag&&Math.hypot(e.clientX-sx,e.clientY-sy)>7){drag=true;ghost=p.cloneNode(true);ghost.className="pill ghost";document.body.appendChild(ghost);p.classList.add("ghosted");setSel(null);}
+    if(drag){ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";
+      document.querySelectorAll(".slot.hover,.bank.hover").forEach(x=>x.classList.remove("hover"));
+      const t=hit(e.clientX,e.clientY);if(t)t.el.classList.add("hover");}
+  });
+  p.addEventListener("pointerup",e=>{
+    if(id===null||e.pointerId!==id)return;
+    try{p.releasePointerCapture(id);}catch(_){}
+    id=null;document.querySelectorAll(".slot.hover,.bank.hover").forEach(x=>x.classList.remove("hover"));
+    if(drag){const t=hit(e.clientX,e.clientY);ghost.remove();ghost=null;p.classList.remove("ghosted");
+      if(t){if(t.slot)place(p,t.slot);else back(p);}drag=false;return;}
+    if(p.parentElement!==bank){back(p);setSel(null);}else setSel(sel===p?null:p);
+  });
+  p.addEventListener("pointercancel",()=>{if(ghost){ghost.remove();ghost=null;}p.classList.remove("ghosted");drag=false;id=null;});
+  p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();
+    if(p.parentElement!==bank)back(p);else{const s=slots.find(x=>!filled(x));if(s)place(p,s);}}});
+}
+document.getElementById("check").addEventListener("click",()=>{
+  let n=0;
+  slots.forEach(s=>{const pill=s.el.querySelector(".pill");const ok=!!pill&&pillOf(pill).key===s.key;if(ok)n++;
+    s.el.classList.toggle("ok",ok);s.el.classList.toggle("bad",!ok);s.el.querySelector(".mark").textContent=ok?"✓":"✗";});
+  setSel(null);res.textContent=n+" / "+slots.length+(n===slots.length?"  Great job!":"");res.className="res"+(n===slots.length?" good":"");
+});
+document.getElementById("show").addEventListener("click",()=>{
+  clearMarks();setSel(null);
+  slots.forEach(s=>{const P=pills.find(p=>p.key===s.key);const old=s.el.querySelector(".pill");
+    if(old&&old!==P.el)bank.appendChild(old);s.el.appendChild(P.el);});
+  res.textContent="Answers shown";
+});
+document.getElementById("retry").addEventListener("click",build);
+build();window.EX={slots,pills};
+</script>
+</body>
+</html>
