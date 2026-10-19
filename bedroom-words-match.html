@@ -139,44 +139,40 @@ function place(pill,slot){
   if(old&&old!==pill)pillOf(old).bank.appendChild(old);
   slot.el.appendChild(pill);refresh();
 }
-function attach(p){
-  let sx,sy,drag=false,ghost=null,id=null;
-  p.addEventListener("pointerdown",e=>{
-    if(e.button>0)return;id=e.pointerId;sx=e.clientX;sy=e.clientY;drag=false;
-    p.setPointerCapture(id);e.preventDefault();
-  });
-  p.addEventListener("pointermove",e=>{
-    if(id===null||e.pointerId!==id)return;
-    if(!drag&&Math.hypot(e.clientX-sx,e.clientY-sy)>7){
-      drag=true;ghost=p.cloneNode(true);ghost.className="pill ghost";ghost.style.width=p.offsetWidth+"px";document.body.appendChild(ghost);p.classList.add("ghosted");
-      setSel(null);
-    }
-    if(drag){ghost.style.left=e.clientX+"px";ghost.style.top=e.clientY+"px";
-      const g=+p.dataset.g;
-      document.querySelectorAll(".slot.hover,.bank.hover").forEach(x=>x.classList.remove("hover"));
-      const t=hit(e.clientX,e.clientY,g);if(t)t.el.classList.add("hover");}
-  });
-  const end=e=>{
-    if(id===null||e.pointerId!==id)return;
-    try{p.releasePointerCapture(id);}catch(_){}
-    id=null;
+let cur=null;
+function cleanup(){document.querySelectorAll(".ghost").forEach(g=>g.remove());document.querySelectorAll(".pill.ghosted").forEach(x=>x.classList.remove("ghosted"));document.querySelectorAll(".slot.hover,.bank.hover").forEach(x=>x.classList.remove("hover"));}
+function stop(){window.removeEventListener("pointermove",onMove);window.removeEventListener("pointerup",onUp);window.removeEventListener("pointercancel",onCancel);window.removeEventListener("blur",onCancel);cleanup();cur=null;}
+function onMove(e){
+  const c=cur;if(!c||e.pointerId!==c.id)return;
+  if(!c.drag&&Math.hypot(e.clientX-c.sx,e.clientY-c.sy)>7){c.drag=true;c.ghost=c.p.cloneNode(true);c.ghost.className="pill ghost";c.ghost.style.width=c.p.offsetWidth+"px";document.body.appendChild(c.ghost);c.p.classList.add("ghosted");setSel(null);}
+  if(c.drag){c.ghost.style.left=e.clientX+"px";c.ghost.style.top=e.clientY+"px";
     document.querySelectorAll(".slot.hover,.bank.hover").forEach(x=>x.classList.remove("hover"));
-    if(drag){
-      const t=hit(e.clientX,e.clientY,+p.dataset.g);
-      ghost.remove();ghost=null;p.classList.remove("ghosted");
-      if(t){if(t.slot)place(p,t.slot);else{clearMarks();pillOf(p).bank.appendChild(p);refresh();}}
-      drag=false;return;
-    }
-    /* click */
+    const t=hit(e.clientX,e.clientY,+c.p.dataset.g);if(t)t.el.classList.add("hover");}
+}
+function onUp(e){
+  const c=cur;if(!c||e.pointerId!==c.id)return;
+  const p=c.p,wasDrag=c.drag,t=wasDrag?hit(e.clientX,e.clientY,+p.dataset.g):null;
+  stop();
+  try{
+    if(wasDrag){if(t){if(t.slot)place(p,t.slot);else{clearMarks();pillOf(p).bank.appendChild(p);refresh();}}return;}
     if(p.parentElement.classList.contains("slot")){clearMarks();pillOf(p).bank.appendChild(p);refresh();setSel(null);}
     else setSel(sel===p?null:p);
-  };
-  p.addEventListener("pointerup",end);
-  p.addEventListener("pointercancel",e=>{if(ghost){ghost.remove();ghost=null;}p.classList.remove("ghosted");drag=false;id=null;});
+  }catch(err){console.error(err);}
+}
+function onCancel(){stop();}
+function attach(p){
+  p.addEventListener("pointerdown",e=>{
+    if(e.button>0)return;
+    if(cur)stop();
+    cur={p,id:e.pointerId,sx:e.clientX,sy:e.clientY,drag:false,ghost:null};
+    e.preventDefault();
+    window.addEventListener("pointermove",onMove);window.addEventListener("pointerup",onUp);
+    window.addEventListener("pointercancel",onCancel);window.addEventListener("blur",onCancel);
+  });
+  p.addEventListener("dragstart",e=>e.preventDefault());
   p.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();
     if(p.parentElement.classList.contains("slot")){clearMarks();pillOf(p).bank.appendChild(p);refresh();}
-    else{ // place into first empty slot of its group
-      const s=slots.find(x=>x.g===+p.dataset.g&&!x.el.classList.contains("has"));if(s)place(p,s);}}});
+    else{const s=slots.find(x=>x.g===+p.dataset.g&&!x.el.classList.contains("has"));if(s)place(p,s);}}});
 }
 function hit(x,y,g){
   const els=document.elementsFromPoint(x,y);
