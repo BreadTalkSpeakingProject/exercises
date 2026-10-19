@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework: Ready for Vietnam!</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#fff9ec; --card:#fff; --ink:#2a1a1a; --muted:#7a6a62; --line:#eadfcc;
+    --red:#c8102e; --gold:#e8a800; --green:#1f7a4d; --teal:#0f6f7a; --sand:#fff3d6; --mint:#e3f3ea;
+    --ok:#2e9e5b; --ok-soft:#e3f5ea; --bad:#d64545; --bad-soft:#fde8e8;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:Poppins,"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:17px;line-height:1.55}
+  .wrap{max-width:780px;margin:0 auto;padding:20px 16px 70px}
+  .hero{display:flex;align-items:center;gap:16px;margin:8px 0 6px}
+  .hero svg{flex:0 0 74px;width:74px;height:60px}
+  h1{font-size:30px;color:var(--red);line-height:1.15}
+  .sub{color:var(--muted);margin-bottom:16px}
+  .bar{position:sticky;top:0;z-index:10;background:var(--bg);padding:10px 0 12px;margin-bottom:16px;border-bottom:1px solid var(--line)}
+  .bar .row{display:flex;justify-content:space-between;font-weight:600;font-size:15px;margin-bottom:6px}
+  .track{height:10px;background:var(--line);border-radius:99px;overflow:hidden}
+  .fill{height:100%;width:0;background:linear-gradient(90deg,var(--red),var(--gold));border-radius:99px;transition:width .3s}
+  .card{background:var(--card);border:2px solid var(--line);border-top:8px solid var(--accent,var(--red));border-radius:20px;padding:20px 20px 18px;margin-bottom:22px}
+  .card .num{display:inline-flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:50%;background:var(--accent,var(--red));color:#fff;font-weight:700;margin-right:10px;flex:0 0 34px}
+  .card h3{display:flex;align-items:center;font-size:21px;color:var(--ink);margin-bottom:6px}
+  .card .ins{font-weight:500;margin-bottom:14px}
+  .box{display:flex;flex-wrap:wrap;gap:8px;background:var(--green);border-radius:16px;padding:12px 14px;margin-bottom:16px}
+  .box span{background:#fff;color:var(--green);font-weight:700;border-radius:10px;padding:4px 14px}
+  .story{background:var(--sand);border:2px solid #f0d58a;border-radius:16px;padding:14px 18px;margin-bottom:14px;font-size:17.5px}
+  .story p{margin-bottom:8px}.story p:last-child{margin-bottom:0}
+  .gloss{font-size:14.5px;color:var(--muted);margin:-4px 0 14px}
+  .tags{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+  .tag{background:var(--sand);border:2px solid #f0d58a;border-radius:14px;padding:8px 6px;text-align:center;font-weight:600}
+  .tag b{display:block;color:var(--red);font-size:20px}
+  .sent{display:flex;gap:10px;align-items:baseline;padding:10px 12px;border:2px solid var(--line);border-radius:14px;margin-bottom:10px}
+  .sent .n{flex:0 0 28px;height:28px;border-radius:8px;background:var(--accent,var(--red));color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:15px;align-self:flex-start;margin-top:2px}
+  .sent .txt{flex:1;min-width:0}
+  .sent.ok{background:var(--ok-soft);border-color:var(--ok)}
+  .sent.bad{background:var(--bad-soft);border-color:var(--bad)}
+  .sent.shown{background:var(--sand);border-color:#f2dcb8}
+  .who{font-weight:700;color:var(--green)}
+  input.t{font:inherit;font-weight:600;color:var(--red);border:none;border-bottom:3px solid var(--red);background:transparent;padding:2px 6px;width:9em;max-width:100%;text-align:center}
+  input.t:focus{outline:none;background:var(--sand)}
+  .pill{font:inherit;font-weight:600;background:#fff;color:var(--ink);border:2px solid var(--line);border-radius:999px;padding:1px 12px;margin:2px 3px;cursor:pointer}
+  .pill.sel{background:var(--accent,var(--red));border-color:var(--accent,var(--red));color:#fff}
+  .hint{font-size:14px;color:var(--muted);margin-bottom:6px}
+  .ans{min-height:48px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fff}
+  .ans .q{font-weight:700;color:var(--muted);padding:0 4px}
+  .bank{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+  .chip{font:inherit;font-weight:600;background:var(--mint);color:var(--green);border:2px solid #b9dcc8;border-radius:10px;padding:2px 12px;cursor:pointer}
+  .chip.used{opacity:.25;cursor:default}
+  .ans .chip{background:var(--green);color:#fff;border-color:var(--green)}
+  .btns{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:16px}
+  button{font:inherit;cursor:pointer}
+  .b-main{background:var(--accent,var(--red));color:#fff;border:none;border-radius:12px;padding:10px 22px;font-weight:700}
+  .b-ghost{background:#fff;color:var(--muted);border:2px solid var(--line);border-radius:12px;padding:8px 16px;font-weight:600}
+  .res{font-weight:700}
+  .res.good{color:var(--ok)}
+  .final{background:var(--red);color:#fff;border-radius:22px;padding:22px;text-align:center}
+  .final h3{margin-bottom:6px}
+  .final .b-main{background:var(--gold);color:#2a1a1a;margin-top:10px;font-size:18px;padding:12px 26px}
+  .copied{margin-top:10px;font-weight:600;min-height:1.4em}
+  @media (max-width:560px){ h1{font-size:25px} .tags{grid-template-columns:repeat(2,1fr)} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <svg viewBox="0 0 74 60"><path d="M4 50 Q37 -8 70 50 Z" fill="#f2d08a" stroke="#c8963e" stroke-width="2.5"/><path d="M14 40 Q37 12 60 40M22 46 Q37 26 52 46" fill="none" stroke="#c8963e" stroke-width="1.8"/><circle cx="37" cy="12" r="3" fill="#c8102e"/></svg>
+    <div><h1>Ready for Vietnam!</h1></div>
+  </div>
+  <p class="sub">Homework · revision: travel English</p>
+
+  <div class="bar"><div class="row"><span>Progress</span><span id="pt">0 / 52</span></div><div class="track"><div class="fill" id="pf"></div></div></div>
+
+  <div id="tasks"></div>
+
+  <div class="final">
+    <h3>All done?</h3>
+    <div>Press the button, then paste your results in the chat.</div>
+    <button class="b-main" id="copyBtn" type="button">Copy my results</button>
+    <div class="copied" id="copied"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+  function mk(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!==undefined) e.innerHTML=html; return e; }
+  function letters(s){ return String(s||"").toLowerCase().replace(/[^a-z]/g,""); }
+  function plain(s){ return String(s).replace(/<[^>]*>/g,""); }
+  function shuffle(a){ var b=a.slice(); for(var i=b.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=b[i]; b[i]=b[j]; b[j]=t; } return b; }
+  function shufItems(arr){ return shuffle(arr.map(function(d,oi){ return {d:d,oi:oi}; })); }
+
+  /* ---------- data ---------- */
+  var TF = [
+    {s:"Vietnam is in Asia.", a:"True"},
+    {s:"Hanoi is the capital of Vietnam.", a:"True"},
+    {s:"Ho Chi Minh City is the capital of Vietnam.", a:"False"},
+    {s:"More than 100 million people live in Vietnam.", a:"True"},
+    {s:"The money in Vietnam is the euro.", a:"False"},
+    {s:"Son Doong is the biggest cave in the world.", a:"True"}
+  ];
+  var READ = [
+    "Vietnam is a country in Asia. Hanoi is the capital. Ho Chi Minh City is the biggest city. More than 100 million people live in Vietnam.",
+    "Ha Long Bay is very famous. It has a lot of islands. The name means “descending dragon”.",
+    "Son Doong is the biggest cave in the world. Hoi An is a small old town. At night, it has a lot of lanterns.",
+    "The money in Vietnam is the dong."
+  ];
+  var T2 = [
+    "Is Hanoi the capital of Vietnam? {Yes*|No}",
+    "Is Ho Chi Minh City the capital of Vietnam? {Yes|No*}",
+    "Does Ha Long Bay have a lot of islands? {Yes*|No}",
+    "What is the money in Vietnam? {the euro|the dong*|the dollar}"
+  ];
+  var BOX3 = null;
+  var T3 = [
+    {pre:"Last April, Mia", v:"book", post:"a flight to Hanoi.", a:["booked"]},
+    {pre:"She", v:"stay", post:"in a small hotel.", a:["stayed"]},
+    {pre:"She", v:"visit", post:"a big temple.", a:["visited"]},
+    {pre:"She", v:"walk", post:"in the Old Quarter.", a:["walked"]},
+    {pre:"She", v:"try", post:"pho for breakfast.", a:["tried"]},
+    {pre:"She didn’t", v:"like", post:"the very hot chilli.", a:["like"]}
+  ];
+  var BOX4 = ["go","swim","take","buy","have"];
+  var T4 = [
+    {pre:"Then Mia", post:"to Ha Long Bay.", a:["went"]},
+    {pre:"She", post:"in the sea.", a:["swam"]},
+    {pre:"She", post:"a lot of photos.", a:["took"]},
+    {pre:"She", post:"a hat and a magnet.", a:["bought"]},
+    {pre:"She", post:"a great time!", a:["had"]}
+  ];
+  var T5 = [
+    "♥♥  Mia {love|loves*|loving} swimming.",
+    "✗  Mia {don’t like|doesn’t like*|not like} sitting in a taxi.",
+    "✗✗  Mia {hate|hating|hates*} eating chilli.",
+    "♥  Do you like {visit|visiting*|visits} temples?",
+    "♥♥  He loves {makeing|make|making*} coffee.",
+    "♥  I like {swim|swiming|swimming*} in the sea."
+  ];
+  var BOX6 = ["reservation","passport","time","key","help","right"];
+  var T6 = [
+    {who:"Receptionist", pre:"Hello! How can I", post:"you?", a:["help"]},
+    {who:"Mia", pre:"Good afternoon. I have a", post:"at your hotel. My name is Mia Brown.", a:["reservation"]},
+    {who:"Receptionist", pre:"Can I see your", post:", please?", a:["passport"]},
+    {who:"Receptionist", pre:"Thank you. Here is your", post:". You are in room 305.", a:["key"]},
+    {who:"Mia", pre:"What", post:"is breakfast?", a:["time"]},
+    {who:"Receptionist", pre:"From 7 to 10 a.m. The restaurant is on the", post:".", a:["right"]}
+  ];
+  var T7a = [
+    "How much {is*|are} the T-shirt?",
+    "How much {is|are*} the socks?",
+    "How much {is*|are} the magnet?",
+    "You have 200 thousand dong. Can you buy a cap and a magnet? {Yes*|No}",
+    "You have 200 thousand dong. Can you buy a T-shirt and a mug? {Yes|No*}"
+  ];
+  var T8 = [
+    "{Are*|Do|Were|Did} you tired now?",
+    "{Are|Do*|Were|Did} you like coffee?",
+    "{Are|Do|Were*|Did} you happy yesterday?",
+    "{Are|Do|Were|Did*} you go to the beach last summer?",
+    "{Are|Do|Were|Did*} you take a lot of photos?",
+    "{Are|Do*|Were|Did} you eat pho every week?",
+    "{Are|Do|Were*|Did} you in Hanoi last year?",
+    "{Are|Do|Were|Did*} you buy a souvenir?"
+  ];
+  var T9 = [
+    {h:"You ask about Wi-Fi at the hotel.", a:"Is there free Wi-Fi?"},
+    {h:"You ask about breakfast.", a:"What time is breakfast?"},
+    {h:"You ask about the lift.", a:"Where is the lift?"},
+    {h:"You ask about the price of the socks.", a:"How much are the socks?"},
+    {h:"You ask your friend about the trip.", a:"Did you go to Hanoi?"},
+    {h:"You ask your friend about coffee.", a:"Do you like coffee?"}
+  ];
+
+  /* ---------- helpers for {a|b*|c} ---------- */
+  function parseGroups(str){
+    var parts=[], re=/\{([^}]*)\}/g, last=0, m, gi=0;
+    while((m=re.exec(str))){
+      parts.push({t:str.slice(last,m.index)});
+      var opts=m[1].split("|").map(function(o){ var c=o.charAt(o.length-1)==="*"; return {text:c?o.slice(0,-1):o, ok:c}; });
+      parts.push({g:opts,gi:gi++});
+      last=m.index+m[0].length;
+    }
+    parts.push({t:str.slice(last)});
+    return parts;
+  }
+  function choiceLine(parts, chosen){
+    var line="", wrong=[];
+    parts.forEach(function(p){
+      if(p.t!==undefined){ line+=p.t; return; }
+      var c=chosen[p.gi];
+      var corr=p.g.filter(function(o){return o.ok;})[0].text;
+      line+=(c===undefined||c===null)?"___":p.g[c].text;
+      if(c===undefined||c===null||!p.g[c].ok) wrong.push(corr);
+    });
+    return wrong.length?line+"   (correct: "+wrong.join(", ")+")":line;
+  }
+
+  /* ---------- generic builders ---------- */
+  function wordBox(body,words){ var box=mk("div","box"); words.forEach(function(w){ box.appendChild(mk("span","",w)); }); body.appendChild(box); }
+
+  function buildChoice(strs, intro){
+    return function(body){
+      if(intro) intro(body);
+      var rows=[];
+      shufItems(strs).forEach(function(w,i){
+        var parts=parseGroups(w.d); var shown=shuffle(parts.map(function(p){return p;}));
+        parts.forEach(function(p){ if(p.g) p.g=shuffle(p.g); });
+        var el=mk("div","sent"); el.appendChild(mk("span","n",String(i+1)));
+        var t=mk("span","txt"); var chosen=[]; var row={el:el,parts:parts,chosen:chosen,pills:[],oi:w.oi};
+        parts.forEach(function(p){
+          if(p.t!==undefined){ t.appendChild(document.createTextNode(p.t)); return; }
+          var g=p.gi, pills=[];
+          p.g.forEach(function(o,oi){
+            var b=mk("button","pill",o.text); b.type="button";
+            b.addEventListener("click",function(){ chosen[g]=oi; pills.forEach(function(x,xi){ x.classList.toggle("sel",xi===oi); }); el.classList.remove("ok","bad","shown"); });
+            t.appendChild(document.createTextNode(" ")); t.appendChild(b); pills.push(b);
+          });
+          row.pills[g]=pills;
+        });
+        el.appendChild(t); body.appendChild(el); rows.push(row);
+      });
+      function isOk(r){ var ok=true; r.parts.forEach(function(p){ if(p.g){ var c=r.chosen[p.gi]; if(c===undefined||!p.g[c].ok) ok=false; } }); return ok; }
+      return {
+        total:strs.length,
+        check:function(){ var n=0; rows.forEach(function(r){ var ok=isOk(r); r.el.classList.remove("ok","bad","shown"); r.el.classList.add(ok?"ok":"bad"); if(ok)n++; }); return n; },
+        report:function(){ return rows.map(function(r){ return {id:r.oi, ok:isOk(r), line:choiceLine(r.parts,r.chosen)}; }); },
+        fill:function(){ rows.forEach(function(r){ r.parts.forEach(function(p){ if(p.g){ var ci=p.g.findIndex(function(o){return o.ok;}); r.chosen[p.gi]=ci; r.pills[p.gi].forEach(function(x,xi){ x.classList.toggle("sel",xi===ci); }); } }); r.el.classList.remove("ok","bad"); r.el.classList.add("shown"); }); }
+      };
+    };
+  }
+
+  function buildGaps(items, opts){
+    return function(body){
+      if(opts.intro) opts.intro(body);
+      var rows=[];
+      shufItems(items).forEach(function(w,i){
+        var d=w.d; var el=mk("div","sent"); el.appendChild(mk("span","n",String(i+1)));
+        var t=mk("span","txt");
+        if(d.who) t.appendChild(mk("span","who",d.who+": "));
+        t.appendChild(document.createTextNode(d.pre+" "));
+        var inp=mk("input","t"); inp.type="text"; inp.autocomplete="off"; inp.setAttribute("autocapitalize","off"); inp.setAttribute("spellcheck","false");
+        inp.addEventListener("input",function(){ el.classList.remove("ok","bad","shown"); });
+        t.appendChild(inp);
+        if(d.v) t.appendChild(document.createTextNode(" ("+d.v+")"));
+        t.appendChild(document.createTextNode(" "+d.post)); el.appendChild(t);
+        body.appendChild(el); rows.push({el:el,inp:inp,d:d,oi:w.oi});
+      });
+      function isOk(r){ var v=letters(r.inp.value); return r.d.a.some(function(a){ return letters(a)===v; }); }
+      function line(r){ var d=r.d, v=r.inp.value.trim(); return (d.who?d.who+": ":"")+d.pre+" "+(v?v:"___")+(d.v?" ("+d.v+")":"")+" "+d.post+"   (correct: "+d.a[0]+")"; }
+      return {
+        total:items.length,
+        check:function(){ var n=0; rows.forEach(function(r){ var ok=isOk(r); r.el.classList.remove("ok","bad","shown"); r.el.classList.add(ok?"ok":"bad"); if(ok)n++; }); return n; },
+        report:function(){ return rows.map(function(r){ return {id:r.oi, ok:isOk(r), line:line(r)}; }); },
+        fill:function(){ rows.forEach(function(r){ r.inp.value=r.d.a[0]; r.el.classList.remove("ok","bad"); r.el.classList.add("shown"); }); }
+      };
+    };
+  }
+
+  function buildTF(body){
+    var rows=[];
+    shufItems(TF).forEach(function(w,i){
+      var d=w.d; var el=mk("div","sent"); el.appendChild(mk("span","n",String(i+1)));
+      var t=mk("span","txt"); t.appendChild(document.createTextNode(d.s+" "));
+      var row={el:el,d:d,c:null,pills:[],oi:w.oi};
+      ["True","False"].forEach(function(o){
+        var b=mk("button","pill",o); b.type="button";
+        b.addEventListener("click",function(){ row.c=o; row.pills.forEach(function(x){ x.classList.toggle("sel",x.textContent===o); }); el.classList.remove("ok","bad","shown"); });
+        t.appendChild(b); row.pills.push(b);
+      });
+      el.appendChild(t); body.appendChild(el); rows.push(row);
+    });
+    return {
+      total:TF.length,
+      check:function(){ var n=0; rows.forEach(function(r){ var ok=r.c===r.d.a; r.el.classList.remove("ok","bad","shown"); r.el.classList.add(ok?"ok":"bad"); if(ok)n++; }); return n; },
+      report:function(){ return rows.map(function(r){ return {id:r.oi, ok:r.c===r.d.a, line:'"'+r.d.s+'" – you chose '+(r.c||"nothing")+"; correct: "+r.d.a}; }); },
+      fill:function(){ rows.forEach(function(r){ r.c=r.d.a; r.pills.forEach(function(x){ x.classList.toggle("sel",x.textContent===r.d.a); }); r.el.classList.remove("ok","bad"); r.el.classList.add("shown"); }); }
+    };
+  }
+
+  function buildOrder(body){
+    var rows=[];
+    shufItems(T9).forEach(function(w0,i){
+      var d=w0.d;
+      var words=d.a.replace(/[?.!]+$/,"").split(" ");
+      var punct=(d.a.match(/[?.!]+$/)||[""])[0];
+      var disp=words.map(function(w,wi){ return (wi===0&&w!=="I")?w.charAt(0).toLowerCase()+w.slice(1):w; });
+      var idx=words.map(function(_,k){return k;}); var order;
+      do{ order=shuffle(idx); }while(order.join()===idx.join() && words.length>1);
+      var el=mk("div","sent"); el.appendChild(mk("span","n",String(i+1)));
+      var wrap=mk("div","txt"); wrap.appendChild(mk("div","hint",d.h));
+      var ans=mk("div","ans"); var bank=mk("div","bank");
+      wrap.appendChild(ans); wrap.appendChild(bank); el.appendChild(wrap); body.appendChild(el);
+      var row={oi:w0.oi,el:el,d:d,placed:[],words:words,disp:disp,punct:punct,order:order,ans:ans,bank:bank};
+      function draw(){
+        ans.innerHTML=""; bank.innerHTML="";
+        row.placed.forEach(function(k,pi){
+          var c=mk("button","chip",pi===0?row.words[k].charAt(0).toUpperCase()+row.words[k].slice(1):row.words[k]); c.type="button";
+          c.addEventListener("click",function(){ row.placed.splice(pi,1); el.classList.remove("ok","bad","shown"); draw(); });
+          ans.appendChild(c);
+        });
+        if(punct) ans.appendChild(mk("span","q",punct));
+        order.forEach(function(k){
+          var used=row.placed.indexOf(k)>-1;
+          var c=mk("button","chip"+(used?" used":""),disp[k]); c.type="button";
+          if(!used) c.addEventListener("click",function(){ row.placed.push(k); el.classList.remove("ok","bad","shown"); draw(); });
+          bank.appendChild(c);
+        });
+      }
+      row.draw=draw; draw(); rows.push(row);
+    });
+    function made(r){ return r.placed.map(function(k,pi){ return pi===0?r.words[k].charAt(0).toUpperCase()+r.words[k].slice(1):r.words[k]; }).join(" ")+(r.placed.length?r.punct:""); }
+    function isOk(r){ return r.placed.length===r.words.length && r.placed.every(function(k,pi){ return r.words[k].toLowerCase()===r.words[pi].toLowerCase(); }); }
+    return {
+      total:T9.length,
+      check:function(){ var n=0; rows.forEach(function(r){ var ok=isOk(r); r.el.classList.remove("ok","bad","shown"); r.el.classList.add(ok?"ok":"bad"); if(ok)n++; }); return n; },
+      report:function(){ return rows.map(function(r){ var m=made(r); return {id:r.oi, ok:isOk(r), line:'"'+r.d.h+'" – you made: '+(m?'"'+m+'"':"(nothing)")+'; correct: "'+r.d.a+'"'}; }); },
+      fill:function(){ rows.forEach(function(r){ r.placed=r.words.map(function(_,k){return k;}); r.draw(); r.el.classList.remove("ok","bad"); r.el.classList.add("shown"); }); }
+    };
+  }
+
+  /* ---------- intros ---------- */
+  function introRead(body){
+    var st=mk("div","story"); READ.forEach(function(p){ st.appendChild(mk("p","",p)); }); body.appendChild(st);
+    body.appendChild(mk("div","gloss","lantern = a paper light · dragon = a big animal in stories · cave = a big hole under the ground"));
+  }
+  function introT7(body){
+    var items=[["a T-shirt","150"],["a cap","120"],["a magnet","35"],["a keychain","40"],["a mug","90"],["socks (2)","75"]];
+    var g=mk("div","tags"); items.forEach(function(x){ g.appendChild(mk("div","tag",x[0]+"<b>"+x[1]+"</b><small>thousand dong</small>")); }); body.appendChild(g);
+  }
+
+  /* ---------- sections ---------- */
+  var sections=[];
+  var defs=[
+    {num:1,label:"True or false?",accent:"var(--red)",ins:"Read the facts about Vietnam. Choose True or False.",build:buildTF},
+    {num:2,label:"Read and answer",accent:"var(--green)",ins:"Read the text. Then answer the questions.",build:buildChoice(T2,introRead)},
+    {num:3,label:"Mia’s trip to Hanoi",accent:"var(--gold)",ins:"Write the verb in the Past Simple.",build:buildGaps(T3,{})},
+    {num:4,label:"Mia’s trip to Ha Long Bay",accent:"var(--teal)",ins:"Choose a verb from the box. Write the Past Simple. Use each verb once.",build:buildGaps(T4,{intro:function(b){ wordBox(b,BOX4); }})},
+    {num:5,label:"Like, love, hate",accent:"var(--red)",ins:"Choose the correct words. ♥ = like, ♥♥ = love, ✗ = don’t like, ✗✗ = hate.",build:buildChoice(T5)},
+    {num:6,label:"At a hotel in Hanoi",accent:"var(--green)",ins:"Complete the dialogue. Use the words in the box. Use each word once.",build:buildGaps(T6,{intro:function(b){ wordBox(b,BOX6); }})},
+    {num:7,label:"A market in Hoi An",accent:"var(--gold)",ins:"Look at the price list. Choose the correct answers.",build:buildChoice(T7a,introT7)},
+    {num:8,label:"Are, do, were or did?",accent:"var(--teal)",ins:"Choose the correct word to start each question.",build:buildChoice(T8)},
+    {num:9,label:"Make the question",accent:"var(--red)",ins:"Put the words in the correct order. Click the words one by one.",build:buildOrder}
+  ];
+  var tasks=document.getElementById("tasks");
+
+  defs.forEach(function(d){
+    var sec={num:d.num,label:d.label,total:0,score:0,checked:false,revealed:false,api:null,log:[],seen:{},lastOk:{}};
+    var card=mk("section","card"); card.style.setProperty("--accent",d.accent);
+    card.appendChild(mk("h3","",'<span class="num">'+d.num+'</span>'+d.label));
+    card.appendChild(mk("div","ins",d.ins));
+    var body=mk("div","tbody"); card.appendChild(body);
+    var btns=mk("div","btns"); var res=mk("span","res");
+    function rebuild(){ body.innerHTML=""; sec.api=d.build(body); sec.total=sec.api.total; }
+    rebuild();
+    var bC=mk("button","b-main","Check"); bC.type="button";
+    var bS=mk("button","b-ghost","Show answers"); bS.type="button";
+    var bR=mk("button","b-ghost","Try again"); bR.type="button";
+    bC.addEventListener("click",function(){
+      if(sec.revealed){ res.className="res"; res.textContent="Press “Try again” first."; return; }
+      sec.score=sec.api.check(); sec.checked=true; record(sec);
+      res.textContent=sec.score+" / "+sec.total; res.className="res"+(sec.score===sec.total?" good":""); if(sec.score===sec.total) res.textContent+="  🎉"; update();
+    });
+    bS.addEventListener("click",function(){ sec.api.fill(); sec.revealed=true; sec.checked=false; sec.score=0; res.className="res"; res.textContent="Answers shown (no score)."; update(); });
+    bR.addEventListener("click",function(){ rebuild(); sec.revealed=false; sec.checked=false; sec.score=0; res.textContent=""; update(); });
+    btns.appendChild(bC); btns.appendChild(bS); btns.appendChild(bR); btns.appendChild(res); card.appendChild(btns);
+    tasks.appendChild(card); sections.push(sec);
+  });
+
+  function record(sec){
+    sec.api.report().forEach(function(r){
+      var id=r.id; sec.lastOk[id]=r.ok;
+      if(!r.ok){ var k=id+"|"+r.line; if(!sec.seen[k]){ sec.seen[k]=1; sec.log.push({i:id,line:r.line}); } }
+    });
+  }
+  function update(){
+    var got=0,total=0; sections.forEach(function(s){ total+=s.total; got+=(s.checked&&!s.revealed)?s.score:0; });
+    document.getElementById("pt").textContent=got+" / "+total;
+    document.getElementById("pf").style.width=(total?got/total*100:0)+"%";
+  }
+  update();
+
+  /* ---------- report ---------- */
+  function buildReport(){
+    var d=new Date(); var when=d.toLocaleDateString()+" "+d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+    var out=["Homework: Ready for Vietnam! ("+when+")",""];
+    var got=0,total=0;
+    sections.forEach(function(s){
+      total+=s.total;
+      var st; if(s.revealed){ st="answers shown"; } else if(!s.checked){ st="not checked"; } else { st=s.score+" / "+s.total; got+=s.score; }
+      out.push("Task "+s.num+" "+s.label+": "+st);
+    });
+    out.push("Total: "+got+" / "+total,"");
+    out.push("MISTAKES (every wrong answer, including ones fixed on retry)",""); var any=false;
+    sections.forEach(function(s){
+      if(!s.log.length) return; any=true;
+      out.push("Task "+s.num+" "+s.label);
+      s.log.forEach(function(e){ out.push("  ✗ "+plain(e.line)+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]"); });
+      out.push("");
+    });
+    if(!any) out.push("(no mistakes)");
+    return out.join("\n");
+  }
+  window.HW={sections:sections,buildReport:buildReport};
+
+  var cb=document.getElementById("copyBtn"), msg=document.getElementById("copied");
+  cb.addEventListener("click",function(){
+    var text=buildReport();
+    function done(){ msg.textContent="Copied! Paste it in the chat."; }
+    function fallback(){ var ta=document.createElement("textarea"); ta.value=text; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");}catch(e){} document.body.removeChild(ta); done(); }
+    if(navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(done,fallback); } else { fallback(); }
+  });
+})();
+</script>
+</body>
+</html>
