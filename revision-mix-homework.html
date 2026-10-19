@@ -1,0 +1,470 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revision Mix</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#F4F1EA; --card:#FFFFFF; --ink:#1E2430; --muted:#5E6675; --line:#E3DED3;
+    --ok:#1F8A5B; --ok-bg:#E4F4EB; --bad:#C0392B; --bad-bg:#FBE9E6;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:16px;line-height:1.55}
+  .wrap{max-width:780px;margin:0 auto;padding:0 16px 80px}
+
+  .bar{position:sticky;top:0;z-index:20;background:rgba(244,241,234,.96);backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px}
+  .bar-row{display:flex;justify-content:space-between;align-items:center;font-size:14px;font-weight:600}
+  .track{height:8px;border-radius:99px;background:#E6E1D5;margin-top:6px;overflow:hidden}
+  .fill{height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .3s}
+
+  header{padding:34px 0 10px}
+  .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:600;margin:0 0 8px}
+  h1{font-size:clamp(30px,7vw,44px);line-height:1.08;margin:0 0 12px;font-weight:700;letter-spacing:-.02em}
+  .lead{color:var(--muted);margin:0 0 18px;max-width:58ch}
+  .name{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  .name label{font-weight:600;font-size:14px}
+  .name input{font:inherit;padding:9px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;min-width:0;flex:1 1 200px;max-width:320px}
+  .name input:focus{outline:2px solid var(--ink);outline-offset:1px}
+
+  .task{background:var(--card);border-radius:18px;border-top:6px solid var(--accent);
+    box-shadow:0 1px 0 rgba(0,0,0,.03),0 8px 24px rgba(30,36,48,.06);padding:22px 20px 20px;margin-top:26px}
+  .task-head{display:flex;gap:12px;align-items:flex-start;margin-bottom:6px}
+  .badge{flex:0 0 auto;width:34px;height:34px;border-radius:10px;background:var(--accent);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-weight:700}
+  .task h2{margin:0;font-size:20px;line-height:1.25;font-weight:600}
+  .instr{color:var(--muted);margin:4px 0 16px 46px;font-size:15px}
+
+  .item{display:flex;gap:12px;padding:12px 12px;border-radius:12px;border:1.5px solid transparent;margin-bottom:6px}
+  .item:nth-child(odd){background:#FAF8F3}
+  .item .n{flex:0 0 auto;width:26px;height:26px;border-radius:50%;border:1.5px solid var(--accent);color:var(--accent);
+    font-size:13px;font-weight:600;display:flex;align-items:center;justify-content:center;margin-top:2px}
+  .item .body{flex:1 1 auto;min-width:0;line-height:2.1}
+  .item.ok{border-color:var(--ok);background:var(--ok-bg)}
+  .item.bad{border-color:var(--bad);background:var(--bad-bg)}
+
+  .grp{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;margin:2px 2px}
+  .grp.stack{display:flex;flex-direction:column;gap:8px;margin:2px 0}
+  .pill{font:inherit;font-size:15px;line-height:1.35;padding:5px 14px;border-radius:99px;cursor:pointer;
+    border:1.5px solid #C9C3B5;background:#fff;color:var(--ink);transition:background .12s,border-color .12s}
+  .stack .pill{border-radius:12px;text-align:left;padding:9px 14px}
+  .pill:hover{border-color:var(--accent)}
+  .pill.sel{background:var(--accent);border-color:var(--accent);color:#fff}
+  .pill.right{background:var(--ok);border-color:var(--ok);color:#fff}
+  .pill.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+  .pill:focus-visible,.word:focus-visible,button.act:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+
+  .why{display:none;margin-top:6px;font-size:14px;line-height:1.5;color:var(--ink);
+    padding:8px 12px;background:rgba(255,255,255,.7);border-left:3px solid var(--accent);border-radius:0 8px 8px 0}
+  .why.show{display:block}
+
+  .prompt{font-size:15px;color:var(--muted);line-height:1.5;margin-bottom:8px}
+  .prompt i{color:var(--ink)}
+  .build{display:flex;flex-wrap:wrap;gap:6px;align-items:center;min-height:46px;padding:8px 10px;border-radius:10px;
+    background:#fff;border:1.5px dashed #C9C3B5;line-height:1.3}
+  .fixed{font-weight:600;color:var(--accent);margin-right:2px}
+  .tray{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+  .word{font:inherit;font-size:15px;line-height:1.3;padding:5px 12px;border-radius:8px;cursor:pointer;
+    border:1.5px solid #C9C3B5;background:#fff;color:var(--ink)}
+  .word.placed{background:var(--accent);border-color:var(--accent);color:#fff}
+  .word:hover{border-color:var(--accent)}
+
+  .btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;align-items:center}
+  button.act{font:inherit;font-size:14px;font-weight:600;padding:9px 18px;border-radius:10px;cursor:pointer;
+    border:1.5px solid var(--ink);background:#fff;color:var(--ink)}
+  button.act.primary{background:var(--ink);color:#fff}
+  button.act:hover{opacity:.88}
+  .msg{margin:12px 0 0;font-size:14px;font-weight:600;color:var(--muted);min-height:1.4em}
+  .msg.good{color:var(--ok)}
+
+  .finish{margin-top:34px;text-align:center}
+  .finish p{color:var(--muted);margin:0 0 12px}
+  .copied{margin-top:10px;font-weight:600;color:var(--ok);min-height:1.4em}
+
+  @media (max-width:520px){
+    .task{padding:18px 14px 16px}
+    .instr{margin-left:0}
+    .item{padding:10px 8px;gap:9px}
+    .pill{font-size:14.5px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="bar" role="status" aria-live="polite">
+    <div class="bar-row"><span>Revision mix</span><span id="barScore">0 / 0</span></div>
+    <div class="track"><div class="fill" id="barFill"></div></div>
+  </div>
+
+  <header>
+    <p class="kicker">What if, I wish, the or a?</p>
+    <h1>Revision mix</h1>
+    <p class="lead">Five short tasks. Every question has exactly one correct answer. Press <b>Check</b> to see your score and a short explanation for each item.</p>
+    <div class="name"><label for="name">Your name</label><input id="name" type="text" autocomplete="name" placeholder="Type your name"></div>
+  </header>
+
+  <main id="tasks"></main>
+
+  <div class="finish">
+    <p>When you have finished, copy your results and paste them in the chat.</p>
+    <button class="act primary" id="copyBtn" type="button">Copy my results</button>
+    <div class="copied" id="copied"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- helpers ---------- */
+const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];}return a;};
+const plain=s=>s.replace(/<[^>]*>/g,"");
+const norm=s=>s.toLowerCase().replace(/[‘’]/g,"'").replace(/[^a-z0-9' ]+/g," ").replace(/\s+/g," ").trim();
+
+function parseItem(str){
+  const parts=[],groups=[];let last=0,m;const re=/\{([^}]*)\}/g;
+  while((m=re.exec(str))){
+    parts.push(str.slice(last,m.index));
+    let correct=-1;
+    const options=m[1].split("|").map((o,i)=>{if(o.endsWith("*")){correct=i;return o.slice(0,-1);}return o;});
+    groups.push({options,correct});
+    last=m.index+m[0].length;
+  }
+  parts.push(str.slice(last));
+  return {parts,groups};
+}
+function choiceLine(it,chosen){
+  let s="";
+  it.groups.forEach((g,gi)=>{s+=it.parts[gi];const c=chosen[gi];s+=(c==null?"___":g.options[c]);});
+  s+=it.parts[it.groups.length];
+  if(!plain(s).replace(/___/g,"").trim()){
+    const g=it.groups[0],c=chosen[0];
+    return "You chose: "+(c==null?"(nothing)":g.options[c])+"   (correct: "+g.options[g.correct]+")";
+  }
+  const wrong=it.groups.map((g,gi)=>chosen[gi]===g.correct?null:g.options[g.correct]).filter(Boolean);
+  return plain(s).replace(/\s+/g," ").trim()+(wrong.length?"   (correct: "+wrong.join("; ")+")":"");
+}
+
+/* ---------- task type: choose options (inline pills or stacked sentences) ---------- */
+function makeChoice(defs,block){
+  return function(host){
+    const items=shuffle(defs).map(d=>Object.assign(parseItem(d.q),{why:d.why}));
+    let state=[],rows=[];
+    const api={total:items.length};
+    function paint(i){
+      const it=items[i],row=rows[i];
+      row.pills.forEach(p=>p.className="pill");
+      it.groups.forEach((g,gi)=>{
+        const c=state[i][gi];
+        if(c!=null){row.pills.filter(p=>+p.dataset.g===gi&&+p.dataset.oi===c).forEach(p=>p.classList.add("sel"));}
+      });
+    }
+    function build(){
+      host.innerHTML="";state=items.map(it=>it.groups.map(()=>null));rows=[];
+      items.forEach((it,i)=>{
+        const row=el("div","item");row.appendChild(el("span","n",String(i+1)));
+        const body=el("div","body");row.appendChild(body);
+        const pills=[];
+        it.groups.forEach((g,gi)=>{
+          if(it.parts[gi])body.appendChild(document.createTextNode(it.parts[gi]));
+          const grp=el("span","grp"+(block?" stack":""));
+          shuffle(g.options.map((o,oi)=>oi)).forEach(oi=>{
+            const b=el("button","pill",g.options[oi]);b.type="button";b.dataset.g=gi;b.dataset.oi=oi;
+            b.addEventListener("click",()=>{
+              state[i][gi]=oi;rows[i].el.classList.remove("ok","bad");rows[i].why.classList.remove("show");paint(i);
+            });
+            pills.push(b);grp.appendChild(b);
+          });
+          body.appendChild(grp);
+        });
+        if(it.parts[it.groups.length])body.appendChild(document.createTextNode(it.parts[it.groups.length]));
+        const why=el("div","why",it.why);body.appendChild(why);
+        host.appendChild(row);
+        rows.push({el:row,pills,why});
+      });
+    }
+    function ok(i){return items[i].groups.every((g,gi)=>state[i][gi]===g.correct);}
+    api.rebuild=build;
+    api.check=function(){
+      let score=0;
+      items.forEach((it,i)=>{
+        const r=rows[i],good=ok(i);
+        r.pills.forEach(p=>p.className="pill");
+        it.groups.forEach((g,gi)=>{
+          const c=state[i][gi];
+          r.pills.filter(p=>+p.dataset.g===gi&&+p.dataset.oi===c).forEach(p=>p.classList.add(c===g.correct?"right":"wrong"));
+        });
+        r.el.classList.toggle("ok",good);r.el.classList.toggle("bad",!good);r.why.classList.add("show");
+        if(good)score++;
+      });
+      return score;
+    };
+    api.fill=function(){
+      items.forEach((it,i)=>{
+        it.groups.forEach((g,gi)=>{state[i][gi]=g.correct;});
+        const r=rows[i];r.el.classList.remove("ok","bad");paint(i);
+        r.pills.forEach(p=>{if(+p.dataset.oi===it.groups[+p.dataset.g].correct)p.classList.add("right");});
+        r.why.classList.add("show");
+      });
+    };
+    api.report=()=>items.map((it,i)=>({ok:ok(i),line:choiceLine(it,state[i])}));
+    build();
+    return api;
+  };
+}
+
+/* ---------- task type: click words into order ---------- */
+function makeOrder(defs){
+  return function(host){
+    const items=shuffle(defs);
+    let placed=[],order=[],rows=[];
+    const api={total:items.length};
+    function renderRow(i){
+      const it=items[i],r=rows[i];
+      r.build.innerHTML="";r.tray.innerHTML="";
+      r.build.appendChild(el("span","fixed",it.start));
+      placed[i].forEach(k=>{
+        const b=el("button","word placed",it.answer[k]);b.type="button";
+        b.addEventListener("click",()=>{placed[i]=placed[i].filter(x=>x!==k);r.el.classList.remove("ok","bad");r.why.classList.remove("show");renderRow(i);});
+        r.build.appendChild(b);
+      });
+      order[i].filter(k=>!placed[i].includes(k)).forEach(k=>{
+        const b=el("button","word",it.answer[k]);b.type="button";
+        b.addEventListener("click",()=>{placed[i].push(k);r.el.classList.remove("ok","bad");r.why.classList.remove("show");renderRow(i);});
+        r.tray.appendChild(b);
+      });
+    }
+    function build(){
+      host.innerHTML="";rows=[];placed=items.map(()=>[]);order=items.map(it=>shuffle(it.answer.map((w,k)=>k)));
+      items.forEach((it,i)=>{
+        const row=el("div","item");row.appendChild(el("span","n",String(i+1)));
+        const body=el("div","body");row.appendChild(body);
+        const pr=el("div","prompt");pr.appendChild(document.createTextNode("Rewrite: "));
+        pr.appendChild(el("i",null,it.prompt));body.appendChild(pr);
+        const bd=el("div","build"),tray=el("div","tray"),why=el("div","why",it.why);
+        body.append(bd,tray,why);host.appendChild(row);
+        rows.push({el:row,build:bd,tray,why});renderRow(i);
+      });
+    }
+    const built=i=>placed[i].map(k=>items[i].answer[k]).join(" ");
+    const ok=i=>placed[i].length===items[i].answer.length&&norm(built(i))===norm(items[i].answer.join(" "));
+    api.rebuild=build;
+    api.check=function(){
+      let score=0;
+      items.forEach((it,i)=>{const good=ok(i);rows[i].el.classList.toggle("ok",good);rows[i].el.classList.toggle("bad",!good);rows[i].why.classList.add("show");if(good)score++;});
+      return score;
+    };
+    api.fill=function(){
+      items.forEach((it,i)=>{placed[i]=it.answer.map((w,k)=>k);rows[i].el.classList.remove("ok","bad");renderRow(i);rows[i].why.classList.add("show");});
+    };
+    api.report=()=>items.map((it,i)=>({
+      ok:ok(i),
+      line:'"'+it.prompt+'" – you made: '+(placed[i].length?'"'+it.start+" "+built(i)+'"':"(nothing)")+'; correct: "'+it.full+'"'
+    }));
+    build();
+    return api;
+  };
+}
+
+/* ---------- content ---------- */
+const T1=[
+ {q:"Had I known the road was closed, I {would take|would have taken*|will take} another route.",
+  why:"Third conditional: an unreal past situation needs would have + past participle in the result clause."},
+ {q:"{Had not Maria|Had Maria not*|Maria had not} left her phone at home, she would have called a taxi.",
+  why:"In the inverted form the order is Had + subject + not + past participle. The word not comes after the subject."},
+ {q:"But for the storm last Saturday, the match {would be played|would have been played*|had been played} as planned.",
+  why:"But for + noun means “if it had not been for”. The result clause is would have + past participle."},
+ {q:"I wish I {didn't eat|hadn't eaten*|wouldn't eat} so much cake yesterday.",
+  why:"A wish about the past uses the past perfect: wish + had(n't) + past participle."},
+ {q:"You {should have called*|should call|should had called} me before you left – I was worried.",
+  why:"A past criticism uses should have + past participle. After a modal, have stays in its base form."},
+ {q:"She regrets {to sell|having sold*|sell} the old house now that its value has doubled.",
+  why:"Regret about a past action is followed by an -ing form: regret having sold (or regret selling)."}
+];
+const T2=[
+ {q:"He inherited {a Picasso*|the Picasso|Picasso} from his uncle, a painting that nobody had ever seen before.",
+  why:"a + an artist’s name means one work by that artist. Without an article, Picasso is the painter himself."},
+ {q:"“Yes, I’m {living the dream*|living a dream|living dream},” he said sarcastically, after his third night shift in a row.",
+  why:"Living the dream is a fixed, ironic phrase for a life that is far from dreamlike."},
+ {q:"The charity collects winter coats for {the homeless*|homeless|a homeless}.",
+  why:"the + adjective names a whole group of people (the homeless, the rich, the elderly)."},
+ {q:"Thousands of tourists ride camels across {the Sahara*|Sahara|a Sahara} every year.",
+  why:"Deserts take the: the Sahara, the Gobi, the Kalahari."},
+ {q:"She grew up on the shores of {Lake Geneva*|the Lake Geneva|a Lake Geneva}.",
+  why:"Single lakes take no article. (Plural groups such as the Great Lakes take the.)"},
+ {q:"He spent ten years in {prison*|the prison|a prison} for fraud.",
+  why:"In prison with no article means as a prisoner. The building itself would need the."},
+ {q:"Mr Harris was {the most patient*|most patient|a most patient} teacher I ever had.",
+  why:"A superlative that is followed by a defining phrase (I ever had) takes the."},
+ {q:"{The French*|French|A French} are famous all over the world for their cheese.",
+  why:"the + nationality adjective means the people of that nation as a whole."}
+];
+const T3=[
+ {q:"The smell of smoke seemed to {linger*|account|weave} in the kitchen for days after the fire.",
+  why:"To linger means to stay or remain, often longer than wanted."},
+ {q:"There is a huge {discrepancy*|paralysis|dreamscape} between the two reports: one says 40 people came, the other says 400.",
+  why:"A discrepancy is a difference between things that should be the same."},
+ {q:"Nobody could {account*|weave|linger} for the missing money until the accountant checked every file.",
+  why:"To account for something means to explain the reason for it."},
+ {q:"When the manager suddenly resigned, Priya had to {take*|break|drop} the reins and run the team herself.",
+  why:"To take the reins means to take control."},
+ {q:"I thought I could manage alone, but when push came to {shove*|pull|stick}, I phoned my sister.",
+  why:"When push comes to shove means when a situation becomes serious or difficult."},
+ {q:"Don’t be nervous about tomorrow’s meeting – I’ve got your {back*|side|hand}.",
+  why:"To have someone’s back means to support and protect them."},
+ {q:"When I realised I had sent the joke to the whole company, I wanted the ground to {swallow*|cover|carry} me up.",
+  why:"Want the ground to swallow you up describes extreme embarrassment."},
+ {q:"The horror film was so frightening that I was scared out of my {wits*|shoes|bones}.",
+  why:"Scared out of your wits means extremely frightened."},
+ {q:"Her stress was {heightened*|lingered|accounted} by the approaching deadline.",
+  why:"Heightened means made stronger or more intense. Only this word fits the passive form was ___ by."},
+ {q:"In a {lucid*|heightened|spare} dream, you know you are asleep and can sometimes control what happens.",
+  why:"A lucid dream is a dream in which you are aware that you are dreaming."},
+ {q:"The novelist managed to {weave*|account|linger} three true stories into one plot.",
+  why:"To weave different elements into a plot means to combine them into one story."}
+];
+const T4=[
+ {prompt:"If I had left earlier, I wouldn't have missed the train.",
+  start:"Had",answer:["I","left","earlier","I","wouldn't","have","missed","the","train"],
+  full:"Had I left earlier, I wouldn't have missed the train.",
+  why:"Inversion replaces if: Had + subject + past participle. The result clause stays would have + past participle."},
+ {prompt:"Without the traffic, we would have arrived on time.",
+  start:"But for the traffic,",answer:["we","would","have","arrived","on","time"],
+  full:"But for the traffic, we would have arrived on time.",
+  why:"But for + noun phrase is followed by a clause with would have + past participle."},
+ {prompt:"I told everyone my secret, and now I'm sorry about it.",
+  start:"I regret",answer:["having","told","everyone","my","secret"],
+  full:"I regret having told everyone my secret.",
+  why:"Regret about a past action takes the perfect gerund: regret having + past participle."},
+ {prompt:"If the bakery hadn't been closed, we could have bought bread.",
+  start:"Had the bakery",answer:["not","been","closed","we","could","have","bought","bread"],
+  full:"Had the bakery not been closed, we could have bought bread.",
+  why:"In the inverted form, not comes after the subject: Had the bakery not been closed."},
+ {prompt:"I ate the whole cake, and now I feel ill.",
+  start:"I wish I",answer:["hadn't","eaten","the","whole","cake"],
+  full:"I wish I hadn't eaten the whole cake.",
+  why:"A wish about the past uses the past perfect: wish + had(n't) + past participle."}
+];
+const T5=[
+ {q:"{Had she not forgotten her passport, she would have caught the flight.*|Had not she forgotten her passport, she would have caught the flight.|If had she not forgotten her passport, she would have caught the flight.}",
+  why:"The inverted third conditional is Had + subject + not + past participle. You cannot combine it with if."},
+ {q:"{I wish I would have gone to the party.|I wish I had gone to the party.*|I wish I have gone to the party.}",
+  why:"A wish about the past uses had + past participle. Would have is not used after wish in this structure."},
+ {q:"{But for your advice, I would have made a terrible mistake.*|But for you gave me advice, I would have made a terrible mistake.|But for your advice, I would make a terrible mistake yesterday.}",
+  why:"But for is followed by a noun phrase (your advice), not a full clause. The result is would have + past participle."},
+ {q:"{He regrets having told them.*|He regrets to having told them.|He regrets have told them.}",
+  why:"After regret, use the -ing form. The perfect gerund is having + past participle."},
+ {q:"{They should have went home earlier.|They should have gone home earlier.*|They should went home earlier.}",
+  why:"should have is followed by the past participle (gone), not the past simple (went)."}
+];
+
+/* ---------- sections ---------- */
+const sections=[];
+const host=document.getElementById("tasks");
+
+function addSection(def){
+  const sec={id:def.id,num:def.num,label:def.label,total:0,score:0,checked:false,revealed:false,api:null,log:[],seen:new Set(),lastOk:[]};
+  const card=el("section","task");card.style.setProperty("--accent",def.accent);card.id="task"+def.num;
+  const head=el("div","task-head");head.append(el("span","badge",String(def.num)),el("h2",null,def.title));
+  card.append(head,el("p","instr",def.instr));
+  const body=el("div","items");card.appendChild(body);
+  sec.api=def.make(body);sec.total=sec.api.total;
+  const btns=el("div","btns");
+  const bCheck=el("button","act primary","Check"),bShow=el("button","act","Show answers"),bAgain=el("button","act","Try again");
+  [bCheck,bShow,bAgain].forEach(b=>{b.type="button";btns.appendChild(b);});
+  const msg=el("p","msg");card.append(btns,msg);
+  bCheck.addEventListener("click",()=>{
+    if(sec.revealed){msg.className="msg";msg.textContent="You have seen the answers for this task. Press Try again to answer it for a score.";return;}
+    sec.score=sec.api.check();sec.checked=true;record(sec);
+    msg.textContent=sec.score+" / "+sec.total;msg.className="msg"+(sec.score===sec.total?" good":"");
+    updateBar();
+  });
+  bShow.addEventListener("click",()=>{
+    sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;
+    msg.className="msg";msg.textContent="Answers shown. This task is not scored. Press Try again to have another go.";
+    updateBar();
+  });
+  bAgain.addEventListener("click",()=>{
+    sec.api.rebuild();sec.revealed=false;sec.checked=false;sec.score=0;
+    msg.className="msg";msg.textContent="";updateBar();
+  });
+  host.appendChild(card);sections.push(sec);
+}
+function record(sec){
+  if(!sec.api.report)return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line});}}
+  });
+}
+function updateBar(){
+  let got=0,tot=0;
+  sections.forEach(s=>{tot+=s.total;if(s.checked&&!s.revealed)got+=s.score;});
+  document.getElementById("barScore").textContent=got+" / "+tot;
+  document.getElementById("barFill").style.width=(tot?Math.round(got/tot*100):0)+"%";
+}
+
+addSection({id:"t1",num:1,label:"Choose the correct form",accent:"#D9532B",
+  title:"Choose the correct form",instr:"Tap the option that completes the sentence correctly.",make:makeChoice(T1,false)});
+addSection({id:"t2",num:2,label:"The, a or no article",accent:"#1E8E86",
+  title:"The, a or no article",instr:"Choose the option with the correct article. The meaning of the sentence decides.",make:makeChoice(T2,false)});
+addSection({id:"t3",num:3,label:"Choose the right word",accent:"#7457A8",
+  title:"Choose the right word",instr:"Tap the word or phrase that fits the sentence best.",make:makeChoice(T3,false)});
+addSection({id:"t4",num:4,label:"Build the sentence",accent:"#D08A1A",
+  title:"Build the sentence",instr:"Rewrite each sentence. Tap the words in the correct order to finish it. Tap a word in your answer to take it back.",make:makeOrder(T4)});
+addSection({id:"t5",num:5,label:"Which sentence is correct?",accent:"#2F6DA8",
+  title:"Which sentence is correct?",instr:"Only one sentence in each group is correct. Tap it.",make:makeChoice(T5,true)});
+updateBar();
+
+/* ---------- report ---------- */
+function buildReport(){
+  const name=(document.getElementById("name").value||"").trim()||"(no name)";
+  const lines=["Revision mix – "+name+" ("+new Date().toLocaleString()+")",""];
+  let got=0,tot=0;
+  sections.forEach(s=>{
+    tot+=s.total;let st;
+    if(s.revealed)st="answers shown";
+    else if(s.checked){st=s.score+" / "+s.total;got+=s.score;}
+    else st="not checked";
+    lines.push("Task "+s.num+" "+s.label+": "+st);
+  });
+  lines.push("","Total: "+got+" / "+tot,"","MISTAKES (every wrong answer, including ones fixed on retry)","");
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length)return;any=true;
+    lines.push("Task "+s.num+" "+s.label);
+    s.log.forEach(e=>{lines.push("  ✗ "+e.line+"   "+(s.lastOk[e.i]?"[fixed on retry]":"[still wrong]"));});
+    lines.push("");
+  });
+  if(!any)lines.push("No mistakes logged.");
+  return lines.join("\n");
+}
+function copyText(t){
+  if(navigator.clipboard&&window.isSecureContext){return navigator.clipboard.writeText(t);}
+  return new Promise((res,rej)=>{
+    const ta=document.createElement("textarea");ta.value=t;ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy")?res():rej();}catch(e){rej(e);}
+    document.body.removeChild(ta);
+  });
+}
+document.getElementById("copyBtn").addEventListener("click",()=>{
+  const out=document.getElementById("copied");
+  copyText(buildReport()).then(()=>{out.textContent="Copied! Paste it in the chat.";})
+   .catch(()=>{out.textContent="Could not copy automatically. Select your results and copy them by hand.";});
+});
+
+window.HW={sections,buildReport};
+})();
+</script>
+</body>
+</html>
