@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Revision Homework: Relative Clauses, Passive, Graphs, Linkers</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--gold:#f6e7b8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);line-height:1.2}
+.sub{font-weight:300;font-size:24px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.box{background:#fff;border-left:4px solid #d9b94d;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15.5px}
+.box.t{border-left-color:var(--taupe)}
+.wb{text-align:center;font-weight:600;background:#fff;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:16px;line-height:1.7}
+.graph{display:block;width:100%;max-width:640px;margin:10px auto 0;border-radius:8px;background:#fff}
+.src{font-size:12.5px;color:var(--grey-l);text-align:center;margin:2px 0 10px}
+.q{padding:9px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:24px;color:var(--grey-l);font-size:14px}
+input.gap,input.ln{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:3px 10px;background:#fff;color:var(--ink)}
+input.gap{width:190px;max-width:100%}
+input.ln{width:100%;margin-top:5px}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+input.ok,select.ok,textarea.ok{background:var(--green)!important;border-color:var(--green-d)!important}
+input.bad,select.bad,textarea.bad{background:var(--red)!important;border-color:var(--red-d)!important}
+textarea.wr{width:100%;min-height:110px;font:inherit;border:1.5px solid var(--taupe);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical;margin-top:6px}
+.exp{margin:6px 0 0 0;padding:8px 12px;border-radius:8px;font-size:14.8px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.scheme{display:grid;gap:8px;margin:8px 0}
+.scheme.c4{grid-template-columns:repeat(4,1fr)}.scheme.c3{grid-template-columns:repeat(3,1fr)}
+.st{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px;position:relative}
+.st b{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-right:6px}
+.st:not(:last-child)::after{content:"\2192";position:absolute;right:6px;top:6px;color:var(--grey-l)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.chk li{color:var(--grey-l)}.chk li::before{content:"\2610  "}
+.chk li.on{color:var(--green-d);font-weight:600}.chk li.on::before{content:"\2611  "}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+.hw{background:#fdf3da}table.rt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}table.rt td,table.rt th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.rt th{background:var(--taupe);color:#fff;font-weight:600}.rt b{color:var(--taupe)}
+@media(max-width:720px){
+  .txt{flex:1 1 0;min-width:0;max-width:100%}select{width:100%;white-space:normal}table.rt{font-size:14px}table.rt td,table.rt th{padding:6px 6px}
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:20px}.sub{font-size:19px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .scheme.c4,.scheme.c3{grid-template-columns:1fr 1fr}
+  input.gap{width:150px}
+}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Revision Homework</h1><div class="sub">relative clauses · passive · graphs · linkers · speculating</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\b(is|are|was|were|will|do|does|did)n't\b/g,"$1 not").replace(/won't/g,"will not").replace(/'ll\b/g," will").replace(/centre/g,"center").replace(/'/g,"").replace(/[.,!?;:"()]/g," ").replace(/\s+/g," ").trim();
+const anyOf=(v,list)=>list.some(a=>norm(a)===norm(v));
+const subj=(subs,rests)=>{const o=[];subs.forEach(a=>rests.forEach(b=>o.push(a+" "+b)));return o};
+const stripSeq=v=>norm(v).replace(/^(first|then|after that|next|finally|and then)\s+/,"").replace(/^(then|after that|next|finally)\s+/,"");
+
+
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const PR=["who","which","where","whose"];
+const T1=[
+ ["A shareholder is a person {{}} owns shares of a company.","who","<b>who</b>. <i>a person</i> is a human, and the pronoun is the subject of <i>owns</i>. Not <i>which</i> (things), <i>where</i> (places) or <i>whose</i> (belongs to someone)."],
+ ["Maersk is a company {{}} operates container ships.","which","<b>which</b>. <i>a company</i> is a thing, not a person. <i>who</i> is only for people."],
+ ["The sorting center is the place {{}} parcels are put in groups by city.","where","<b>where</b>. <i>the place</i> is a place, and the clause says what happens there."],
+ ["I have a friend {{}} father owns a small company.","whose","<b>whose</b>. The father belongs to the friend (<i>the friend's father</i>), and <i>whose</i> is followed by a noun."],
+ ["The CEO is the person {{}} runs the company.","who","<b>who</b>. <i>the person</i> = a human being."],
+ ["This is the graph {{}} shows the price of oil.","which","<b>which</b>. <i>the graph</i> is a thing."],
+ ["That is the port {{}} the cars are loaded onto the ship.","where","<b>where</b>. <i>the port</i> is a place: the cars are loaded <i>there</i>."],
+ ["The workers {{}} work at the factory start at 7 a.m.","who","<b>who</b>. <i>The workers</i> are people, and the pronoun is the subject of <i>work</i>."],
+ ["We met a manager {{}} company sells cars in Europe.","whose","<b>whose</b>. The company belongs to the manager (<i>the manager's company</i>)."],
+ ["Revenue is the money {{}} a company gets from its sales.","which","<b>which</b>. <i>the money</i> is a thing."],
+ ["Moscow is the city {{}} the head office of many companies is.","where","<b>where</b>. <i>the city</i> is a place: the head office is <i>there</i>."],
+ ["A subsidiary is a company {{}} belongs to a bigger company.","which","<b>which</b>. <i>a company</i> is a thing, not a person."]
+];
+const T2=[
+ ["The man who runs the company is my uncle.","Yes","<b>Yes</b>. <i>who</i> (a person) can be replaced by <i>that</i>: <i>The man that runs the company</i>."],
+ ["The graph which shows revenue is on page 5.","Yes","<b>Yes</b>. <i>which</i> (a thing) can be replaced by <i>that</i>."],
+ ["The city where I work is very big.","No","<b>No</b>. <i>where</i> is for places. We cannot say <i>the city that I work</i>."],
+ ["The girl whose brother works at Pfizer is my classmate.","No","<b>No</b>. <i>whose</i> shows that something belongs to someone. We never replace it with <i>that</i>."],
+ ["The parcel which arrived yesterday was heavy.","Yes","<b>Yes</b>. <i>which</i> (a thing) can be replaced by <i>that</i>."],
+ ["The office where the managers work is on the top floor.","No","<b>No</b>. <i>where</i> is for places, and <i>that</i> cannot replace it here."],
+ ["Shareholders who own many shares get more money.","Yes","<b>Yes</b>. <i>who</i> (people) can be replaced by <i>that</i>."],
+ ["The company whose revenue dropped sharply is not happy.","No","<b>No</b>. <i>whose</i> is never replaced by <i>that</i>."]
+];
+const T3=[
+ ["Pfizer is a pharmaceutical company {{}} sells medicines and vaccines.","which","<b>which</b>. <i>a company</i> is a thing."],
+ ["A vaccine is a medicine {{}} protects people from a disease.","which","<b>which</b>. <i>a medicine</i> is a thing."],
+ ["Maersk is a Danish company {{}} operates container ships.","which","<b>which</b>. <i>a company</i> is a thing."],
+ ["A freight rate is the price {{}} customers pay for carrying goods.","which","<b>which</b>. <i>the price</i> is a thing. (<i>that</i> is also possible, but it is not in the list.)"],
+ ["A sorting center is a place {{}} parcels are put in groups by city.","where","<b>where</b>. <i>a place</i>: the parcels are sorted <i>there</i>."],
+ ["People {{}} buy shares of a company are called shareholders.","who","<b>who</b>. <i>People</i> are humans."],
+ ["A shareholder is happy when the company {{}} shares he owns makes a profit.","whose","<b>whose</b>. The shares belong to the shareholder, but the pronoun refers to <i>the company</i>: <i>the company's shares</i>."]
+];
+const T4=[
+ [["The man who works here is my boss.","The man who he works here is my boss.","The man which works here is my boss."],"<b>The man who works here is my boss.</b> <i>who</i> is already the subject, so we do not repeat <i>he</i>. And <i>which</i> is not used for people."],
+ [["The film which I watched yesterday was great.","The film which I watched it yesterday was great.","The film who I watched yesterday was great."],"<b>The film which I watched yesterday was great.</b> <i>which</i> already replaces <i>the film</i>, so <i>it</i> is not needed. <i>who</i> is for people."],
+ [["The café where we met is closed.","The café where we met there is closed.","The café which we met is closed."],"<b>The café where we met is closed.</b> <i>where</i> already means <i>there</i>, so we do not add <i>there</i>. And <i>which we met</i> sounds like we met the café."],
+ [["The students whose homework is late must stay.","The students who homework is late must stay.","The students whose their homework is late must stay."],"<b>The students whose homework is late must stay.</b> The homework belongs to the students, so we need <i>whose</i>. We do not add <i>their</i>: <i>whose</i> already shows who it belongs to."],
+ [["I know a woman who owns three companies.","I know a woman who she owns three companies.","I know a woman which owns three companies."],"<b>I know a woman who owns three companies.</b> <i>a woman</i> is a person, so <i>who</i>, and we do not repeat <i>she</i>."],
+ [["This is the office where the CEO works.","This is the office where the CEO works in.","This is the office who the CEO works."],"<b>This is the office where the CEO works.</b> <i>where</i> already includes <i>in</i>, so we do not add <i>in</i>. <i>who</i> is not used for places."]
+];
+const T5=[
+ ["I have a colleague. She speaks four languages.",["I have a colleague who speaks four languages.","I have a colleague which speaks four languages.","I have a colleague whose speaks four languages."],"<b>who</b>. <i>a colleague</i> is a person and the subject of <i>speaks</i>."],
+ ["This is the report. It shows the revenue.",["This is the report which shows the revenue.","This is the report who shows the revenue.","This is the report where shows the revenue."],"<b>which</b>. <i>the report</i> is a thing."],
+ ["That is the town. My parents were born there.",["That is the town where my parents were born.","That is the town which my parents were born there.","That is the town whose my parents were born."],"<b>where</b>. <i>there</i> in the second sentence means a place."],
+ ["She is the manager. Her team won the prize.",["She is the manager whose team won the prize.","She is the manager who team won the prize.","She is the manager which her team won the prize."],"<b>whose</b>. <i>Her team</i> = the team belongs to the manager, so <i>whose team</i>."],
+ ["Pfizer is a company. It sells vaccines.",["Pfizer is a company which sells vaccines.","Pfizer is a company who sells vaccines.","Pfizer is a company where sells vaccines."],"<b>which</b>. <i>a company</i> is a thing."]
+];
+/* ============ ENGINE ============ */
+const secs=[],host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div>";
+  host.appendChild(el);return el;
+}
+function addTools(el,sec){
+  const t=document.createElement("div");t.className="tools";
+  t.innerHTML="<button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span>";
+  el.appendChild(t);
+  const res=$(".res",t),msg=$(".msg",t),items=sec.items;
+  $("[data-a=check]",t).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",t).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",t).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+}
+function mkSec(num,label,items,el){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items,extra:null};
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  addTools(el,sec);secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,ans){
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(ans)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(ans)+"</b>. ";
+  box.innerHTML=head+html.replace(/^<b>[^<]*<\/b>\.?\s*/,"");
+}
+function row(body,labelHtml,n){
+  const q=document.createElement("div");q.className="q";
+  q.innerHTML="<div class=\"line\"><span class=\"n\">"+n+"</span><span class=\"txt\">"+labelHtml+"</span></div><div class=\"exp\"></div>";
+  body.appendChild(q);return q;
+}
+/* item with inline control */
+function inlineItem(body,n,tpl,kind,opts,okFn,ansDisp,why,lineFn){
+  const [pre,post]=tpl.split("{{}}");
+  const ctl=kind==="sel"?"<select>"+["<option value=\"\">choose…</option>"].concat(opts.map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("")+"</select>":"<input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">";
+  const q=row(body,esc(pre)+ctl+esc(post),n);
+  const c=$(kind==="sel"?"select":"input",q),box=$(".exp",q);
+  const clear=()=>{c.className=kind==="sel"?"":"gap";box.className="exp";box.innerHTML=""};
+  c.addEventListener(kind==="sel"?"change":"input",clear);
+  return {
+    ok:()=>okFn(c.value),
+    line:()=>lineFn(c.value.trim()),
+    mark:ok=>{c.className=(kind==="sel"?"":"gap ")+(ok?"ok":"bad");setExp(box,ok,why,ansDisp)},
+    show:()=>{c.value=ansDisp;c.className=kind==="sel"?"":"gap";setExp(box,null,why,ansDisp)},
+    reset:()=>{c.value="";clear()}
+  };
+}
+/* item with full-width line input */
+function lineItem(body,n,labelHtml,okFn,modelAns,why,lineFn){
+  const q=row(body,labelHtml,n);
+  const inp=document.createElement("input");inp.type="text";inp.className="ln";inp.autocomplete="off";inp.spellcheck=false;
+  q.insertBefore(inp,$(".exp",q));const box=$(".exp",q);
+  inp.addEventListener("input",()=>{inp.className="ln";box.className="exp";box.innerHTML=""});
+  return {
+    ok:()=>okFn(inp.value),
+    line:()=>lineFn(inp.value.trim()),
+    mark:ok=>{inp.className="ln "+(ok?"ok":"bad");setExp(box,ok,why,modelAns)},
+    show:()=>{inp.value=modelAns;inp.className="ln";setExp(box,null,why,modelAns)},
+    reset:()=>{inp.value="";inp.className="ln";box.className="exp";box.innerHTML=""}
+  };
+}
+function staticQs(body,list){list.forEach((t,i)=>{const q=document.createElement("div");q.className="q";q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+t+"</span></div>";body.appendChild(q)})}
+function writeBox(body,placeholder,checks,model){
+  const ta=document.createElement("textarea");ta.className="wr";ta.placeholder=placeholder;body.appendChild(ta);
+  const ul=document.createElement("ul");ul.className="chk";body.appendChild(ul);
+  const lis=checks.map(c=>{const li=document.createElement("li");li.textContent=c[0];ul.appendChild(li);return li});
+  const upd=()=>{const t=ta.value;checks.forEach((c,i)=>lis[i].className=c[1](t)?"on":"")};
+  ta.addEventListener("input",upd);
+  let mb=null;
+  if(model){mb=document.createElement("div");mb.className="exp";body.appendChild(mb)}
+  return {ta,upd,showModel:()=>{if(mb){mb.className="exp";mb.innerHTML="<b>Model answer.</b> "+model}},hideModel:()=>{if(mb){mb.className="exp";mb.innerHTML=""}},reset:()=>{ta.value="";upd();if(mb){mb.innerHTML=""}}};
+}
+const LINKERS_RE=/\b(to begin with|in addition|moreover|for example|for instance|on the one hand|on the other hand|however|as a result|in conclusion)\b/gi;
+const hasN=(t,re,n)=>((t.match(re)||[]).length>=n);
+
+
+/* rules */
+(function(){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Rules: relative clauses</h2><p class=\"note\">A relative clause gives more information about a noun. It comes <b>right after</b> the noun.</p>"+
+  "<table class=\"rt\"><tr><th>Pronoun</th><th>We use it for</th><th>Example</th></tr>"+
+  "<tr><td><b>who</b></td><td>people</td><td>A CEO is a person <b>who</b> runs a company.</td></tr>"+
+  "<tr><td><b>which</b></td><td>things</td><td>Revenue is the money <b>which</b> a company gets from its sales.</td></tr>"+
+  "<tr><td><b>that</b></td><td>people <i>or</i> things (instead of who / which)</td><td>A subsidiary is a company <b>that</b> belongs to a bigger company.</td></tr>"+
+  "<tr><td><b>where</b></td><td>places</td><td>A head office is the place <b>where</b> the top managers work.</td></tr>"+
+  "<tr><td><b>whose</b></td><td>things that belong to someone (+ noun)</td><td>I know a manager <b>whose</b> company sells cars.</td></tr></table>"+
+  "<div class=\"box\"><b>Remember</b><br>1. <b>who / which / that</b> are already the subject. Do not repeat the subject: <i>The man who works here</i>, not <i>The man who he works here</i>.<br>2. <b>where</b> already means <i>in that place</i>. Do not add <i>there</i> or <i>in</i>.<br>3. <b>whose</b> + noun. Do not add <i>his, her, their</i>.<br>4. We never use <b>that</b> instead of <b>where</b> or <b>whose</b>.</div>";
+  host.appendChild(el);
+})();
+/* T1 */
+(function(){
+  const el=mkCard(1,"Choose the pronoun","Choose <b>who, which, where</b> or <b>whose</b>.");
+  const body=$(".body",el);const items=[];
+  T1.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"sel",sh(PR),v=>v===t[1],t[1],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1]+")")));
+  mkSec(1,"Choose the pronoun",items,el);
+})();
+/* T2 */
+(function(){
+  const el=mkCard(2,"Can we use “that”?","Look at the <b>bold</b> pronoun. Can we replace it with <b>that</b>?");
+  const body=$(".body",el);const items=[];
+  const YN=["Yes, we can","No, we can not"];
+  T2.forEach((t,i)=>{
+    const m=t[0].match(/ (who|which|where|whose) /);const lab=t[0].replace(m[0]," <b>"+m[1]+"</b> ");
+    const q=row(body,lab+" {{}}",i+1);
+    q.querySelector(".txt").innerHTML=lab+" ";
+    const s=document.createElement("select");s.innerHTML="<option value=\"\">choose…</option>"+sh(YN).map(o=>"<option>"+o+"</option>").join("");
+    q.querySelector(".txt").appendChild(s);const box=$(".exp",q);
+    const want=t[1]==="Yes"?YN[0]:YN[1];
+    s.addEventListener("change",()=>{s.className="";box.className="exp";box.innerHTML=""});
+    items.push({ok:()=>s.value===want,line:()=>"\""+t[0]+"\" – you chose "+(s.value?"\""+s.value+"\"":"(nothing)")+"; correct: \""+want+"\"",
+      mark:ok=>{s.className=ok?"ok":"bad";setExp(box,ok,t[2],want)},
+      show:()=>{s.value=want;s.className="";setExp(box,null,t[2],want)},
+      reset:()=>{s.value="";s.className="";box.className="exp";box.innerHTML=""}});
+  });
+  mkSec(2,"Can we use “that”?",items,el);
+})();
+/* T3 */
+(function(){
+  const el=mkCard(3,"Business words: definitions","Read the definitions of words we know. Choose <b>who, which, where</b> or <b>whose</b>.");
+  const body=$(".body",el);const items=[];
+  T3.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"sel",sh(PR),v=>v===t[1],t[1],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1]+")")));
+  mkSec(3,"Business words: definitions",items,el);
+})();
+/* T4 */
+(function(){
+  const el=mkCard(4,"Find the correct sentence","Only <b>one</b> sentence in each group is correct. Choose it.");
+  const body=$(".body",el);const items=[];
+  T4.forEach((t,i)=>items.push(inlineItem(body,i+1,"{{}}","sel",sh(t[0]),v=>v===t[0][0],t[0][0],t[1],v=>"Group "+(i+1)+": you chose "+(v?"\""+v+"\"":"(nothing)")+"; correct: \""+t[0][0]+"\"")));
+  mkSec(4,"Find the correct sentence",items,el);
+})();
+/* T5 */
+(function(){
+  const el=mkCard(5,"Join the sentences","Choose the best way to join the two sentences.");
+  const body=$(".body",el);const items=[];
+  T5.forEach((t,i)=>{
+    const it=inlineItem(body,i+1,"{{}}","sel",sh(t[1]),v=>v===t[1][0],t[1][0],t[2],v=>"\""+t[0]+"\" – you chose "+(v?"\""+v+"\"":"(nothing)")+"; correct: \""+t[1][0]+"\"");
+    const q=body.lastElementChild;const p=document.createElement("div");p.innerHTML="<i style=\"color:var(--grey-l);font-size:15px\">"+esc(t[0])+"</i>";q.querySelector(".txt").prepend(p);
+    items.push(it);
+  });
+  mkSec(5,"Join the sentences",items,el);
+})();
+
+const RC=(title,note,html)=>{const el=document.createElement("section");el.className="card";el.innerHTML="<h2>"+title+"</h2><p class=\"note\">"+note+"</p>"+html;host.appendChild(el)};
+const MC=(num,title,note,list)=>{
+  const el=mkCard(num,title,note);const body=$(".body",el);const items=[];
+  list.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"sel",sh([t[1]].concat(t[2])),v=>v===t[1],t[1],t[3],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1]+")")));
+  mkSec(num,title,items,el);
+};
+RC("Rules: passive voice","We use the passive when the action is more important than the doer.","<div class=\"box\"><b>be + V3 (past participle)</b><br>Present: <i>The box <b>is</b> weighed. The boxes <b>are</b> sorted.</i><br>Past: <i>The box <b>was</b> taken. The cars <b>were</b> loaded.</i><br>Future: <i>The goods <b>will be</b> delivered.</i><br>The doer can be added with <b>by</b>: <i>The containers are carried by ships.</i><br>The verb <b>be</b> agrees with the <b>new</b> subject (the object of the active sentence). Some verbs have <b>no passive</b>: <i>The revenue remained stable</i>, not <i>was remained</i>.</div>");
+MC(6,"Passive: choose the form","Choose the correct form of the verb.",[
+ ["The parcels {{}} to the customers every day.","are delivered",["is delivered","was delivered","deliver"],"<b>are delivered</b>. <i>The parcels</i> is plural and <i>every day</i> = present: <i>are</i> + V3."],
+ ["The box {{}} at the post office yesterday.","was weighed",["is weighed","were weighed","will be weighed"],"<b>was weighed</b>. <i>Yesterday</i> = past; <i>the box</i> is one thing: <i>was</i> + V3."],
+ ["The cars {{}} in a factory.","are built",["is built","were built","build"],"<b>are built</b>. <i>The cars</i> is plural and the statement is general: <i>are</i> + V3 (<i>built</i>)."],
+ ["Tomorrow, the goods {{}} by couriers.","will be delivered",["are delivered","were delivered","will deliver"],"<b>will be delivered</b>. <i>Tomorrow</i> = future: <i>will be</i> + V3."],
+ ["Last week, the containers {{}} onto a ship.","were loaded",["was loaded","are loaded","will be loaded"],"<b>were loaded</b>. <i>Last week</i> = past; <i>the containers</i> is plural: <i>were</i> + V3."],
+ ["The address {{}} on the box.","is written",["are written","was written","will write"],"<b>is written</b>. <i>The address</i> is one thing and the action is a normal step: <i>is</i> + V3 (<i>written</i>)."],
+ ["Next month, the new cars {{}} at the dealership.","will be sold",["are sold","were sold","will sell"],"<b>will be sold</b>. <i>Next month</i> = future: <i>will be</i> + V3 (<i>sold</i>)."],
+ ["The item {{}} in a box before it goes to the post office.","is packed",["are packed","was packed","packs"],"<b>is packed</b>. <i>The item</i> is one thing and the action is a general step: <i>is</i> + V3."]
+]);
+MC(7,"Active or passive?","Choose the correct form. Sometimes the sentence is active!",[
+ ["The revenue {{}} sharply in 2022.","increased",["was increased","is increased","were increased"],"<b>increased</b>. The revenue changed by itself, so the sentence is active (Past Simple)."],
+ ["Ships {{}} the containers across the sea every day.","carry",["carries","are carried","is carried"],"<b>carry</b>. <i>Ships</i> does the action (active) and is plural, so no <i>-s</i>."],
+ ["The containers {{}} across the sea by ships every day.","are carried",["carry","carries","is carried"],"<b>are carried</b>. <i>The containers</i> receive the action (passive) and are plural: <i>are</i> + V3."],
+ ["In 2024, the market share {{}} stable.","remained",["was remained","is remained","remain"],"<b>remained</b>. <i>Remain</i> has no passive. <i>In 2024</i> = Past Simple."],
+ ["The shares of this company {{}} by thousands of people.","are bought",["buy","is bought","bought"],"<b>are bought</b>. <i>The shares</i> receive the action, and <i>shares</i> is plural: <i>are</i> + V3."],
+ ["The company {{}} 5,000 new workers last year.","hired",["was hired","were hired","hires"],"<b>hired</b>. The company did the action (active), and <i>last year</i> = past."]
+]);
+RC("Rules: describing graphs","We use a verb + an adverb, or an adjective + a noun.","<div class=\"box\"><b>Verbs:</b> increase / rise / grow (up) · decrease / drop / fall (down) · remain stable · reach a peak · almost double<br><b>Big change:</b> <i>sharply</i> (adverb after the verb) · <i>a sharp increase</i> (adjective before a noun)<br><b>Small change:</b> <i>slightly</i> · <i>a slight drop</i><br>The adverb describes a verb, the adjective describes a noun.</div>");
+MC(8,"Describe the graph","Choose the correct word or phrase.",[
+ ["Revenue went from $41.7 billion to $81.3 billion. It {{}}.","almost doubled",["dropped","remained stable","was doubled"],"<b>almost doubled</b>. 81.3 is nearly two times 41.7."],
+ ["In 2024, the price went from $82 to $80. It {{}} slightly.","decreased",["increased","reached a peak","doubled"],"<b>decreased</b>. The price went down a little, so <i>slightly</i> fits."],
+ ["In 2020, the oil price dropped {{}} from $64 to $42.","sharply",["sharp","slightly","slight"],"<b>sharply</b>. It is a big fall, and <i>dropped</i> is a verb, so we need an adverb."],
+ ["There was a {{}} increase in the price in 2021, from $42 to $71.","sharp",["sharply","slightly","slight"],"<b>sharp</b>. It is a big rise, and <i>increase</i> is a noun, so we need an adjective."],
+ ["In 2022, Pfizer's revenue {{}} a peak of $100.3 billion.","reached",["made","dropped","was reached"],"<b>reached</b>. We say <i>reach a peak</i>, and the sentence is active."],
+ ["The revenue stayed at the same level. It {{}} stable.","remained",["was remained","dropped","peaked"],"<b>remained</b>. <i>Remain stable</i> = stay the same. <i>Remain</i> has no passive."]
+]);
+RC("Rules: linkers","A linker at the start of a sentence is followed by a comma.","<div class=\"box\"><b>To begin with</b> = first point · <b>In addition / Moreover</b> = another point · <b>For example</b> = a case · <b>However</b> = contrast · <b>As a result</b> = consequence · <b>On the one hand … On the other hand …</b> = two sides · <b>In conclusion</b> = final summary</div>");
+MC(9,"Choose the linker","Choose the best linker.",[
+ ["Exports grew by 6.1%. {{}}, investment in real estate dropped by 17.2%.","However",["For example","In conclusion","To begin with"],"<b>However</b> shows a contrast: good news, then bad news."],
+ ["Many Korean companies sell products all over the world. {{}}, Samsung makes phones and chips.","For example",["However","As a result","In conclusion"],"<b>For example</b> introduces a typical case."],
+ ["The demand for chips is strong. {{}}, South Korea's growth is fast.","As a result",["However","To begin with","On the one hand"],"<b>As a result</b> shows a consequence: strong demand → fast growth."],
+ ["{{}}, China's economy is very big.","To begin with",["In conclusion","However","As a result"],"<b>To begin with</b> starts a list of points. The other linkers need something before them."],
+ ["On the one hand, the economy is growing. {{}}, it depends a lot on chips.","On the other hand",["For example","In conclusion","To begin with"],"<b>On the other hand</b> is the pair of <i>On the one hand</i>."],
+ ["{{}}, both economies are strong, but each of them has risks.","In conclusion",["To begin with","For example","However"],"<b>In conclusion</b> introduces the final summary."],
+ ["Exports grew. {{}}, high-tech manufacturing grew by 9.4%.","Moreover",["However","In conclusion","As a result"],"<b>Moreover</b> adds another good point (<i>In addition</i> is also possible)."]
+]);
+RC("Rules: speculating","We speak about possible situations and about the future.","<div class=\"box\"><b>First conditional:</b> If + Present Simple, … <b>will</b> + verb. <i>If the price drops, the company will earn less.</i> We do not use <i>will</i> after <i>if</i>.<br><b>might / could + verb</b> = it is possible. <i>The price might rise.</i> After <i>might / could</i> we use the base verb (no <i>to</i>, no <i>-s</i>).</div>");
+MC(10,"Speculate: conditionals, might, could","Choose the correct form.",[
+ ["If the oil price {{}}, the company will earn less.","drops",["will drop","dropped","dropping"],"<b>drops</b>. After <i>if</i> we use Present Simple, not <i>will</i>."],
+ ["If the ship is late, the customers {{}} the cars on time.","will not get",["do not get","would not get","did not get"],"<b>will not get</b>. The result of a possible future situation: <i>will</i> + verb."],
+ ["If a new disease appears, vaccine companies {{}} more money.","will make",["make","made","would make"],"<b>will make</b>. First conditional: the result needs <i>will</i> + verb."],
+ ["The graph ends in 2025. In 2027, the revenue {{}}.","might increase",["might increased","might to increase","will to increase"],"<b>might increase</b>. After <i>might</i> we use the base verb."],
+ ["I am not sure, but the price {{}} next year.","could rise",["could rises","could to rise","could rose"],"<b>could rise</b>. After <i>could</i> we use the base verb."],
+ ["If freight rates {{}}, Maersk will have more profit.","increase",["will increase","increased","would increase"],"<b>increase</b>. After <i>if</i> we use Present Simple. <i>Freight rates</i> is plural, so no <i>-s</i>."],
+ ["Perhaps China's exports {{}} more slowly next year.","might grow",["might grows","might to grow","will to grow"],"<b>might grow</b>. After <i>might</i> we use the base verb."],
+ ["If she {{}} the report, she will understand the graph.","reads",["will read","read","would read"],"<b>reads</b>. After <i>if</i> we use Present Simple; <i>she</i> needs <i>-s</i>."]
+]);
+
+/* ============ BAR / REPORT / SAVE ============ */
+const scored=secs.filter(s=>s.total>0);
+const TOTAL=scored.reduce((a,s)=>a+s.total,0);
+const got=()=>scored.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Revision Homework – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  scored.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  scored.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  let wr="";
+  secs.forEach(s=>{if(s.extra&&s.extra.ta&&s.extra.ta.value.trim())wr+="\nTask "+s.num+" "+s.label+" – your text:\n"+s.extra.ta.value.trim()+"\n"});
+  if(wr)t+="\nWRITING / NOTES (not scored)\n"+wr;
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select,textarea")),dst=[].slice.call(clone.querySelectorAll("input,select,textarea"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else if(el.tagName==="TEXTAREA"){dst[i].textContent=el.value;dst[i].setAttribute("readonly","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,textarea{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Revision_homework_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
