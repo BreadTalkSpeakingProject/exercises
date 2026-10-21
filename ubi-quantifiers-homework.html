@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>UBI quantifiers homework</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#164a3a; --green-2:#1d5b48; --gold:#deaa30; --gold-d:#a87618; --gold-l:#ffe28c;
+  --cream:#fcf7e6; --ink:#10103a; --ok:#2e8b57; --bad:#c0392b; --bg:#e6eadc; --soft:#efe6c4;
+}
+*{box-sizing:border-box}
+html{color-scheme:light}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Fira Sans",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 40px}
+
+/* header */
+.hero{background:var(--green);border:6px solid var(--gold);border-radius:36px;margin:20px 0 0;padding:22px 20px 20px;text-align:center;color:var(--cream);position:relative}
+.hero h1{margin:6px 0 4px;font-size:clamp(22px,5vw,32px);line-height:1.2;font-family:Georgia,"DejaVu Serif",serif;color:var(--gold-l)}
+.hero p{margin:0 0 14px;opacity:.95}
+.hero .coins{position:static;justify-content:center;margin-bottom:6px}
+.name{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap}
+.name label{font-weight:500}
+.name input{font:inherit;padding:8px 12px;border-radius:12px;border:2px solid var(--gold);background:var(--cream);color:var(--ink);min-width:220px;max-width:100%}
+
+/* progress */
+.bar{position:sticky;top:0;z-index:10;margin:14px -16px 0;padding:10px 16px;background:var(--green);border-bottom:3px solid var(--gold);color:var(--cream);display:flex;align-items:center;gap:14px}
+.bar .track{flex:1;height:12px;border-radius:99px;background:#0d3326;overflow:hidden;border:1px solid var(--gold-d)}
+.bar .fill{height:100%;width:0;background:var(--gold);transition:width .3s}
+.bar .txt{font-weight:700;white-space:nowrap;color:var(--gold-l)}
+
+/* card */
+.card{position:relative;background:var(--green);border:6px solid var(--gold);border-radius:36px;margin:62px 0 0;padding:54px 14px 14px}
+.tab{position:absolute;left:50%;top:-40px;transform:translateX(-50%);width:118px;height:70px;background:var(--green);border:3px solid var(--gold);border-radius:16px;box-shadow:inset 0 0 0 5px var(--green),inset 0 0 0 6px var(--gold);display:flex;align-items:center;justify-content:center;font-family:Georgia,"DejaVu Serif",serif;font-weight:700;font-size:40px;color:var(--gold-l);line-height:1}
+.coins{position:absolute;top:-22px;display:flex;gap:8px}
+.coins.l{right:calc(50% + 78px)}
+.coins.r{left:calc(50% + 78px)}
+.coin{width:30px;height:30px;border-radius:50%;background:var(--gold);border:2px solid var(--gold-d);box-shadow:inset 0 0 0 4px var(--gold),inset 0 0 0 5px var(--gold-d);color:var(--gold-d);font:700 14px Georgia,"DejaVu Serif",serif;display:flex;align-items:center;justify-content:center}
+.coins{top:-26px}
+.panel{background:var(--cream);border:2px solid var(--gold);border-radius:18px;padding:20px 20px 22px}
+.panel h2{margin:0 0 6px;font-size:19px;line-height:1.3}
+.panel p{margin:0 0 10px}
+.hint{font-size:14px;color:#5a5a74;font-style:italic}
+.hint a{color:var(--green);font-weight:700}
+
+/* intro */
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.box{background:#fff;border:1.5px solid var(--gold);border-radius:14px;padding:10px 12px;font-size:15.5px}
+.box b{display:block;margin-bottom:2px}
+.qhead,.qrow{display:grid;grid-template-columns:1.05fr 1fr 1fr;gap:8px}
+.qhead{margin-top:12px;font-weight:700;font-size:14px;text-transform:uppercase;letter-spacing:.03em;color:var(--green)}
+.qrow{padding:8px 0;border-top:1.5px dashed #d9c883;font-size:15.5px}
+.qrow .lab{font-weight:500}
+.qrow b{background:var(--soft);padding:0 5px;border-radius:6px}
+.qrow .ex{display:block;font-size:14px;color:#3b3b5c;margin-top:2px}
+.tip{background:var(--soft);border-left:5px solid var(--gold);border-radius:10px;padding:8px 12px;margin:10px 0 0;font-size:15.5px}
+@media (max-width:560px){
+  .two{grid-template-columns:1fr}
+  .qhead{display:none}
+  .qrow{grid-template-columns:1fr 1fr}
+  .qrow .lab{grid-column:1/-1}
+}
+
+/* tasks */
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px;padding:7px 0;border-top:1.5px dashed #e3d6a0}
+.row:first-of-type{border-top:0}
+.row .w{min-width:104px;font-weight:700;font-size:18px}
+.row .wd{min-width:96px;font-weight:700}
+.pills{display:inline-flex;flex-wrap:wrap;gap:5px;margin:2px 4px;vertical-align:middle}
+.pill{font:inherit;font-size:14.5px;line-height:1.2;padding:4px 11px;border-radius:99px;border:1.5px solid var(--gold-d);background:#fff;color:var(--ink);cursor:pointer}
+.pill:hover{background:#fff6d6}
+.pill.on{background:var(--gold);font-weight:700}
+.pill.ok{background:#d6f0de;border-color:var(--ok)}
+.pill.bad{background:#f8d7d3;border-color:var(--bad)}
+.sel{font:inherit;font-size:15.5px;padding:5px 8px;border:1.5px solid var(--gold-d);border-radius:10px;background:#fff;color:var(--ink);max-width:100%}
+.row .sel{flex:1;min-width:200px}
+.sel.ok{background:#d6f0de;border-color:var(--ok)}
+.sel.bad{background:#f8d7d3;border-color:var(--bad)}
+.gap{font:inherit;width:112px;padding:3px 8px;border:1.5px solid var(--gold-d);border-radius:10px;background:#fff;color:var(--ink);text-align:center;margin:0 3px}
+.gap.ok{background:#d6f0de;border-color:var(--ok)}
+.gap.bad{background:#f8d7d3;border-color:var(--bad)}
+.sub{font-weight:700;margin:14px 0 4px;color:var(--green)}
+.line{margin:0 0 8px}
+.item{padding:6px 0;border-top:1.5px dashed #e3d6a0}
+.item:first-of-type{border-top:0}
+.text p{margin:0 0 10px}
+.text .lbl{font-weight:700;color:var(--green)}
+.video{position:relative;padding-top:56.25%;background:#000;border:2px solid var(--gold);border-radius:14px;overflow:hidden;margin:6px 0 4px}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.q{margin:0 0 4px;padding:8px 0;border-top:1.5px dashed #e3d6a0}
+.q:first-of-type{border-top:0}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px;align-items:center}
+.btn{font:inherit;font-weight:700;font-size:15px;padding:8px 16px;border-radius:12px;border:2px solid var(--gold-d);cursor:pointer;background:#fff;color:var(--ink)}
+.btn.main{background:var(--gold)}
+.btn:hover{filter:brightness(.97)}
+.res{font-weight:700;margin-left:4px}
+.res.good{color:var(--ok)}
+.res.warn{color:var(--bad)}
+.final .panel{text-align:center}
+.final .msg{min-height:1.5em;margin-top:8px;font-weight:700;color:var(--ok)}
+.note{font-size:14px;color:#5a5a74;margin-top:6px}
+@media (max-width:520px){
+  body{font-size:16px}
+  .panel{padding:16px 14px 18px}
+  .coin{width:22px;height:22px;font-size:11px;box-shadow:inset 0 0 0 3px var(--gold),inset 0 0 0 4px var(--gold-d)}
+  .coins{gap:5px;top:-20px}
+  .coins.l{right:calc(50% + 70px)}
+  .coins.r{left:calc(50% + 70px)}
+  .coin:nth-child(3){display:none}
+  .tab{width:104px;height:64px;font-size:36px;top:-36px}
+  .gap{width:96px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="hero">
+  <div class="coins"><span class="coin">$</span><span class="coin">£</span><span class="coin">€</span></div>
+  <h1>Talking about basic income:<br>quantifiers</h1>
+  <p>Homework · Vb 16:00 B1</p>
+  <div class="name"><label for="studentName">Your name</label><input id="studentName" type="text" autocomplete="name" placeholder="Type your name"></div>
+</div>
+
+<div class="bar" id="bar"><div class="track"><div class="fill" id="fill"></div></div><div class="txt" id="score">0 / 0</div></div>
+
+<div id="app"></div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var TITLE = "UBI quantifiers homework";
+var sections = [];
+var app = document.getElementById("app");
+
+/* ---------- helpers ---------- */
+function el(tag, cls, html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
+function norm(s){ return String(s||"").toLowerCase().replace(/[’‘]/g,"'").replace(/\s+/g," ").trim().replace(/[.!?]+$/,""); }
+function plain(h){ var d=document.createElement("div"); d.innerHTML=h; return d.textContent.replace(/\s+/g," ").trim(); }
+
+function parseChoice(text){
+  var parts=[], re=/\{([^}]+)\}/g, last=0, m;
+  while((m=re.exec(text))){
+    if(m.index>last) parts.push(text.slice(last,m.index));
+    var ans=-1;
+    var opts=m[1].split("|").map(function(o,i){ if(o.charAt(o.length-1)==="*"){ ans=i; return o.slice(0,-1);} return o; });
+    parts.push({opts:opts, ans:ans});
+    last=re.lastIndex;
+  }
+  if(last<text.length) parts.push(text.slice(last));
+  return parts;
+}
+function choiceLine(parts, picks){
+  var gi=0, s="", wrong=[];
+  parts.forEach(function(p){
+    if(typeof p==="string"){ s+=p; }
+    else { var c=picks[gi]; s+= (c>=0? p.opts[c] : "___"); if(c!==p.ans) wrong.push(p.opts[p.ans]); gi++; }
+  });
+  return plain(s) + (wrong.length? "   (correct: "+wrong.join(" / ")+")" : "");
+}
+
+function makePills(opts){
+  var wrap=el("span","pills"), sel=-1, btns=[];
+  function paint(){ btns.forEach(function(b,i){ b.classList.toggle("on", i===sel); }); }
+  opts.forEach(function(o,i){
+    var b=el("button","pill"); b.type="button"; b.textContent=o;
+    b.addEventListener("click", function(){ sel=(sel===i? -1 : i); wrap.mark(null); paint(); });
+    btns.push(b); wrap.appendChild(b);
+  });
+  wrap.get=function(){ return sel; };
+  wrap.set=function(i){ sel=i; paint(); };
+  wrap.mark=function(ok){ btns.forEach(function(b,i){ b.classList.remove("ok","bad"); if(ok!==null && i===sel){ b.classList.add(ok?"ok":"bad"); } }); };
+  return wrap;
+}
+function makeSelect(opts, placeholder){
+  var s=el("select","sel"); var o0=el("option"); o0.value="-1"; o0.textContent=placeholder||"choose…"; s.appendChild(o0);
+  opts.forEach(function(o,i){ var op=el("option"); op.value=String(i); op.textContent=o; s.appendChild(op); });
+  s.get=function(){ return parseInt(s.value,10); };
+  s.set=function(i){ s.value=String(i); };
+  s.mark=function(ok){ s.classList.remove("ok","bad"); if(ok!==null) s.classList.add(ok?"ok":"bad"); };
+  s.addEventListener("change", function(){ s.mark(null); });
+  return s;
+}
+
+/* ---------- card + section scaffolding ---------- */
+function makeCard(tabText, extraClass){
+  var card=el("div","card"+(extraClass?" "+extraClass:""));
+  card.appendChild(el("div","tab",tabText));
+  card.appendChild(el("div","coins l",'<span class="coin">$</span><span class="coin">£</span><span class="coin">€</span>'));
+  card.appendChild(el("div","coins r",'<span class="coin">€</span><span class="coin">£</span><span class="coin">$</span>'));
+  var panel=el("div","panel"); card.appendChild(panel);
+  app.appendChild(card);
+  return panel;
+}
+
+function addTask(num, label, title, build){
+  var panel=makeCard(String(num));
+  panel.appendChild(el("h2",null,title));
+  var body=el("div","body"); panel.appendChild(body);
+  var api=build(body);
+  var sec={id:"t"+num, num:num, label:label, total:api.total, score:0, checked:false, revealed:false, api:api, log:[], seen:{}, lastOk:[]};
+  var btns=el("div","btns");
+  var bCheck=el("button","btn main","Check"), bShow=el("button","btn","Show answers"), bAgain=el("button","btn","Try again");
+  [bCheck,bShow,bAgain].forEach(function(b){ b.type="button"; btns.appendChild(b); });
+  var res=el("span","res"); btns.appendChild(res); panel.appendChild(btns);
+  var note=el("div","note"); panel.appendChild(note);
+
+  bCheck.addEventListener("click", function(){
+    if(sec.revealed){ note.textContent="You showed the answers, so this task has no score. Press Try again to practise it."; return; }
+    sec.score=api.check(); sec.checked=true; record(sec);
+    res.textContent=sec.score+" / "+sec.total; res.className="res "+(sec.score===sec.total?"good":"warn");
+    note.textContent=""; updateBar();
+  });
+  bShow.addEventListener("click", function(){
+    api.fill(); sec.revealed=true; sec.checked=false; sec.score=0;
+    res.textContent="answers shown"; res.className="res";
+    note.textContent="Answers are filled in. They are not scored. Press Try again to redo the task."; updateBar();
+  });
+  bAgain.addEventListener("click", function(){
+    api.reset(); sec.revealed=false; sec.checked=false; sec.score=0;
+    res.textContent=""; res.className="res"; note.textContent=""; updateBar();
+  });
+  sections.push(sec);
+  return sec;
+}
+
+function record(sec){
+  if(!sec.api.report) return;
+  sec.api.report().forEach(function(r,i){
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){ var k=i+"|"+r.line; if(!sec.seen[k]){ sec.seen[k]=true; sec.log.push({i:i,line:r.line}); } }
+  });
+}
+
+function totalMax(){ return sections.reduce(function(a,s){return a+s.total;},0); }
+function totalGot(){ return sections.reduce(function(a,s){return a+((s.checked&&!s.revealed)?s.score:0);},0); }
+function updateBar(){
+  var max=totalMax(), got=totalGot();
+  document.getElementById("score").textContent=got+" / "+max;
+  document.getElementById("fill").style.width=(max? Math.round(got/max*100):0)+"%";
+}
+
+/* ---------- INTRO ---------- */
+(function intro(){
+  var panel=makeCard("i");
+  panel.innerHTML =
+  '<h2>Quantifiers: which word goes with which noun?</h2>'+
+  '<p>A quantifier tells us <b>how many</b> or <b>how much</b>. First ask yourself: is the noun countable or uncountable?</p>'+
+  '<div class="two">'+
+    '<div class="box"><b>Countable nouns</b>We can count them: one rule, two rules, 2,000 artists, many hours. They have a plural (rules, artists, hours).</div>'+
+    '<div class="box"><b>Uncountable nouns</b>We can\'t count them one by one: money, time, stress, energy, information. No plural, and we use a singular verb: <i>The money is enough.</i></div>'+
+  '</div>'+
+  '<div class="qhead"><div>Meaning</div><div>+ countable (plural)</div><div>+ uncountable</div></div>'+
+  '<div class="qrow"><div class="lab">a lot</div><div><b>many</b><span class="ex">More than 9,000 people applied. How <u>many</u> people got money?</span></div><div><b>much</b><span class="ex">How <u>much</u> money did they get? They didn\'t spend <u>much</u> money.</span></div></div>'+
+  '<div class="qrow"><div class="lab">a small number / amount, but enough</div><div><b>a few</b><span class="ex">A few artists quit their jobs.</span></div><div><b>a little</b><span class="ex">He had a little time, so he started a new project.</span></div></div>'+
+  '<div class="qrow"><div class="lab">almost none, not enough</div><div><b>few</b><span class="ex">Few people got the money.</span></div><div><b>little</b><span class="ex">He had little energy left.</span></div></div>'+
+  '<div class="qrow"><div class="lab">a smaller number / amount than before</div><div><b>fewer</b><span class="ex">They worked fewer hours.</span></div><div><b>less</b><span class="ex">They felt less stress.</span></div></div>'+
+  '<div class="qrow"><div class="lab">more than two, but not many</div><div><b>several</b><span class="ex">for several months</span></div><div>not used</div></div>'+
+  '<div class="two">'+
+    '<div class="box"><b>With both types</b><u>all</u>, <u>most</u>, <u>enough</u>, <u>no</u>, <u>any</u>, <u>more</u>, <u>a lot of</u><br><i>Most people / Most of the money.</i></div>'+
+    '<div class="box"><b>With a singular noun</b><u>every</u> = each one: <i>every adult</i>.<br><u>another</u> = one more: <i>another source</i>.</div>'+
+  '</div>'+
+  '<div class="tip"><b>few vs a few:</b> the little word <i>a</i> makes it positive. <i>She has a few friends</i> (OK). <i>She has few friends</i> (not many, a bit sad). The same with <i>little</i> and <i>a little</i>.</div>'+
+  '<div class="tip"><b>no vs any:</b> <i>no</i> = <i>not any</i>. Use <i>no</i> with a positive verb (<i>There were no rules</i>) and <i>any</i> with <i>not</i> (<i>There weren\'t any rules</i>). In positive sentences we usually say <i>a lot of</i> instead of <i>many/much</i>.</div>';
+})();
+
+/* ---------- TASK 1: video, gist questions ---------- */
+addTask(1,"Video: the main idea","Watch the short video about universal basic income and choose the best answer for each question.", function(host){
+  var v=el("div","video");
+  v.innerHTML='<iframe src="https://www.youtube.com/embed/6sar5GjRErU" title="Elon Musk on universal basic income" loading="lazy" allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+  host.appendChild(v);
+  host.appendChild(el("p","hint",'You can watch it more than once. Listen for the main idea, not for every word. Can’t see the video? <a href="https://www.youtube.com/shorts/6sar5GjRErU" target="_blank" rel="noopener">Open it on YouTube</a>.'));
+  var qs=[
+    "1. What problem does the speaker talk about at the beginning?\n{climate change|mass unemployment*|high prices}",
+    "2. Why will there be fewer and fewer jobs for people?\n{Robots will do many jobs better.*|People will not want to work.|Companies will have no money.}",
+    "3. What does he think we will ultimately have to have?\n{free education for everyone|a shorter working week|universal basic income*}",
+    "4. How sure is he about this?\n{He thinks we have no choice.*|He thinks it is only one of many options.|He is not sure at all.}",
+    "5. What does he say is the harder challenge?\n{paying for UBI|helping people find meaning in life*|building more robots}",
+    "6. Where do a lot of people get their meaning from?\n{from their jobs*|from their hobbies|from their savings}"
+  ];
+  var groups=qs.map(function(q){ return {sentences:[q]}; });
+  return choiceBuilder(groups, "pills")(host);
+});
+
+/* ---------- TASK 2: sort the words ---------- */
+var LABEL1=["Countable only","Uncountable only","Both countable and uncountable"];
+addTask(2,"Sort the words","Do we use these words with countable nouns, uncountable nouns, or both?", function(host){
+  var data=[
+    ["many",0],["all",2],["less",1],["a few",0],["enough",2],["little",1],["several",0],
+    ["most",2],["fewer",0],["a little",1],["no",2],["much",1],["a lot of",2],["few",0]
+  ];
+  var rows=data.map(function(d){
+    var row=el("div","row"); row.appendChild(el("span","w",d[0]));
+    var p=makePills(["Countable","Uncountable","Both"]); row.appendChild(p); host.appendChild(row);
+    return {word:d[0], ans:d[1], p:p};
+  });
+  var chosen=["Countable only","Uncountable only","Both"];
+  return {
+    total:rows.length,
+    check:function(){ var n=0; rows.forEach(function(r){ var ok=r.p.get()===r.ans; if(ok) n++; r.p.mark(r.p.get()<0? null : ok); }); return n; },
+    report:function(){ return rows.map(function(r){ var c=r.p.get(); return {ok:c===r.ans, line:'Word "'+r.word+'": you chose '+(c<0?"nothing":chosen[c])+"; correct: "+chosen[r.ans]+"."}; }); },
+    fill:function(){ rows.forEach(function(r){ r.p.set(r.ans); r.p.mark(null); }); },
+    reset:function(){ rows.forEach(function(r){ r.p.set(-1); r.p.mark(null); }); }
+  };
+});
+
+/* ---------- TASK 2: match the word with how we use it ---------- */
+addTask(3,"Match the words with their use","Match each word with how we use it.", function(host){
+  var uses={
+    few:"almost none, not enough (countable nouns)",
+    "a few":"a small number, enough to do something (countable nouns)",
+    little:"almost none, not enough (uncountable nouns)",
+    "a little":"a small amount, enough to do something (uncountable nouns)",
+    fewer:"a smaller number than before (countable nouns)",
+    less:"a smaller amount than before (uncountable nouns)",
+    several:"more than two, but not many (countable nouns only)",
+    no:"zero, the same as ‘not any’ (both types, with a positive verb)"
+  };
+  var words=["few","a little","several","fewer","no","a few","less","little"];
+  var optionOrder=["fewer","a little","several","no","few","less","a few","little"];
+  var optTexts=optionOrder.map(function(w){ return uses[w]; });
+  var rows=words.map(function(w){
+    var row=el("div","row"); row.appendChild(el("span","wd",w));
+    var s=makeSelect(optTexts,"choose the use…"); row.appendChild(s); host.appendChild(row);
+    return {word:w, ans:optionOrder.indexOf(w), s:s};
+  });
+  return {
+    total:rows.length,
+    check:function(){ var n=0; rows.forEach(function(r){ var ok=r.s.get()===r.ans; if(ok) n++; r.s.mark(r.s.get()<0? null : ok); }); return n; },
+    report:function(){ return rows.map(function(r){ var c=r.s.get(); return {ok:c===r.ans, line:'Word "'+r.word+'": you chose "'+(c<0?"nothing":optTexts[c])+'"; correct: "'+optTexts[r.ans]+'".'}; }); },
+    fill:function(){ rows.forEach(function(r){ r.s.set(r.ans); r.s.mark(null); }); },
+    reset:function(){ rows.forEach(function(r){ r.s.set(-1); r.s.mark(null); }); }
+  };
+});
+
+/* ---------- generic choice-in-text builder (pills or dropdowns) ---------- */
+function choiceBuilder(groups, kind){
+  return function(host){
+    var items=[];
+    groups.forEach(function(g){
+      var p=el("p","line");
+      if(g.label){ p.appendChild(el("span","lbl",g.label+" ")); }
+      g.sentences.forEach(function(text){
+        var parts=parseChoice(text), ctrls=[];
+        parts.forEach(function(part){
+          if(typeof part==="string"){
+            part.split("\n").forEach(function(seg,si){ if(si>0) p.appendChild(document.createElement("br")); p.appendChild(document.createTextNode(seg)); });
+          }
+          else {
+            var c = (kind==="pills")? makePills(part.opts) : makeSelect(part.opts,"…");
+            ctrls.push(c); p.appendChild(c);
+          }
+        });
+        p.appendChild(document.createTextNode(" "));
+        if(ctrls.length) items.push({parts:parts, ctrls:ctrls});
+      });
+      host.appendChild(p);
+    });
+    function picks(it){ return it.ctrls.map(function(c){ return c.get(); }); }
+    function answers(it){ return it.parts.filter(function(x){ return typeof x!=="string"; }).map(function(x){ return x.ans; }); }
+    function okOf(it){ var pk=picks(it), an=answers(it); return pk.every(function(v,i){ return v===an[i]; }); }
+    return {
+      total:items.length,
+      check:function(){ var n=0; items.forEach(function(it){ var ok=okOf(it); if(ok) n++; it.ctrls.forEach(function(c){ c.mark(c.get()<0? null : ok); }); }); return n; },
+      report:function(){ return items.map(function(it){ return {ok:okOf(it), line:choiceLine(it.parts, picks(it))}; }); },
+      fill:function(){ items.forEach(function(it){ var an=answers(it); it.ctrls.forEach(function(c,i){ c.set(an[i]); c.mark(null); }); }); },
+      reset:function(){ items.forEach(function(it){ it.ctrls.forEach(function(c){ c.set(-1); c.mark(null); }); }); }
+    };
+  };
+}
+
+/* ---------- TASK 3: two more UBI programmes (pills) ---------- */
+addTask(4,"Two more UBI programmes","Read some information about two more UBI programmes and choose the correct words.", function(host){
+  host.appendChild(el("p","hint","be funded by = be paid for by"));
+  return choiceBuilder([
+    {label:"A.", sentences:[
+      "The world’s largest and longest UBI study started in 2017 in Kenya and is set to last for 12 years.",
+      "{Every*|All|Several} adult who participates in the study receives $22.50 every month.",
+      "This is {much|many|enough*} money to pay for basics such as food, but participants can spend the money however they like.",
+      "After the first two years, researchers saw that people weren’t spending {many|much*|several} money on basic needs, but they were investing it and starting to earn more.",
+      "Researchers also noticed that more time was spent on education.",
+      "{Many*|Much|Another} people have also started their own businesses.",
+      "The programme has been funded by the charity organization GiveDirectly."
+    ]},
+    {label:"B.", sentences:[
+      "The programme of paying each Alaskan around $1,300 every year started in 1976.",
+      "People of {every|all*|most} ages who live in Alaska receive it.",
+      "It is funded by the money that comes from selling Alaskan oil.",
+      "{Most*|Several|Much} Alaskans are happy with the programme.",
+      "According to {another|every|several*} researchers who have studied the results of the programme, it has helped poorer citizens improve their financial situation.",
+      "{Many|Another*|All} positive result is improved health and well-being among citizens."
+    ]}
+  ], "pills")(host);
+});
+
+/* ---------- TASK 4: design a pilot, type the quantifier ---------- */
+addTask(5,"Design a UBI pilot","You are designing a UBI pilot programme. Type one quantifier in each gap. The meaning in brackets helps you. There is no word box.", function(host){
+  var groups=[
+    {head:"A. Who will receive UBI?", items:[
+      {pre:"", post:" citizens over 18 will receive UBI.", hint:"100% of them", ok:["all"], show:"all"},
+      {pre:"", post:" people with low incomes will get it.", hint:"more than half of them", ok:["most"], show:"most"},
+      {pre:"", post:" adult who applies will get a bank card.", hint:"each one, no exceptions; the noun is singular", ok:["every","each"], show:"every (or each)"}
+    ]},
+    {head:"B. How much money will people get?", items:[
+      {pre:"People will get ", post:" money to pay for rent and food.", hint:"as much as they need", ok:["enough"], show:"enough"},
+      {pre:"People will not get ", post:" extra money for hobbies.", hint:"zero; the verb is negative", ok:["any"], show:"any"},
+      {pre:"There will be ", post:" rules about how people spend the money.", hint:"zero; the verb is positive", ok:["no"], show:"no"},
+      {pre:"The government will spend ", post:" money on the programme than last year.", hint:"a smaller amount", ok:["less"], show:"less"}
+    ]},
+    {head:"C. How will UBI be funded?", items:[
+      {pre:"", post:" big companies will pay a special tax.", hint:"more than two, but not many", ok:["several"], show:"several"},
+      {pre:"We also need ", post:" source of money.", hint:"one more; the noun is singular", ok:["another"], show:"another"},
+      {pre:"There will be ", post:" people paying the tax than before.", hint:"a smaller number", ok:["fewer"], show:"fewer"}
+    ]}
+  ];
+  var items=[];
+  groups.forEach(function(g){
+    host.appendChild(el("div","sub",g.head));
+    g.items.forEach(function(it){
+      var d=el("div","item"); var line=el("div","line");
+      line.appendChild(document.createTextNode(it.pre));
+      var inp=el("input","gap"); inp.type="text"; inp.setAttribute("autocomplete","off"); inp.setAttribute("autocapitalize","none"); inp.setAttribute("autocorrect","off"); inp.spellcheck=false;
+      inp.addEventListener("input", function(){ inp.classList.remove("ok","bad"); });
+      line.appendChild(inp); line.appendChild(document.createTextNode(it.post));
+      d.appendChild(line); d.appendChild(el("div","hint","("+it.hint+")")); host.appendChild(d);
+      items.push({it:it, inp:inp});
+    });
+  });
+  function okOf(o){ var v=norm(o.inp.value); return o.it.ok.indexOf(v)>=0; }
+  return {
+    total:items.length,
+    check:function(){ var n=0; items.forEach(function(o){ var ok=okOf(o); if(ok) n++; o.inp.classList.remove("ok","bad"); if(o.inp.value.trim()) o.inp.classList.add(ok?"ok":"bad"); }); return n; },
+    report:function(){ return items.map(function(o){
+      var v=o.inp.value.trim(); var s=plain(o.it.pre+(v||"___")+o.it.post);
+      if(!o.it.pre){ s=s.charAt(0).toUpperCase()+s.slice(1); }
+      return {ok:okOf(o), line:s+"   (correct: "+o.it.show+")"};
+    }); },
+    fill:function(){ items.forEach(function(o){ o.inp.value=o.it.ok[0]; o.inp.classList.remove("ok","bad"); }); },
+    reset:function(){ items.forEach(function(o){ o.inp.value=""; o.inp.classList.remove("ok","bad"); }); }
+  };
+});
+
+/* ---------- TASK 5: complete the text (dropdowns) ---------- */
+addTask(6,"Complete the text","Complete the text about a UBI pilot. Choose the one correct word for each gap. Think about the noun and about the meaning.", function(host){
+  host.classList.add("text");
+  host.appendChild(el("p","hint","Riverton is an imaginary town."));
+  return choiceBuilder([
+    {sentences:[
+      "Riverton is a town with about 6,000 adults. In 2024, the town council started a two-year UBI pilot.",
+      "{Every*|All|Many} adult who lived in Riverton could apply for the programme.",
+      "More than 3,000 people applied, but the council had money for only 500 of them, so it chose them by lottery. This means that {most*|much|another} people who applied did not get any money.",
+      "Each person received $400 a month. The council said this was {many|enough*|several} money to pay for rent and food, but not for luxuries.",
+      "The council did not give {no|any*|little} instructions on how to spend the money."
+    ]},
+    {sentences:[
+      "After one year, researchers published a report. It showed that {several*|much|another} participants felt less stressed.",
+      "They also spent {less*|fewer|any} time worrying about money than before.",
+      "They worked {fewer*|less|little} hours in other jobs than before, but they spent more time on their own projects.",
+      "Only {a few*|a little|much} people quit their jobs completely.",
+      "One participant opened a bakery, and {another*|several|many} person started an online shop."
+    ]},
+    {sentences:[
+      "Critics say that it is too early to judge UBI because {little*|few|several} information is available so far."
+    ]}
+  ], "select")(host);
+});
+
+/* ---------- FINAL: copy my results ---------- */
+function buildReport(){
+  var name=(document.getElementById("studentName").value||"").trim()||"(no name)";
+  var when=new Date().toLocaleString("en-GB");
+  var L=[TITLE+" – "+name+" ("+when+")",""];
+  sections.forEach(function(s){
+    var st=s.revealed? "answers shown" : (s.checked? (s.score+" / "+s.total) : "not checked");
+    L.push("Task "+s.num+" "+s.label+": "+st);
+  });
+  L.push("","Total: "+totalGot()+" / "+totalMax(),"","MISTAKES (every wrong answer, including ones fixed on retry)","");
+  var any=false;
+  sections.forEach(function(s){
+    if(s.log.length){
+      any=true; L.push("Task "+s.num+" "+s.label);
+      s.log.slice().sort(function(a,b){return a.i-b.i;}).forEach(function(e){
+        L.push("  ✗ "+e.line+"   "+(s.lastOk[e.i]? "[fixed on retry]":"[still wrong]"));
+      });
+      L.push("");
+    }
+  });
+  if(!any) L.push("No mistakes recorded.");
+  return L.join("\n").replace(/\n+$/,"");
+}
+(function finalCard(){
+  var panel=makeCard("✓","final");
+  panel.innerHTML='<h2>Finished?</h2><p>Press the button and paste your results in the group chat.</p>';
+  var b=el("button","btn main","Copy my results"); b.type="button";
+  var msg=el("div","msg");
+  b.addEventListener("click", function(){
+    var txt=buildReport();
+    function done(){ msg.textContent="Copied! Paste it in the chat."; }
+    function fallback(){
+      var ta=document.createElement("textarea"); ta.value=txt; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select();
+      try{ document.execCommand("copy"); done(); }catch(e){ msg.textContent="Could not copy. Select the text and copy it by hand."; }
+      document.body.removeChild(ta);
+    }
+    if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(txt).then(done, fallback); } else { fallback(); }
+  });
+  panel.appendChild(b); panel.appendChild(msg);
+})();
+
+updateBar();
+window.HW={sections:sections, buildReport:buildReport};
+})();
+</script>
+</body>
+</html>
