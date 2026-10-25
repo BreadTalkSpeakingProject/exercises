@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Families</title>
+<style>
+:root{--ink:#1a1a1a;--brown:#5f4443;--cream:#f6f3ee;--line:#d9d2c7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Open Sans",Arial,sans-serif;padding:16px}
+h1{font-family:Georgia,serif;font-size:26px;margin:0 0 4px;color:var(--brown)}
+p.t{margin:0 0 12px;font-size:15px}
+.wrap{overflow-x:auto}
+table{width:100%;min-width:640px;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+th{background:var(--brown);color:#fff;padding:8px;font-size:15px;text-align:left}
+td{border:1px solid var(--line);padding:5px;width:25%}
+td.given{font-weight:700;background:#fbf3d9;padding:9px 10px;font-size:16px}
+td.none{background:#ece8e1}
+input{width:100%;border:2px solid var(--line);border-radius:8px;padding:7px 8px;font-size:16px;font-family:inherit}
+input.ok{border-color:#2e7d32;background:#e8f5e9}
+input.bad{border-color:#c62828;background:#fdecea}
+input.shown{border-color:#8f7e71;background:#f3efe9}
+button{margin:14px 8px 0 0;padding:9px 16px;font-size:15px;border:0;border-radius:8px;background:var(--brown);color:#fff;cursor:pointer}
+button.alt{background:#fff;color:var(--brown);border:2px solid var(--brown)}
+#msg{margin-top:10px;font-weight:700}
+.note{font-size:13px;color:#595959;margin-top:6px}
+</style></head><body>
+<h1>Word Families</h1>
+<p class="t">One form is given in each row (highlighted). Type the other forms. Grey cells have no word, so there is nothing to type.</p>
+<div class="wrap"><table><thead><tr><th>Verb</th><th>Noun</th><th>Adjective</th><th>Adverb</th></tr></thead><tbody id="rows"></tbody></table></div>
+<button id="check">Check</button><button class="alt" id="show">Show answers</button><button class="alt" id="reset">Try again</button>
+<div id="msg"></div>
+<div class="note">Rare forms are accepted with or without "(rare)". For "person / personality" either word is correct.</div>
+<script>
+const F=[
+['decide','decision','decisive','decisively'],
+['create','creation','creative','creatively'],
+['succeed','success','successful','successfully'],
+['differ','difference','different','differently'],
+['strengthen','strength','strong','strongly'],
+['endanger','danger','dangerous','dangerously'],
+['promote','promotion','promotional','–'],
+['restrict','restriction','restrictive','restrictively (rare)'],
+['–','availability','available','–'],
+['–','inevitability','inevitable','inevitably'],
+['benefit','benefit','beneficial','beneficially'],
+['–','environment','environmental','environmentally'],
+['–','fortune','fortunate','fortunately'],
+['personalize','person / personality','personal','personally'],
+['concentrate','concentration','concentrated','–'],
+['inform','information','informative','informatively (rare)']];
+const G=[0,2,1,3,2,0,1,0,2,3,1,1,2,2,0,3];
+const tb=document.getElementById('rows'),msg=document.getElementById('msg');
+const norm=s=>s.toLowerCase().replace(/\(rare\)/g,'').replace(/\s+/g,' ').trim();
+function accepted(a){return [norm(a),...norm(a).split('/').map(x=>x.trim()).filter(Boolean)]}
+const inputs=[];
+F.forEach((r,i)=>{const tr=document.createElement('tr');
+r.forEach((w,j)=>{const td=document.createElement('td');
+if(w==='–'){td.className='none'}
+else if(j===G[i]){td.className='given';td.textContent=w}
+else{const inp=document.createElement('input');inp.autocomplete='off';inp.spellcheck=false;inp.setAttribute('aria-label',['Verb','Noun','Adjective','Adverb'][j]+' for '+r[G[i]]);inp.dataset.a=w;td.appendChild(inp);inputs.push(inp)}
+tr.appendChild(td)});tb.appendChild(tr)});
+document.getElementById('check').onclick=()=>{let ok=0,empty=0;
+inputs.forEach(inp=>{inp.classList.remove('ok','bad','shown');const v=norm(inp.value);if(!v){empty++;return}
+if(accepted(inp.dataset.a).includes(v)){inp.classList.add('ok');ok++}else inp.classList.add('bad')});
+msg.textContent=`${ok} of ${inputs.length} correct`+(empty?`, ${empty} empty`:'')+(ok===inputs.length?'. Perfect!':'.')};
+document.getElementById('show').onclick=()=>{inputs.forEach(inp=>{inp.value=inp.dataset.a;inp.classList.remove('ok','bad');inp.classList.add('shown')});msg.textContent=''};
+document.getElementById('reset').onclick=()=>{inputs.forEach(inp=>{inp.value='';inp.classList.remove('ok','bad','shown')});msg.textContent=''};
+</script></body></html>
