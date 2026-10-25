@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suffix Map</title>
+<style>
+:root{--ink:#1a1a1a;--brown:#5f4443;--cream:#f6f3ee;--line:#d9d2c7}
+*{box-sizing:border-box}
+body{margin:0;background:var(--cream);color:var(--ink);font-family:"Open Sans",Arial,sans-serif;padding:16px}
+h1{font-family:Georgia,serif;font-size:26px;margin:0 0 4px;color:var(--brown)}
+p.t{margin:0 0 12px;font-size:15px}
+#box{min-height:64px;background:#fff;border:2px dashed var(--brown);border-radius:12px;padding:10px;display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.chip{background:var(--brown);color:#fff;border-radius:8px;padding:7px 12px;font-size:17px;font-weight:700;cursor:grab;user-select:none;touch-action:none}
+.chip.sel{outline:3px solid #e8a825}
+.chip.ok{background:#2e7d32}.chip.bad{background:#c62828}
+table{width:100%;border-collapse:collapse;background:#fff;border-radius:12px;overflow:hidden}
+th{background:var(--brown);color:#fff;padding:8px;font-size:15px;text-align:left}
+td{border:1px solid var(--line);padding:6px;vertical-align:top}
+td.pos{width:110px;font-weight:700;font-family:Georgia,serif;font-size:18px}
+td.zone{min-height:60px;width:50%}
+.zone .in{min-height:48px;display:flex;flex-wrap:wrap;gap:6px;padding:2px}
+td.ex input{width:100%;height:100%;min-height:48px;border:0;font-size:16px;padding:6px;font-family:inherit;background:transparent}
+td.zone.over{background:#fbf3d9}
+button{margin:14px 8px 0 0;padding:9px 16px;font-size:15px;border:0;border-radius:8px;background:var(--brown);color:#fff;cursor:pointer}
+button.alt{background:#fff;color:var(--brown);border:2px solid var(--brown)}
+#msg{margin-top:10px;font-weight:700}
+@media(max-width:600px){td.pos{width:70px;font-size:15px}.chip{font-size:15px}}
+</style></head><body>
+<h1>Suffix Map</h1>
+<p class="t">Drag each suffix into the row of the part of speech it makes (or tap a suffix, then tap a row). Then write your own example words.</p>
+<div id="box"></div>
+<table><thead><tr><th>Part of speech</th><th>Suffixes</th><th>Examples</th></tr></thead><tbody id="rows"></tbody></table>
+<button id="check">Check</button><button class="alt" id="show">Show answers</button><button class="alt" id="reset">Try again</button>
+<div id="msg"></div>
+<script>
+const KEY={Noun:['-tion/-sion','-ment','-ness','-ity','-ence/-ance','-er/-or','-ist','-ship','-ing'],
+Adjective:['-ful','-less','-able/-ible','-al','-ous','-ive','-ic','-ent/-ant','-y','-ing','-ed'],
+Adverb:['-ly'],Verb:['-ize','-ify','-en','-ate']};
+const ALL=['-ly','-tion/-sion','-ful','-ize','-ment','-able/-ible','-ness','-ous','-ify','-ity','-al','-en','-ence/-ance','-ive','-er/-or','-ic','-ist','-less','-ate','-y','-ship','-ent/-ant','-ing','-ed'];
+const box=document.getElementById('box'),rows=document.getElementById('rows'),msg=document.getElementById('msg');
+let sel=null;
+Object.keys(KEY).forEach(p=>{const tr=document.createElement('tr');
+tr.innerHTML=`<td class="pos">${p}</td><td class="zone" data-pos="${p}"><div class="in"></div></td><td class="ex"><input aria-label="Examples for ${p}"></td>`;rows.appendChild(tr);});
+const zones=[...document.querySelectorAll('td.zone')];
+function mk(s){const c=document.createElement('div');c.className='chip';c.textContent=s;c.dataset.s=s;c.draggable=true;
+c.addEventListener('dragstart',e=>{e.dataTransfer.setData('text',s);sel=c;});
+c.addEventListener('click',e=>{e.stopPropagation();if(sel===c){c.classList.remove('sel');sel=null}else{document.querySelectorAll('.chip.sel').forEach(x=>x.classList.remove('sel'));sel=c;c.classList.add('sel')}});
+return c}
+function init(){box.innerHTML='';zones.forEach(z=>z.querySelector('.in').innerHTML='');
+[...ALL].forEach(s=>box.appendChild(mk(s)));document.querySelectorAll('td.ex input').forEach(i=>i.value='');msg.textContent='';sel=null}
+function put(target){if(!sel)return;target.appendChild(sel);sel.classList.remove('sel','ok','bad');sel=null}
+zones.forEach(z=>{const inn=z.querySelector('.in');
+z.addEventListener('dragover',e=>{e.preventDefault();z.classList.add('over')});
+z.addEventListener('dragleave',()=>z.classList.remove('over'));
+z.addEventListener('drop',e=>{e.preventDefault();z.classList.remove('over');put(inn)});
+z.addEventListener('click',()=>put(inn));});
+box.addEventListener('dragover',e=>e.preventDefault());
+box.addEventListener('drop',e=>{e.preventDefault();put(box)});
+box.addEventListener('click',()=>put(box));
+document.getElementById('check').onclick=()=>{let ok=0,n=0;
+zones.forEach(z=>{z.querySelectorAll('.chip').forEach(c=>{n++;const good=KEY[z.dataset.pos].includes(c.dataset.s);c.classList.remove('ok','bad');c.classList.add(good?'ok':'bad');if(good)ok++})});
+const left=box.querySelectorAll('.chip').length;
+msg.textContent=`${ok} of ${n} placed correctly`+(left?`; ${left} suffixes still in the box.`:'.')+(ok===24&&!left?' Perfect!':'')};
+document.getElementById('show').onclick=()=>{init();const by={};box.querySelectorAll('.chip').forEach(c=>by[c.dataset.s]=c);
+zones.forEach(z=>KEY[z.dataset.pos].forEach(s=>{let c=by[s];if(!c||c.parentNode!==box){c=mk(s)}else{box.removeChild(c)}c.classList.add('ok');z.querySelector('.in').appendChild(c)}));
+box.innerHTML='';msg.textContent='-ing makes nouns (the meeting) and adjectives (an exciting trip).'};
+document.getElementById('reset').onclick=init;
+init();
+</script></body></html>
