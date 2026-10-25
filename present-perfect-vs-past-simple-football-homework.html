@@ -1,0 +1,464 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Football Homework – Present Perfect or Past Simple</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1d2b53;--mute:#8a93ad;--coral:#ff6f59;--teal:#12b5a6;--purple:#7b5cff;--blue:#2f80ed;--amber:#f59f00;--pink:#e64980;--ok:#1f9d55;--bad:#d64545;--line:#dfe5f4;--soft:#f1f4fb}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#f6f8fc;color:var(--ink);font-family:'Poppins','Inter','Segoe UI',system-ui,sans-serif;font-size:17px;line-height:1.55}
+main{max-width:880px;margin:0 auto;padding:0 16px 80px}
+#bar{position:sticky;top:0;z-index:10;background:#fff;border-bottom:2px solid var(--line)}
+#bar .in{max-width:880px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:14px}
+#bar b{font-size:15px;white-space:nowrap}
+#track{flex:1;height:10px;border-radius:99px;background:var(--soft);overflow:hidden}
+#fill{height:100%;width:0;background:#d4af37;border-radius:99px;transition:width .3s}
+#score{font-weight:700;font-size:15px;white-space:nowrap}
+header.hero{margin:22px 0;border-bottom:5px solid #d4af37;background:linear-gradient(135deg,#0f5132,#1e8e5a);color:#fff;border-radius:24px;padding:30px 30px 26px;position:relative;overflow:hidden}
+.hero .tag{font-size:12px;letter-spacing:2.5px;text-transform:uppercase;color:#ffc93c;font-weight:700}
+.hero h1{margin:6px 0 8px;font-size:36px;line-height:1.15}
+.hero p{margin:0;color:#c9d2ee}
+.hero .name{margin-top:18px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.hero input{font:inherit;border:0;border-radius:12px;padding:9px 14px;min-width:220px}
+.card{background:#fff;border-radius:22px;border-top:10px solid var(--a);margin:20px 0;box-shadow:0 2px 10px rgba(29,43,83,.06);overflow:hidden}
+.ch{display:flex;align-items:center;gap:16px;padding:22px 26px 10px}
+.badge{flex:none;width:54px;height:54px;border-radius:50%;background:var(--a);color:#fff;font-weight:700;font-size:24px;display:flex;align-items:center;justify-content:center}
+.lab{font-size:12px;letter-spacing:2.2px;text-transform:uppercase;color:var(--a);font-weight:700}
+.ch h2{margin:0;font-size:25px;line-height:1.2}
+.ch .sc{margin-left:auto;font-weight:700;color:var(--mute);font-size:15px;white-space:nowrap}
+.ch .sc.done{color:var(--ok)}
+.instr{margin:6px 26px 16px;background:var(--soft);border-left:7px solid var(--a);border-radius:14px;padding:12px 18px;font-size:16.5px}
+.body{padding:0 26px 8px}
+.foot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:6px 26px 22px}
+.btn{font:inherit;font-weight:700;font-size:15px;border:0;border-radius:99px;padding:9px 22px;cursor:pointer;background:var(--a);color:#fff}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn:hover{filter:brightness(.95)}
+.msg{font-size:15px;color:var(--mute)}
+.article{background:#fffaf8;border:2px solid #ffd9d2;border-radius:18px;padding:20px 24px;font-size:18px;line-height:1.7}
+.article p{margin:0 0 12px}.article p:last-child{margin:0}
+.article h3{margin:0 0 10px;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:var(--coral)}
+.words{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:14px;font-size:15px}
+.words span b{color:var(--coral)}
+details{background:#fff;border:2px solid var(--line);border-radius:16px;padding:10px 18px;margin:16px 0}
+summary{cursor:pointer;font-weight:700}
+table{border-collapse:separate;border-spacing:0;width:100%;font-size:15px;margin-top:10px}
+th{background:var(--ink);color:#fff;text-align:left;padding:8px 12px}
+td{padding:7px 12px;border-bottom:2px solid #e7ecf8}
+.q{display:flex;gap:14px;margin:0 0 16px;align-items:flex-start;border-radius:14px;padding:8px 10px;border:2px solid transparent}
+.q.ok{background:#eefaf2;border-color:#bfe8cf}
+.q.bad{background:#fff1f1;border-color:#f2c4c4}
+.n{flex:none;width:30px;height:30px;border-radius:50%;background:var(--a);color:#fff;font-weight:700;font-size:14px;display:flex;align-items:center;justify-content:center;margin-top:2px}
+.qt{flex:1;min-width:0}
+.fb{font-size:14.5px;margin-top:4px;color:var(--mute)}
+.fb.good{color:var(--ok)}.fb.err{color:var(--bad)}
+.pills{display:inline-flex;gap:6px;align-items:center;flex-wrap:wrap;vertical-align:middle;margin:2px 2px}
+.sl{color:#98a2c0}
+.pill{font:inherit;font-weight:500;font-size:16px;border:2px solid var(--a);background:#fff;color:var(--ink);border-radius:99px;padding:1px 14px;cursor:pointer}
+.pill:hover{background:var(--soft)}
+.pill.sel{background:var(--a);color:#fff}
+.pill.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pill.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+.pill.shown{background:#fff;border-color:var(--ok);color:var(--ok);font-weight:700}
+.tfb{margin-top:6px;display:flex;gap:8px}
+.tfb .pill{padding:3px 22px}
+input.gap,input.sent{font:inherit;color:var(--ink);border:0;border-bottom:2px dotted #5a6486;background:#faf8ff;border-radius:6px 6px 0 0;padding:1px 6px;outline:none;text-align:center}
+input.gap{width:110px}
+input.sent{width:100%;text-align:left;margin-top:6px;padding:6px 10px;border-radius:10px;border:2px solid var(--line);background:#fff}
+input.gap:focus,input.sent:focus{border-color:var(--a);background:#fff}
+input.gap.ok,input.sent.ok{border-color:var(--ok);background:#eefaf2}
+input.gap.bad,input.sent.bad{border-color:var(--bad);background:#fff1f1}
+input.shown{color:var(--ok);font-weight:700}
+.gapq{margin-left:2px;font-size:13px;color:#e67700;font-style:italic;font-weight:500}
+.para{font-size:18px;line-height:2.1}
+.say{border:2px solid var(--line);border-radius:14px;padding:8px 14px;margin:0 0 10px;max-width:92%;background:#fff}
+.say.me{margin-left:auto;background:#e8f7ee;border-color:#bfe8cf}
+.sp{display:block;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--mute)}
+.say.me .sp{color:#1e8e5a}
+.hint{color:var(--mute);font-size:15px}
+.ans{font-size:15px;color:var(--mute);margin-bottom:6px}
+.ans b{color:var(--ink)}
+.built{min-height:48px;border:2px dashed var(--line);border-radius:12px;padding:6px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;background:#fafbff}
+.pool{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tok{font:inherit;font-weight:500;font-size:16px;border:2px solid var(--a);background:#fff;color:var(--ink);border-radius:10px;padding:2px 12px;cursor:pointer}
+.tok.in{background:var(--a);color:#fff}
+.built.ok{border-color:var(--ok);background:#eefaf2}.built.bad{border-color:var(--bad);background:#fff1f1}
+textarea{width:100%;font:inherit;border:2px solid var(--line);border-radius:14px;padding:12px 14px;min-height:170px;resize:vertical;color:var(--ink)}
+textarea:focus{outline:none;border-color:var(--a)}
+.chk{list-style:none;padding:0;margin:10px 0 0;font-size:15.5px}
+.chk li:before{content:"○ ";color:var(--mute)}
+.chk li.y{color:var(--ok);font-weight:500}.chk li.y:before{content:"✓ ";color:var(--ok)}
+.starters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.starters span{background:var(--soft);border-radius:99px;padding:3px 14px;font-size:15px}
+.final{background:linear-gradient(135deg,#0f5132,#1e8e5a);border-bottom:5px solid #d4af37;color:#fff;border-radius:22px;padding:24px 28px;margin:24px 0;text-align:center}
+.final h2{margin:0 0 6px;font-size:24px}
+.final p{margin:0 0 14px;color:#c9d2ee}
+.final .btn{background:#ffc93c;color:var(--ink)}
+@media(max-width:600px){body{font-size:16px}.hero h1{font-size:28px}.ch{padding:18px 16px 8px}.body,.foot{padding-left:16px;padding-right:16px}.instr{margin-left:16px;margin-right:16px}.ch h2{font-size:21px}.say{max-width:100%}.para{line-height:2.2}}
+
+.rules{background:#fff;border:2px solid var(--line);border-radius:22px;padding:22px 26px 24px;margin:16px 0}
+.rules h2{margin:0 0 12px;font-size:25px}
+.rb{border:2px solid var(--line);border-left:8px solid var(--a);border-radius:16px;padding:12px 18px;margin:0 0 14px;background:#fff}
+.rb h3{margin:0 0 6px;font-size:18px}
+.rb h3 span{color:var(--a);font-weight:600}
+.rb p{margin:4px 0}
+.rb .tip{font-size:15px;color:#4b5678}
+.ex{margin:8px 0;padding-left:22px;font-size:17px}
+.ex li{margin:2px 0}
+.rb .ru{display:none}
+.rules.ru-on .rb .ru{display:block;background:#fff8e1;border-radius:10px;padding:6px 10px}
+.rules.ru-on .rb .ru.tip{color:#6a5200}
+.ruBtn{background:#1e8e5a}
+@media(max-width:600px){.rules{padding:16px}}
+</style>
+</head>
+<body>
+<div id="bar"><div class="in"><b>Football homework</b><div id="track"><div id="fill"></div></div><span id="score">0 / 0</span></div></div>
+<main>
+<header class="hero">
+  <div class="tag">Homework · Elementary · Football</div>
+  <h1>Have you ever…? or Did you…?</h1>
+  <p>Practise <b>present perfect</b> and <b>past simple</b> with football and other fun things. Read the rules first. Then do the tasks in order, from easy to harder. Press <b>Check</b> after each one.</p>
+  <div class="name"><label for="who">Your name:</label><input id="who" placeholder="Type your name" autocomplete="off"></div>
+</header>
+
+<section class="rules" id="rules">
+  <h2>Rules</h2>
+
+  <div class="rb" style="--a:#2f80ed">
+    <h3>1. Present perfect: <span>have / has + past participle</span></h3>
+    <p class="en">We use it for <b>life experience</b>. We do <b>not</b> say when.</p>
+    <p class="ru">Мы используем его для <b>жизненного опыта</b>. Мы <b>не говорим</b>, когда это было.</p>
+    <ul class="ex">
+      <li>I <b>have seen</b> Messi.</li>
+      <li>She <b>has never played</b> football.</li>
+      <li><b>Have</b> you <b>ever been</b> to Seoul?</li>
+      <li>Yes, I <b>have</b>. / No, I <b>haven't</b>.</li>
+    </ul>
+    <p class="en tip">Useful words: <b>ever</b> (in questions) and <b>never</b>.</p>
+    <p class="ru tip">Полезные слова: <b>ever</b> (в вопросах) и <b>never</b> («никогда»).</p>
+  </div>
+
+  <div class="rb" style="--a:#e64980">
+    <h3>2. Past simple: <span>verb + -ed / irregular verb</span></h3>
+    <p class="en">We use it when we know <b>when</b> it happened. The time is finished.</p>
+    <p class="ru">Мы используем его, когда знаем, <b>когда</b> это было. Время уже закончилось.</p>
+    <ul class="ex">
+      <li>I <b>saw</b> Messi <b>in 2019</b>.</li>
+      <li>We <b>won</b> the match <b>last week</b>.</li>
+      <li><b>Did</b> you <b>go</b> to Seoul <b>two years ago</b>?</li>
+      <li><b>When did</b> you <b>see</b> that player?</li>
+    </ul>
+    <p class="en tip">Time words: <b>yesterday, last week, last summer, in 2018, two years ago, when I was ten</b>.</p>
+    <p class="ru tip">Слова-подсказки: <b>yesterday, last week, last summer, in 2018, two years ago, when I was ten</b>.</p>
+  </div>
+
+  <div class="rb" style="--a:#2f9e44">
+    <h3>3. Use them together</h3>
+    <p class="en">First ask about experience (present perfect). Then ask for details (past simple).</p>
+    <p class="ru">Сначала спрашиваем про опыт (present perfect). Потом спрашиваем детали (past simple).</p>
+    <ul class="ex">
+      <li><b>Have</b> you ever <b>won</b> a trophy? → Yes, I <b>have</b>.</li>
+      <li><b>When did</b> you <b>win</b> it? → I <b>won</b> it <b>last year</b>.</li>
+    </ul>
+  </div>
+
+  <div class="rb" style="--a:#f59f00">
+    <h3>4. Verb forms</h3>
+    <table>
+      <tr><th>Base form</th><th>Past simple</th><th>Past participle</th></tr>
+      <tr><td>be</td><td>was / were</td><td><b>been</b></td></tr>
+      <tr><td>see</td><td>saw</td><td><b>seen</b></td></tr>
+      <tr><td>eat</td><td>ate</td><td><b>eaten</b></td></tr>
+      <tr><td>win</td><td>won</td><td><b>won</b></td></tr>
+      <tr><td>lose</td><td>lost</td><td><b>lost</b></td></tr>
+      <tr><td>play / try / score</td><td>played / tried / scored</td><td><b>played / tried / scored</b></td></tr>
+    </table>
+    <p class="en tip">Regular verbs: past simple and past participle are the <b>same</b> (-ed).</p>
+    <p class="ru tip">Правильные глаголы: past simple и past participle <b>одинаковые</b> (-ed).</p>
+  </div>
+
+  <button class="btn ruBtn" id="ruBtn" type="button">Прочитать правила на русском</button>
+</section>
+
+<div id="tasks"></div>
+
+<div class="final">
+  <h2>All done? Send it to your teacher</h2>
+  <p>This button copies your name, your scores, your mistakes and your writing. Paste it into the chat.</p>
+  <button class="btn" id="copyBtn">Copy my results</button>
+  <div class="msg" id="copyMsg" style="color:#c9d2ee;margin-top:10px"></div>
+</div>
+</main>
+
+
+
+
+<script>
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, cls, html) => { const e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; };
+const norm = s => String(s).toLowerCase().replace(/[’‘`]/g, "'").replace(/\bwas not\b/g, "wasn't").replace(/\bwere not\b/g, "weren't").replace(/\bdid not\b/g, "didn't").replace(/[.!?]+\s*$/, "").replace(/\s+/g, " ").trim();
+const plain = h => String(h).replace(/<[^>]+>/g, '');
+const shuffle = a => { const b = a.slice(); for (let i = b.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [b[i], b[j]] = [b[j], b[i]]; } return b; };
+
+
+
+/* ---------------- DATA ---------------- */
+const FORMS = [
+ "The past participle of <b>be</b> is {was|been*|being}.",
+ "The past participle of <b>see</b> is {saw|seed|seen*}.",
+ "The past participle of <b>eat</b> is {eaten*|ate|eated}.",
+ "The past participle of <b>win</b> is {wan|won*|winned}.",
+ "The past participle of <b>lose</b> is {losed|lost*|loosed}.",
+ "The past participle of <b>play</b> is {played*|plaid|plaied}.",
+ "The past participle of <b>try</b> is {tryed|tryen|tried*}.",
+ "The past participle of <b>score</b> is {scorn|scored*|scoren}."
+];
+const TIMEW = [
+ "ever → {Present perfect*|Past simple}",
+ "last week → {Present perfect|Past simple*}",
+ "never → {Past simple|Present perfect*}",
+ "in 2018 → {Past simple*|Present perfect}",
+ "two years ago → {Present perfect|Past simple*}",
+ "when I was ten → {Past simple*|Present perfect}",
+ "yesterday → {Past simple*|Present perfect}",
+ "no time word, life experience → {Present perfect*|Past simple}"
+];
+const CHOOSE = [
+ "Argentina {has won|won*} the World Cup in 2022.",
+ "Ronaldo {played|has played*} for five different clubs.",
+ "A: Have you ever {went|been*} to a live match?",
+ "B: Yes, I have. I {have seen|saw*} my favourite team last year.",
+ "I {have never watched*|never watched} a match in a stadium.",
+ "A: Did you watch the game yesterday?  B: Yes, I {have|did*}.",
+ "We {lost*|have lost} 3–0 last weekend.",
+ "A: Have you ever played football in the snow?  B: Yes, I {did|have*}. We played in January.",
+ "A: When {did you score*|have you scored} your first goal?  B: Two years ago.",
+ "My brother {didn't play|has never played*} football. He prefers Dota."
+];
+const GAPS = [
+ "Messi [has won|win] the World Cup.",
+ "Argentina [won|win] the World Cup in 2022.",
+ "Have you ever [been|be] to a football match?",
+ "I [saw|see] my first live match when I was ten.",
+ "She [has never played|play] football in the snow.",
+ "We [lost|lose] the game last weekend.",
+ "[Have|have / do] you ever [scored|score] a goal?",
+ "When [did|did / have] you [see|see] that player?"
+];
+const ORDER = [
+ {a:"No, I haven't.", q:"have you ever won a trophy"},
+ {a:"Yesterday evening.", q:"when did you play football"},
+ {a:"Yes, I did. It was great.", q:"did you like the match"},
+ {a:"Yes, I have. I met him last year.", q:"have you ever met a famous player"},
+ {a:"In 2022.", q:"when did Argentina win the World Cup"}
+];
+const FIX = [
+ {p:"I have seen the final yesterday.", ok:["I saw the final yesterday"], model:"I saw the final yesterday."},
+ {p:"Did you ever try Korean food?", ok:["Have you ever tried Korean food"], model:"Have you ever tried Korean food?"},
+ {p:"Messi has won the World Cup in 2022.", ok:["Messi won the World Cup in 2022"], model:"Messi won the World Cup in 2022."},
+ {p:"We have lost the match last weekend.", ok:["We lost the match last weekend"], model:"We lost the match last weekend."},
+ {p:"When have you seen that player?", ok:["When did you see that player"], model:"When did you see that player?"},
+ {p:"I never have played Dota with my teacher.", ok:["I have never played Dota with my teacher"], model:"I have never played Dota with my teacher."}
+];
+const DIALOGUE = [
+ ["Alex","Have you ever {be|been*|was} to a live football match?"],
+ ["Sam","Yes, I {did|have*|am}."],
+ ["Sam","I {have gone|went*|go} to Moscow with my dad last year."],
+ ["Alex","Cool! Which match {have you seen|do you saw|did you see*}?"],
+ ["Sam","Spartak against Zenit. Spartak {won*|has won|win} 2–1."],
+ ["Alex","Have you ever {meet|meeted|met*} a famous player?"],
+ ["Sam","No, I {didn't|haven't*|don't}."],
+ ["Sam","But my brother {has met|meets|met*} one in 2019."],
+ ["Alex","I {never saw|have never seen*|never seen} a match live, but I want to go!"]
+];
+
+/* ---------------- ENGINE ---------------- */
+const sections = [];
+const host = $('#tasks');
+
+function choiceFrag(text, bucket, onPick){
+  const frag = document.createDocumentFragment(); let last = 0;
+  text.replace(/\{([^}]+)\}/g, (m, inner, off) => {
+    frag.append(document.createTextNode(text.slice(last, off)));
+    const raw = inner.split('|');
+    const g = {opts: raw.map(o => o.replace('*','')), correct: raw.findIndex(o => o.includes('*')), sel: null, btns: []};
+    const wrap = el('span','pills');
+    g.opts.forEach((o,k) => {
+      if (k) wrap.append(el('span','sl','/'));
+      const b = el('button','pill',o); b.type = 'button';
+      b.onclick = () => { g.sel = k; g.btns.forEach((x,j) => x.className = 'pill' + (j===k ? ' sel' : '')); onPick && onPick(); };
+      g.btns.push(b); wrap.append(b);
+    });
+    frag.append(wrap); bucket.push(g); last = off + m.length; return m;
+  });
+  frag.append(document.createTextNode(text.slice(last)));
+  return frag;
+}
+function choiceLine(text, groups){ let k = 0; const wrong = [];
+  const line = text.replace(/\{[^}]+\}/g, () => { const g = groups[k++]; if (g.sel !== g.correct) wrong.push(g.opts[g.correct]); return g.sel === null ? '___' : g.opts[g.sel]; });
+  return line + '   (correct: ' + wrong.join(', ') + ')'; }
+function choiceCheck(g){ const ok = g.sel === g.correct; if (g.sel !== null) g.btns[g.sel].className = 'pill ' + (ok ? 'ok' : 'bad'); return ok; }
+function choiceFill(g){ g.sel = g.correct; g.btns.forEach((x,j) => x.className = 'pill' + (j===g.correct ? ' shown' : '')); }
+
+function makeSection(cfg){
+  const card = el('section','card'); card.style.setProperty('--a', cfg.accent); card.id = cfg.id;
+  card.innerHTML = `<div class="ch"><div class="badge">${cfg.num}</div><div><div class="lab">${cfg.label}</div><h2>${cfg.title}</h2></div><div class="sc" id="sc-${cfg.id}"></div></div><div class="instr">${cfg.instr}</div><div class="body"></div><div class="foot"></div>`;
+  const body = $('.body', card), foot = $('.foot', card);
+  const sec = {id: cfg.id, num: cfg.num, log: [], seen: new Set(), lastOk: [], label: cfg.title, total: 0, score: 0, checked: false, revealed: false, api: null};
+  function draw(){
+    body.innerHTML = ''; sec.checked = false; sec.revealed = false; sec.score = 0;
+    sec.api = cfg.build(body); sec.total = sec.api.total || 0;
+    $('#sc-' + cfg.id).textContent = sec.total ? '– / ' + sec.total : ''; $('#sc-' + cfg.id).className = 'sc';
+    foot.innerHTML = '';
+    if (sec.total){
+      const c = el('button','btn','Check'), s = el('button','btn ghost','Show answers'), r = el('button','btn ghost','Try again'), m = el('span','msg','');
+      c.onclick = () => { if (sec.revealed){ m.textContent = 'Answers are shown. Press “Try again” to do it yourself.'; return; } sec.score = sec.api.check(); sec.checked = true; record(sec); const sc = $('#sc-' + cfg.id); sc.textContent = sec.score + ' / ' + sec.total; sc.className = 'sc' + (sec.score === sec.total ? ' done' : ''); m.textContent = sec.score === sec.total ? 'Perfect! 🎉' : 'Fix the red answers and press Check again.'; update(); };
+      s.onclick = () => { sec.api.fill(); sec.revealed = true; sec.score = 0; $('#sc-' + cfg.id).textContent = 'answers shown'; m.textContent = ''; update(); };
+      r.onclick = () => { draw(); update(); };
+      foot.append(c, s, r, m);
+    }
+  }
+  sec.draw = draw; sections.push(sec); host.append(card); draw();
+  return sec;
+}
+function record(sec){
+  if (!sec.api.report) return;
+  sec.api.report().forEach((r,i) => { sec.lastOk[i] = r.ok; if (!r.ok){ const k = i + '|' + r.line; if (!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i, line: r.line}); } } });
+}
+function update(){
+  const total = sections.reduce((a,s) => a + s.total, 0), got = sections.reduce((a,s) => a + (s.checked && !s.revealed ? s.score : 0), 0);
+  const done = sections.filter(s => s.total && s.checked && !s.revealed && s.score === s.total).length, n = sections.filter(s => s.total).length;
+  $('#score').textContent = got + ' / ' + total; $('#fill').style.width = (n ? done / n * 100 : 0) + '%';
+}
+
+
+
+/* ---------------- TASKS ---------------- */
+function choiceSection(id, num, label, title, accent, instr, items){
+ return makeSection({id, num, label, title, accent, instr,
+  build(body){
+   const rows = items.map((t,i) => { const g = []; const r = el('div','q'); r.style.setProperty('--a', accent); r.innerHTML = `<div class="n">${i+1}</div><div class="qt"><div class="line"></div></div>`;
+     $('.line', r).append(choiceFrag(t, g, () => { r.className = 'q'; })); body.append(r); return {r, g, t}; });
+   return {total: rows.length,
+    check(){ let s = 0; rows.forEach(x => { const ok = x.g.every(choiceCheck); if (ok) s++; x.r.className = 'q ' + (ok ? 'ok' : 'bad'); }); return s; },
+    report(){ return rows.map(x => ({ok: x.g.every(g => g.sel === g.correct), line: plain(choiceLine(x.t, x.g))})); },
+    fill(){ rows.forEach(x => x.g.forEach(choiceFill)); }};
+  }});
+}
+function gapSection(id, num, label, title, accent, instr, S){
+ return makeSection({id, num, label, title, accent, instr,
+  build(body){
+   const p = el('div','para'), inputs = [], ans = [], sentOf = [], re = /\[([^|\]]+)\|([^\]]+)\]/g;
+   p.innerHTML = S.map((sent, si) => sent.replace(re, (m,a,v) => { const k = ans.length; ans.push(a.toLowerCase()); sentOf.push(si); return `<span class="gw" data-k="${k}"></span><span class="gapq">(${v})</span>`; })).join('<br>');
+   body.append(p);
+   p.querySelectorAll('.gw').forEach(w => { const k = +w.dataset.k; const i = el('input','gap'); i.type = 'text'; i.autocomplete = 'off'; i.autocapitalize = 'off'; i.spellcheck = false; i.style.width = Math.max(110, ans[k].length * 12 + 30) + 'px'; i.oninput = () => { i.className = 'gap'; }; w.replaceWith(i); inputs[k] = i; });
+   return {total: ans.length,
+    check(){ let s = 0; inputs.forEach((i,k) => { const ok = norm(i.value) === ans[k]; if (ok) s++; i.className = 'gap ' + (ok ? 'ok' : 'bad'); }); return s; },
+    report(){ let k = 0; return inputs.map((inp,kk) => ({ok: norm(inp.value) === ans[kk], line: (() => { let j = 0; const base = S[sentOf[kk]]; return plain(base.replace(re, (m,a) => { const idx = j++; return (sentOf.indexOf(sentOf[kk]) + idx === kk) ? (inp.value.trim() || '___') : a; })); })() + '   (correct: ' + ans[kk] + ')'})); },
+    fill(){ inputs.forEach((i,k) => { i.value = ans[k]; i.className = 'gap shown'; }); }};
+  }});
+}
+
+choiceSection('t1', 1, 'Task 1 · Verb forms', 'Past participles', '#12b5a6', 'Choose the correct <b>past participle</b>. Use the table in the rules if you need help.', FORMS);
+choiceSection('t2', 2, 'Task 2 · Time words', 'Which tense goes with it?', '#2f80ed', 'Look at the time word. Choose the tense that goes with it: <b>present perfect</b> or <b>past simple</b>.', TIMEW);
+choiceSection('t3', 3, 'Task 3 · Choose', 'Present perfect or past simple?', '#7b5cff', 'Click the correct form. Look for time words: <i>yesterday, last year, in 2022…</i>', CHOOSE);
+gapSection('t4', 4, 'Task 4 · Gaps', 'Write the correct form', '#ff6f59', 'Write the verb in the correct form. Use <b>present perfect</b> or <b>past simple</b>. Write the whole verb phrase, for example <i>has won</i> or <i>have never seen</i>.', GAPS);
+
+// 5 Question order
+makeSection({id:'t5', num:5, label:'Task 5 · Questions', title:'Make the questions', accent:'#f59f00',
+ instr:'Read the answer. Click the words in the correct order to make the <b>question</b>. Click a word in the box to take it back.',
+ build(body){
+  const items = ORDER.map((it,i) => {
+    const words = it.q.split(' '); let pool = shuffle(words.map((w,k) => ({w,k})));
+    for (let t = 0; t < 5 && pool.map(x => x.w).join(' ') === it.q; t++) pool = shuffle(pool);
+    const st = {it, pool, built: []};
+    const r = el('div','q'); r.style.setProperty('--a','#f59f00');
+    r.innerHTML = `<div class="n">${i+1}</div><div class="qt"><div class="ans">Answer: <b>${it.a}</b></div><div class="built"></div><div class="pool"></div><div class="fb"></div></div>`;
+    st.r = r; st.bEl = $('.built', r); st.pEl = $('.pool', r); st.fb = $('.fb', r);
+    st.draw = () => { st.bEl.innerHTML = ''; st.pEl.innerHTML = '';
+      st.built.forEach(t => { const b = el('button','tok in',t.w); b.type = 'button'; b.onclick = () => { st.built = st.built.filter(x => x !== t); st.pool.push(t); st.clear(); st.draw(); }; st.bEl.append(b); });
+      st.pool.forEach(t => { const b = el('button','tok',t.w); b.type = 'button'; b.onclick = () => { st.pool = st.pool.filter(x => x !== t); st.built.push(t); st.clear(); st.draw(); }; st.pEl.append(b); }); };
+    st.clear = () => { st.r.className = 'q'; st.bEl.className = 'built'; st.fb.textContent = ''; };
+    st.draw(); body.append(r); return st; });
+  const full = it => it.q.charAt(0).toUpperCase() + it.q.slice(1) + '?';
+  return {total: items.length,
+   check(){ let s = 0; items.forEach(x => { const ok = x.built.map(t => t.w).join(' ').toLowerCase() === x.it.q.toLowerCase(); if (ok) s++; x.r.className = 'q ' + (ok ? 'ok' : 'bad'); x.bEl.className = 'built ' + (ok ? 'ok' : 'bad'); x.fb.className = 'fb ' + (ok ? 'good' : 'err'); x.fb.textContent = ok ? '✓ ' + full(x.it) : (x.built.length ? '✗ Not yet. Check the word order.' : '✗ Click the words to build the question.'); }); return s; },
+   report(){ return items.map(x => { const got = x.built.map(t => t.w).join(' '); return {ok: got.toLowerCase() === x.it.q.toLowerCase(), line: '"' + x.it.a + '" – you made: ' + (got ? '"' + got + '?"' : '(nothing)') + '; correct: "' + full(x.it) + '"'}; }); },
+   fill(){ items.forEach(x => { x.built = x.it.q.split(' ').map((w,k) => ({w,k})); x.pool = []; x.draw(); x.bEl.className = 'built'; x.fb.className = 'fb good'; x.fb.textContent = full(x.it); }); }};
+ }});
+
+// 6 Fix the mistake
+makeSection({id:'t6', num:6, label:'Task 6 · Mistakes', title:'Find and fix the mistake', accent:'#e64980',
+ instr:'Each sentence has a mistake with the tense. Write the <b>correct sentence</b>.',
+ build(body){
+  const rows = FIX.map((it,i) => { const r = el('div','q'); r.style.setProperty('--a','#e64980');
+    r.innerHTML = `<div class="n">${i+1}</div><div class="qt"><div><b>${it.p}</b></div><input class="sent" placeholder="Write the correct sentence…" autocomplete="off" autocapitalize="off" spellcheck="false"><div class="fb"></div></div>`;
+    const a = $('.sent', r); a.oninput = () => { a.className = 'sent'; r.className = 'q'; };
+    body.append(r); return {r, a, fb: $('.fb', r), it}; });
+  const good = x => x.it.ok.map(norm).includes(norm(x.a.value));
+  return {total: rows.length,
+   check(){ let s = 0; rows.forEach(x => { const ok = good(x); if (ok) s++; x.a.className = 'sent ' + (ok ? 'ok' : 'bad'); x.r.className = 'q ' + (ok ? 'ok' : 'bad'); x.fb.className = 'fb ' + (ok ? 'good' : 'err'); x.fb.textContent = ok ? '✓ Good!' : '✗ Look at the time word. Model: ' + x.it.model; }); return s; },
+   report(){ return rows.map(x => ({ok: good(x), line: '"' + x.it.p + '" – you wrote: "' + (x.a.value.trim() || '(nothing)') + '"; model: "' + x.it.model + '"'})); },
+   fill(){ rows.forEach(x => { x.a.value = x.it.model; x.a.className = 'sent shown'; x.fb.className = 'fb good'; x.fb.textContent = 'Model: ' + x.it.model; }); }};
+ }});
+
+// 7 Dialogue
+makeSection({id:'t7', num:7, label:'Task 7 · Dialogue', title:'Two friends talk about football', accent:'#2f9e44',
+ instr:'Complete the dialogue. Choose the correct word or phrase. <span class="hint">(Present perfect and past simple.)</span>',
+ build(body){
+  const groups = [];
+  DIALOGUE.forEach(([who, text]) => { const d = el('div','say' + (who === 'Sam' ? ' me' : '')); d.innerHTML = `<span class="sp">${who}</span>`; const g = []; const s = el('span'); s.append(choiceFrag(text, g)); d.append(s); body.append(d); groups.push(...g); });
+  return {total: groups.length,
+   check(){ let s = 0; groups.forEach(g => { if (choiceCheck(g)) s++; }); return s; },
+   report(){ return groups.map((g,k) => ({ok: g.sel === g.correct, line: DIALOGUE[k][0] + ': ' + choiceLine(DIALOGUE[k][1], [g])})); },
+   fill(){ groups.forEach(choiceFill); }};
+ }});
+
+// 8 Writing
+makeSection({id:'t8', num:8, label:'Task 8 · Writing', title:'Your experience', accent:'#c8a24a',
+ instr:'Write <b>6 or more sentences</b> about your life: football, Dota, food, travel. Ask one <b>“Have you ever…?”</b> question. Say what you <b>have</b> or <b>have never</b> done. Then give details in the <b>past simple</b> with a time word.',
+ build(body){
+  body.append(el('div','starters',"<span>I have never …</span><span>I have …</span><span>Have you ever …?</span><span>I … last year.</span><span>I … when I was …</span><span>We won / lost … in …</span>"));
+  const ta = el('textarea'); ta.id = 'writing'; ta.placeholder = 'Write here…'; body.append(ta);
+  body.append(el('ul','chk',`<li id="c1">6 or more sentences</li><li id="c2">a present perfect sentence (I have seen…, I have never…)</li><li id="c3">a question with “Have you ever”</li><li id="c4">a past simple sentence with a time word (last year, in 2022, two years ago…)</li>`));
+  const upd = () => { const v = ta.value; const sents = v.split(/[.!?]+/).filter(x => x.trim().split(/\s+/).length > 2).length;
+    $('#c1').className = sents >= 6 ? 'y' : '';
+    $('#c2').className = /\b(i|we|you|they|he|she|has|have)\s+(have\s+|has\s+)?(never|already)?\s*\w*(ed|en|won|lost|been|seen|made|met|done|had)\b/i.test(v) && /\b(have|has|haven['’]t|hasn['’]t)\b/i.test(v) ? 'y' : '';
+    $('#c3').className = /\bhave you ever\b/i.test(v) ? 'y' : '';
+    $('#c4').className = /\b(yesterday|last (week|year|month|summer|winter|weekend|night|sunday|saturday)|in (19|20)\d\d|\w+ ago|when i was)\b/i.test(v) ? 'y' : ''; };
+  ta.oninput = upd; upd();
+  return {total: 0};
+ }});
+
+document.getElementById('ruBtn').onclick = () => {
+  const r = document.getElementById('rules'), on = r.classList.toggle('ru-on');
+  document.getElementById('ruBtn').textContent = on ? 'Скрыть правила на русском' : 'Прочитать правила на русском';
+};
+update();
+
+/* ---------------- COPY RESULTS ---------------- */
+function buildReport(){
+  const name = $('#who').value.trim() || '(no name)';
+  const L = ['Football homework – ' + name + ' (' + new Date().toLocaleString() + ')', ''];
+  sections.filter(x => x.total).forEach(x => L.push('Task ' + x.num + ' ' + x.label + ': ' + (x.revealed ? 'answers shown' : x.checked ? x.score + ' / ' + x.total : 'not checked')));
+  L.push('Total: ' + $('#score').textContent, '', 'MISTAKES (every wrong answer, including ones fixed on retry)');
+  const withLog = sections.filter(x => x.log.length);
+  if (!withLog.length) L.push('(none logged)');
+  withLog.forEach(x => { L.push('', 'Task ' + x.num + ' ' + x.label); x.log.forEach(e => L.push('  ✗ ' + e.line + '   [' + (x.lastOk[e.i] ? 'fixed on retry' : 'still wrong') + ']')); });
+  const w = (document.getElementById('writing') || {}).value || '';
+  L.push('', 'Writing:', w.trim() || '(empty)');
+  return L.join('\n');
+}
+$('#copyBtn').onclick = async () => {
+  const text = buildReport(), msg = $('#copyMsg');
+  try { await navigator.clipboard.writeText(text); msg.textContent = 'Copied! Paste it in the chat.'; }
+  catch (e) { const t = document.createElement('textarea'); t.value = text; document.body.append(t); t.select(); try { document.execCommand('copy'); msg.textContent = 'Copied! Paste it in the chat.'; } catch (e2) { msg.textContent = 'Could not copy. Select and copy this text:\n' + text; } t.remove(); }
+};
+window.HW = {sections, buildReport};
+</script>
+</body>
+</html>
