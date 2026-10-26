@@ -1,0 +1,148 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halloween Grammar · Homework</title>
+<style>
+:root{--bg:#11221d;--card:#0e1113;--tile:#192321;--line:#fc7954;--ink:#fff1e0;--head:#ffc0b6;--btn:#283f35;--ok:#5fd08a;--bad:#ff6b6b;--mut:#b9a99a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.5 "Open Sans",system-ui,sans-serif;padding:0 16px 80px}
+.wrap{max-width:860px;margin:0 auto}
+header{text-align:center;padding:34px 0 10px}
+h1{font:700 clamp(30px,6vw,48px) Georgia,serif;color:var(--head);margin:0 0 6px}
+header p{color:var(--mut);margin:0}
+.name{display:flex;gap:10px;align-items:center;justify-content:center;margin:18px 0 0;flex-wrap:wrap}
+.name input{background:var(--tile);border:2px solid #fff3;border-radius:14px;color:var(--ink);padding:10px 14px;font:inherit;min-width:240px}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;text-align:center;font-weight:700;color:var(--head);border-bottom:1px solid #fff2;margin-bottom:26px}
+.card{background:var(--card);border:3px solid var(--line);border-radius:28px;padding:30px 26px 26px;margin:0 0 56px}
+.card h2{font:700 clamp(24px,4.5vw,34px) Georgia,serif;color:var(--head);text-align:center;margin:0 0 8px}
+.card h2 span{color:var(--line)}
+.ins{text-align:center;color:var(--ink);margin:0 auto 22px;max-width:640px;opacity:.9}
+.it{background:var(--tile);border:2px solid #fff3;border-radius:22px;padding:14px 18px;margin:0 0 14px;line-height:2.1}
+.it.ok{border-color:var(--ok)}.it.bad{border-color:var(--bad)}
+.pill{display:inline-block;border:2px solid var(--line);background:var(--card);color:var(--ink);border-radius:14px;padding:2px 12px;margin:0 3px;font:inherit;font-size:16px;cursor:pointer;line-height:1.6}
+.pill.sel{background:var(--line);color:#1a1a1a;font-weight:700}
+.pill:disabled{cursor:default}
+input.gap{background:var(--card);border:2px solid var(--line);border-radius:14px;color:var(--ink);padding:2px 10px;font:inherit;font-size:16px;width:150px;margin:0 3px}
+.it.ok input.gap{border-color:var(--ok)}.it.bad input.gap{border-color:var(--bad)}
+.hint{color:var(--mut);font-size:15px}
+.btns{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:20px;align-items:center}
+button.b{background:var(--btn);color:var(--head);border:3px solid var(--line);border-radius:20px;padding:10px 24px;font:700 18px Georgia,serif;cursor:pointer}
+button.b:hover{filter:brightness(1.2)}
+.sc{font-weight:700;color:var(--head);min-width:70px;text-align:center}
+.msg{text-align:center;margin-top:10px;color:var(--mut);min-height:24px}
+.save{text-align:center}
+.save button.b{font-size:22px;padding:14px 40px;background:var(--line);color:#1a1a1a}
+@media(max-width:520px){.card{padding:22px 14px}input.gap{width:120px}}
+</style></head><body><div class="wrap">
+<header><h1>Halloween Grammar</h1><p>Homework · articles · conditionals · used to / would</p>
+<div class="name"><label for="nm">Your name:</label><input id="nm" placeholder="Type your name"></div></header>
+<div class="bar">Score: <span id="tot">0 / 0</span></div>
+<div id="tasks"></div>
+<div class="save"><button class="b" id="copy">Copy my results</button><div class="msg" id="cmsg"></div></div>
+<script>
+const P=(a)=>({o:["a","an","the","–"],a:a});
+const T=(a,show)=>({x:1,a:a,show:show||a[0]});
+const U=()=>({o:["only used to","both"],a:[]});
+const arts=[
+["1. Heidi wore ",P(["a"])," tight suit covered in muscles and bones."],
+["2. ",P(["the"])," costume she wore last year was really scary.",1],
+["3. Six Heidis came out of ",P(["a"])," box wearing the same makeup."],
+["4. My little brother is still in ",P(["–"])," bed, so he can’t try on his costume."],
+["5. I’d like to be ",P(["an"])," astronaut for Halloween."],
+["6. Children go trick-or-treating after ",P(["–"])," school on 31 October."],
+["7. She made her costume at ",P(["–"])," home, not in a shop."],
+["8. ",P(["–"])," Halloween is my favourite holiday."],
+["9. Heidi is ",P(["the"])," only person I know who spends months on her costume."],
+["10. It took ",P(["an"])," hour to put on all the makeup."],
+["11. We had ",P(["–"])," dinner at my friend’s house before the party."],
+["12. ",P(["the"])," Moon was full on Halloween night."],
+["13. She speaks ",P(["–"])," French, so she chose a Parisian artist costume."],
+["14. I saw ",P(["a"])," man in ",P(["a"])," scary mask at the door."],
+["15. ",P(["the"])," man in ",P(["a"])," scary mask that I saw yesterday was my neighbour."]];
+// fix: capitalised answers
+arts[1][0]="2. ";arts[7][0]="8. ";arts[11][0]="12. ";arts[14][0]="15. ";
+const cond=[
+["1. If it rains on Halloween, we ",T(["will stay"])," (stay) at home."],
+["2. If I had a lot of money, I ",T(["would buy"])," (buy) the most expensive costume."],
+["3. I wouldn’t go to the party if I ",T(["didn’t have"])," (not have) a costume."],
+["4. If you wear a costume like that, people ",T(["will stare"])," (stare) at you."],
+["5. If I ",T(["were","was"],"were / was")," (be) you, I would choose the apple costume."],
+["6. If Heidi ",T(["starts"])," (start) early, she will finish her costume on time."],
+["7. What would you do if someone ",T(["scared"])," (scare) you in the dark?"],
+["8. If the kids ",T(["don’t get"])," (not get) enough sweets, they will be upset."]];
+const ut=[
+["1. When I was a kid, I _______ go trick-or-treating every year.","both"],
+["2. We _______ live next to a very creepy old house.","only used to"],
+["3. I _______ be afraid of ghosts when I was little.","only used to"],
+["4. My dad _______ dress up as a vampire every Halloween.","both"],
+["5. I didn’t _______ like horror films when I was younger.","only used to"],
+["6. Grandma _______ bake pumpkin cookies for us every October.","both"],
+["7. My mum _______ let us stay out late on Halloween.","both"],
+["8. Our street didn’t _______ look so scary before people decorated it.","only used to"]
+].map(r=>[r[0],{o:["only used to","both"],a:[r[1]],ut:1}]);
+const defs=[
+ {t:"Choose a / an / the / – (no article)",s:"Click the correct option in each gap. Choose “–” when no article is needed.",items:arts,label:"Articles"},
+ {t:"Complete the sentences",s:"Read the first part and decide what is missing. Type the correct form of the verb in the box. Use the First or the Second Conditional.",items:cond,label:"Conditionals"},
+ {t:"Used to or would?",s:"Read the statements about the past. Can we use only used to, or both used to and would? Choose one answer for each sentence.",items:ut,label:"Used to or would"}];
+const norm=s=>(s||"").toLowerCase().replace(/[’‘]/g,"'").replace(/\bdid not\b/g,"didn't").replace(/\bdo not\b/g,"don't").replace(/\s+/g," ").trim();
+const gaps=it=>it.filter(x=>typeof x==="object");
+const showOf=g=>g.show||g.a.join(" / ");
+const secs=[];
+defs.forEach((d,ti)=>{
+ const card=document.createElement("div");card.className="card";
+ card.innerHTML=`<h2><span>${ti+1}.</span> ${d.t}</h2><p class="ins">${d.s}</p><div class="list"></div><div class="btns"><button class="b chk">Check</button><button class="b shw">Show answers</button><button class="b rst">Try again</button><span class="sc"></span></div><div class="msg"></div>`;
+ document.getElementById("tasks").appendChild(card);
+ const sec={d,num:ti+1,card,total:d.items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],val:[],els:[]};
+ secs.push(sec);build(sec);
+ card.querySelector(".chk").onclick=()=>{ if(sec.revealed){card.querySelector(".msg").textContent="Answers are shown. Press Try again to practise.";return;}
+  sec.score=check(sec);sec.checked=true;record(sec);card.querySelector(".sc").textContent=sec.score+" / "+sec.total;upd();};
+ card.querySelector(".shw").onclick=()=>{fill(sec);sec.revealed=true;sec.checked=false;sec.score=0;card.querySelector(".sc").textContent="";card.querySelector(".msg").textContent="Answers shown (not scored).";upd();};
+ card.querySelector(".rst").onclick=()=>{build(sec);sec.checked=false;sec.revealed=false;sec.score=0;card.querySelector(".sc").textContent="";card.querySelector(".msg").textContent="";upd();};
+});
+function build(sec){
+ const list=sec.card.querySelector(".list");list.innerHTML="";sec.val=[];sec.els=[];
+ sec.d.items.forEach((it,i)=>{
+  const row=document.createElement("div");row.className="it";const vals=[];sec.val.push(vals);
+  let gi=0;
+  it.forEach(seg=>{
+   if(typeof seg==="string"){ if(seg.startsWith("__")) return; row.appendChild(document.createTextNode(seg)); return;}
+   if(typeof seg==="number")return;
+   const k=gi++;vals[k]="";
+   if(seg.x){const inp=document.createElement("input");inp.className="gap";inp.autocomplete="off";inp.spellcheck=false;inp.oninput=()=>{vals[k]=inp.value;};row.appendChild(inp);seg.el=inp;}
+   else{const w=document.createElement("span");if(seg.ut)w.style.display="block";if(seg.ut)w.style.marginTop="4px";
+    seg.o.forEach(o=>{const b=document.createElement("button");b.type="button";b.className="pill";b.textContent=o;b.onclick=()=>{vals[k]=o;w.querySelectorAll(".pill").forEach(p=>p.classList.toggle("sel",p===b));};w.appendChild(b);});row.appendChild(w);seg.el=w;}
+  });
+  list.appendChild(row);sec.els.push(row);
+ });
+}
+function okGap(g,v){return g.a.some(a=>norm(a)===norm(v));}
+function itemOk(sec,i){return gaps(sec.d.items[i]).every((g,k)=>okGap(g,sec.val[i][k]));}
+function check(sec){let n=0;sec.d.items.forEach((it,i)=>{const ok=itemOk(sec,i);sec.els[i].classList.remove("ok","bad");sec.els[i].classList.add(ok?"ok":"bad");if(ok)n++;});return n;}
+function fill(sec){sec.d.items.forEach((it,i)=>{gaps(it).forEach((g,k)=>{const v=g.a[0];sec.val[i][k]=v;if(g.x)g.el.value=v;else g.el.querySelectorAll(".pill").forEach(p=>p.classList.toggle("sel",p.textContent===v));});sec.els[i].classList.remove("ok","bad");});}
+function line(sec,i){
+ const it=sec.d.items[i],v=sec.val[i];let gi=0,txt="",wrong=[];
+ it.forEach(seg=>{ if(typeof seg==="string"){txt+=seg;return;} if(typeof seg==="number")return;
+  const k=gi++,val=v[k];
+  if(seg.ut){ if(!okGap(seg,val))wrong.push(showOf(seg)); }
+  else{ txt+=(val?val:"___"); if(!okGap(seg,val))wrong.push(showOf(seg)); }});
+ const g=gaps(it)[0];
+ if(g.ut) return `"${txt}" – you chose ${v[0]||"nothing"}; correct: ${showOf(g)}`;
+ return txt.replace(/\s+/g," ")+(wrong.length?"   (correct: "+wrong.join(", ")+")":"");
+}
+function report(sec){return sec.d.items.map((it,i)=>({ok:itemOk(sec,i),line:line(sec,i)}));}
+function record(sec){report(sec).forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line});}}});}
+function upd(){let g=0,t=0;secs.forEach(s=>{g+=s.score;t+=s.total;});document.getElementById("tot").textContent=g+" / "+t;}
+upd();
+function buildReport(){
+ const nm=document.getElementById("nm").value.trim()||"(no name)";const d=new Date().toLocaleString();
+ let o=`Halloween Grammar Homework – ${nm} (${d})\n\n`,g=0,t=0;
+ secs.forEach(s=>{t+=s.total;g+=s.score;o+=`Task ${s.num} ${s.d.label}: `+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n";});
+ o+=`Total: ${g} / ${t}\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n`;
+ let any=false;
+ secs.forEach(s=>{if(!s.log.length)return;any=true;o+=`\nTask ${s.num} ${s.d.label}\n`;s.log.forEach(e=>{o+=`  ✗ ${e.line}   [${s.lastOk[e.i]?"fixed on retry":"still wrong"}]\n`;});});
+ if(!any)o+="\nNo mistakes recorded.\n";
+ return o;}
+document.getElementById("copy").onclick=async()=>{const txt=buildReport(),m=document.getElementById("cmsg");
+ try{await navigator.clipboard.writeText(txt);}catch(e){const ta=document.createElement("textarea");ta.value=txt;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");}catch(e2){}ta.remove();}
+ m.textContent="Copied! Paste it in the chat.";};
+window.HW={secs,buildReport,fill,check,record};
+</script></div></body></html>
