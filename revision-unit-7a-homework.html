@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revision – Unit 7A</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1E2A4A;--ink:#1d2236;--paper:#F6F3EE;--line:#DDD6CA;--muted:#6B6459;--good:#2E7D5B;--bad:#B33A32;--goodbg:#E8F5EE;--badbg:#FBECEB}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,"Segoe UI","Noto Color Emoji",sans-serif;font-size:16px;line-height:1.55}
+/* stage themes */
+.s0{--tab:#7B5BD6;--hdr:#5B3FB5;--panel:#F1ECFF;--dash:#BDB0F0;--acc:#1FA6A0;--acc2:#7B5BD6}
+.s1{--tab:#FF6B57;--hdr:#D9482F;--panel:#FFF6E6;--dash:#F0C27A;--acc:#1FA6A0;--acc2:#FF6B57}
+.s2{--tab:#1FA6A0;--hdr:#0F7F7A;--panel:#EAF8F4;--dash:#8ED3C6;--acc:#FF6B57;--acc2:#1FA6A0}
+header{background:var(--hdr);color:#fff;padding:26px 0 24px;transition:background .25s}
+.head-inner{max-width:880px;margin:0 auto;padding:0 18px;display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.stagelbl{font-size:13px;letter-spacing:.1em;text-transform:uppercase;opacity:.85;margin-bottom:4px;font-weight:600}
+h1{margin:0;font-size:46px;line-height:1;font-weight:800;letter-spacing:.005em}
+.namebox{display:flex;flex-direction:column;gap:4px;font-size:12px;opacity:.95}
+.namebox input{font:inherit;font-size:15px;color:var(--ink);background:#fff;border:0;border-radius:10px;padding:8px 12px;width:230px;max-width:100%}
+.bar{position:sticky;top:0;z-index:20;background:var(--paper);border-bottom:1px solid var(--line)}
+.bar-inner{max-width:880px;margin:0 auto;padding:8px 18px;display:flex;gap:8px}
+.st{flex:1;font:inherit;font-size:14px;font-weight:700;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:12px;padding:6px 10px;cursor:pointer;display:flex;flex-direction:column;align-items:center;line-height:1.25}
+.st small{font-weight:600;font-size:12px;color:var(--muted)}
+.st.on{color:#fff;border-color:var(--navy)}
+.st.on small{color:#fff;opacity:.9}
+.st.b0.on{background:#7B5BD6}.st.b1.on{background:#E8523E}.st.b2.on{background:#16918B}
+.st.b0{border-color:#CFC3F2}.st.b1{border-color:#F7C2B9}.st.b2{border-color:#A9DDD6}
+.st.on.b0,.st.on.b1,.st.on.b2{border-color:var(--navy)}
+.wrap{max-width:880px;margin:0 auto;padding:30px 18px 90px}
+.page{display:none}
+.page.on{display:block}
+.card{position:relative;background:var(--panel);border:6px solid var(--navy);border-radius:36px;padding:68px 40px 46px;margin:62px 0 54px}
+.card:first-child{margin-top:44px}
+.card::before{content:"";position:absolute;inset:14px;border:2px dashed var(--dash);border-radius:24px;pointer-events:none}
+.tab{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);min-width:116px;height:76px;padding:0 24px;background:var(--tab);border:5px solid var(--navy);border-radius:22px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:50px;z-index:3;box-shadow:0 5px 0 var(--navy)}
+.badge{position:absolute;width:62px;height:62px;border-radius:50%;background:#FFC94A;border:5px solid var(--navy);display:flex;align-items:center;justify-content:center;font-size:30px;z-index:3;box-shadow:0 4px 0 var(--navy)}
+.b1{left:54px;top:0;transform:translateY(-50%)}
+.b2{right:54px;bottom:0;transform:translateY(50%)}
+.card h2{margin:0 0 8px;font-size:23px;line-height:1.4;font-weight:700;position:relative}
+.hint{font-size:14px;color:var(--muted);margin:0 0 18px;position:relative}
+.inner{position:relative}
+/* rows */
+.q{display:flex;gap:10px;align-items:baseline;padding:10px 12px;border:2px solid #E4DDF2;border-radius:12px;margin-bottom:8px;background:#fff;flex-wrap:wrap}
+.s1 .q{border-color:#EFE0C4}.s2 .q{border-color:#CFE8E1}
+.q .n{font-size:12px;color:var(--muted);min-width:18px;font-weight:600}
+.q .t{flex:1;min-width:200px;font-size:18px;line-height:1.5}
+.q.ok{border-color:var(--good) !important;background:var(--goodbg)}
+.q.no{border-color:var(--bad) !important;background:var(--badbg)}
+.subh{font-weight:800;font-size:16px;letter-spacing:.06em;text-transform:uppercase;color:var(--acc2);margin:16px 2px 8px}
+.pills{display:inline-flex;gap:6px;flex-wrap:wrap;vertical-align:middle;margin:2px 4px}
+.pill{font:inherit;font-size:15px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:99px;padding:3px 14px;cursor:pointer;line-height:1.5}
+.pill:hover{border-color:var(--acc2)}
+.pill.on{background:var(--acc2);border-color:var(--acc2);color:#fff;font-weight:600}
+input.gap,select,input.wide,textarea{font:inherit;font-size:16px;color:var(--ink);background:#FBF9F5;border:2px solid var(--line);border-radius:10px;padding:4px 9px}
+input.gap{text-align:center;margin:2px 3px}
+input.wide{width:100%;margin-top:8px;text-align:left}
+textarea{width:100%;min-height:70px;margin-top:6px;resize:vertical}
+input:focus,select:focus,textarea:focus,.pill:focus-visible,.tile:focus-visible{outline:3px solid var(--acc2);outline-offset:1px}
+input.ok,select.ok,.ordans.ok{border-color:var(--good) !important;background:var(--goodbg) !important}
+input.no,select.no,.ordans.no{border-color:var(--bad) !important;background:var(--badbg) !important}
+sup{font-size:11px;color:var(--muted);font-weight:700}
+.ex{text-decoration:underline;font-weight:700;color:var(--acc2)}
+.matchlist{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:14px;font-size:16px}
+.matchlist div{padding:2px 0}
+.matchlist b{color:var(--acc2);margin-right:4px}
+.para{margin:0 0 12px;line-height:2.15;font-size:18px}
+.textbox{background:#fff;border:2px solid var(--line);border-radius:14px;padding:16px 20px}
+.dlg{display:grid;grid-template-columns:96px 1fr;gap:10px;margin:0 0 8px;font-size:18px;line-height:2}
+.dlg b{color:var(--acc2)}
+.convhead{font-weight:800;font-size:17px;letter-spacing:.05em;text-transform:uppercase;margin:12px 0 6px}
+.ex{white-space:nowrap}
+/* order */
+.tiles{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 8px}
+.tile{font:inherit;font-size:16px;color:var(--ink);background:#fff;border:2px solid var(--line);border-radius:10px;padding:3px 13px;cursor:pointer}
+.tile:hover{border-color:var(--acc2)}
+.tile.used{visibility:hidden}
+.ordans{min-height:50px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;border:2px dashed var(--acc2);border-radius:12px;background:#fff;padding:6px 10px}
+.ordans .tile{background:var(--acc2);border-color:var(--acc2);color:#fff}
+.ordans .ph{color:#aaa;font-size:14px}
+.ordwrap{flex:1 1 100%}
+/* mail */
+.phrases{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:14px;font-size:16.5px}
+.phrases div{padding:1px 0}
+.phrases b{color:var(--acc2);margin-right:6px}
+.mail{background:#fff;border:3px solid var(--navy);border-radius:16px;padding:20px 24px;font-size:17.5px;line-height:2.05}
+.mail p{margin:0 0 10px}
+.mail select{font-size:16px;padding:2px 6px;margin:0 4px}
+.mail .lt{font-weight:800;color:var(--acc2);margin-right:2px}
+/* video + photos */
+.vwrap{position:relative;width:100%;aspect-ratio:16/9;border-radius:18px;overflow:hidden;border:4px solid var(--navy);background:#000;margin:4px 0 6px}
+.vwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlink{font-size:13px;color:var(--muted);margin:0 0 16px}
+.vlink a{color:var(--acc2);font-weight:600}
+.photos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin:6px 0 14px}
+.photos img{width:100%;height:170px;object-fit:cover;border:4px solid var(--navy);border-radius:14px;display:block}
+.ownlabel{font-weight:600;font-size:17px;margin:12px 0 0}
+.tag{display:inline-flex;align-items:center;gap:8px;background:var(--navy);color:#fff;font-weight:700;font-size:15px;border-radius:99px;padding:2px 14px 2px 10px;margin-right:10px;vertical-align:3px;white-space:nowrap}
+.tag i{display:block;width:0;height:0;border-left:11px solid #FFC94A;border-top:7px solid transparent;border-bottom:7px solid transparent}
+/* buttons */
+.btns{display:flex;align-items:center;gap:10px;margin-top:18px;flex-wrap:wrap;position:relative}
+button.btn{font:inherit;font-size:14px;font-weight:600;color:#fff;background:var(--navy);border:0;border-radius:12px;padding:10px 20px;cursor:pointer}
+button.btn:hover{background:#34406a}
+button.btn.alt{background:#fff;color:var(--ink);border:2px solid var(--line)}
+button.btn.alt:hover{background:#F1EADE}
+.score{font-weight:700;font-size:15px}
+.msg{font-size:13px;color:var(--muted)}
+details.log{margin-top:12px;font-size:13px;color:var(--muted);position:relative}
+details.log summary{cursor:pointer}
+details.log li{margin:3px 0}
+.final{background:var(--navy);color:#fff;border-radius:22px;padding:22px;margin:30px 0 0;text-align:center}
+.final p{margin:0 0 14px;color:#d9d2c6;font-size:14px}
+.final .row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.final button{font:inherit;font-size:14px;font-weight:700;border:0;border-radius:12px;padding:11px 24px;cursor:pointer}
+.final .copy{background:#fff;color:var(--ink)}
+.final .nav{background:transparent;color:#fff;border:2px solid #fff}
+.final .msg{display:block;margin-top:10px;color:#9fe0bd;min-height:20px}
+@media(max-width:640px){
+  h1{font-size:34px}
+  .card{padding:62px 16px 40px;border-radius:30px}
+  .card::before{inset:10px;border-radius:20px}
+  .b1{left:30px}.b2{right:30px}
+  .photos{grid-template-columns:1fr}
+  .photos img{height:190px}
+  .dlg{grid-template-columns:1fr;gap:0}
+  .namebox,.namebox input{width:100%}
+  .st{font-size:12px;padding:5px 4px}
+  .q .t{min-width:150px;font-size:17px}
+}
+
+.s0{--tab:#1FA6A0;--hdr:#0F7F7A;--panel:#EAF8F4;--dash:#8ED3C6;--acc:#FF6B57;--acc2:#16918B}
+.s0 .q{border-color:#CFE8E1}
+.bar-inner{align-items:center;justify-content:space-between}
+.tot{font-weight:800;font-size:15px}
+.tok{cursor:pointer;border-radius:6px;padding:1px 2px;margin:0 -2px;transition:background .1s}
+.tok:hover{background:#cfeee8}
+.tok.u{text-decoration:underline;text-underline-offset:3px}
+.tok.sel{background:var(--acc2);color:#fff}
+.tok:focus-visible{outline:3px solid var(--acc2)}
+.clk{line-height:2.1}
+.src{font-style:italic;font-weight:700;border-bottom:3px solid var(--acc2);padding:0 2px}
+.src sup{margin-right:2px}
+.picker{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:0 0 12px}
+.picker .pl{flex:1 1 100%;font-size:14px;color:var(--muted)}
+.pk{font:inherit;font-size:14px;font-weight:600;border:2px solid var(--line);background:#fff;border-radius:99px;padding:3px 12px;cursor:pointer}
+.pk.on{color:#fff}
+.pk.m1.on,.tok.m1{background:#7B5BD6;color:#fff}.pk.m1{border-color:#7B5BD6}
+.pk.m2.on,.tok.m2{background:#E8523E;color:#fff}.pk.m2{border-color:#E8523E}
+.pk.m3.on,.tok.m3{background:#2E7D5B;color:#fff}.pk.m3{border-color:#2E7D5B}
+.pk.m4.on,.tok.m4{background:#D08A00;color:#fff}.pk.m4{border-color:#D08A00}
+.pk.m5.on,.tok.m5{background:#1E6FB8;color:#fff}.pk.m5{border-color:#1E6FB8}
+.results{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.results .q.res{margin:0;padding:4px 12px}
+.wordbox{display:flex;flex-wrap:wrap;gap:8px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 14px;margin-bottom:14px}
+.wordbox span{background:#EAF8F4;border:2px solid #8ED3C6;border-radius:99px;padding:1px 12px;font-size:16px}
+details.text{margin:0 0 14px;background:#fff;border:2px solid var(--line);border-radius:12px;padding:8px 16px}
+details.text summary{cursor:pointer;font-weight:700}
+.dlg .lt{font-weight:800;color:var(--acc2);margin:0 2px 0 4px}
+.dlg select{font-size:16px;padding:2px 6px;margin:0 4px;max-width:100%}
+</style>
+</head>
+<body class="s0">
+<header id="hdr" class="s0">
+  <div class="head-inner">
+    <div>
+      <div class="stagelbl">Revision</div>
+      <h1>Unit 7A</h1>
+    </div>
+    <label class="namebox">Your name
+      <input type="text" id="stname" autocomplete="off" placeholder="Type your name">
+    </label>
+  </div>
+</header>
+<nav class="bar"><div class="bar-inner"><span class="tot" id="tot">Score: 0 / 0</span><span class="msg">Check each task, then copy your results at the bottom.</span></div></nav>
+<main class="wrap" id="pages"></main>
+<script>
+"use strict";
+/* ---------- helpers ---------- */
+function esc(s){return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function rich(s){return esc(s).replace(/\*\*(.+?)\*\*/g,"<b>$1</b>").replace(/__(.+?)__/g,"<span class=\"ex\">$1</span>");}
+function plain(s){return s.replace(/\*\*(.+?)\*\*/g,"$1").replace(/__(.+?)__/g,"$1");}
+function norm(s){
+  return String(s).toLowerCase().replace(/[‘’]/g,"'").replace(/[–—]/g,"-")
+    .replace(/\s+/g," ").trim().replace(/^- /,"").replace(/[.!?]+$/,"").trim();
+}
+function cmp(s){
+  return String(s).toLowerCase().replace(/[‘’]/g,"'").replace(/[^a-z0-9' ]/g," ").replace(/\s+/g," ").trim();
+}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!==undefined)e.innerHTML=html;return e;}
+function setMark(e,ok){e.classList.remove("ok","no");e.classList.add(ok?"ok":"no");}
+function clearMark(e){e.classList.remove("ok","no");}
+
+/* ---------- gap parsing ---------- */
+function parseGaps(s,mode){
+  var segs=[],gaps=[],re=/\[([^\]]+)\]/g,last=0,m;
+  while((m=re.exec(s))){
+    segs.push({t:s.slice(last,m.index)});
+    var body=m[1],model=null;
+    if(body.indexOf("=")>-1){var p=body.split("=");body=p[0];model=p[1];}
+    var alts=body.split("|");
+    var g={alts:alts,model:model||alts[0],fill:alts[0],acc:alts.map(norm)};
+    segs.push({g:g});gaps.push(g);
+    last=m.index+m[0].length;
+  }
+  segs.push({t:s.slice(last)});
+  if(mode==="word"){
+    for(var k=1;k<segs.length;k+=2){
+      var g2=segs[k].g,miss=g2.alts[0];
+      var before=segs[k-1].t,after=segs[k+1].t;
+      var frag=before.match(/\S*$/)[0];
+      var tail=after.match(/^[A-Za-z'\-]*/)[0];
+      var chunk=frag+miss+tail;
+      g2.frag=frag;g2.tail=tail;
+      g2.acc=[];g2.alts.forEach(function(a){g2.acc.push(norm(a));g2.acc.push(norm(frag+a+tail));});
+      g2.model=chunk;g2.fill=miss;
+    }
+  }
+  return {segs:segs,gaps:gaps};
+}
+function sentLine(ps,target,typed){
+  var out="",skip=0;
+  ps.segs.forEach(function(sg){
+    if(sg.g){
+      var g=sg.g;
+      if(g.frag!==undefined){
+        out=out.slice(0,out.length-g.frag.length);
+        var disp;
+        if(g===target){
+          var t=(typed||"").trim();
+          if(!t)disp="___";
+          else disp=(t.toLowerCase().indexOf(g.frag.toLowerCase())===0&&t.length>g.alts[0].length)?t:g.frag+t;
+        }else disp=g.model;
+        out+=disp;skip=g.tail.length;
+      }else{
+        out+=(g===target)?((typed&&typed.trim())?typed.trim():"___"):g.model;
+      }
+    }else{out+=sg.t.slice(skip);skip=0;}
+  });
+  return plain(out).replace(/\s+/g," ").trim();
+}
+function gapWidth(g){
+  var len=0;g.alts.forEach(function(a){if(a.length>len)len=a.length;});
+  return Math.min(Math.max(len+3,6),24);
+}
+
+/* ---------- engine: pills ---------- */
+function choiceEngine(host,cfg){
+  var items=[];
+  cfg.items.forEach(function(s){
+    if(s.indexOf("##")===0){items.push({head:s.slice(2)});return;}
+    var m=s.match(/^([\s\S]*?)\{([^}]+)\}([\s\S]*)$/);
+    var ci=-1;
+    var opts=m[2].split("|").map(function(x,i){if(x.charAt(x.length-1)==="*"){ci=i;return x.slice(0,-1);}return x;});
+    items.push({pre:m[1],post:m[3],opts:opts,correct:ci,sel:-1,row:null,btns:[]});
+  });
+  var scored=items.filter(function(it){return !it.head;});
+  var api={total:scored.length};
+  api.build=function(){
+    host.innerHTML="";
+    var n=0;
+    items.forEach(function(it){
+      if(it.head){host.appendChild(el("div","subh",esc(it.head)));return;}
+      n++;it.sel=-1;it.btns=[];
+      var row=el("div","q");it.row=row;
+      row.appendChild(el("span","n",String(n)));
+      var t=el("span","t");
+      var a=document.createElement("span");a.innerHTML=rich(it.pre);t.appendChild(a);
+      var pills=el("span","pills");
+      it.opts.forEach(function(o,k){
+        var b=el("button","pill");b.type="button";b.textContent=o;
+        b.addEventListener("click",function(){
+          it.sel=k;it.btns.forEach(function(x,j){x.classList.toggle("on",j===k);});
+          clearMark(row);
+        });
+        it.btns.push(b);pills.appendChild(b);
+      });
+      t.appendChild(pills);
+      var c=document.createElement("span");c.innerHTML=rich(it.post);t.appendChild(c);
+      row.appendChild(t);host.appendChild(row);
+    });
+  };
+  api.check=function(){
+    var n=0;
+    scored.forEach(function(it){var ok=it.sel===it.correct;if(ok)n++;setMark(it.row,ok);});
+    return n;
+  };
+  api.report=function(){
+    return scored.map(function(it){
+      var ok=it.sel===it.correct;
+      var chosen=it.sel>-1?it.opts[it.sel]:"___";
+      var l=plain(it.pre+chosen+it.post).replace(/\s+/g," ").trim();
+      if(!ok)l+="   (correct: "+it.opts[it.correct]+")";
+      return {ok:ok,line:l};
+    });
+  };
+  api.fill=function(){
+    scored.forEach(function(it){it.sel=it.correct;it.btns.forEach(function(x,j){x.classList.toggle("on",j===it.correct);});clearMark(it.row);});
+  };
+  api.getState=function(){return scored.map(function(it){return it.sel;});};api.setState=function(a){scored.forEach(function(it,i){it.sel=(a&&typeof a[i]==="number")?a[i]:-1;it.btns.forEach(function(x,j){x.classList.toggle("on",j===it.sel);});});};
+  return api;
+}
+
+/* ---------- engine: match (letters in selects) ---------- */
+function matchEngine(host,cfg){
+  var left=cfg.left,right=cfg.right,ans=cfg.answers;
+  var sels=[],rows=[];
+  var letters="abcdefghijklmnopqrstuvwxyz";
+  var api={total:left.length};
+  api.build=function(){
+    host.innerHTML="";sels=[];rows=[];
+    var list=el("div","matchlist");
+    right.forEach(function(r,i){list.appendChild(el("div","","<b>"+letters[i]+"</b> "+rich(r)));});
+    host.appendChild(list);
+    left.forEach(function(l,i){
+      var row=el("div","q");
+      row.appendChild(el("span","n",String(i+1)));
+      row.appendChild(el("span","t",rich(l)));
+      var s=document.createElement("select");
+      s.setAttribute("aria-label","match for "+plain(l));
+      s.appendChild(el("option","",""));
+      right.forEach(function(r,k){var o=el("option","",letters[k]);o.value=letters[k];s.appendChild(o);});
+      s.addEventListener("change",function(){clearMark(s);clearMark(row);});
+      row.appendChild(s);host.appendChild(row);sels.push(s);rows.push(row);
+    });
+  };
+  function txt(l){return l?plain(right[letters.indexOf(l)]):null;}
+  api.check=function(){
+    var n=0;
+    left.forEach(function(l,i){var ok=sels[i].value===ans[i];if(ok)n++;setMark(rows[i],ok);});
+    return n;
+  };
+  api.report=function(){
+    return left.map(function(l,i){
+      var v=sels[i].value,ok=v===ans[i];
+      var line="\""+plain(l)+"\" - you chose "+(v?"\""+txt(v)+"\"":"nothing")+"; correct: \""+txt(ans[i])+"\"";
+      return {ok:ok,line:line};
+    });
+  };
+  api.fill=function(){left.forEach(function(l,i){sels[i].value=ans[i];clearMark(rows[i]);clearMark(sels[i]);});};
+  return api;
+}
+
+/* ---------- engine: typed gaps in sentences / paragraphs / dialogues ---------- */
+function gapEngine(host,cfg){
+  var flat=[];
+  var blocks=cfg.blocks.map(function(b){
+    var sents=(b.sents||[]).map(function(s){
+      var ps=parseGaps(s,cfg.mode);
+      ps.gaps.forEach(function(g){flat.push({g:g,ps:ps,input:null});});
+      return ps;
+    });
+    return {num:b.num,sents:sents,para:b.para,speaker:b.speaker,head:b.head};
+  });
+  var api={total:flat.length};
+  api.build=function(){
+    host.innerHTML="";
+    blocks.forEach(function(b){
+      if(b.head){host.appendChild(el("div","convhead",esc(b.head)));return;}
+      var row,target;
+      if(b.speaker){row=el("div","dlg");row.appendChild(el("b","",esc(b.speaker)));target=el("div","");row.appendChild(target);}
+      else if(b.para){row=el("p","para");target=row;}
+      else{row=el("div","q");if(b.num)row.appendChild(el("span","n",String(b.num)));target=el("span","t");row.appendChild(target);}
+      b.sents.forEach(function(ps,si){
+        if(si>0)target.appendChild(document.createTextNode(" "));
+        ps.segs.forEach(function(sg){
+          if(sg.g){
+            var inp=document.createElement("input");
+            inp.type="text";inp.className="gap";inp.autocomplete="off";inp.spellcheck=false;
+            inp.setAttribute("autocapitalize","off");
+            inp.setAttribute("aria-label","gap");
+            inp.style.width=gapWidth(sg.g)+"ch";
+            inp.addEventListener("input",function(){clearMark(inp);});
+            flat.filter(function(x){return x.g===sg.g;})[0].input=inp;
+            target.appendChild(inp);
+          }else{
+            var sp=document.createElement("span");sp.innerHTML=rich(sg.t);target.appendChild(sp);
+          }
+        });
+      });
+      host.appendChild(row);
+    });
+  };
+  function isOk(f){return f.g.acc.indexOf(norm(f.input.value))>-1;}
+  api.check=function(){var n=0;flat.forEach(function(f){var ok=isOk(f);if(ok)n++;setMark(f.input,ok);});return n;};
+  api.report=function(){
+    return flat.map(function(f){
+      var ok=isOk(f);
+      var l=sentLine(f.ps,f.g,f.input.value);
+      if(!ok)l+="   (correct: "+f.g.model+")";
+      return {ok:ok,line:l};
+    });
+  };
+  api.fill=function(){flat.forEach(function(f){f.input.value=f.g.fill;clearMark(f.input);});};
+  api.getState=function(){return flat.map(function(f){return f.input.value;});};api.setState=function(a){flat.forEach(function(f,i){f.input.value=(a&&a[i])||"";});};
+  return api;
+}
+
+/* ---------- engine: typed sentences (make a question) ---------- */
+function typedEngine(host,cfg){
+  var items=cfg.items;
+  var ins=[],rows=[];
+  var starters=["would you mind telling me","could you tell me","can you tell me","i would like to know","i d like to know","i'd like to know","do you know"];
+  function clean(v){
+    var c=cmp(v);
+    starters.forEach(function(st){if(c.indexOf(st+" ")===0)c=c.slice(st.length+1);});
+    return c;
+  }
+  var api={total:items.length};
+  api.build=function(){
+    host.innerHTML="";ins=[];rows=[];
+    items.forEach(function(it,i){
+      var row=el("div","q");
+      row.appendChild(el("span","n",String(i+1)));
+      var t=el("span","t");
+      t.innerHTML=it.prefix?("<i>"+esc(it.prompt)+"</i>"):esc(it.prompt);
+      row.appendChild(t);
+      var wrap=el("div","ordwrap");
+      if(it.prefix){wrap.appendChild(el("div","hint","<b>"+esc(it.prefix)+"</b> ..."));wrap.lastChild.style.margin="2px 0 0";}
+      var inp=document.createElement("input");inp.type="text";inp.className="wide";inp.autocomplete="off";inp.spellcheck=false;
+      inp.setAttribute("autocapitalize","off");
+      inp.setAttribute("aria-label","answer "+(i+1));
+      inp.addEventListener("input",function(){clearMark(inp);clearMark(row);});
+      wrap.appendChild(inp);row.appendChild(wrap);
+      host.appendChild(row);ins.push(inp);rows.push(row);
+    });
+  };
+  function isOk(i){
+    var v=clean(ins[i].value);
+    var all=[items[i].model].concat(items[i].acc||[]);
+    return all.some(function(a){return clean(a)===v;});
+  }
+  api.check=function(){var n=0;items.forEach(function(it,i){var ok=isOk(i);if(ok)n++;setMark(rows[i],ok);});return n;};
+  api.report=function(){
+    return items.map(function(it,i){
+      var v=ins[i].value.trim();
+      var shown=it.prefix?(it.prefix+" "+v):v;
+      var model=it.prefix?(it.prefix+" "+it.model):it.model;
+      return {ok:isOk(i),line:"\""+it.prompt+"\" - you wrote: "+(v?"\""+shown+"\"":"(nothing)")+"; model: \""+model+"\""};
+    });
+  };
+  api.fill=function(){items.forEach(function(it,i){ins[i].value=it.model;clearMark(rows[i]);});};
+  api.getState=function(){return ins.map(function(x){return x.value;});};api.setState=function(a){ins.forEach(function(x,i){x.value=(a&&a[i])||"";});};
+  return api;
+}
+
+/* ---------- engine: click-to-order words ---------- */
+function orderEngine(host,cfg){
+  var items=cfg.items.map(function(it){return {words:it.words,order:it.order,model:it.model,placed:[],pool:null,tilesEl:null,ansEl:null,row:null};});
+  function draw(it){
+    it.tilesEl.innerHTML="";it.ansEl.innerHTML="";
+    it.words.forEach(function(w,i){
+      var b=el("button","tile"+(it.placed.indexOf(i)>-1?" used":""));b.type="button";b.textContent=w;
+      b.addEventListener("click",function(){if(it.placed.indexOf(i)>-1)return;it.placed.push(i);clearMark(it.ansEl);clearMark(it.row);draw(it);});
+      it.tilesEl.appendChild(b);
+    });
+    if(!it.placed.length)it.ansEl.appendChild(el("span","ph","Click the words in the right order"));
+    it.placed.forEach(function(i,k){
+      var b=el("button","tile");b.type="button";b.textContent=it.words[i];
+      b.addEventListener("click",function(){it.placed.splice(k,1);clearMark(it.ansEl);clearMark(it.row);draw(it);});
+      it.ansEl.appendChild(b);
+    });
+  }
+  function made(it){return it.placed.map(function(i){return it.words[i];}).join(" ");}
+  var api={total:items.length};
+  api.build=function(){
+    host.innerHTML="";
+    items.forEach(function(it,i){
+      it.placed=[];
+      var row=el("div","q");it.row=row;
+      row.appendChild(el("span","n",String(i+1)));
+      var w=el("div","ordwrap");
+      it.tilesEl=el("div","tiles");it.ansEl=el("div","ordans");
+      w.appendChild(it.tilesEl);w.appendChild(it.ansEl);row.appendChild(w);host.appendChild(row);
+      draw(it);
+    });
+  };
+  api.check=function(){
+    var n=0;
+    items.forEach(function(it){var ok=cmp(made(it))===cmp(it.model);if(ok)n++;setMark(it.ansEl,ok);setMark(it.row,ok);});
+    return n;
+  };
+  api.report=function(){
+    return items.map(function(it){
+      var m=made(it);
+      return {ok:cmp(m)===cmp(it.model),line:"\""+it.words.join(" / ")+"\" - you made: "+(m?"\""+m+"\"":"(nothing)")+"; correct: \""+it.model+"\""};
+    });
+  };
+  api.fill=function(){items.forEach(function(it){it.placed=it.order.slice();clearMark(it.ansEl);clearMark(it.row);draw(it);});};
+  return api;
+}
+
+/* ---------- engine: email with number selects ---------- */
+function mailEngine(host,cfg){
+  var gaps=[];
+  var paras=cfg.paras.map(function(p){
+    return p.map(function(s){
+      var segs=[],re=/\{([a-z])\}/g,last=0,m;
+      while((m=re.exec(s))){segs.push({t:s.slice(last,m.index)});segs.push({k:m[1]});last=m.index+m[0].length;}
+      segs.push({t:s.slice(last)});
+      var sent={segs:segs};
+      segs.forEach(function(sg){if(sg.k)gaps.push({key:sg.k,sent:sent,sel:null,ans:cfg.answers[sg.k]});});
+      return sent;
+    });
+  });
+  function line(g,chosenNum){
+    var out="";
+    g.sent.segs.forEach(function(sg){
+      if(sg.k){var num=sg.k===g.key?chosenNum:cfg.answers[sg.k];out+=num?cfg.phrases[num-1]:"___";}
+      else out+=sg.t;
+    });
+    return g.key+": "+out.replace(/\s+/g," ").trim();
+  }
+  var api={total:gaps.length};
+  api.build=function(){
+    host.innerHTML="";
+    var box=el("div","phrases");
+    cfg.phrases.forEach(function(p,i){box.appendChild(el("div","","<b>"+(i+1)+"</b>"+esc(p)));});
+    host.appendChild(box);
+    var mail=el("div","mail");
+    mail.appendChild(el("p","",esc(cfg.salute)));
+    paras.forEach(function(p){
+      var para=el("p","");
+      p.forEach(function(sent,si){
+        if(si>0)para.appendChild(document.createTextNode(" "));
+        sent.segs.forEach(function(sg){
+          if(sg.k){
+            var g=gaps.filter(function(x){return x.key===sg.k;})[0];
+            para.appendChild(el("span","lt",sg.k));
+            var s=document.createElement("select");s.setAttribute("aria-label","phrase for gap "+sg.k);
+            s.appendChild(el("option","",""));
+            cfg.phrases.forEach(function(ph,i){var o=el("option","",String(i+1));o.value=String(i+1);s.appendChild(o);});
+            s.addEventListener("change",function(){clearMark(s);});
+            g.sel=s;para.appendChild(s);
+          }else{
+            var sp=document.createElement("span");sp.textContent=sg.t;para.appendChild(sp);
+          }
+        });
+      });
+      mail.appendChild(para);
+    });
+    var cl=el("p","",esc(cfg.close).replace(/\n/g,"<br>"));cl.style.marginBottom="0";mail.appendChild(cl);
+    host.appendChild(mail);
+  };
+  api.check=function(){var n=0;gaps.forEach(function(g){var ok=Number(g.sel.value)===g.ans;if(ok)n++;setMark(g.sel,ok);});return n;};
+  api.report=function(){
+    return gaps.map(function(g){
+      var v=Number(g.sel.value);var ok=v===g.ans;
+      var l=line(g,v||0);
+      if(!ok)l+="   (correct: "+cfg.phrases[g.ans-1]+")";
+      return {ok:ok,line:l};
+    });
+  };
+  api.fill=function(){gaps.forEach(function(g){g.sel.value=String(g.ans);clearMark(g.sel);});};
+  return api;
+}
+
+/* ---------- engine: open answers (not scored) ---------- */
+function openEngine(host,cfg){
+  var tas=[];
+  var api={total:0,open:true};
+  api.build=function(){
+    host.innerHTML="";tas=[];
+    cfg.items.forEach(function(it){
+      host.appendChild(el("div","ownlabel",esc(it)));
+      var ta=document.createElement("textarea");ta.setAttribute("aria-label",it);ta.placeholder="Write your ideas here";
+      host.appendChild(ta);tas.push(ta);
+    });
+  };
+  api.check=function(){return 0;};
+  api.report=function(){return [];};
+  api.fill=function(){};
+  api.extra=function(){
+    return cfg.items.map(function(it,i){return {label:it,text:tas[i]?tas[i].value.trim():""};}).filter(function(x){return x.text;});
+  };
+  return api;
+}
+/* ---------- engine: dialogue with a phrase box (selects) ---------- */
+function dlgEngine(host,cfg){
+  var gaps=[];
+  var lines=cfg.lines.map(function(l){
+    var segs=[],re=/\{([a-z])\}/g,last=0,m;
+    while((m=re.exec(l.text))){segs.push({t:l.text.slice(last,m.index)});segs.push({k:m[1]});last=m.index+m[0].length;}
+    segs.push({t:l.text.slice(last)});
+    var ln={speaker:l.speaker,segs:segs};
+    segs.forEach(function(sg){if(sg.k)gaps.push({key:sg.k,ln:ln,sel:null,ans:cfg.answers[sg.k]});});
+    return ln;
+  });
+  function lineText(g,idx){
+    var out="";
+    g.ln.segs.forEach(function(sg){
+      if(sg.k){var i=sg.k===g.key?idx:cfg.answers[sg.k];out+=(i>-1&&i!==null)?cfg.phrases[i]:"___";}
+      else out+=sg.t;
+    });
+    return g.ln.speaker+": "+out.replace(/\s+/g," ").trim();
+  }
+  var api={total:gaps.length};
+  api.build=function(){
+    host.innerHTML="";
+    var box=el("div","phrases");
+    cfg.phrases.forEach(function(p){box.appendChild(el("div","","• "+esc(p)));});
+    host.appendChild(box);
+    lines.forEach(function(ln){
+      var row=el("div","dlg");row.appendChild(el("b","",esc(ln.speaker)));
+      var t=el("div","");
+      ln.segs.forEach(function(sg){
+        if(sg.k){
+          var g=gaps.filter(function(x){return x.key===sg.k;})[0];
+          t.appendChild(el("span","lt",sg.k.toUpperCase()));
+          var s=document.createElement("select");s.setAttribute("aria-label","phrase for gap "+sg.k);
+          s.appendChild(el("option","",""));
+          cfg.phrases.forEach(function(ph,i){var o=el("option","",esc(ph));o.value=String(i);s.appendChild(o);});
+          s.addEventListener("change",function(){clearMark(s);});
+          g.sel=s;t.appendChild(s);
+        }else{var sp=document.createElement("span");sp.textContent=sg.t;t.appendChild(sp);}
+      });
+      row.appendChild(t);host.appendChild(row);
+    });
+  };
+  api.check=function(){var n=0;gaps.forEach(function(g){var ok=g.sel.value!==""&&Number(g.sel.value)===g.ans;if(ok)n++;setMark(g.sel,ok);});return n;};
+  api.report=function(){
+    return gaps.map(function(g){
+      var v=g.sel.value===""?-1:Number(g.sel.value);var ok=v===g.ans;
+      var l=lineText(g,v);
+      if(!ok)l+="   (correct: "+cfg.phrases[g.ans]+")";
+      return {ok:ok,line:g.key.toUpperCase()+" - "+l};
+    });
+  };
+  api.fill=function(){gaps.forEach(function(g){g.sel.value=String(g.ans);clearMark(g.sel);});};
+  api.getState=function(){return gaps.map(function(g){return g.sel.value;});};api.setState=function(a){gaps.forEach(function(g,i){g.sel.value=(a&&a[i])||"";});};
+  return api;
+}
+
+/* ---------- click helpers ---------- */
+function tokenize(str,re,markFn){
+  /* returns {parts:[{pre,t,mark,idx}], tokens:[...clickable tokens]} */
+  var pieces=[],last=0,m;
+  while((m=re.exec(str))){
+    if(m.index>last)pieces.push({s:str.slice(last,m.index),mark:null});
+    pieces.push(markFn(m));
+    last=m.index+m[0].length;
+  }
+  if(last<str.length)pieces.push({s:str.slice(last),mark:null});
+  var parts=[],tokens=[],pending="";
+  pieces.forEach(function(p){
+    if(p.italic){parts.push({pre:pending,italic:true,t:p.s,num:p.num});pending="";return;}
+    var rx=/(\s*)(\S+)/g,mm,end=0;
+    while((mm=rx.exec(p.s))){
+      var tk={pre:pending+mm[1],t:mm[2],u:!!p.u,idx:tokens.length};
+      pending="";tokens.push(tk);parts.push(tk);end=rx.lastIndex;
+    }
+    pending=pending+p.s.slice(end);
+  });
+  return {parts:parts,tokens:tokens};
+}
+function key(w){return w.toLowerCase().replace(/[‘’]/g,"'").replace(/[^a-z0-9'\-]/g,"");}
+function locate(tokens,find){
+  var words=find.split(/\s+/).map(key);
+  for(var i=0;i+words.length<=tokens.length;i++){
+    var ok=true;
+    for(var j=0;j<words.length;j++){if(key(tokens[i+j].t)!==words[j]){ok=false;break;}}
+    if(ok)return i;
+  }
+  throw new Error("not found: "+find);
+}
+function spec(tokens,sp){
+  var s=locate(tokens,sp.find);
+  return {req:sp.req.map(function(k){return s+k;}),opt:(sp.opt||[]).map(function(k){return s+k;})};
+}
+function okSet(sel,sp){
+  var all=sp.req.concat(sp.opt),good=true;
+  sp.req.forEach(function(i){if(!sel[i])good=false;});
+  Object.keys(sel).forEach(function(k){if(sel[k]&&all.indexOf(Number(k))<0)good=false;});
+  return good;
+}
+function markedLine(tokens,sel){
+  var out="",open=false;
+  tokens.forEach(function(tk,i){
+    var on=!!sel[i];
+    out+=(i>0?" ":"")+(on&&!open?"[":"")+tk.t;
+    if(on&&(!sel[i+1]||i===tokens.length-1)){out+="]";open=false;}else if(on)open=true;
+  });
+  return out;
+}
+
+/* ---------- engine: click the word or phrase (task 8) ---------- */
+function clickEngine(host,cfg){
+  var items=cfg.items.map(function(it){
+    var tk=tokenize(it.text,/_([^_]+)_/g,function(m){return {s:m[1],u:true};});
+    var sp=spec(tk.tokens,it);
+    return {tk:tk,req:sp.req,opt:sp.opt,model:it.model,sel:{},row:null,spans:[]};
+  });
+  var api={total:items.length};
+  api.build=function(){
+    host.innerHTML="";
+    items.forEach(function(it,i){
+      it.sel={};it.spans=[];
+      var row=el("div","q");it.row=row;
+      row.appendChild(el("span","n",String(i+1)));
+      var t=el("span","t clk");
+      it.tk.parts.forEach(function(p){
+        if(p.pre)t.appendChild(document.createTextNode(p.pre));
+        var b=el("span","tok"+(p.u?" u":""));b.textContent=p.t;
+        b.tabIndex=0;b.setAttribute("role","button");
+        function tog(){it.sel[p.idx]=!it.sel[p.idx];b.classList.toggle("sel",!!it.sel[p.idx]);clearMark(row);}
+        b.addEventListener("click",tog);
+        b.addEventListener("keydown",function(e){if(e.key==="Enter"||e.key===" "){e.preventDefault();tog();}});
+        it.spans[p.idx]=b;t.appendChild(b);
+      });
+      row.appendChild(t);host.appendChild(row);
+    });
+  };
+  function isOk(it){return okSet(it.sel,{req:it.req,opt:it.opt});}
+  api.check=function(){var n=0;items.forEach(function(it){var ok=isOk(it);if(ok)n++;setMark(it.row,ok);});return n;};
+  api.report=function(){
+    return items.map(function(it){
+      var any=Object.keys(it.sel).some(function(k){return it.sel[k];});
+      var l=markedLine(it.tk.tokens,it.sel);
+      var ok=isOk(it);
+      if(!any)l+="   (nothing chosen)";
+      if(!ok)l+="   (correct: "+it.model+")";
+      return {ok:ok,line:l};
+    });
+  };
+  api.fill=function(){
+    items.forEach(function(it){
+      it.sel={};it.spans.forEach(function(b,i){var on=it.req.indexOf(i)>-1;if(on)it.sel[i]=true;b.classList.toggle("sel",on);});
+      clearMark(it.row);
+    });
+  };
+  api.getState=function(){return items.map(function(it){return Object.keys(it.sel).filter(function(k){return it.sel[k];}).map(Number);});};
+  api.setState=function(a){items.forEach(function(it,i){it.sel={};((a&&a[i])||[]).forEach(function(k){it.sel[k]=true;});it.spans.forEach(function(b,k){b.classList.toggle("sel",!!it.sel[k]);});});};
+  return api;
+}
+
+
+
+var TASKS=[{"label": "Interview dialogue", "b2": "🧑‍💼", "engine": "dlg", "title": "Complete the dialogue with phrases from the box. There is one phrase that you don’t need.", "hint": "Choose a phrase for each gap A–E.", "cfg": {"phrases": ["Could you explain what you mean", "Do you mean", "For instance", "I’m not sure I understand", "let me see", "what’s the word again"], "answers": {"a": 4, "b": 0, "c": 2, "d": 3, "e": 5}, "lines": [{"speaker": "Mr Khan", "text": "Welcome, Dimitar. Please, sit down."}, {"speaker": "Dimitar", "text": "Thank you."}, {"speaker": "Mr Khan", "text": "I have your CV somewhere … {a} ... ah, here it is. So, you’re here about the position in customer service? It says on your CV that you work well with people. {b} by that, please?"}, {"speaker": "Dimitar", "text": "Well, I’ve worked in shops in the past. {c}, I spent three years at a large department store. I had to talk to customers a lot there and I really liked that."}, {"speaker": "Mr Khan", "text": "I see. And it also says here that you are a self-starter."}, {"speaker": "Dimitar", "text": "That’s right."}, {"speaker": "Mr Khan", "text": "{d} what you mean by that. Can you give me some examples?"}, {"speaker": "Dimitar", "text": "I often find the solutions to problems by myself. I don’t always need a manager to tell me what to do, so I’d say I’m … {e}? Proactive, that’s it – yes, I’d call myself proactive. For example, when I was at the department store, I made a display of a new product to help it to sell better. That was all my own idea."}]}}, {"label": "Working in the Middle East", "b2": "🌍", "engine": "choice", "title": "Choose the correct answer from the words in italics.", "hint": "For many people, the Middle East is a great place to work and there are a number of reasons why.", "cfg": {"items": ["The average {occupation|salary*} is very high, which means that you can save a lot of money even if you only work there for a few years.", "Some jobs come with rent-free {accommodation*|qualification}, so you don’t need to worry about finding somewhere to live.", "The {working conditions|working hours*} are usually from 9 a.m. to 6 p.m. from Sundays to Thursdays, with Fridays and Saturdays free.", "If, for some reason, your company decides that they can no longer keep you in your job and make you {redundant*|unemployed}, there are certain laws to protect you.", "It’s easy to see why employees report a good level of {career prospects|job satisfaction*} and recommend the Middle East to others considering working abroad!"]}}, {"label": "The charity challenge", "b2": "🧊", "engine": "gap", "title": "Read the text about charity challenges. Then complete the text using the correct form of the words in brackets.", "hint": "Type one word in each gap.", "cfg": {"blocks": [{"head": "The charity challenge"}, {"para": true, "sents": ["People have always done all sorts of activities to raise money for charity, from cooking enormous cakes to doing thrilling parachute jumps.", "Planning to do a [dangerous] (danger) or difficult activity or challenge is a great way of encouraging friends and family to donate money to a charity of your choice, if you are [successful] (success) in your attempt.", "And nowadays, there’s a growing popularity for more and more unusual charity challenges, helped of course by the internet, where they can go viral and quickly spread from person to person."]}, {"para": true, "sents": ["One of the most popular recent viral challenges is the Ice Bucket Challenge: this involves people tipping buckets of ice water over their heads.", "Each person then names other friends or family members, who have to take up the challenge; they are supposed to do it within twenty-four hours or make a donation to charity.", "The most successful viral activities tend to be the simplest and most [inexpensive] (expense) ones, so that lots of people end up taking part without spending much money.", "Unfortunately, sometimes people just do the challenge without actually raising any money at all!"]}, {"para": true, "sents": ["Of course charities want to encourage as many people as they can to get involved and one good way of doing this is to set up challenges that can be done in groups.", "Not everyone is a natural risk-taker, and some of us just feel more comfortable and enthusiastic sharing a challenge with a group of other people.", "This doesn’t mean that the challenges have to turn into a [competition] (compete), but everyone can motivate each other, and, just as importantly, have a great time while they do it."]}, {"para": true, "sents": ["So whether you fancy the idea of running a marathon on your own, or climbing Kilimanjaro with a group of friends, the charity challenge can be an excellent way of trying something new, and getting a real sense of [achievement] (achieve), as well as the satisfaction of knowing that you’ve raised money for a good cause."]}]}}, {"label": "True, false or not given", "b2": "🔎", "engine": "choice", "title": "Read the text again. Decide if the sentences are true (T) or false (F). If there is no information about this, choose ‘not given’ (NG).", "hint": "T = true, F = false, NG = not given.", "intro": "<details class=\"text\" open><summary>The charity challenge (read the text)</summary><p>People have always done all sorts of activities to raise money for charity, from cooking enormous cakes to doing thrilling parachute jumps. Planning to do a dangerous or difficult activity or challenge is a great way of encouraging friends and family to donate money to a charity of your choice, if you are successful in your attempt. And nowadays, there’s a growing popularity for more and more unusual charity challenges, helped of course by the internet, where they can go viral and quickly spread from person to person.</p><p>One of the most popular recent viral challenges is the Ice Bucket Challenge: this involves people tipping buckets of ice water over their heads. Each person then names other friends or family members, who have to take up the challenge; they are supposed to do it within twenty-four hours or make a donation to charity. The most successful viral activities tend to be the simplest and most inexpensive ones, so that lots of people end up taking part without spending much money. Unfortunately, sometimes people just do the challenge without actually raising any money at all!</p><p>Of course charities want to encourage as many people as they can to get involved and one good way of doing this is to set up challenges that can be done in groups. Not everyone is a natural risk-taker, and some of us just feel more comfortable and enthusiastic sharing a challenge with a group of other people. This doesn’t mean that the challenges have to turn into a competition, but everyone can motivate each other, and, just as importantly, have a great time while they do it.</p><p>So whether you fancy the idea of running a marathon on your own, or climbing Kilimanjaro with a group of friends, the charity challenge can be an excellent way of trying something new, and getting a real sense of achievement, as well as the satisfaction of knowing that you’ve raised money for a good cause.</p></details>", "cfg": {"items": ["The way that charities raise money hasn’t really changed over the years. → {T|F*|NG}", "Viral challenges make the most money for charity. → {T|F|NG*}", "Group challenges can encourage people to try something they wouldn’t do alone. → {T*|F|NG}", "Charity challenges are as much about having fun as raising money. → {T*|F|NG}", "Most charities now get more money from the public than they used to. → {T|F|NG*}"]}}, {"label": "Used to / use to", "b2": "⏳", "engine": "gap", "title": "Complete the sentences with use to / used to and the correct form of the verb in brackets.", "hint": "Write the whole phrase in the gap, for example: used to play.", "cfg": {"blocks": [{"num": 1, "sents": ["When he was younger, my uncle [used to help] my grandfather in his shop every Saturday. (help)"]}, {"num": 2, "sents": ["I [didn’t use to have|did not use to have] a computer until my parents bought me one for my fifteenth birthday. (have)"]}, {"num": 3, "sents": ["[Did you use to go] to the same school as your brother, or a different one? (go)"]}, {"num": 4, "sents": ["Raj [used to work] in a bank, but left to become a teacher. (work)"]}, {"num": 5, "sents": ["If you [didn’t use to eat|did not use to eat] sweets as a child, you’ll probably have stronger, healthier teeth as an adult. (eat)"]}]}}, {"label": "Famous and successful people", "b2": "🏆", "engine": "gap", "mode": "word", "title": "Complete the sentences with one or two words. The first letter of each answer has been given.", "hint": "Type the rest of the word (or the whole word).", "cfg": {"mode": "word", "blocks": [{"num": 1, "sents": ["The Austrian composer Mozart was very t[alented] from an early age; he could play the piano at two years old and starting writing music aged five."]}, {"num": 2, "sents": ["Surely everyone has heard of Lionel Messi – he must be one of the most f[amous] footballers in the world!"]}, {"num": 3, "sents": ["Some politicians are so a[mbitious] that they will do absolutely anything to succeed in their career."]}, {"num": 4, "sents": ["Professor Robert Winston has studied child development for so many years that he is considered to be a world e[xpert] on the subject."]}, {"num": 5, "sents": ["The film Gravity was such a good film that it won seven a[wards] in 2014, including one for best director."]}, {"num": 6, "sents": ["It seems that many teenagers today think that they could get instant f[ame] just by appearing on TV, rather than working hard."]}, {"num": 7, "sents": ["Roger Federer, the c[hampion|hampionship-winning|hampionship winning] tennis player, has been amongst the top ten players in the world since 2002."]}, {"num": 8, "sents": ["I wasn’t a very h[ard-working|ardworking|ard working] student at school; I hardly ever did my homework and often missed lessons!"]}, {"num": 9, "sents": ["Surely the invention of the internet must be one of the greatest a[chievements] of the twentieth century?"]}, {"num": 10, "sents": ["Most people probably recognize the actor Martin Sheen, but they may not have heard of his brother Joe Estevez, who’s less w[ell known|ell-known]."]}]}}, {"label": "Direct and indirect questions", "b2": "❓", "engine": "typed", "title": "Complete the direct or indirect questions for these answers.", "hint": "Finish each question. The answer is given in italics.", "cfg": {"items": [{"prefix": "When", "prompt": "I started my first business when I was sixteen years old.", "model": "did you start your first business"}, {"prefix": "Could you tell me", "prompt": "My role model is definitely Richard Branson!", "model": "who your role model is"}, {"prefix": "Would you mind telling me", "prompt": "Yes, of course I enjoy my job. It’s exciting and challenging.", "model": "if you enjoy your job", "acc": ["whether you enjoy your job"]}, {"prefix": "I’d like to know", "prompt": "No, I don’t regret anything I’ve done.", "model": "if you regret anything you’ve done", "acc": ["whether you regret anything you’ve done"]}, {"prefix": "Could you", "prompt": "No, I can’t tell you how much money I earn!", "model": "tell me how much money you earn"}]}}, {"label": "Similar meaning", "b2": "🔵", "engine": "click", "title": "In each sentence, click the word or phrase which has a similar meaning to the underlined words and phrases.", "hint": "Click a word or phrase to select it. Click again to unselect.", "cfg": {"items": [{"text": "Jonah is the kind of person who _doesn’t always choose the safest option_. He owns his own small company and likes extreme sports, so he takes risks that I’d never take!", "find": "takes risks", "req": [0, 1], "model": "takes risks"}, {"text": "Being creative is a useful skill because it means you _can think of new and original ideas_.", "find": "Being creative", "req": [1], "opt": [0], "model": "(Being) creative"}, {"text": "I look up to people who are patient and helpful in the workplace. I _admire_ them because many jobs are very stressful these days.", "find": "look up to", "req": [0, 1, 2], "model": "look up to"}, {"text": "Rob has been out of work for six months. He doesn’t like being _unemployed_ so he’s going back to college to retrain in a new career.", "find": "out of work", "req": [0, 1, 2], "model": "out of work"}, {"text": "_I blame myself_ for not getting the job. I didn’t prepare well enough for the interview and I feel it was my fault.", "find": "I feel it was my fault", "req": [0, 1, 2, 3, 4, 5], "model": "I feel it was my fault"}]}}, {"label": "Work vocabulary", "b2": "💼", "engine": "gap", "title": "Complete the sentences with words from the box. There are two words that you don’t need.", "hint": "Type one word in each gap.", "intro": "<div class=\"wordbox\"><span>best</span><span>completely</span><span>creatively</span><span>ideas</span><span>obey</span><span>positions</span><span>progress</span><span>promoted</span><span>risks</span><span>temporary</span><span>satisfaction</span><span>supervises</span></div>", "cfg": {"blocks": [{"num": 1, "sents": ["He finally managed to solve the problem by thinking [creatively]."]}, {"num": 2, "sents": ["It seems that he lost his job because he didn’t [obey] the rules."]}, {"num": 3, "sents": ["The most successful business people have to be prepared to take [risks] sometimes."]}, {"num": 4, "sents": ["My company [supervises] all new employees for the first six months before they are given any responsibility."]}, {"num": 5, "sents": ["I haven’t made any [progress] with this report, even though I’ve been working on it all week!"]}, {"num": 6, "sents": ["For some people, a good salary is less important than job [satisfaction]."]}, {"num": 7, "sents": ["When my boss retired last year, I got [promoted] and now do her old job."]}, {"num": 8, "sents": ["If you don’t do your [best] at your job, other people are likely to find out eventually."]}, {"num": 9, "sents": ["Unless you’re someone who can come up with [ideas] easily, I wouldn’t consider becoming a designer."]}, {"num": 10, "sents": ["Sometimes a [temporary] job can turn into a permanent one."]}]}}];
+var ENGINES={choice:choiceEngine,gap:gapEngine,typed:typedEngine,dlg:dlgEngine,click:clickEngine};
+var sections=[];
+var pagesHost=document.getElementById("pages");pagesHost.innerHTML="";
+var SAVED=null;try{var se=document.getElementById("saved-state");if(se)SAVED=JSON.parse(se.textContent);}catch(e){SAVED=null;}
+
+function makeSection(def,num){
+  var sec={num:num,label:def.label,total:0,score:0,checked:false,revealed:false,api:null,log:[],seen:new Set(),lastOk:[]};
+  var card=el("section","card");
+  card.appendChild(el("div","tab",String(num)));
+  card.appendChild(el("div","badge b1","📝"));
+  card.appendChild(el("div","badge b2",def.b2||"✨"));
+  card.appendChild(el("h2","",esc(def.title)));
+  if(def.hint)card.appendChild(el("p","hint",esc(def.hint)));
+  if(def.intro){var d=el("div","inner");d.innerHTML=def.intro;card.appendChild(d);}
+  var body=el("div","inner");card.appendChild(body);
+  var cfg=def.cfg;if(def.mode&&!cfg.mode)cfg.mode=def.mode;
+  var api=ENGINES[def.engine](body,cfg);
+  api.build();sec.api=api;sec.total=api.total;
+  var btns=el("div","btns");
+  var bCheck=el("button","btn","Check");bCheck.type="button";
+  var bShow=el("button","btn alt","Show answers");bShow.type="button";
+  var bAgain=el("button","btn alt","Try again");bAgain.type="button";
+  var score=el("span","score","");var msg=el("span","msg","");
+  btns.appendChild(bCheck);btns.appendChild(bShow);btns.appendChild(bAgain);btns.appendChild(score);btns.appendChild(msg);
+  sec.scoreEl=score;sec.msgEl=msg;
+  card.appendChild(btns);
+  var logHost=el("div","inner");card.appendChild(logHost);sec.logHost=logHost;
+  bCheck.addEventListener("click",function(){
+    if(sec.revealed){msg.textContent="The answers are shown. Press Try again to practise.";return;}
+    msg.textContent="";
+    sec.score=api.check();sec.checked=true;record(sec);
+    score.textContent=sec.score+" / "+sec.total;
+    renderLog(sec);updateBar();
+  });
+  bShow.addEventListener("click",function(){
+    api.fill();sec.revealed=true;sec.checked=false;sec.score=0;
+    score.textContent="";msg.textContent="Answers shown (no score).";updateBar();
+  });
+  bAgain.addEventListener("click",function(){
+    api.build();sec.revealed=false;sec.checked=false;sec.score=0;
+    score.textContent="";msg.textContent="";updateBar();
+  });
+  return {sec:sec,card:card};
+}
+function record(sec){
+  sec.api.report().forEach(function(r,i){
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){var k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i:i,line:r.line});}}
+  });
+}
+function tag(sec,i){return sec.lastOk[i]?"fixed on retry":"still wrong";}
+function renderLog(sec){
+  sec.logHost.innerHTML="";
+  if(!sec.log.length)return;
+  var d=el("details","log");
+  d.appendChild(el("summary","","Mistakes so far in this task ("+sec.log.length+")"));
+  var ul=el("ul","");
+  sec.log.forEach(function(x){ul.appendChild(el("li","",esc(x.line)+" <i>["+tag(sec,x.i)+"]</i>"));});
+  d.appendChild(ul);sec.logHost.appendChild(d);
+}
+var page=el("section","page on");
+TASKS.forEach(function(def,ti){var r=makeSection(def,ti+1);sections.push(r.sec);page.appendChild(r.card);});
+var fin=el("div","final");
+fin.innerHTML="<p>Finished? Check every task, then send your results to the teacher. Not finished? Press Save the page: you will get a new file with all your answers, and you can open it later and carry on.</p>";
+var row=el("div","row");
+var cp=el("button","copy","Copy my results");cp.type="button";cp.addEventListener("click",copyReport);row.appendChild(cp);
+var sv=el("button","copy","Save the page");sv.type="button";sv.addEventListener("click",savePage);row.appendChild(sv);
+fin.appendChild(row);
+var cm=el("span","msg copymsg","");fin.appendChild(cm);
+page.appendChild(fin);pagesHost.appendChild(page);
+
+function updateBar(){
+  var got=0,total=0;
+  sections.forEach(function(s){total+=s.total;if(s.checked&&!s.revealed)got+=s.score;});
+  document.getElementById("tot").textContent="Score: "+got+" / "+total;
+}
+updateBar();
+function pad(n){return n<10?"0"+n:""+n;}
+function buildReport(){
+  var name=(document.getElementById("stname").value||"").trim()||"(no name)";
+  var d=new Date();
+  var stamp=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate())+" "+pad(d.getHours())+":"+pad(d.getMinutes());
+  var out="Revision Unit 7A – "+name+" ("+stamp+")\n\n";
+  var got=0,total=0;
+  sections.forEach(function(s){
+    var stt;
+    if(s.revealed)stt="answers shown";
+    else if(s.checked){stt=s.score+" / "+s.total;got+=s.score;}
+    else stt="not checked";
+    total+=s.total;
+    out+="Task "+s.num+" "+s.label+": "+stt+"\n";
+  });
+  out+="\nTotal: "+got+" / "+total+"\n";
+  out+="\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  var any=false;
+  sections.forEach(function(s){
+    if(!s.log.length)return;
+    any=true;
+    out+="\nTask "+s.num+" "+s.label+"\n";
+    s.log.forEach(function(x){out+="  ✗ "+x.line+"   ["+tag(s,x.i)+"]\n";});
+  });
+  if(!any)out+="\nNo mistakes recorded.\n";
+  return out;
+}
+function copyReport(){
+  var txt=buildReport();
+  var msgs=document.querySelectorAll(".copymsg");
+  function done(){Array.prototype.forEach.call(msgs,function(m){m.textContent="Copied! Paste it in the chat.";});}
+  function fallback(){
+    var ta=document.createElement("textarea");ta.value=txt;ta.setAttribute("readonly","");
+    ta.style.position="fixed";ta.style.left="-9999px";document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done();}catch(e){Array.prototype.forEach.call(msgs,function(m){m.textContent="Could not copy. Select and copy manually.";});}
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fallback);}else fallback();
+}
+
+function savePage(){
+  var name=(document.getElementById("stname").value||"").trim();
+  var state={name:name,sections:sections.map(function(s){
+    return {answers:s.api.getState(),log:s.log,seen:Array.from(s.seen),lastOk:s.lastOk,checked:s.checked,revealed:s.revealed,score:s.score};
+  })};
+  var clone=document.documentElement.cloneNode(true);
+  clone.querySelector("#pages").innerHTML="";
+  var old=clone.querySelector("#saved-state");if(old)old.parentNode.removeChild(old);
+  var sc=document.createElement("script");sc.id="saved-state";sc.type="application/json";
+  sc.textContent=JSON.stringify(state).replace(/</g,"\\u003c");
+  var body=clone.querySelector("body");body.insertBefore(sc,body.querySelector("script"));
+  var html="<!DOCTYPE html>\n"+clone.outerHTML;
+  var fname="revision-unit-7a"+(name?"-"+name.replace(/[^A-Za-z0-9\u0400-\u04FF]+/g,"-").replace(/^-|-$/g,""):"")+"-saved.html";
+  var msgs=document.querySelectorAll(".copymsg");
+  function say(t){Array.prototype.forEach.call(msgs,function(m){m.textContent=t;});}
+  try{
+    var blob=new Blob([html],{type:"text/html;charset=utf-8"});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement("a");a.href=url;a.download=fname;document.body.appendChild(a);a.click();
+    setTimeout(function(){document.body.removeChild(a);URL.revokeObjectURL(url);},1000);
+    say("Saved as "+fname+". Open that file to continue.");
+  }catch(e){say("Could not save the page.");}
+}
+function restore(){
+  if(!SAVED)return;
+  if(SAVED.name)document.getElementById("stname").value=SAVED.name;
+  sections.forEach(function(sec,i){
+    var st=SAVED.sections&&SAVED.sections[i];if(!st)return;
+    sec.api.setState(st.answers);
+    sec.log=st.log||[];sec.seen=new Set(st.seen||[]);sec.lastOk=st.lastOk||[];
+    sec.revealed=!!st.revealed;sec.checked=!!st.checked;sec.score=st.score||0;
+    if(sec.revealed){sec.msgEl.textContent="Answers shown (no score).";}
+    else if(sec.checked){sec.api.check();sec.score=st.score||0;sec.scoreEl.textContent=sec.score+" / "+sec.total;}
+    renderLog(sec);
+  });
+  updateBar();
+}
+restore();
+window.HW={sections:sections,buildReport:buildReport,save:savePage};
+
+</script>
+</body>
+</html>
