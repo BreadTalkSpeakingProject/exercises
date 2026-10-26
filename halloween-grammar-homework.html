@@ -83,7 +83,7 @@ const defs=[
  {t:"Choose a / an / the / – (no article)",s:"Click the correct option in each gap. Choose “–” when no article is needed.",items:arts,label:"Articles"},
  {t:"Complete the sentences",s:"Read the first part and decide what is missing. Type the correct form of the verb in the box. Use the First or the Second Conditional.",items:cond,label:"Conditionals"},
  {t:"Used to or would?",s:"Read the statements about the past. Can we use only used to, or both used to and would? Choose one answer for each sentence.",items:ut,label:"Used to or would"}];
-const norm=s=>(s||"").toLowerCase().replace(/[’‘]/g,"'").replace(/\bdid not\b/g,"didn't").replace(/\bdo not\b/g,"don't").replace(/\s+/g," ").trim();
+const norm=s=>(s||"").toLowerCase().replace(/[’‘`´]/g,"'").trim().replace(/^(we|i|you|they|he|she|it|people|the kids)\s*(?=('ll|'d|will|would)\b)/,"").replace(/^'ll\b/,"will").replace(/^'d\b/,"would").replace(/\bdid not\b/g,"didn't").replace(/\bdo not\b/g,"don't").replace(/\s+/g," ").trim();
 const gaps=it=>it.filter(x=>typeof x==="object");
 const showOf=g=>g.show||g.a.join(" / ");
 const secs=[];
