@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Companies: Tata and John Lewis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--gold:#f6e7b8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);line-height:1.2}
+.sub{font-weight:300;font-size:24px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.box{background:#fff;border-left:4px solid #d9b94d;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15.5px}
+.box.t{border-left-color:var(--taupe)}
+.wb{text-align:center;font-weight:600;background:#fff;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:16px;line-height:1.7}
+.graph{display:block;width:100%;max-width:640px;margin:10px auto 0;border-radius:8px;background:#fff}
+.src{font-size:12.5px;color:var(--grey-l);text-align:center;margin:2px 0 10px}
+.q{padding:9px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:24px;color:var(--grey-l);font-size:14px}
+input.gap,input.ln{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:3px 10px;background:#fff;color:var(--ink)}
+input.gap{width:190px;max-width:100%}
+input.ln{width:100%;margin-top:5px}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+input.ok,select.ok,textarea.ok{background:var(--green)!important;border-color:var(--green-d)!important}
+input.bad,select.bad,textarea.bad{background:var(--red)!important;border-color:var(--red-d)!important}
+textarea.wr{width:100%;min-height:110px;font:inherit;border:1.5px solid var(--taupe);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical;margin-top:6px}
+.exp{margin:6px 0 0 0;padding:8px 12px;border-radius:8px;font-size:14.8px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.scheme{display:grid;gap:8px;margin:8px 0}
+.scheme.c4{grid-template-columns:repeat(4,1fr)}.scheme.c3{grid-template-columns:repeat(3,1fr)}
+.st{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px;position:relative}
+.st b{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-right:6px}
+.st:not(:last-child)::after{content:"\2192";position:absolute;right:6px;top:6px;color:var(--grey-l)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.chk li{color:var(--grey-l)}.chk li::before{content:"\2610  "}
+.chk li.on{color:var(--green-d);font-weight:600}.chk li.on::before{content:"\2611  "}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+.hw{background:#fdf3da}table.rt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}table.rt td,table.rt th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.rt th{background:var(--taupe);color:#fff;font-weight:600}.rt b{color:var(--taupe)}
+@media(max-width:720px){
+  .txt{flex:1 1 0;min-width:0;max-width:100%}select{width:100%;white-space:normal}table.rt{font-size:14px}table.rt td,table.rt th{padding:6px 6px}
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:20px}.sub{font-size:19px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .scheme.c4,.scheme.c3{grid-template-columns:1fr 1fr}
+  input.gap{width:150px}
+}
+.dt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}
+.dt th,.dt td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-word}
+.dt th{background:var(--taupe);color:#fff;font-weight:600}
+.dt td.k{font-weight:600;color:var(--taupe);width:22%}
+.dt .fact{display:none}.dt tr.open .fact{display:block}.dt tr.open .ph{display:none}
+.dt .ph{color:var(--grey-l)}
+.dt .ex{font-style:italic;color:var(--grey-l);font-size:14px}
+details.wh{background:#fff;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15px}
+details.wh summary{cursor:pointer;font-weight:600;color:var(--taupe)}
+details.wh li{margin:4px 0}
+ol.qs{padding-left:22px}ol.qs li{margin:6px 0}
+@media(max-width:720px){.dt{font-size:14px}.dt th,.dt td{padding:6px 6px}.dt td.k{width:26%}}
+.aud{margin:8px 0 12px}.aud audio{width:100%}.aud .am{font-size:13.5px;color:var(--red-d);margin-top:4px}
+.role{background:#fff;border-left:4px solid var(--green-d);border-radius:8px;padding:10px 16px;margin:10px 0}.role ul{margin:6px 0 0;padding-left:20px}.role li{margin:4px 0}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Companies</h1><div class="sub">Tata and John Lewis · Present Simple and Present Continuous · Presenting your company</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\b(is|are|was|were|will|do|does|did)n't\b/g,"$1 not").replace(/won't/g,"will not").replace(/'ll\b/g," will").replace(/centre/g,"center").replace(/'/g,"").replace(/[.,!?;:"()]/g," ").replace(/\s+/g," ").trim();
+const anyOf=(v,list)=>list.some(a=>norm(a)===norm(v));
+const subj=(subs,rests)=>{const o=[];subs.forEach(a=>rests.forEach(b=>o.push(a+" "+b)));return o};
+const stripSeq=v=>norm(v).replace(/^(first|then|after that|next|finally|and then)\s+/,"").replace(/^(then|after that|next|finally)\s+/,"");
+
+
+
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CARD=(num,title,note,html)=>{const el=document.createElement("section");el.className="card";el.innerHTML="<h2>Task "+num+": "+title+"</h2><p class=\"note\">"+note+"</p>"+html;host.appendChild(el);return el};
+const PHR=["factual information","routine activities and habits","temporary situations","future arrangements"];
+const RULES=[
+ ["We use the present simple for {{}}: Samsung makes phones and chips.","factual information","<b>factual information</b>. <i>Samsung makes phones and chips</i> is always true, not a plan or a habit."],
+ ["We use the present simple for {{}}: I usually start work at nine.","routine activities and habits","<b>routine activities and habits</b>. <i>usually</i> shows that it happens again and again."],
+ ["We use the present continuous for {{}}: She is staying in a hotel this week.","temporary situations","<b>temporary situations</b>. <i>this week</i> shows that it is not permanent."],
+ ["We use the present continuous for {{}}: What are you doing on Friday evening?","future arrangements","<b>future arrangements</b>. The question is about a plan for the future, not about now."]
+];
+const GAPS=[
+ ["John Lewis {{}} (give) its employees a bonus every year.",["gives"],"<b>gives</b>. <i>every year</i> = a regular event, so Present Simple. <i>John Lewis</i> = it, so -s. Not <i>is giving</i>."],
+ ["This week, our manager {{}} (visit) the factory, so she is not in the office.",["is visiting","'s visiting"],"<b>is visiting</b>. <i>This week</i> = a temporary situation, so Present Continuous. Not <i>visits</i>, which is a habit."],
+ ["We usually {{}} (hold) our meetings on Mondays.",["hold"],"<b>hold</b>. <i>usually</i> = a routine, so Present Simple. <i>We</i> has no -s."],
+ ["Today we {{}} (have) an extra meeting because the director is away.",["are having","'re having"],"<b>are having</b>. <i>Today … because the director is away</i> = a temporary change from the routine, so Present Continuous. (<i>have</i> as a meeting is an action; <i>have</i> as possession is not used in the continuous.)"],
+ ["My cousin {{}} (work) for a bank in Moscow.",["works"],"<b>works</b>. It is his permanent job, a fact: Present Simple. <i>My cousin</i> = he, so -s."],
+ ["At the moment, he {{}} (write) a report about the bank's profits.",["is writing","'s writing"],"<b>is writing</b>. <i>At the moment</i> = now, so Present Continuous."],
+ ["I {{}} (want) to work for an international company.",["want"],"<b>want</b>. <i>want</i> is a state verb (like <i>like, know, need</i>). We almost never use it in the continuous."],
+ ["Our sales manager {{}} (fly) to Dubai on Friday. We have the tickets.",["is flying","'s flying"],"<b>is flying</b>. The plan is arranged (they have the tickets), so Present Continuous for a future arrangement."],
+ ["The parent company {{}} (own) three subsidiaries.",["owns"],"<b>owns</b>. <i>own</i> is a state verb and this is a fact: Present Simple. <i>The parent company</i> = it, so -s."]
+];
+const AD=[
+ ["We {{}} one of the biggest online shops in the region.",["are","'re"],"<b>are</b>. <i>be</i> is a state verb and this is a fact, so Present Simple. <i>We</i> goes with <i>are</i>."],
+ ["We {{}} clothes and shoes to more than two million customers.",["sell"],"<b>sell</b>. This is what the company does all the time: Present Simple."],
+ ["At the moment, we {{}} five new warehouses.",["are opening","'re opening"],"<b>are opening</b>. <i>At the moment</i> = now, a temporary project: Present Continuous."],
+ ["Our business {{}} fast at the moment.",["is growing","'s growing"],"<b>is growing</b>. <i>at the moment</i> = a change that is happening now: Present Continuous."],
+ ["We {{}} more staff in every department.",["need"],"<b>need</b>. <i>need</i> is a state verb, so we use Present Simple."],
+ ["Right now, we {{}} a new Customer Service Manager.",["are looking for","'re looking for"],"<b>are looking for</b>. <i>Right now</i> = in progress: Present Continuous."],
+ ["We {{}} a good salary and free lunch.",["offer"],"<b>offer</b>. A permanent condition of the job: Present Simple."],
+ ["The manager usually {{}} with a team of 20 people.",["works"],"<b>works</b>. <i>usually</i> = routine, Present Simple. <i>The manager</i> = he or she, so -s."],
+ ["Next year, we {{}} to start in three new cities.",["are planning","'re planning"],"<b>are planning</b>. A plan that is already being prepared: Present Continuous."]
+];
+const FACTS=[
+ ["Country","India. Tata is the country's biggest company (a group).","Britain. A British retailer."],
+ ["Who owns or controls it?","Traditionally controlled by a family, like many companies in India.","Owned by its employees. They are called partners, have a say in how it is run, and share the profits."],
+ ["How big is it?","About 100 subsidiaries (steel, IT outsourcing, cars). 65% of its $71 bn revenue comes from outside India: India's first true multinational.","About 69,000 employees. Britain's largest example of worker co-ownership."],
+ ["What is the news?","The group is looking for a new CEO and will consider all candidates, even an outsider or a foreigner.","Bonus day: this year, each employee takes home 15% of their salary."],
+ ["What is special?","Can a family-led group move to professional management? Some critics say an outsider would help; others fear it would be a disaster.","Its purpose is the happiness of its members. Employees say they feel engaged and that it is a good company to work for."]
+];
+/* ============ ENGINE ============ */
+const secs=[],host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div>";
+  host.appendChild(el);return el;
+}
+function addTools(el,sec){
+  const t=document.createElement("div");t.className="tools";
+  t.innerHTML="<button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span>";
+  el.appendChild(t);
+  const res=$(".res",t),msg=$(".msg",t),items=sec.items;
+  $("[data-a=check]",t).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",t).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",t).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+}
+function mkSec(num,label,items,el){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items,extra:null};
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  addTools(el,sec);secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,ans){
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(ans)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(ans)+"</b>. ";
+  box.innerHTML=head+html.replace(/^<b>[^<]*<\/b>\.?\s*/,"");
+}
+function row(body,labelHtml,n){
+  const q=document.createElement("div");q.className="q";
+  q.innerHTML="<div class=\"line\"><span class=\"n\">"+n+"</span><span class=\"txt\">"+labelHtml+"</span></div><div class=\"exp\"></div>";
+  body.appendChild(q);return q;
+}
+/* item with inline control */
+function inlineItem(body,n,tpl,kind,opts,okFn,ansDisp,why,lineFn){
+  const [pre,post]=tpl.split("{{}}");
+  const ctl=kind==="sel"?"<select>"+["<option value=\"\">choose…</option>"].concat(opts.map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("")+"</select>":"<input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">";
+  const q=row(body,esc(pre)+ctl+esc(post),n);
+  const c=$(kind==="sel"?"select":"input",q),box=$(".exp",q);
+  const clear=()=>{c.className=kind==="sel"?"":"gap";box.className="exp";box.innerHTML=""};
+  c.addEventListener(kind==="sel"?"change":"input",clear);
+  return {
+    ok:()=>okFn(c.value),
+    line:()=>lineFn(c.value.trim()),
+    mark:ok=>{c.className=(kind==="sel"?"":"gap ")+(ok?"ok":"bad");setExp(box,ok,why,ansDisp)},
+    show:()=>{c.value=ansDisp;c.className=kind==="sel"?"":"gap";setExp(box,null,why,ansDisp)},
+    reset:()=>{c.value="";clear()}
+  };
+}
+/* item with full-width line input */
+function lineItem(body,n,labelHtml,okFn,modelAns,why,lineFn){
+  const q=row(body,labelHtml,n);
+  const inp=document.createElement("input");inp.type="text";inp.className="ln";inp.autocomplete="off";inp.spellcheck=false;
+  q.insertBefore(inp,$(".exp",q));const box=$(".exp",q);
+  inp.addEventListener("input",()=>{inp.className="ln";box.className="exp";box.innerHTML=""});
+  return {
+    ok:()=>okFn(inp.value),
+    line:()=>lineFn(inp.value.trim()),
+    mark:ok=>{inp.className="ln "+(ok?"ok":"bad");setExp(box,ok,why,modelAns)},
+    show:()=>{inp.value=modelAns;inp.className="ln";setExp(box,null,why,modelAns)},
+    reset:()=>{inp.value="";inp.className="ln";box.className="exp";box.innerHTML=""}
+  };
+}
+function staticQs(body,list){list.forEach((t,i)=>{const q=document.createElement("div");q.className="q";q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+t+"</span></div>";body.appendChild(q)})}
+function writeBox(body,placeholder,checks,model){
+  const ta=document.createElement("textarea");ta.className="wr";ta.placeholder=placeholder;body.appendChild(ta);
+  const ul=document.createElement("ul");ul.className="chk";body.appendChild(ul);
+  const lis=checks.map(c=>{const li=document.createElement("li");li.textContent=c[0];ul.appendChild(li);return li});
+  const upd=()=>{const t=ta.value;checks.forEach((c,i)=>lis[i].className=c[1](t)?"on":"")};
+  ta.addEventListener("input",upd);
+  let mb=null;
+  if(model){mb=document.createElement("div");mb.className="exp";body.appendChild(mb)}
+  return {ta,upd,showModel:()=>{if(mb){mb.className="exp";mb.innerHTML="<b>Model answer.</b> "+model}},hideModel:()=>{if(mb){mb.className="exp";mb.innerHTML=""}},reset:()=>{ta.value="";upd();if(mb){mb.innerHTML=""}}};
+}
+const LINKERS_RE=/\b(to begin with|in addition|moreover|for example|for instance|on the one hand|on the other hand|however|as a result|in conclusion)\b/gi;
+const hasN=(t,re,n)=>((t.match(re)||[]).length>=n);
+
+
+
+/* Task 1 */
+CARD(1,"Read the articles","Open the Course Book, page 17. Read <b>both</b> articles: Article 1 about Tata and Article 2 about John Lewis. There is no partner reading: you read both.",
+ "<details class=\"wh\"><summary>Word help (open only if you need it)</summary><ul><li><b>successor</b>: the person who takes someone's job after them</li><li><b>outsider</b>: a person who does not belong to the group</li><li><b>controlled by</b>: with the power to make decisions</li><li><b>multinational</b>: a company that works in many countries</li><li><b>outsourcing</b>: giving some work to another company</li><li><b>transition</b>: a change from one situation to another</li><li><b>co-ownership</b>: owning something together</li><li><b>bonus</b>: extra money for good work</li><li><b>engaged</b>: really interested and involved in your work</li></ul></details>");
+/* Task 2 */
+(function(){
+ const el=CARD(2,"What do we know?","Look at the chart. Do not write. Talk about each row: what do you remember about Tata and about John Lewis? Then press <b>Show key facts</b> to check.","");
+ let h="<table class=\"dt\"><tr><th></th><th>Tata</th><th>John Lewis</th></tr>";
+ FACTS.forEach((f,i)=>{h+="<tr id=\"r"+i+"\"><td class=\"k\">"+f[0]+"</td><td><span class=\"ph\">…</span><span class=\"fact\">"+f[1]+"</span></td><td><span class=\"ph\">…</span><span class=\"fact\">"+f[2]+"</span></td></tr>"});
+ h+="</table><div class=\"tools\"><button class=\"btn ghost\" id=\"fshow\" type=\"button\">Show key facts</button><button class=\"btn ghost\" id=\"fhide\" type=\"button\">Hide</button></div>";
+ el.insertAdjacentHTML("beforeend",h);
+ $("#fshow").addEventListener("click",()=>document.querySelectorAll(".dt tr").forEach(r=>{if(r.id)r.classList.add("open")}));
+ $("#fhide").addEventListener("click",()=>document.querySelectorAll(".dt tr").forEach(r=>r.classList.remove("open")));
+})();
+/* Task 3 */
+CARD(3,"Compare and discuss","Talk about the two companies. You can use these starters.",
+ "<div class=\"box\"><b>Both</b> Tata <b>and</b> John Lewis … · Tata …, <b>but</b> John Lewis … · <b>Unlike</b> Tata, John Lewis … · Tata is bigger / older / more international <b>than</b> …</div><ol class=\"qs\"><li>How are the two companies different? How are they the same?</li><li>What are the good and bad sides of choosing an outsider to run a family business?</li><li>Is there a company like John Lewis in your country? Is it successful? Why, or why not?</li></ol>");
+/* Task 4 */
+(function(){
+ const el=mkCard(4,"Complete the rule","Present Simple or Present Continuous? Choose the correct phrase. <i>Remember: state verbs such as <b>like, want, know, need</b> are almost always used in the Present Simple.</i>");
+ const body=$(".body",el);const items=[];
+ RULES.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"sel",sh(PHR),v=>v===t[1],t[1],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1]+")")));
+ mkSec(4,"Complete the rule",items,el);
+})();
+/* Task 5 */
+(function(){
+ const el=mkCard(5,"Present Simple or Present Continuous?","Complete the sentences with the correct form of the verb in brackets.");
+ const body=$(".body",el);const items=[];
+ GAPS.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"gap",null,v=>anyOf(v,t[1]),t[1][0],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1][0]+")")));
+ mkSec(5,"Present Simple or Present Continuous?",items,el);
+})();
+/* Task 6 */
+(function(){
+ const el=mkCard(6,"Job advertisement","Complete the advertisement with the correct form of the verbs in the box. Use each verb once.");
+ const body=$(".body",el);const items=[];
+ body.insertAdjacentHTML("beforeend","<div class=\"wb\">be · sell · open · grow · need · look for · offer · work · plan</div><p><b>Nova Retail</b> — Customer Service Manager</p>");
+ AD.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"gap",null,v=>anyOf(v,t[1]),t[1][0],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1][0]+")")));
+ mkSec(6,"Job advertisement",items,el);
+})();
+
+const AUDIO={cd122:"audio/market-leader/cd1-22.mp3",cd123:"audio/market-leader/cd1-23.mp3"};
+let PU=0;const PLAYER=(id,label)=>{const u=id+"-"+(++PU);return "<div class=\"aud\"><div><b>"+label+"</b></div><audio controls preload=\"none\" data-u=\""+u+"\" src=\""+AUDIO[id]+"\"></audio><div class=\"am\" data-m=\""+u+"\"></div></div>"};
+const wirePlayers=()=>document.querySelectorAll("audio[data-u]").forEach(a=>a.addEventListener("error",()=>{const m=document.querySelector("[data-m=\""+a.dataset.u+"\"]");if(m)m.textContent="The audio file could not be loaded. Tell your teacher."}));
+/* Task 7 */
+CARD(7,"Job interview","You are being interviewed for a Sales Manager job. Answer the interviewer's questions using the notes. Make up answers to any other questions.",
+ "<div class=\"role\"><ul><li>sales manager / small mobile-phone company</li><li>at the moment / live / Paris</li><li>currently / design / sales manual / new staff</li><li>arrive office eight / usually check e-mails first / brief sales staff / deal with difficult customers</li><li>next Tuesday afternoon / work / but take time off</li></ul></div>");
+/* Task 8 */
+(function(){
+ const el=mkCard(8,"Listen: the beginning of a presentation","Listen to the beginning of a presentation by the Director of Human Resources at a fashion company. Answer the two questions.");
+ const body=$(".body",el);const items=[];
+ body.insertAdjacentHTML("beforeend",PLAYER("cd122","Audio: CD1.22"));
+ items.push(lineItem(body,1,"What is the main aim of the presenter?",v=>/(talk|tell|speak|present|inform|explain|introduce|describe)/i.test(v)&&/(compan|DCV|firm)/i.test(v)||/(work for|job|recruit|hire|decide)/i.test(v),"To talk about his company, so that the audience can decide if they want to work for it in the future.","The presenter says his purpose is to talk about the company, and then the listeners can decide if they would like to work for it. Your answer can use different words.",v=>"Question 1 – you wrote: "+(v?"\""+v+"\"":"(nothing)")+"; model: \"To talk about his company so that people can decide if they want to work for it.\""));
+ items.push(lineItem(body,2,"What kind of audience is he probably addressing?",v=>/(student|graduate|young|applicant|candidate|job|work|future employee|future staff|people who (might|may|could|want))/i.test(v),"Young people who might want to work for the company (for example students or graduates).","He says they can decide if they want to work for the company in the future, so they are probably young people looking for a job. Your answer can use different words.",v=>"Question 2 – you wrote: "+(v?"\""+v+"\"":"(nothing)")+"; model: \"Young people who may want to work for the company.\""));
+ mkSec(8,"Listen: the beginning of a presentation",items,el);
+})();
+/* Task 9 */
+(function(){
+ const el=mkCard(9,"Listen again: complete the summary","Listen again. Complete the summary of the presentation with one word in each gap.");
+ const body=$(".body",el);const items=[];
+ body.insertAdjacentHTML("beforeend",PLAYER("cd122","Audio: CD1.22 (again)")+"<p>The presenter is Robert Pullin, the Director of Human Resources at DCV Fashions.</p>");
+ const G9=[
+  ["{{}}, he gives some basic information about the company.",["First"],"<b>First</b>. This word opens the plan: the first part of the presentation."],
+  ["{{}} that, he explains why the company is so successful in the fashion industry.",["After"],"<b>After</b>. <i>After that</i> introduces the second part."],
+  ["He explains why the company has been so {{}} in the fashion industry.",["successful"],"<b>successful</b>. The adjective means the company has done very well."],
+  ["{{}}, he talks about the mission statement, which describes why the company is in business.",["Next"],"<b>Next</b>. It introduces the third part."],
+  ["{{}}, he explains how the company communicates with people.",["Finally"],"<b>Finally</b>. It introduces the last part."],
+  ["The company communicates through advertising and {{}}.",["promotion"],"<b>promotion</b>. The phrase is <i>advertising and promotion</i>."]
+ ];
+ G9.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"gap",null,v=>anyOf(v,t[1]),t[1][0],t[2],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1][0]+")")));
+ mkSec(9,"Listen again: complete the summary",items,el);
+})();
+/* Task 10 */
+CARD(10,"Your own introduction","In pairs, practise giving an introduction to your own company or to a company you know well. Use the plan below.",
+ "<div class=\"box\"><b>Plan</b><br>1 Greet the audience and say who you are.<br>2 Say your aim: <i>Today I'd like to talk to you about …</i><br>3 Outline the sections: <i>First, I'll … After that, I'll … Next, I'll … Finally, I'll …</i></div>");
+/* Task 11 */
+(function(){
+ const el=mkCard(11,"Listen to the rest: complete the chart","Listen to the rest of the presentation. Complete the information about DCV Fashions.");
+ const body=$(".body",el);const items=[];
+ body.insertAdjacentHTML("beforeend",PLAYER("cd123","Audio: CD1.23"));
+ const R=(re)=>v=>re.test(v);
+ const R3=[/design|team|young|talent/i,/distribut|system|first[- ]class/i,/advertis|creativ|promot/i];
+ const RS=v=>R3.some(r=>r.test(v));
+ const C11=[
+  ["Head office: {{}}",R(/florence|firenze/i),"Florence","<b>Florence</b>. He says: <i>We were founded in Florence … that's where we're currently based.</i>"],
+  ["Products: {{}}",R(/cloth|fashion|accessor/i),"clothing and fashion accessories","<b>clothing and fashion accessories</b>. The company makes and sells them for people aged 18 to 30."],
+  ["Turnover last year: {{}}",R(/300/),"over 300 million euros","<b>over 300 million euros</b>."],
+  ["Net profit last year: {{}}",R(/28/),"about 28 million euros","<b>about 28 million euros</b>."],
+  ["Reason for success 1: {{}}",RS,"a talented team of young designers","<b>three reasons</b>: a talented team of young designers, a first-class distribution system, creative advertising and promotion. Any order is fine, but do not repeat a reason."],
+  ["Reason for success 2: {{}}",RS,"a first-class distribution system","<b>three reasons</b>: a talented team of young designers, a first-class distribution system, creative advertising and promotion. Any order is fine, but do not repeat a reason."],
+  ["Reason for success 3: {{}}",RS,"creative advertising and promotion","<b>three reasons</b>: a talented team of young designers, a first-class distribution system, creative advertising and promotion. Any order is fine, but do not repeat a reason."],
+  ["Advertising and promotion 1: {{}}",v=>/tv|television|network/i.test(v)||/fashion show|sponsor|celebrit|endors|music|sport/i.test(v),"on all the Italian TV networks and in other major European markets","<b>TV advertising</b> on the Italian networks and in other major European markets."],
+  ["Advertising and promotion 2: {{}}",v=>/tv|television|network/i.test(v)||/fashion show|sponsor|celebrit|endors|music|sport/i.test(v),"it sponsors fashion shows","<b>It sponsors fashion shows.</b>"],
+  ["Advertising and promotion 3: {{}}",v=>/tv|television|network/i.test(v)||/fashion show|sponsor|celebrit|endors|music|sport/i.test(v),"celebrities from music and sport endorse its products","<b>Celebrities</b> in the world of music and sport endorse its products."]
+ ];
+ C11.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"gap",null,t[1],t[2],t[3],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (model: "+t[2]+")")));
+ mkSec(11,"Listen to the rest: complete the chart",items,el);
+})();
+/* Task 12 */
+(function(){
+ const el=mkCard(12,"Put the phrases in order","Listen to the presentation again. Number the phrases in the order in which you hear them (1 to 5).");
+ const body=$(".body",el);const items=[];
+ body.insertAdjacentHTML("beforeend",PLAYER("cd123","Audio: CD1.23 (again)"));
+ const P=[
+  ["“OK, some basic facts …”",1,"<b>1</b>. This phrase starts the first part of the talk."],
+  ["“What's the key to our success?”",2,"<b>2</b>. The second part is about the reasons for the company's success."],
+  ["“Moving on now to our mission …”",3,"<b>3</b>. The third part: the company's mission."],
+  ["“Finally, a word about our advertising and promotion …”",4,"<b>4</b>. <i>Finally</i> introduces the last section of the talk."],
+  ["“Thanks very much for listening …”",5,"<b>5</b>. The presenter ends the talk, then asks for questions."]
+ ];
+ sh(P).forEach((t,i)=>items.push(inlineItem(body,i+1,"{{}} "+t[0],"sel",["1","2","3","4","5"],v=>v===String(t[1]),String(t[1]),t[2],v=>t[0]+" – you chose "+(v?v:"(nothing)")+"; correct: "+t[1])));
+ mkSec(12,"Put the phrases in order",items,el);
+})();
+/* Task 13 */
+(function(){
+ const el=CARD(13,"Your presentation","Choose one topic. Prepare a short presentation of your company, then give it. Your audience is a group of young people from a fashion college. After the presentation, answer your partner's questions.",
+  "<div class=\"box\"><b>Topic 1</b>: a company that you know well. <b>Topic 2</b>: Moda International Fashion Group. Use the facts on page 133 of the Course Book.</div><div class=\"box t\"><b>Sections</b>: 1 Introduce yourself and your aim. 2 Basic facts (head office, products, turnover, workforce). 3 Reasons for success. 4 Mission. 5 Advertising and promotion. 6 End and ask for questions. Use phrases such as <i>First, I'll … After that, I'll … Moving on now to … Finally, a word about … Thank you for listening. Are there any questions?</i></div>");
+ const w=writeBox(el,"Your notes for the presentation…",[
+  ["greeting and your name",t=>/\b(good (morning|afternoon)|hello|hi|my name)\b/i.test(t)],
+  ["your aim (Today I'd like to talk about …)",t=>/\b(purpose|aim|talk (to you )?about|like to talk)\b/i.test(t)],
+  ["an outline (First, After that, Next, Finally)",t=>/\bfirst\b/i.test(t)&&/\b(after that|next|then)\b/i.test(t)&&/\bfinally\b/i.test(t)],
+  ["a phrase to change sections (Moving on now …)",t=>/\b(moving on|now to|what about|ok,|right\.)/i.test(t)],
+  ["an ending (Thank you … Are there any questions?)",t=>/\b(thank|thanks)\b/i.test(t)&&/\bquestions?\b/i.test(t)]]);
+})();
+
+wirePlayers();
+/* ============ BAR / REPORT / SAVE ============ */
+const scored=secs.filter(s=>s.total>0);
+const TOTAL=scored.reduce((a,s)=>a+s.total,0);
+const got=()=>scored.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Companies lesson – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  scored.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  scored.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  let wr="";
+  secs.forEach(s=>{if(s.extra&&s.extra.ta&&s.extra.ta.value.trim())wr+="\nTask "+s.num+" "+s.label+" – your text:\n"+s.extra.ta.value.trim()+"\n"});
+  if(wr)t+="\nWRITING / NOTES (not scored)\n"+wr;
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select,textarea")),dst=[].slice.call(clone.querySelectorAll("input,select,textarea"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else if(el.tagName==="TEXTAREA"){dst[i].textContent=el.value;dst[i].setAttribute("readonly","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,textarea{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Companies_lesson_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
