@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tata Today: Words and Writing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--gold:#f6e7b8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);line-height:1.2}
+.sub{font-weight:300;font-size:24px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.box{background:#fff;border-left:4px solid #d9b94d;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15.5px}
+.box.t{border-left-color:var(--taupe)}
+.wb{text-align:center;font-weight:600;background:#fff;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:16px;line-height:1.7}
+.graph{display:block;width:100%;max-width:640px;margin:10px auto 0;border-radius:8px;background:#fff}
+.src{font-size:12.5px;color:var(--grey-l);text-align:center;margin:2px 0 10px}
+.q{padding:9px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:24px;color:var(--grey-l);font-size:14px}
+input.gap,input.ln{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:3px 10px;background:#fff;color:var(--ink)}
+input.gap{width:190px;max-width:100%}
+input.ln{width:100%;margin-top:5px}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+input.ok,select.ok,textarea.ok{background:var(--green)!important;border-color:var(--green-d)!important}
+input.bad,select.bad,textarea.bad{background:var(--red)!important;border-color:var(--red-d)!important}
+textarea.wr{width:100%;min-height:110px;font:inherit;border:1.5px solid var(--taupe);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical;margin-top:6px}
+.exp{margin:6px 0 0 0;padding:8px 12px;border-radius:8px;font-size:14.8px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.scheme{display:grid;gap:8px;margin:8px 0}
+.scheme.c4{grid-template-columns:repeat(4,1fr)}.scheme.c3{grid-template-columns:repeat(3,1fr)}
+.st{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px;position:relative}
+.st b{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-right:6px}
+.st:not(:last-child)::after{content:"\2192";position:absolute;right:6px;top:6px;color:var(--grey-l)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.chk li{color:var(--grey-l)}.chk li::before{content:"\2610  "}
+.chk li.on{color:var(--green-d);font-weight:600}.chk li.on::before{content:"\2611  "}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+.hw{background:#fdf3da}table.rt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}table.rt td,table.rt th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.rt th{background:var(--taupe);color:#fff;font-weight:600}.rt b{color:var(--taupe)}
+@media(max-width:720px){
+  .txt{flex:1 1 0;min-width:0;max-width:100%}select{width:100%;white-space:normal}table.rt{font-size:14px}table.rt td,table.rt th{padding:6px 6px}
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:20px}.sub{font-size:19px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .scheme.c4,.scheme.c3{grid-template-columns:1fr 1fr}
+  input.gap{width:150px}
+}
+.dt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}
+.dt th,.dt td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-word}
+.dt th{background:var(--taupe);color:#fff;font-weight:600}
+.dt td.k{font-weight:600;color:var(--taupe);width:22%}
+.dt .fact{display:none}.dt tr.open .fact{display:block}.dt tr.open .ph{display:none}
+.dt .ph{color:var(--grey-l)}
+.dt .ex{font-style:italic;color:var(--grey-l);font-size:14px}
+details.wh{background:#fff;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15px}
+details.wh summary{cursor:pointer;font-weight:600;color:var(--taupe)}
+details.wh li{margin:4px 0}
+ol.qs{padding-left:22px}ol.qs li{margin:6px 0}
+@media(max-width:720px){.dt{font-size:14px}.dt th,.dt td{padding:6px 6px}.dt td.k{width:26%}}
+.aud{margin:8px 0 12px}.aud audio{width:100%}.aud .am{font-size:13.5px;color:var(--red-d);margin-top:4px}
+.role{background:#fff;border-left:4px solid var(--green-d);border-radius:8px;padding:10px 16px;margin:10px 0}.role ul{margin:6px 0 0;padding-left:20px}.role li{margin:4px 0}
+.tw{white-space:nowrap;font-weight:600;color:var(--taupe)}
+.trb{font:600 11px "Open Sans",system-ui,sans-serif;border:1px solid var(--taupe);background:#fff;color:var(--taupe);border-radius:6px;padding:0 5px;margin-left:3px;cursor:pointer;vertical-align:middle;line-height:17px}
+.trb:hover{background:var(--cream)}
+.ru{font-weight:400;font-size:.85em;color:var(--green-d);background:var(--green);border-radius:6px;padding:0 6px;margin-left:4px}
+.ru[hidden]{display:none}
+.fl{font-weight:600;margin-right:1px}
+.art p{margin:10px 0}.art h3{margin:4px 0 8px;font-size:19px;color:var(--grey)}
+.upd{font-size:13.5px;color:var(--grey-l)}
+.bank{display:flex;flex-wrap:wrap;gap:8px 14px;margin-top:8px}
+.bank span.tw{background:#fff;border:1px solid var(--line);border-radius:8px;padding:3px 8px}
+
+/* ===== colourful design ===== */
+.line{flex-wrap:nowrap;align-items:flex-start}.txt{flex:1 1 0;min-width:0}.card .n{margin-top:2px}
+body{background:#fffdf8}
+.hd{background:linear-gradient(120deg,#264653 0%,#2a9d8f 55%,#e9c46a 100%);border-radius:0 0 30px 30px;padding:30px 36px 26px;margin:0;position:relative;overflow:hidden}
+.hd h1{color:#fff;letter-spacing:.12em}
+.hd .sub{color:#fff8e1;font-weight:400}
+.hd::after{content:"\1F3E2  \1F1EE\1F1F3  \1F4F0  \1F4C8";position:absolute;right:22px;top:16px;font-size:30px;opacity:.9;letter-spacing:6px}
+.who{padding-top:20px}
+.who input{border-bottom:2px dotted #2a9d8f}
+.bar{background:#fffdf8;border-bottom:2px solid #f0e4c8}
+.track{background:#f0e4c8;height:12px}
+.fill{background:linear-gradient(90deg,#e76f51,#f4a261,#e9c46a,#2a9d8f);border-radius:12px}
+.score{color:#264653}
+.card{--ac:#625b53;--ac2:#d9d2c3;--ac-bg:#f2ecde;position:relative;overflow:hidden;background:var(--ac-bg);border:2px solid var(--ac);border-radius:20px;padding:34px 24px 22px;box-shadow:0 5px 0 var(--ac2)}
+.card::before{content:"";position:absolute;left:0;right:0;top:0;height:14px;background:repeating-linear-gradient(135deg,var(--ac) 0 12px,var(--ac2) 12px 24px)}
+.card h2{color:var(--ac-d,var(--ac));font-size:21px;display:flex;align-items:center;gap:10px}
+.card h2 .emo{display:inline-flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:50%;background:var(--ac);font-size:22px;flex:none;box-shadow:0 3px 0 var(--ac2)}
+.card .btn{background:var(--ac);color:#fff}
+.card .btn:hover{filter:brightness(.92)}
+.card .btn.ghost{background:#fff;color:var(--ac-d,var(--ac));box-shadow:inset 0 0 0 2px var(--ac)}
+.card select,.card input.gap,.card input.ln,.card textarea.wr{border-color:var(--ac);border-width:2px}
+.card .q{border-top:2px dotted var(--ac2)}
+.card .q:nth-of-type(odd){background:rgba(255,255,255,.6);border-radius:12px;padding:10px 12px}
+.card .q:nth-of-type(even){padding:10px 12px}
+.card .box{border-left-color:var(--ac)}
+.card .wb{border:2px dashed var(--ac)}
+.card .n{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:26px;border-radius:50%;background:var(--ac);color:#fff;font-weight:600;font-size:13px}
+.card .exp{border-left-width:5px}
+.tw{background:linear-gradient(transparent 58%,#ffe08a 58%);padding:0 2px;border-radius:3px;color:#264653}
+.trb{border-color:#264653;color:#264653;background:#fff7d6}
+.trb:hover{background:#ffe08a}
+.ru{background:#d7f0e2;color:#1d6b43}
+.art{background:#fff;border-radius:14px;padding:12px 18px;border:2px solid #f6c9bb}
+.art h3{color:#e76f51;font-size:21px}
+.bank{gap:10px 12px}
+.bank .tw{background:#fff;border:2px solid var(--ac);border-radius:12px;padding:5px 10px;color:#264653}
+.bank .tw:nth-child(3n+1){border-color:#e76f51}.bank .tw:nth-child(3n+2){border-color:#2a9d8f}.bank .tw:nth-child(3n){border-color:#7b61c4}
+.chk li.on{color:#1d6b43}
+.out{margin-top:34px}
+.out .btn{background:#264653;font-size:16px;padding:11px 22px}
+.out .btn.ghost{background:#fff;color:#264653;box-shadow:inset 0 0 0 2px #264653}
+.savedbar{background:#fff1ec;border-color:#e76f51}
+.log{--ac:#264653;--ac2:#a8dadc;--ac-bg:#eaf4f7}
+@media(max-width:720px){.hd{padding:22px 16px 20px}.hd::after{position:static;display:block;margin-top:10px;font-size:24px}.card{padding:32px 14px 18px}.card h2{font-size:18px}.card h2 .emo{width:36px;height:36px;font-size:19px}}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Tata Today</h1><div class="sub">reading · vocabulary · writing</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\b(is|are|was|were|will|do|does|did)n't\b/g,"$1 not").replace(/won't/g,"will not").replace(/'ll\b/g," will").replace(/centre/g,"center").replace(/'/g,"").replace(/[.,!?;:"()]/g," ").replace(/\s+/g," ").trim();
+const anyOf=(v,list)=>list.some(a=>norm(a)===norm(v));
+const subj=(subs,rests)=>{const o=[];subs.forEach(a=>rests.forEach(b=>o.push(a+" "+b)));return o};
+const stripSeq=v=>norm(v).replace(/^(first|then|after that|next|finally|and then)\s+/,"").replace(/^(then|after that|next|finally)\s+/,"");
+
+
+
+
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CARD=(num,title,note,html)=>{const el=document.createElement("section");el.className="card";el.innerHTML="<h2>Task "+num+": "+title+"</h2><p class=\"note\">"+note+"</p>"+html;host.appendChild(el);return el};
+const W={
+ "successor":["преемник","the person who takes a job after someone else"],
+ "outsider":["человек со стороны, чужой","a person who is not part of a group or a company"],
+ "controlled by":["под контролем, управляется","ruled or managed by a person or a group"],
+ "multinational":["транснациональная компания","a company that has business in many countries"],
+ "subsidiary":["дочерняя компания","a company that belongs to a bigger company"],
+ "outsourcing":["аутсорсинг","using another company to do some of your work"],
+ "transition":["переход, смена","a change from one situation or one leader to another"],
+ "currently":["в настоящее время","now, at this time"],
+ "revenue":["выручка","the money a company gets from selling things"],
+ "net profit":["чистая прибыль","the money a company keeps after it pays all costs and taxes"],
+ "committee":["комитет","a small group of people who decide something together"],
+ "candidate":["кандидат","a person who wants a job or is one of the choices for a job"]
+};
+const DISP={"multinational":"multinational company"};
+const TW=(k,show)=>"<span class=\"tw\">"+(show||DISP[k]||k)+"<button class=\"trb\" type=\"button\" data-ru=\""+esc(W[k][0])+"\" title=\"Russian translation\">RU</button></span>";
+const ART=[
+ "Tata is one of India's biggest company groups and a famous [[multinational]] company. It has many [[subsidiary|subsidiaries]], for example in IT [[outsourcing]], steel and cars. The group is [[controlled by|controlled by]] Tata Trusts. They own about two thirds of its main company, Tata Sons.",
+ "For many years, people in India thought that an [[outsider]] could not lead a family-controlled group. Then things began to change. In 2012, Cyrus Mistry became chairman after Ratan Tata, and in 2016 the board removed him. In 2017, N. Chandrasekaran became chairman. He is a professional manager, not a member of the Tata family. Ratan Tata died in 2024, and his half-brother Noel Tata now leads Tata Trusts.",
+ "Today the group is doing well. Last year, the [[revenue]] of Tata Sons rose by 9%, and its [[net profit]] rose by almost 22%.",
+ "But there is a question about the future. On 12 August 2026, Chandrasekaran said that he did not want a third term, which would start in February 2027. The Trusts began to organise a [[committee]] to find his [[successor]]. However, in September the board voted four to one to give him another five years. Noel Tata voted against it. On 26 October, he wrote a letter and said that the decision is not valid. He also says that the company did not form a selection committee to look for [[candidate|candidates]], and he asked for the video of the meeting.",
+ "[[currently|Currently]], the company has not answered in public, and nobody knows the final result. The [[transition]] from one chairman to the next may be difficult. According to reports, the two men may meet in November."
+];
+const artHtml=ART.map(p=>"<p>"+p.replace(/\[\[([^\]|]+)(?:\|([^\]]+))?\]\]/g,(m,k,d)=>TW(k,d)).replace(/Tata<button/,"Tata<button")+"</p>").join("");
+const KEYS=Object.keys(W);
+const MATCH_WHY={
+ "successor":"In the article: <i>to find his successor</i>, the person who will take the job after the chairman.",
+ "outsider":"In the article: <i>an outsider could not lead a family-controlled group</i>.",
+ "controlled by":"In the article: <i>The group is controlled by Tata Trusts</i>, because they own most of it.",
+ "multinational":"In the article: <i>a famous multinational company</i>, a company with business in many countries.",
+ "subsidiary":"In the article: <i>many subsidiaries</i>, companies that belong to the group.",
+ "outsourcing":"In the article: <i>IT outsourcing</i>, doing work for other companies.",
+ "transition":"In the article: <i>the transition from one chairman to the next</i>.",
+ "currently":"In the article: <i>Currently, the company has not answered</i>, at this moment.",
+ "revenue":"In the article: <i>the revenue of Tata Sons rose by 9%</i>, money from sales.",
+ "net profit":"In the article: <i>its net profit rose</i>, the money left after costs and taxes.",
+ "committee":"In the article: <i>a selection committee</i>, a small group that chooses the new chairman.",
+ "candidate":"In the article: <i>candidates</i> for the job of chairman."
+};
+const PRAC=[
+ ["The CEO retires next month. His {{}} will start work on Monday.","successor","subsidiary","<b>successor</b>. A successor is a person who takes someone's job. A subsidiary is a company, not a person."],
+ ["Nobody in the company knew her. She was an {{}}, but she became the new boss.","outsider","outsourcing","<b>outsider</b>. An outsider is a person from outside the company. Outsourcing is a way of working, not a person."],
+ ["Toyota is a big {{}} company. It makes and sells cars in almost every country.","multinational","outsider","<b>multinational</b>. A multinational company works in many countries. An outsider is a person, so it does not describe a company."],
+ ["Audi belongs to Volkswagen. Audi is a {{}} of Volkswagen.","subsidiary","revenue","<b>subsidiary</b>. A subsidiary belongs to a bigger company. Revenue is money, so it does not fit with <i>belongs to</i>."],
+ ["Many banks use {{}}: another company answers their customers' phone calls.","outsourcing","net profit","<b>outsourcing</b>. Another company does the work for the bank. Net profit is money, not a way of working."],
+ ["After the old director left, the {{}} to the new director was easy.","transition","revenue","<b>transition</b>. A transition is a change from one thing to another. Revenue is money from sales."],
+ ["The company {{}} has 200 workers, but it will hire 50 more next month.","currently","never","<b>currently</b>. <i>Currently</i> means now. <i>Never</i> does not fit with <i>will hire 50 more</i>."],
+ ["The company sold a lot of products last year. Its {{}} was $50 million.","revenue","successor","<b>revenue</b>. Revenue is money from sales. A successor is a person."],
+ ["After paying all costs and taxes, the company's {{}} was only $2 million.","net profit","committee","<b>net profit</b>. Net profit is what the company keeps after costs and taxes. A committee is a group of people."],
+ ["A small {{}} of five people will choose the new director.","committee","revenue","<b>committee</b>. A committee is a small group that decides. Revenue is money, so it cannot choose anyone."],
+ ["There are three {{}} for the job. The company will choose one of them next week.","candidates","subsidiaries","<b>candidates</b>. Candidates are people who want the job. Subsidiaries are companies."],
+ ["The company is {{}} by one family, who own most of the shares.","controlled","elected","<b>controlled</b>. <i>Controlled by</i> means the family manages it. A company is not <i>elected</i>."]
+];
+const GAPS=[
+ ["The CEO is retiring, and the board must choose a new {{}}.","successor","s"],
+ ["In many companies, it is unusual to have an {{}} as the boss.","outsider","o"],
+ ["Tata is a {{}} company. It has offices in many countries.","multinational","m"],
+ ["TCS is a {{}} of Tata Sons. It belongs to the group.","subsidiary","s"],
+ ["Many banks use {{}}: another company does their IT work.","outsourcing","o"],
+ ["The {{}} from one chairman to the next must be smooth.","transition","t"],
+ ["The company {{}} has five thousand workers.","currently","c"],
+ ["The company's {{}} was two billion dollars last year.","revenue","r"],
+ ["After costs and taxes, the {{}} was only one hundred thousand dollars.","net profit","n"],
+ ["A {{}} of five people will choose the new chairman.","committee","c"],
+ ["Each {{}} must talk to the board before the decision.","candidate","c"],
+ ["The company is {{}} by one family.","controlled","c"]
+];
+const GWHY={
+ "successor":"A <b>successor</b> is the person who takes the job after someone else.",
+ "outsider":"An <b>outsider</b> is a person who is not part of the group. Use <i>an</i> before a vowel sound.",
+ "multinational":"A <b>multinational</b> company works in many countries. Here the word describes the noun <i>company</i>.",
+ "subsidiary":"A <b>subsidiary</b> belongs to a bigger company. <i>belongs to the group</i> is the clue.",
+ "outsourcing":"<b>Outsourcing</b>: another company does the work. The clue is <i>another company does their IT work</i>.",
+ "transition":"A <b>transition</b> is a change from one thing to another. Use <i>the transition from … to …</i>.",
+ "currently":"<b>Currently</b> means now. It goes before the main verb: <i>has</i>.",
+ "revenue":"<b>Revenue</b> is the money from sales. It is a number in dollars.",
+ "net profit":"<b>Net profit</b> is the money left after costs and taxes. It is two words.",
+ "committee":"A <b>committee</b> is a small group that decides together. <i>of five people</i> is the clue.",
+ "candidate":"A <b>candidate</b> is a person who wants the job. <i>Each</i> goes with a singular noun.",
+ "controlled":"<b>Controlled by</b> shows who manages the company. It is a passive form: <i>is controlled by</i>."
+};
+/* ============ ENGINE ============ */
+const secs=[],host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div>";
+  host.appendChild(el);return el;
+}
+function addTools(el,sec){
+  const t=document.createElement("div");t.className="tools";
+  t.innerHTML="<button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span>";
+  el.appendChild(t);
+  const res=$(".res",t),msg=$(".msg",t),items=sec.items;
+  $("[data-a=check]",t).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",t).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",t).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+}
+function mkSec(num,label,items,el){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items,extra:null};
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  addTools(el,sec);secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,ans){
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(ans)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(ans)+"</b>. ";
+  box.innerHTML=head+html.replace(/^<b>[^<]*<\/b>\.?\s*/,"");
+}
+function row(body,labelHtml,n){
+  const q=document.createElement("div");q.className="q";
+  q.innerHTML="<div class=\"line\"><span class=\"n\">"+n+"</span><span class=\"txt\">"+labelHtml+"</span></div><div class=\"exp\"></div>";
+  body.appendChild(q);return q;
+}
+/* item with inline control */
+function inlineItem(body,n,tpl,kind,opts,okFn,ansDisp,why,lineFn){
+  const [pre,post]=tpl.split("{{}}");
+  const ctl=kind==="sel"?"<select>"+["<option value=\"\">choose…</option>"].concat(opts.map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("")+"</select>":"<input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">";
+  const q=row(body,esc(pre)+ctl+esc(post),n);
+  const c=$(kind==="sel"?"select":"input",q),box=$(".exp",q);
+  const clear=()=>{c.className=kind==="sel"?"":"gap";box.className="exp";box.innerHTML=""};
+  c.addEventListener(kind==="sel"?"change":"input",clear);
+  return {
+    ok:()=>okFn(c.value),
+    line:()=>lineFn(c.value.trim()),
+    mark:ok=>{c.className=(kind==="sel"?"":"gap ")+(ok?"ok":"bad");setExp(box,ok,why,ansDisp)},
+    show:()=>{c.value=ansDisp;c.className=kind==="sel"?"":"gap";setExp(box,null,why,ansDisp)},
+    reset:()=>{c.value="";clear()}
+  };
+}
+/* item with full-width line input */
+function lineItem(body,n,labelHtml,okFn,modelAns,why,lineFn){
+  const q=row(body,labelHtml,n);
+  const inp=document.createElement("input");inp.type="text";inp.className="ln";inp.autocomplete="off";inp.spellcheck=false;
+  q.insertBefore(inp,$(".exp",q));const box=$(".exp",q);
+  inp.addEventListener("input",()=>{inp.className="ln";box.className="exp";box.innerHTML=""});
+  return {
+    ok:()=>okFn(inp.value),
+    line:()=>lineFn(inp.value.trim()),
+    mark:ok=>{inp.className="ln "+(ok?"ok":"bad");setExp(box,ok,why,modelAns)},
+    show:()=>{inp.value=modelAns;inp.className="ln";setExp(box,null,why,modelAns)},
+    reset:()=>{inp.value="";inp.className="ln";box.className="exp";box.innerHTML=""}
+  };
+}
+function staticQs(body,list){list.forEach((t,i)=>{const q=document.createElement("div");q.className="q";q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+t+"</span></div>";body.appendChild(q)})}
+function writeBox(body,placeholder,checks,model){
+  const ta=document.createElement("textarea");ta.className="wr";ta.placeholder=placeholder;body.appendChild(ta);
+  const ul=document.createElement("ul");ul.className="chk";body.appendChild(ul);
+  const lis=checks.map(c=>{const li=document.createElement("li");li.textContent=c[0];ul.appendChild(li);return li});
+  const upd=()=>{const t=ta.value;checks.forEach((c,i)=>lis[i].className=c[1](t)?"on":"")};
+  ta.addEventListener("input",upd);
+  let mb=null;
+  if(model){mb=document.createElement("div");mb.className="exp";body.appendChild(mb)}
+  return {ta,upd,showModel:()=>{if(mb){mb.className="exp";mb.innerHTML="<b>Model answer.</b> "+model}},hideModel:()=>{if(mb){mb.className="exp";mb.innerHTML=""}},reset:()=>{ta.value="";upd();if(mb){mb.innerHTML=""}}};
+}
+const LINKERS_RE=/\b(to begin with|in addition|moreover|for example|for instance|on the one hand|on the other hand|however|as a result|in conclusion)\b/gi;
+const hasN=(t,re,n)=>((t.match(re)||[]).length>=n);
+
+
+
+
+/* word bank */
+(function(){
+ const el=document.createElement("section");el.className="card";
+ el.innerHTML="<h2>Word bank</h2><p class=\"note\">Press <b>RU</b> next to a word to see the Russian translation. You will also find these buttons in the article and in Task 2.</p><div class=\"bank\">"+KEYS.map(k=>TW(k)).join("")+"</div>";
+ host.appendChild(el);
+})();
+/* Task 1 */
+CARD(1,"Read the article","Tata: what is happening now? Read the article. <span class=\"upd\">News situation on 27 October 2026. Based on reports in Business Standard, Business Today, Outlook India and Tribune India, August–October 2026.</span>","<div class=\"art\"><h3>Tata: who will lead India's biggest group?</h3>"+artHtml+"</div>");
+/* Task 2 */
+(function(){
+ const el=mkCard(2,"Match the words with the definitions","Choose the correct definition for each word.");
+ const body=$(".body",el);const items=[];
+ const defs=KEYS.map(k=>W[k][1]);
+ sh(KEYS).forEach((k,i)=>{
+  const q=row(body,TW(k),i+1);
+  const sel=document.createElement("select");sel.innerHTML="<option value=\"\">choose…</option>"+sh(defs).map(d=>"<option value=\""+esc(d)+"\">"+esc(d)+"</option>").join("");
+  q.querySelector(".txt").appendChild(document.createTextNode(" "));q.querySelector(".txt").appendChild(sel);
+  const box=$(".exp",q),want=W[k][1];
+  sel.addEventListener("change",()=>{sel.className="";box.className="exp";box.innerHTML=""});
+  items.push({ok:()=>sel.value===want,line:()=>"\""+k+"\" – you chose "+(sel.value?"\""+sel.value+"\"":"(nothing)")+"; correct: \""+want+"\"",
+   mark:ok=>{sel.className=ok?"ok":"bad";setExp(box,ok,"<b>"+esc(want)+"</b>. "+MATCH_WHY[k],want)},
+   show:()=>{sel.value=want;sel.className="";setExp(box,null,"<b>"+esc(want)+"</b>. "+MATCH_WHY[k],want)},
+   reset:()=>{sel.value="";sel.className="";box.className="exp";box.innerHTML=""}});
+ });
+ mkSec(2,"Match the words with the definitions",items,el);
+})();
+/* Task 3 */
+(function(){
+ const el=mkCard(3,"Choose the right word","Read the sentence. Choose the word that makes sense. One word is logical, the other word does not fit.");
+ const body=$(".body",el);const items=[];
+ PRAC.forEach((t,i)=>items.push(inlineItem(body,i+1,t[0],"sel",sh([t[1],t[2]]),v=>v===t[1],t[1],t[3],v=>"\""+t[0].replace("{{}}",v||"___")+"\" – (correct: "+t[1]+")")));
+ mkSec(3,"Choose the right word",items,el);
+})();
+/* Task 4 */
+(function(){
+ const el=mkCard(4,"Complete the sentences","The first letter is given. Write the whole word, or only the rest of the word.");
+ const body=$(".body",el);const items=[];
+ GAPS.forEach((t,i)=>{
+  const [pre,post]=t[0].split("{{}}");
+  const q=row(body,esc(pre)+"<span class=\"fl\">"+t[2]+"</span><input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">"+esc(post),i+1);
+  const c=$("input",q),box=$(".exp",q),word=t[1],rest=word.slice(1);
+  c.addEventListener("input",()=>{c.className="gap";box.className="exp";box.innerHTML=""});
+  const okv=v=>norm(v)===norm(word)||norm(v)===norm(rest);
+  const why=GWHY[word];
+  items.push({ok:()=>okv(c.value),line:()=>"\""+t[0].replace("{{}}",t[2]+(c.value.trim()?"["+c.value.trim()+"]":"___"))+"\" – (correct: "+word+")",
+   mark:ok=>{c.className="gap "+(ok?"ok":"bad");setExp(box,ok,why,word)},
+   show:()=>{c.value=word;c.className="gap";setExp(box,null,why,word)},
+   reset:()=>{c.value="";c.className="gap";box.className="exp";box.innerHTML=""}});
+ });
+ mkSec(4,"Complete the sentences",items,el);
+})();
+/* Task 5 */
+(function(){
+ const el=CARD(5,"Write about a company","Write a short paragraph (five to eight sentences) about a company you know. Use at least <b>five</b> words from the word bank. Put your ideas in order with these words.","<div class=\"box\"><b>Order words</b>: First, … · Second, … · Next, … · After that, … · Finally, …</div>");
+ const stems=["successor","outsider","controlled","multinational","subsidiar","outsourc","transition","currently","revenue","net profit","committee","candidate"];
+ const w=writeBox(el,"Write your paragraph here…",[
+  ["five target words",t=>stems.filter(x=>new RegExp("\\b"+x,"i").test(t)).length>=5],
+  ["First",t=>/\bfirst\b/i.test(t)],
+  ["Second or Next",t=>/\b(second|next)\b/i.test(t)],
+  ["After that",t=>/\bafter that\b/i.test(t)],
+  ["Finally",t=>/\bfinally\b/i.test(t)],
+  ["five to eight sentences",t=>{const n=(t.match(/[.!?]+(\s|$)/g)||[]).length;return n>=5&&n<=8}]]);
+ secs.push({num:5,label:"Write about a company",total:0,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items:[],extra:w,writing:true});
+})();
+document.addEventListener("click",e=>{
+ const b=e.target.closest(".trb");if(!b)return;
+ let r=b.nextElementSibling;
+ if(r&&r.classList.contains("ru")){r.hidden=!r.hidden;return}
+ r=document.createElement("span");r.className="ru";r.textContent=b.dataset.ru;b.after(r);
+});
+
+/* ===== colour themes per card ===== */
+(function(){
+ const T=[
+  ["📚","#457b9d","#a8dadc","#eaf4f7","#2c5d7a"],
+  ["📰","#e76f51","#f4b4a2","#fff1ec","#b5452b"],
+  ["🧩","#2a9d8f","#9bd8cf","#e8f6f4","#1a6f65"],
+  ["🎯","#e0852f","#f6cf9f","#fff4e6","#a95f12"],
+  ["✏️","#7b61c4","#c9bdee","#f1edfb","#553f9c"],
+  ["📝","#2f9e6b","#a9dec5","#e9f7ef","#1d6b45"]
+ ];
+ [...document.querySelectorAll("#secs > .card")].forEach((c,i)=>{
+  const t=T[i%T.length];
+  c.style.setProperty("--ac",t[1]);c.style.setProperty("--ac2",t[2]);c.style.setProperty("--ac-bg",t[3]);c.style.setProperty("--ac-d",t[4]);
+  const h=c.querySelector("h2");if(h&&!h.querySelector(".emo")){h.innerHTML="<span class=\"emo\">"+t[0]+"</span><span>"+h.innerHTML+"</span>"}
+ });
+})();
+
+/* ============ BAR / REPORT / SAVE ============ */
+const scored=secs.filter(s=>s.total>0);
+const TOTAL=scored.reduce((a,s)=>a+s.total,0);
+const got=()=>scored.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Tata Today – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  scored.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  scored.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  let wr="";
+  secs.forEach(s=>{if(s.extra&&s.extra.ta&&s.extra.ta.value.trim())wr+="\nTask "+s.num+" "+s.label+" – your text:\n"+s.extra.ta.value.trim()+"\n"});
+  if(wr)t+="\nWRITING / NOTES (not scored)\n"+wr;
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select,textarea")),dst=[].slice.call(clone.querySelectorAll("input,select,textarea"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else if(el.tagName==="TEXTAREA"){dst[i].textContent=el.value;dst[i].setAttribute("readonly","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,textarea{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Tata_today_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
