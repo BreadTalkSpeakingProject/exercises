@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Costume Wheel</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:#23211f;color:#fff;font-family:Poppins,system-ui,Arial,sans-serif;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px;
+ background-image:radial-gradient(circle at 20% 10%,#33302c 0,#23211f 60%)}
+h1{font-size:1.5rem;margin:6px 0 4px;text-align:center}
+.sub{max-width:560px;text-align:center;color:#d8cfc6;font-size:.95rem;margin:0 0 18px}
+.stage{position:relative;width:min(92vw,560px);aspect-ratio:1}
+canvas{width:100%;height:100%;display:block}
+.pointer{position:absolute;right:-6px;top:50%;width:46px;height:40px;transform:translateY(-50%);filter:drop-shadow(0 3px 4px rgba(0,0,0,.5));pointer-events:none}
+.spin{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:26%;aspect-ratio:1;border-radius:50%;border:5px solid #fff;background:#8a4538;color:#fff;font:700 clamp(1rem,4.6vw,1.45rem)/1 Poppins,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.45)}
+.spin:disabled{opacity:.7;cursor:default}
+.spin:active:not(:disabled){transform:translate(-50%,-50%) scale(.96)}
+.result{margin-top:22px;width:min(92vw,560px);background:#fff;color:#2b2623;border-left:10px solid #8a4538;border-radius:6px;padding:16px 18px;min-height:86px}
+.result small{display:block;color:#8a4538;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:.75rem;margin-bottom:4px}
+.result b{font-size:1.25rem;line-height:1.35;font-weight:700}
+.hist{margin-top:14px;width:min(92vw,560px);font-size:.85rem;color:#d8cfc6}
+.hist ol{margin:6px 0 0;padding-left:22px}
+.opts{margin-top:12px;font-size:.9rem;color:#d8cfc6;display:flex;gap:8px;align-items:center}
+</style>
+</head>
+<body>
+<h1>Spin the wheel</h1>
+<p class="sub">Brainstorm a costume that matches the description you get. Then build a vision board and present your costume.</p>
+<div class="stage">
+  <canvas id="cv" width="1120" height="1120"></canvas>
+  <svg class="pointer" viewBox="0 0 46 40"><path d="M2 20 L40 3 Q45 20 40 37 Z" fill="#8a4538" stroke="#fff" stroke-width="3" stroke-linejoin="round"/></svg>
+  <button class="spin" id="spin">SPIN</button>
+</div>
+<label class="opts"><input type="checkbox" id="norepeat" checked> Don't repeat a description until all are used</label>
+<div class="result" id="res"><small>Your description</small><b>Press SPIN to get one</b></div>
+<div class="hist" id="hist"></div>
+<script>
+var ITEMS=[
+ "an effortless reference to a popular movie",
+ "a high-end homage to a pop-culture celeb",
+ "last-minute references to a meme",
+ "spooky costumes to scare everyone",
+ "jaw-dropping costumes of cartoon characters",
+ "an effortless transformation into a series character"
+];
+var COLORS=["#8a4538","#d9a679","#5b6b73","#b86a54","#46505a","#c9885f"];
+var TXT=["#fff","#2b2623","#fff","#fff","#fff","#2b2623"];
+var cv=document.getElementById("cv"),ctx=cv.getContext("2d"),N=ITEMS.length,SEG=2*Math.PI/N,rot=0,busy=false,used=[],hist=[];
+function wrap(t,max){var w=t.split(" "),lines=[],cur="";w.forEach(function(x){var test=cur?cur+" "+x:x;if(ctx.measureText(test).width>max&&cur){lines.push(cur);cur=x}else cur=test});if(cur)lines.push(cur);return lines}
+function draw(){
+  var S=cv.width,R=S/2-18,c=S/2;ctx.clearRect(0,0,S,S);
+  ctx.save();ctx.translate(c,c);
+  ctx.beginPath();ctx.arc(0,0,R+14,0,7);ctx.fillStyle="#fff";ctx.fill();
+  ctx.rotate(rot);
+  for(var i=0;i<N;i++){
+    ctx.beginPath();ctx.moveTo(0,0);ctx.arc(0,0,R,i*SEG,(i+1)*SEG);ctx.closePath();
+    ctx.fillStyle=COLORS[i%COLORS.length];ctx.fill();ctx.lineWidth=6;ctx.strokeStyle="#fff";ctx.stroke();
+    ctx.save();ctx.rotate(i*SEG+SEG/2);ctx.fillStyle=TXT[i%TXT.length];ctx.textBaseline="middle";ctx.textAlign="left";
+    var fs=Math.round(S*0.036);ctx.font="600 "+fs+"px Poppins,Arial,sans-serif";
+    var lines=wrap(ITEMS[i],R*0.60);
+    while(lines.length>3||lines.some(function(l){return ctx.measureText(l).width>R*0.62})){fs-=1;ctx.font="600 "+fs+"px Poppins,Arial,sans-serif";lines=wrap(ITEMS[i],R*0.60);if(fs<14)break}
+    var lh=fs*1.25,y0=-(lines.length-1)*lh/2;
+    lines.forEach(function(l,k){ctx.fillText(l,R*0.30,y0+k*lh)});
+    ctx.restore();
+  }
+  ctx.restore();
+}
+function pick(){
+  var pool=[];for(var i=0;i<N;i++)pool.push(i);
+  if(document.getElementById("norepeat").checked){pool=pool.filter(function(i){return used.indexOf(i)<0});if(!pool.length){used=[];pool=[0,1,2,3,4,5]}}
+  return pool[Math.floor(Math.random()*pool.length)];
+}
+function idxAt(r){var a=((-r)%(2*Math.PI)+2*Math.PI)%(2*Math.PI);return Math.floor(a/SEG)}
+function spin(){
+  if(busy)return;busy=true;document.getElementById("spin").disabled=true;
+  var idx=pick(),off=SEG*(0.15+Math.random()*0.7);
+  var target=-(idx*SEG+off);                       // wheel angle so that segment idx sits under the pointer
+  var cur=rot,k=Math.ceil((cur-target)/(2*Math.PI))+5; // always rotate forward, at least 5 turns
+  var end=target+k*2*Math.PI;
+  var t0=null,dur=5200,start=cur;
+  function ease(t){return 1-Math.pow(1-t,4)}
+  function step(ts){
+    if(!t0)t0=ts;var t=Math.min(1,(ts-t0)/dur);rot=start+(end-start)*ease(t);draw();
+    if(t<1)requestAnimationFrame(step);else{rot=end;busy=false;document.getElementById("spin").disabled=false;done(idxAt(rot))}
+  }
+  requestAnimationFrame(step);
+}
+function done(i){
+  used.push(i);hist.push(ITEMS[i]);
+  document.getElementById("res").innerHTML="<small>Your description</small><b></b>";
+  document.getElementById("res").querySelector("b").textContent=ITEMS[i];
+  var h=document.getElementById("hist");h.innerHTML="Previous spins:<ol></ol>";
+  hist.slice(0,-1).reverse().forEach(function(x){var li=document.createElement("li");li.textContent=x;h.querySelector("ol").appendChild(li)});
+  if(hist.length<2)h.innerHTML="";
+  window.LAST=i;
+}
+document.getElementById("spin").onclick=spin;
+draw();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(draw);
+window.W={spin:spin,idxAt:idxAt,ITEMS:ITEMS};
+</script>
+</body>
+</html>
