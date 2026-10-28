@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework: Halloween Idioms</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1113; --card:#0e1113; --coral:#fc5034; --pale:#ffc0b6; --grid:#3c3a3f;
+  --ink:#ffffff; --muted:#b9b4b8; --ok:#4cc38a; --bad:#ff5d73; --field:#171a1d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 72px}
+header{padding:32px 0 8px;text-align:center}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;color:var(--pale);font-size:clamp(28px,6vw,42px);margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 18px}
+.name{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.name input{background:var(--field);color:var(--ink);border:2px solid var(--grid);border-radius:14px;padding:10px 14px;font:inherit;min-width:230px}
+.name input:focus,.fld:focus,textarea:focus,select:focus{outline:none;border-color:var(--coral)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(14,17,19,.96);border-bottom:2px solid var(--grid);padding:10px 16px;margin:0 -16px 26px;display:flex;align-items:center;gap:14px}
+.bar .track{flex:1;height:10px;border-radius:99px;background:var(--grid);overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--coral);transition:width .3s}
+.bar .num{font-family:Georgia,serif;font-weight:700;color:var(--pale);white-space:nowrap}
+.card{position:relative;border:3px solid var(--coral);border-radius:40px;background:var(--card);padding:62px 26px 26px;margin:70px 0}
+.badge{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;background:var(--card);border:3px solid var(--coral);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:700;font-size:48px;color:var(--pale)}
+.card h2{font-family:Georgia,serif;font-weight:700;color:var(--pale);font-size:clamp(20px,4vw,26px);text-align:center;margin:0 0 6px}
+.card .how{text-align:center;color:var(--muted);margin:0 0 20px}
+.defs{border:2px solid var(--grid);border-radius:18px;padding:12px 16px;margin-bottom:18px}
+.defs div{padding:3px 0}
+.defs b{color:var(--coral);font-family:Georgia,serif;margin-right:6px}
+.row{border-top:2px solid var(--grid);padding:14px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.row:first-of-type{border-top:0}
+.row .n{color:var(--coral);font-family:Georgia,serif;font-weight:700;min-width:26px}
+.row .t{flex:1 1 260px}
+.row .t i{font-style:normal;color:var(--pale)}
+select,.fld,textarea{background:var(--field);color:var(--ink);border:2px solid var(--grid);border-radius:14px;padding:9px 12px;font:inherit}
+select{min-width:76px}
+.fld{width:100%;margin-top:8px}
+.item2{border-top:2px solid var(--grid);padding:14px 0}
+.item2:first-of-type{border-top:0}
+.item2 .s{display:flex;gap:12px}
+.item2 u{color:var(--pale);text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:3px;text-underline-offset:4px;font-weight:500}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;justify-content:center}
+.chip{border:2px solid var(--coral);color:var(--pale);border-radius:99px;padding:4px 14px;font-size:15px}
+.ok{border-color:var(--ok)!important}
+.no{border-color:var(--bad)!important}
+.mark{font-weight:700;margin-left:6px}
+.mark.ok{color:var(--ok)}.mark.no{color:var(--bad)}
+.note{color:var(--muted);font-size:14px;margin-top:6px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+button{font:inherit;font-weight:700;cursor:pointer;border-radius:99px;padding:9px 20px;border:2px solid var(--coral);background:transparent;color:var(--pale)}
+button.main{background:var(--coral);color:#0e1113}
+button:hover{filter:brightness(1.12)}
+.score{margin-left:auto;font-family:Georgia,serif;font-weight:700;color:var(--pale)}
+textarea{width:100%;min-height:210px;resize:vertical}
+.chk{list-style:none;padding:0;margin:12px 0 0}
+.chk li{padding:2px 0;color:var(--muted)}
+.chk li.done{color:var(--ok)}
+.chk li::before{content:"○ "}
+.chk li.done::before{content:"✓ "}
+.final{text-align:center}
+.final p{color:var(--muted)}
+.msg{color:var(--ok);font-weight:700;min-height:1.4em;margin-top:10px}
+@media(max-width:560px){.card{padding:58px 16px 20px;border-radius:30px}.badge{width:78px;height:78px;font-size:40px}.row .t{flex-basis:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Halloween Idioms · Homework</h1>
+  <p class="sub">Three tasks. Press <b>Check</b> in tasks 1 and 2, then copy your results for the teacher.</p>
+  <div class="name"><label for="who">Your name:</label><input id="who" placeholder="Type your name" autocomplete="name"></div>
+</header>
+<div class="bar"><div class="track"><div class="fill" id="fill"></div></div><div class="num" id="tot">0 / 18</div></div>
+
+<section class="card" id="c1">
+  <div class="badge">1</div>
+  <h2>Match the phrases with their definitions</h2>
+  <p class="how">Choose a letter (a–h) for each phrase.</p>
+  <div class="defs" id="defs1"></div>
+  <div id="body1"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="0">Check</button><button data-act="show" data-s="0">Show answers</button><button data-act="again" data-s="0">Try again</button><span class="score" id="sc0"></span></div>
+</section>
+
+<section class="card" id="c2">
+  <div class="badge">2</div>
+  <h2>Paraphrase the underlined part</h2>
+  <p class="how">Replace the underlined part with one of the new phrases. Change the verb form if you need to: it must agree with the subject and the tense.</p>
+  <div class="bank" id="bank2"></div>
+  <div id="body2"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="1">Check</button><button data-act="show" data-s="1">Show answers</button><button data-act="again" data-s="1">Try again</button><span class="score" id="sc1"></span></div>
+</section>
+
+<section class="card" id="c3">
+  <div class="badge">3</div>
+  <h2>Writing task</h2>
+  <p class="how">Describe a spooky place or a creepy experience (real or imaginary). Where was it? What happened? How did you feel? Use at least 5 of the new phrases.</p>
+  <textarea id="wr" placeholder="Write 8–10 sentences here…"></textarea>
+  <ul class="chk" id="chk"></ul>
+  <p class="note">This task is not scored. Check that every verb agrees with its subject before you send it.</p>
+</section>
+
+<section class="card final" id="fin">
+  <div class="badge">✓</div>
+  <h2>Send it to your teacher</h2>
+  <p>This copies your score, your mistakes and your text. Paste it in the chat.</p>
+  <div class="btns" style="justify-content:center"><button class="main" id="copy">Copy my results</button></div>
+  <div class="msg" id="msg"></div>
+</section>
+</div>
+
+<script>
+const norm = s => (s||"").toLowerCase().replace(/[‘’`]/g,"'").replace(/[.,!?;:"“”]/g,"").replace(/'/g,"").replace(/\s+/g," ").trim();
+const plain = s => (s||"").replace(/<[^>]+>/g,"");
+const esc = s => (s||"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- data ---------- */
+const DEFS = {
+  a:`safe from danger and harm`,
+  b:`to die`,
+  c:`far away from other people and civilisation`,
+  d:`no way, never, absolutely not`,
+  e:`you must take risks to achieve success or get what you want`,
+  f:`to gossip about somebody in secret`,
+  g:`said about a person who is quiet on the outside but complex on the inside`,
+  h:`I suddenly felt frightened, nervous or excited`
+};
+const T1 = [
+  {p:`to talk behind somebody's back`, a:"f"},
+  {p:`still waters run deep`, a:"g"},
+  {p:`over my dead body`, a:"d"},
+  {p:`in the middle of nowhere`, a:"c"},
+  {p:`nothing ventured, nothing gained`, a:"e"},
+  {p:`my heart skipped a beat`, a:"h"},
+  {p:`to kick the bucket`, a:"b"},
+  {p:`out of harm's way`, a:"a"}
+];
+const T2 = [
+  {s:`The villain {{dies}} at the end of every horror film.`, ok:[`kicks the bucket`], model:`kicks the bucket`},
+  {s:`The two zombies {{die}} in the first five minutes.`, ok:[`kick the bucket`], model:`kick the bucket`},
+  {s:`Every time the lights go out, {{my sister suddenly feels frightened}}.`, ok:[`her heart skips a beat`,`my sister's heart skips a beat`], model:`her heart skips a beat`},
+  {s:`When we heard the noise, {{we suddenly felt frightened}}.`, ok:[`our hearts skipped a beat`,`our heart skipped a beat`], model:`our hearts skipped a beat`},
+  {s:`Emma {{gossips about her classmates in secret}}.`, ok:[`talks behind her classmates' backs`,`talks behind her classmates' back`,`talks behind their backs`,`talks behind their back`], model:`talks behind her classmates' backs`},
+  {s:`Their cabin is {{very far from other people and civilisation}}.`, ok:[`in the middle of nowhere`], model:`in the middle of nowhere`},
+  {s:`Oliver seems shy, but he knows everything about horror films. {{Quiet people can be very complex inside.}}`, ok:[`still waters run deep`], model:`Still waters run deep.`},
+  {s:`Lend you my expensive costume? {{No way!}}`, ok:[`over my dead body`], model:`Over my dead body!`},
+  {s:`Please put the candles {{somewhere safe}} before the party starts.`, ok:[`out of harm's way`], model:`out of harm's way`},
+  {s:`Why not enter the talent show? {{You must take risks to succeed.}}`, ok:[`nothing ventured, nothing gained`], model:`Nothing ventured, nothing gained.`}
+];
+const BANK = [`to kick the bucket`,`my heart skips a beat`,`to talk behind somebody's back`,`in the middle of nowhere`,`still waters run deep`,`over my dead body`,`out of harm's way`,`nothing ventured, nothing gained`];
+
+/* ---------- task 1 ---------- */
+function makeTask1(){
+  const defsBox = document.getElementById("defs1");
+  defsBox.innerHTML = Object.keys(DEFS).map(k=>`<div><b>${k})</b>${esc(DEFS[k])}</div>`).join("");
+  const body = document.getElementById("body1");
+  const opts = `<option value="">–</option>` + Object.keys(DEFS).map(k=>`<option value="${k}">${k}</option>`).join("");
+  const draw = () => {
+    body.innerHTML = T1.map((it,i)=>`<div class="row" data-i="${i}"><span class="n">${i+1}</span><span class="t"><i>${esc(it.p)}</i></span><select aria-label="Definition for ${esc(it.p)}">${opts}</select><span class="mark"></span></div>`).join("");
+  };
+  draw();
+  const rows = () => [...body.querySelectorAll(".row")];
+  return {
+    total: T1.length,
+    check(){
+      let n=0;
+      rows().forEach((r,i)=>{
+        const sel=r.querySelector("select"), mk=r.querySelector(".mark");
+        const good = sel.value===T1[i].a;
+        sel.classList.toggle("ok",good); sel.classList.toggle("no",!good);
+        mk.textContent = good?"✓":"✗"; mk.className="mark "+(good?"ok":"no");
+        if(good) n++;
+      });
+      return n;
+    },
+    report(){
+      return rows().map((r,i)=>{
+        const v=r.querySelector("select").value, good=v===T1[i].a;
+        const chose = v ? `${v}) ${DEFS[v]}` : "nothing";
+        return {ok:good, line: good ? `"${T1[i].p}" = ${DEFS[T1[i].a]}` : `"${T1[i].p}" – you chose: ${chose}; correct: ${T1[i].a}) ${DEFS[T1[i].a]}`};
+      });
+    },
+    fill(){ rows().forEach((r,i)=>{ r.querySelector("select").value=T1[i].a; }); },
+    reset: draw
+  };
+}
+
+/* ---------- task 2 ---------- */
+function makeTask2(){
+  document.getElementById("bank2").innerHTML = BANK.map(b=>`<span class="chip">${esc(b)}</span>`).join("");
+  const body = document.getElementById("body2");
+  const sentenceHtml = s => esc(s).replace(/\{\{(.+?)\}\}/g,"<u>$1</u>");
+  const draw = () => {
+    body.innerHTML = T2.map((it,i)=>`<div class="item2" data-i="${i}"><div class="s"><span class="n" style="color:var(--coral);font-family:Georgia,serif;font-weight:700;min-width:26px">${i+1}</span><span>${sentenceHtml(it.s)}<span class="mark"></span></span></div><input class="fld" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="Write the new phrase for the underlined part"></div>`).join("");
+  };
+  draw();
+  const items = () => [...body.querySelectorAll(".item2")];
+  const good = (i,v) => T2[i].ok.map(norm).includes(norm(v));
+  const full = (i,txt) => T2[i].s.replace(/\{\{.+?\}\}/g, txt);
+  return {
+    total: T2.length,
+    check(){
+      let n=0;
+      items().forEach((r,i)=>{
+        const inp=r.querySelector("input"), mk=r.querySelector(".mark");
+        const g=good(i,inp.value);
+        inp.classList.toggle("ok",g); inp.classList.toggle("no",!g);
+        mk.textContent = g?" ✓":" ✗"; mk.className="mark "+(g?"ok":"no");
+        if(g) n++;
+      });
+      return n;
+    },
+    report(){
+      return items().map((r,i)=>{
+        const v=r.querySelector("input").value.trim(), g=good(i,v);
+        return {ok:g, line: g ? full(i,T2[i].model) : `${full(i, v||"___")}   (correct: ${T2[i].model})`};
+      });
+    },
+    fill(){ items().forEach((r,i)=>{ r.querySelector("input").value=T2[i].model; }); },
+    reset: draw
+  };
+}
+
+/* ---------- sections ---------- */
+const sections = [
+  {id:"c1", label:"Match the phrases with their definitions", api:makeTask1()},
+  {id:"c2", label:"Paraphrase the underlined part", api:makeTask2()}
+].map((s,k)=>Object.assign(s,{num:k+1,total:s.api.total,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]}));
+const GRAND = sections.reduce((a,s)=>a+s.total,0);
+document.getElementById("tot").textContent = "0 / "+GRAND;
+
+function record(sec){
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){ const k=i+"|"+r.line; if(!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i,line:r.line}); } }
+  });
+}
+function refresh(){
+  const got = sections.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+  document.getElementById("tot").textContent = got+" / "+GRAND;
+  document.getElementById("fill").style.width = (100*got/GRAND)+"%";
+  sections.forEach((s,k)=>{
+    const el=document.getElementById("sc"+k);
+    el.textContent = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "");
+  });
+}
+document.addEventListener("click", e=>{
+  const b=e.target.closest("button[data-act]"); if(!b) return;
+  const sec=sections[+b.dataset.s], act=b.dataset.act;
+  if(act==="check"){
+    if(sec.revealed){ document.getElementById("sc"+b.dataset.s).textContent="Press Try again first"; return; }
+    sec.score=sec.api.check(); sec.checked=true; record(sec);
+  } else if(act==="show"){
+    sec.api.fill(); sec.api.check(); sec.revealed=true; sec.checked=false; sec.score=0;
+  } else if(act==="again"){
+    sec.api.reset(); sec.revealed=false; sec.checked=false; sec.score=0; sec.lastOk=[];
+  }
+  refresh();
+});
+
+/* ---------- writing ---------- */
+const PHR = [
+  /\bkick(s|ed|ing)?\s+the\s+bucket\b/i,
+  /\bheart(s)?\s+(skip|skips|skipped|skipping)\s+a\s+beat\b/i,
+  /\btalk(s|ed|ing)?\s+behind\s+\S+(\s+\S+)?\s+back/i,
+  /\bin\s+the\s+middle\s+of\s+nowhere\b/i,
+  /\bstill\s+waters\s+run\s+deep\b/i,
+  /\bover\s+my\s+dead\s+body\b/i,
+  /\bout\s+of\s+harm['’]?s\s+way\b/i,
+  /\bnothing\s+ventured,?\s+nothing\s+gained\b/i
+];
+function sentences(t){ return (t.match(/[^.!?]+[.!?]+(\s|$)|[^.!?]+$/g)||[]).map(x=>x.trim()).filter(x=>x.split(/\s+/).length>=3); }
+function usedPhrases(t){ return PHR.filter(r=>r.test(t)).length; }
+const wr=document.getElementById("wr"), chk=document.getElementById("chk");
+function wrCheck(){
+  const t=wr.value;
+  const items=[
+    [`8 or more sentences (now: ${sentences(t).length})`, sentences(t).length>=8],
+    [`5 or more new phrases (now: ${usedPhrases(t)})`, usedPhrases(t)>=5],
+    [`at least one sentence about how you felt`, /\b(felt|feel|feeling|was scared|were scared|afraid|frightened|nervous|excited)\b/i.test(t)]
+  ];
+  chk.innerHTML = items.map(([a,ok])=>`<li class="${ok?"done":""}">${a}</li>`).join("");
+}
+wr.addEventListener("input", wrCheck); wrCheck();
+
+/* ---------- report ---------- */
+function buildReport(){
+  const who=(document.getElementById("who").value||"").trim()||"(no name)";
+  const d=new Date(); const pad=n=>String(n).padStart(2,"0");
+  const when=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const out=[`Homework: Halloween Idioms – ${who} (${when})`,""];
+  let got=0;
+  sections.forEach(s=>{
+    let st = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "not checked");
+    if(s.checked&&!s.revealed) got+=s.score;
+    out.push(`Task ${s.num} ${s.label}: ${st}`);
+  });
+  out.push(`Total: ${got} / ${GRAND}`,"","MISTAKES (every wrong answer, including ones fixed on retry)","");
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length) return; any=true;
+    out.push(`Task ${s.num} ${s.label}`);
+    s.log.forEach(e=>{ const tag = s.lastOk[e.i] ? "[fixed on retry]" : "[still wrong]"; out.push(`  ✗ ${plain(e.line)}   ${tag}`); });
+    out.push("");
+  });
+  if(!any) out.push("(none)","");
+  out.push("Writing:", wr.value.trim()||"(nothing)");
+  return out.join("\n");
+}
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand("copy"); }catch(_){} document.body.removeChild(ta); return ok;
+  }
+}
+document.getElementById("copy").addEventListener("click", async()=>{
+  const ok=await copyText(buildReport());
+  const m=document.getElementById("msg"); m.textContent = ok ? "Copied! Paste it in the chat." : "Could not copy. Select the text in the box and copy it by hand.";
+});
+window.HW = {sections, buildReport};
+</script>
+</body>
+</html>
