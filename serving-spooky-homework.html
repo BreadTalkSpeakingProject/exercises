@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Homework: Serving Spooky</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f4f1e8;--card:#faf8f0;--ink:#262a26;--muted:#5d655d;--sage:#96b098;--sage-d:#6d8c70;--sand:#eee6cc;--ok:#2e7d4f;--okbg:#e3f3e8;--bad:#c0503a;--badbg:#fbe8e3}
+@media (prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#1b201b;--card:#242a24;--ink:#eef0ea;--muted:#a9b3a9;--sage:#7f9d82;--sage-d:#a7c5aa;--sand:#3a4237;--ok:#7fd69e;--okbg:#17301f;--bad:#f09a86;--badbg:#3a1f19}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,system-ui,Arial,sans-serif;line-height:1.5}
+.wrap{max-width:760px;margin:0 auto;padding:16px 16px 80px}
+header{text-align:center;padding:20px 0 6px}
+h1{font-size:1.55rem;margin:0 0 4px}
+header p{margin:0;color:var(--muted);font-size:.95rem}
+.name{display:flex;gap:8px;align-items:center;margin:14px 0}
+.name input{flex:1;min-width:0;width:100%;padding:10px 12px;border-radius:12px;border:2px solid var(--sand);background:var(--card);color:var(--ink);font:inherit}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:8px 0;margin-bottom:6px}
+.bar .track{height:10px;border-radius:99px;background:var(--sand);overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--sage);transition:width .3s}
+.bar .txt{display:flex;justify-content:space-between;font-size:.85rem;color:var(--muted);margin-top:4px}
+.task{background:var(--card);border:3px solid var(--sand);border-radius:24px;padding:18px 18px 16px;margin:16px 0;position:relative;border-top:10px solid var(--sage)}
+.task h2{font-size:1.1rem;margin:0 0 2px}
+.task .sub{color:var(--muted);font-size:.9rem;margin:0 0 12px}
+.box{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 12px}
+.box span{background:#e7efe5;border:2px solid var(--sage);border-radius:99px;padding:2px 12px;font-size:.85rem;font-weight:500;color:#262a26}
+.item{padding:10px 0;border-top:1px dashed var(--sand);font-size:1rem}
+.item:first-of-type{border-top:0}
+.num{display:inline-flex;width:26px;height:26px;border-radius:50%;background:var(--sage);color:#fff;font-weight:700;font-size:.8rem;align-items:center;justify-content:center;margin-right:8px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+.pill{border:2px solid var(--sage);background:transparent;color:var(--ink);border-radius:99px;padding:6px 14px;font:inherit;font-size:.92rem;cursor:pointer}
+.pill.sel{background:var(--sage);color:#fff}
+.item.ok .pill.sel{background:var(--ok);border-color:var(--ok)}
+.item.no .pill.sel{background:var(--bad);border-color:var(--bad)}
+.item.ok{background:var(--okbg);border-radius:12px;padding-left:8px;padding-right:8px}
+.item.no{background:var(--badbg);border-radius:12px;padding-left:8px;padding-right:8px}
+.btns{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+button.act{font:inherit;font-weight:700;font-size:.9rem;border:0;border-radius:99px;padding:9px 18px;cursor:pointer;background:var(--sage);color:#fff}
+button.act.alt{background:transparent;color:var(--sage-d);border:2px solid var(--sage)}
+.score{margin-left:auto;font-weight:700;color:var(--sage-d)}
+.msg{font-size:.85rem;color:var(--muted);width:100%}
+textarea{width:100%;min-height:150px;padding:12px;border-radius:14px;border:2px solid var(--sand);background:var(--bg);color:var(--ink);font:inherit}
+.check li{list-style:none;font-size:.9rem;color:var(--muted)}
+.check li.done{color:var(--ok);font-weight:500}
+.check{padding-left:0;margin:8px 0 0}
+.ctext{font-size:1.02rem;line-height:2.2}
+.ctext .cp{margin:0 0 14px}
+.gapw{display:inline-flex;align-items:baseline;white-space:nowrap;border-bottom:2px solid var(--sage);margin:0 2px;padding:0 2px;border-radius:4px}
+.gapw b{color:var(--sage-d);font-weight:700}
+.gapw input{border:0;outline:0;background:transparent;color:var(--ink);font:inherit;padding:0;min-width:4ch;max-width:14ch}
+.gapw.ok{background:var(--okbg);border-bottom-color:var(--ok)}
+.gapw.no{background:var(--badbg);border-bottom-color:var(--bad)}
+.final{text-align:center;margin-top:26px}
+.final button{font-size:1.05rem;padding:14px 28px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><h1>Serving Spooky</h1><p>Homework: Halloween costume vocabulary</p></header>
+<div class="name"><label for="nm">Your name</label><input id="nm" placeholder="Oyuna"></div>
+<div class="bar"><div class="track"><div class="fill" id="fill"></div></div><div class="txt"><span id="barTxt">0 / 0</span><span>Press Check after each task</span></div></div>
+<div id="tasks"></div>
+<div class="final"><button class="act" id="copyBtn">Copy my results</button><div class="msg" id="copyMsg"></div></div>
+</div>
+<script>
+/* Fixed mixed order. {a|b*|c}: * marks the correct option. */
+var DATA=[
+ {title:"Choose the right word",sub:"Choose the word that fits the sentence.",box:["spooky","high-end","jaw-dropping","last-minute","effortless"],items:[
+  "The pianist made the difficult piece sound {spooky|high-end|effortless*}.",
+  "The old hotel at the end of the street looks really {spooky*|effortless|high-end} at night, with its broken windows and strange noises.",
+  "We didn't expect guests, so my mum made a {jaw-dropping|last-minute*|high-end} dinner from whatever was in the fridge.",
+  "She bought a {last-minute|spooky|high-end*} camera with the best lens and the most advanced features.",
+  "The view from the top of the mountain was {jaw-dropping*|spooky|last-minute}: everyone stopped talking and just stared.",
+  "I didn't plan the trip. It was a {high-end|effortless|last-minute*} decision on Friday evening."
+ ]},
+ {title:"Forms and prepositions",sub:"Choose the correct form or preposition.",box:["transform into","pay homage to","a reference to","effortless / effortlessly","a transformation"],items:[
+  "The makeup artist transformed her {to|in|into*} a zombie in under an hour.",
+  "The film pays {a homage for|homage to*|homage of} the classic horror movies of the 1980s.",
+  "He solved the puzzle {effortless|effortlessly*|effort} in five minutes.",
+  "His joke was a {reference of|reference at|reference to*} a scene from his favourite series.",
+  "The {transforming|transformation*|transformed} of the old warehouse into a theatre was amazing.",
+  "She made a {last minutes|last-minute*|last minutely} change to her plan.",
+  "They live in a {highly-end|high-ended|high-end*} neighbourhood.",
+  "The abandoned hospital is a {spooked|spook|spooky*} place at night."
+ ]},
+ {title:"What does it mean?",sub:"Choose the closest meaning.",box:["jaw-dropping","effortless","last-minute","high-end","a reference to","pay homage to","transform into","spooky"],items:[
+  "\"The ending of the film was jaw-dropping.\" It was {boring and slow|too long|very surprising and impressive*}.",
+  "\"It was a last-minute decision.\" It was made {a month ago|shortly before the deadline*|by someone else}.",
+  "\"The tattoo pays homage to his late father.\" It {is a joke about him|shows respect and admiration*|is a copy of his signature}.",
+  "\"The cafe is a bit too high-end for me.\" It is {old and dirty|cheap and simple|expensive and luxurious*}.",
+  "\"The costume was a reference to a popular cartoon.\" It {reminded people of the cartoon*|was made by the cartoon's author|was copied exactly}.",
+  "\"His entrance looked effortless.\" It looked {easy*|loud|late}.",
+  "\"The villa was transformed into a haunted house.\" It was {sold as|changed completely into*|destroyed by}.",
+  "\"The forest was spooky at night.\" It was {beautiful|noisy and crowded|scary in a mysterious way*}."
+ ]}
+];
+var sections=[];
+function parseItem(s){
+  var parts=[],re=/\{([^}]*)\}/g,last=0,m;
+  while((m=re.exec(s))){
+    var opts=m[1].split("|"),ci=-1;
+    opts=opts.map(function(o,i){if(o.slice(-1)==="*"){ci=i;return o.slice(0,-1);}return o;});
+    parts.push({t:s.slice(last,m.index)});parts.push({opts:opts,ci:ci});last=re.lastIndex;
+  }
+  parts.push({t:s.slice(last)});return parts;
+}
+function esc(x){return x.replace(/&/g,"&amp;").replace(/</g,"&lt;")}
+function choiceLine(parts,sel){
+  var out="",wrong=[];
+  parts.forEach(function(p){
+    if(p.opts){var v=sel;out+=(v==null?"___":p.opts[v]);if(v!==p.ci)wrong.push(p.opts[p.ci]);}
+    else out+=p.t;
+  });
+  return out+(wrong.length?"   (correct: "+wrong.join(" / ")+")":"");
+}
+function build(d,idx){
+  var sec={id:idx,num:idx+1,label:d.title,total:d.items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],parsed:d.items.map(parseItem),sel:[]};
+  var card=document.createElement("section");card.className="task";
+  card.innerHTML="<h2>Task "+sec.num+" · "+esc(d.title)+"</h2><p class=\"sub\">"+esc(d.sub)+"</p><div class=\"box\">"+d.box.map(function(b){return "<span>"+esc(b)+"</span>"}).join("")+"</div><div class=\"list\"></div><div class=\"btns\"><button class=\"act\" data-a=\"check\">Check</button><button class=\"act alt\" data-a=\"show\">Show answers</button><button class=\"act alt\" data-a=\"again\">Try again</button><span class=\"score\"></span><div class=\"msg\"></div></div>";
+  var list=card.querySelector(".list"),scoreEl=card.querySelector(".score"),msg=card.querySelector(".msg");
+  function draw(){
+    list.innerHTML="";
+    sec.parsed.forEach(function(parts,i){
+      var div=document.createElement("div");div.className="item";
+      var txt=parts.map(function(p){return p.opts?"<b>_____</b>":esc(p.t)}).join("");
+      div.innerHTML="<span class=\"num\">"+(i+1)+"</span>"+txt+"<div class=\"pills\"></div>";
+      var pills=div.querySelector(".pills"),g=parts.filter(function(p){return p.opts})[0];
+      g.opts.forEach(function(o,k){
+        var b=document.createElement("button");b.type="button";b.className="pill"+(sec.sel[i]===k?" sel":"");b.textContent=o;
+        b.onclick=function(){if(sec.revealed)return;sec.sel[i]=k;sec.checked=false;draw();update();};
+        pills.appendChild(b);
+      });
+      list.appendChild(div);
+    });
+  }
+  function ok(i){var g=sec.parsed[i].filter(function(p){return p.opts})[0];return sec.sel[i]===g.ci}
+  sec.api={
+    total:sec.total,
+    check:function(){var n=0;var items=list.children;for(var i=0;i<sec.total;i++){var good=ok(i);items[i].classList.remove("ok","no");items[i].classList.add(good?"ok":"no");if(good)n++;}return n;},
+    report:function(){return sec.parsed.map(function(parts,i){return {ok:ok(i),line:choiceLine(parts,sec.sel[i])};});},
+    fill:function(){sec.parsed.forEach(function(parts,i){sec.sel[i]=parts.filter(function(p){return p.opts})[0].ci;});draw();}
+  };
+  function record(){sec.api.report().forEach(function(r,i){sec.lastOk[i]=r.ok;if(!r.ok){var k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i:i,line:r.line});}}});}
+  card.querySelector("[data-a=check]").onclick=function(){
+    if(sec.revealed){msg.textContent="Answers are shown. Press Try again first.";return;}
+    sec.score=sec.api.check();sec.checked=true;record();scoreEl.textContent=sec.score+" / "+sec.total;msg.textContent="";update();};
+  card.querySelector("[data-a=show]").onclick=function(){sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;sec.api.check();scoreEl.textContent="answers shown";msg.textContent="No score for this task. Press Try again to practise.";update();};
+  card.querySelector("[data-a=again]").onclick=function(){sec.sel=[];sec.revealed=false;sec.checked=false;sec.score=0;scoreEl.textContent="";msg.textContent="";draw();update();};
+  draw();sections.push(sec);sec.card=card;sec.api.redraw=draw;return card;
+}
+var tasksEl=document.getElementById("tasks");
+DATA.forEach(function(d,i){tasksEl.appendChild(build(d,i));});
+
+/* Task 4: cloze text. [[answer|alt]] = gap; first letter is shown; typing with or without it is accepted */
+var CLOZE={title:"Finish the text",sub:"Fill each gap with a word from the lesson. The first letter is given. You can type the word with or without the first letter.",box:["spooky","transform","high-end","homage","jaw-dropping","effortless","reference","last-minute"],paras:[
+ ["Every year, my friend Katya throws the best Halloween party in our city.","This year, the invitation arrived only two days before the event, so most of us had to make a [[last-minute|last minute]] plan.","I had no time to buy anything [[high-end|high end]], so I searched my wardrobe and found an old black dress and a pointed hat.","With some make-up, I [[transformed]] myself into a witch in twenty minutes."],
+ ["When we arrived, the house looked really [[spooky]].","There were paper bats on the windows, fake spiders on the stairs and a [[jaw-dropping|jaw dropping]] pumpkin the size of a table in the hall.","The [[transformation]] of her garden into a cemetery was impressive too.","Katya herself wore a long silver dress and a blonde wig, and she paid [[homage]] to a famous pop singer from the 2000s.","Everyone guessed it at once."],
+ ["My friend Dima had the funniest costume.","He wore a white sheet and carried a sign with a meme on it.","It was a [[reference]] to an internet joke that only our group understands, and we laughed for ten minutes.","Another guest, Lena, danced [[effortlessly]] all night in her heavy costume, and nobody understood how she did it."],
+ ["The food was also surprisingly [[high-end|high end]]: tiny sandwiches, chocolate spiders and cupcakes from a famous bakery.","Around midnight, the host turned off the lights and told a [[spooky]] story about the old house.","At the end, we all agreed it was a great party, even though the invitation was [[last-minute|last minute]].","I cannot wait for next year!"]
+]};
+function cnorm(x){return (x||"").toLowerCase().replace(/[’']/g,"'").replace(/[\s\-]+/g,"").trim();}
+(function(){
+  var gaps=[],paraS=[];
+  CLOZE.paras.forEach(function(p){var ps=[];p.forEach(function(sentence){
+    var parts=[],re=/\[\[([^\]]*)\]\]/g,last=0,m;
+    while((m=re.exec(sentence))){parts.push({t:sentence.slice(last,m.index)});var alts=m[1].split("|");var g={alts:alts,ans:alts[0],id:gaps.length};gaps.push(g);parts.push({g:g});last=re.lastIndex;}
+    parts.push({t:sentence.slice(last)});ps.push(parts);});paraS.push(ps);});
+  var sec={id:3,num:4,label:CLOZE.title,total:gaps.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],val:[]};
+  var card=document.createElement("section");card.className="task";
+  card.innerHTML="<h2>Task 4 · "+esc(CLOZE.title)+"</h2><p class=\"sub\">"+esc(CLOZE.sub)+"</p><div class=\"box\">"+CLOZE.box.map(function(b){return "<span>"+esc(b)+"</span>"}).join("")+"</div><div class=\"ctext\"></div><div class=\"btns\"><button class=\"act\" data-a=\"check\">Check</button><button class=\"act alt\" data-a=\"show\">Show answers</button><button class=\"act alt\" data-a=\"again\">Try again</button><span class=\"score\"></span><div class=\"msg\"></div></div>";
+  var box=card.querySelector(".ctext"),scoreEl=card.querySelector(".score"),msg=card.querySelector(".msg"),inputs=[];
+  paraS.forEach(function(ps){var p=document.createElement("p");p.className="cp";
+    ps.forEach(function(parts){parts.forEach(function(x){
+      if(x.t!==undefined){p.appendChild(document.createTextNode(x.t));}
+      else{var g=x.g,w=document.createElement("span");w.className="gapw";
+        var l=document.createElement("b");l.textContent=g.ans.charAt(0);
+        var inp=document.createElement("input");inp.type="text";inp.autocomplete="off";inp.autocapitalize="off";inp.spellcheck=false;inp.size=Math.max(6,g.ans.length-1);
+        inp.addEventListener("input",function(){if(sec.revealed)return;sec.val[g.id]=inp.value;sec.checked=false;w.classList.remove("ok","no");update();});
+        w.appendChild(l);w.appendChild(inp);p.appendChild(w);inputs[g.id]=inp;}
+    });p.appendChild(document.createTextNode(" "));});box.appendChild(p);});
+  function okAt(i){var g=gaps[i],v=cnorm(sec.val[i]);if(!v)return false;
+    return g.alts.some(function(a){var n=cnorm(a);return v===n||v===n.slice(1);});}
+  function lineFor(i){ // sentence containing gap i, with typed word in gap i and correct answers elsewhere
+    var found=null;
+    paraS.forEach(function(ps){ps.forEach(function(parts){parts.forEach(function(x){if(x.g&&x.g.id===i)found=parts;});});});
+    var out="",wrong=[];
+    found.forEach(function(x){if(x.t!==undefined)out+=x.t;else{if(x.g.id===i){var v=(sec.val[i]||"").trim();out+=v?v:"___";}else out+=x.g.ans;}});
+    return out+"   (correct: "+gaps[i].ans+")";
+  }
+  function mark(){gaps.forEach(function(g,i){var w=inputs[i].parentNode;w.classList.remove("ok","no");w.classList.add(okAt(i)?"ok":"no");});}
+  sec.api={total:sec.total,
+    check:function(){var n=0;gaps.forEach(function(g,i){if(okAt(i))n++;});mark();return n;},
+    report:function(){return gaps.map(function(g,i){return {ok:okAt(i),line:lineFor(i)};});},
+    fill:function(){gaps.forEach(function(g,i){sec.val[i]=g.ans.slice(1);inputs[i].value=g.ans.slice(1);});},
+    redraw:function(){gaps.forEach(function(g,i){inputs[i].value=sec.val[i]||"";inputs[i].parentNode.classList.remove("ok","no");});}};
+  function record(){sec.api.report().forEach(function(r,i){sec.lastOk[i]=r.ok;if(!r.ok){var k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i:i,line:r.line});}}});}
+  card.querySelector("[data-a=check]").onclick=function(){
+    if(sec.revealed){msg.textContent="Answers are shown. Press Try again first.";return;}
+    sec.score=sec.api.check();sec.checked=true;record();scoreEl.textContent=sec.score+" / "+sec.total;msg.textContent="";update();};
+  card.querySelector("[data-a=show]").onclick=function(){sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;sec.api.check();scoreEl.textContent="answers shown";msg.textContent="No score for this task. Press Try again to practise.";update();};
+  card.querySelector("[data-a=again]").onclick=function(){sec.val=[];sec.revealed=false;sec.checked=false;sec.score=0;scoreEl.textContent="";msg.textContent="";sec.api.redraw();update();};
+  sections.push(sec);tasksEl.appendChild(card);
+})();
+
+
+
+function update(){
+  var got=0,tot=0;sections.forEach(function(s){tot+=s.total;if(s.checked&&!s.revealed)got+=s.score;});
+  document.getElementById("barTxt").textContent=got+" / "+tot;
+  document.getElementById("fill").style.width=(tot?got/tot*100:0)+"%";
+}
+update();
+
+function buildReport(){
+  var name=(document.getElementById("nm").value||"").trim()||"(no name)";
+  var d=new Date();var ds=d.toLocaleDateString()+" "+d.toLocaleTimeString([], {hour:"2-digit",minute:"2-digit"});
+  var out="Serving Spooky homework – "+name+" ("+ds+")\n\n",got=0,tot=0;
+  sections.forEach(function(s){
+    tot+=s.total;var st;
+    if(s.revealed)st="answers shown";else if(!s.checked)st="not checked";else{st=s.score+" / "+s.total;got+=s.score;}
+    out+="Task "+s.num+" "+s.label+": "+st+"\n";
+  });
+  out+="\nTotal: "+got+" / "+tot+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  var any=false;
+  sections.forEach(function(s){
+    if(!s.log.length)return;any=true;
+    out+="\nTask "+s.num+" "+s.label+"\n";
+    s.log.forEach(function(e){out+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n";});
+  });
+  if(!any)out+="\n(no mistakes logged)\n";
+  return out;
+}
+window.HW={sections:sections,buildReport:buildReport};
+document.getElementById("copyBtn").onclick=function(){
+  var t=buildReport(),m=document.getElementById("copyMsg");
+  function done(){m.textContent="Copied! Paste it in the chat.";}
+  function fb(){var ta=document.createElement("textarea");ta.value=t;document.body.appendChild(ta);ta.select();try{document.execCommand("copy");done();}catch(e){m.textContent="Could not copy. Select the text manually.";}document.body.removeChild(ta);}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();
+};
+</script>
+</body>
+</html>
