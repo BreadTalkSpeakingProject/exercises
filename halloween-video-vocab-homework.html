@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Halloween: video + vocabulary homework</title>
+<style>
+:root{--bg:#1f1a2e;--card:#2a2340;--ink:#f4efe6;--mut:#b9b0cf;--ok:#3ecf8e;--bad:#ff6b6b;--line:#443b66}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
+h1{font-size:1.7rem;margin:.4em 0 .1em}
+.sub{color:var(--mut);margin:0 0 14px}
+#bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center}
+#bar .track{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}
+#bar .fill{height:100%;width:0;background:linear-gradient(90deg,#ff9a3c,#ffcf5c);transition:width .3s}
+#bar b{white-space:nowrap}
+.name{margin:14px 0}
+input[type=text],textarea{width:100%;background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:9px 12px;font:inherit}
+.card{background:var(--card);border-radius:18px;padding:18px;margin:18px 0;border-top:6px solid var(--ac,#ff9a3c)}
+.card h2{margin:0 0 4px;font-size:1.15rem}
+.card h2 span{color:var(--ac);margin-right:6px}
+.instr{color:var(--mut);margin:0 0 12px;font-size:.95rem}
+.note{background:#17132a;border-radius:12px;padding:10px 14px;margin:0 0 12px;font-size:.92rem}
+.note b{color:var(--ac)}
+.item{padding:10px 12px;border-radius:12px;margin:8px 0;background:#241d3a;border:2px solid transparent}
+.item.ok{border-color:var(--ok)}.item.no{border-color:var(--bad)}
+.n{display:inline-block;min-width:1.6em;color:var(--ac);font-weight:700}
+.pills{display:inline-flex;flex-wrap:wrap;gap:6px;margin:2px 4px;vertical-align:middle}
+.pill{background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:20px;padding:3px 12px;cursor:pointer;font:inherit;font-size:.92rem}
+.pill.sel{border-color:var(--ac);background:#3a3060}
+.pill.right{border-color:var(--ok);background:#1d4a38}.pill.wrong{border-color:var(--bad);background:#552a35}
+.gap{width:9.5em;display:inline-block;padding:3px 8px;margin:0 3px;border-radius:8px}
+.gap.ok{border-color:var(--ok)}.gap.no{border-color:var(--bad)}
+.btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.btn{background:var(--ac,#ff9a3c);color:#1b1530;border:0;border-radius:10px;padding:8px 16px;font:inherit;font-weight:700;cursor:pointer}
+.btn.sec{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.res{font-weight:700;margin-left:6px}
+.bank{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 10px}
+.bank span{background:#17132a;border:2px solid var(--ac);border-radius:8px;padding:2px 10px;font-size:.92rem}
+.check li{color:var(--mut)}.check li.y{color:var(--ok)}
+iframe{width:100%;aspect-ratio:16/9;border:0;border-radius:12px;background:#000}
+#copy{font-size:1.05rem;padding:12px 22px}
+#msg{color:var(--ok);margin-left:10px}
+a{color:#ffcf5c}
+</style></head>
+<body><div class="wrap">
+<h1>🎃 Halloween homework</h1>
+<p class="sub">Part 1: video facts · Part 2: lesson vocabulary and tricky differences</p>
+<div id="bar"><div class="track"><div class="fill" id="fill"></div></div><b id="score">0 / 0</b></div>
+<div class="name"><input type="text" id="who" placeholder="Your name"></div>
+<div id="root"></div>
+<div class="btns"><button class="btn" id="copy">Copy my results</button><span id="msg"></span></div>
+</div>
+<script>
+const ACC=["#ff9a3c","#b48cff","#4cc9f0","#ff6fa5","#7ddc7d","#ffcf5c","#ff8a5c","#9ad1ff"];
+const SECS=[
+{num:"1",title:"Video: where does Halloween come from?",type:"choice",ac:0,video:true,
+ instr:"Watch the video (about 3 minutes), then choose the right answer.",
+ items:[
+ "On October 31, the Celts celebrated the end of the harvest in a festival called {Hallowmas|Samhain*|All Saints}.",
+ "The Celts believed that on that night the veil between life and death was {completely closed|at its thickest|at its thinnest*}.",
+ "The villagers lit huge bonfires to {keep warm|drive the dead back to the spirit world*|cook a feast}.",
+ {tf:"The word “hallow” means “holy” or “saintly”.",a:true},
+ "The holiday came to America with Irish immigrants during {the potato famine of the 1840s*|the gold rush|the Great Depression}.",
+ {tf:"Trick-or-treating started as a friendly tradition of sharing candy.",a:false,fix:"it began as an extortion deal: give us candy or we will trash your house"}
+ ]},
+{num:"2",title:"Affect, effect, influence, impact",type:"choice",ac:1,
+ instr:"Choose the correct word.",
+ note:"<b>affect</b> = verb (to change something). <b>effect</b> = noun (the result). <b>influence</b> = verb or noun (to shape what someone thinks or does). <b>impact</b> = noun, a strong effect. We say: <i>an effect <u>on</u> something</i>, <i>an impact <u>on</u> something</i>.",
+ items:[
+ "Stress can {affect*|effect} your sleep.",
+ "Plastic waste has a huge {affect|effect*} on the oceans.",
+ "We don't really {affect*|effect} the environment that much.",
+ "Her friends had a strong {influence*|affect} on her choice of career.",
+ "Social media can {influence*|effect} how teenagers see themselves.",
+ "The film made a big {impact*|affect} on me.",
+ "What is the side {affect|effect*} of this medicine?",
+ "The weather didn't {effect|affect*} our plans."
+ ]},
+{num:"3",title:"Eerie, grim or ominous?",type:"choice",ac:2,
+ instr:"Choose the best word.",
+ note:"<b>eerie</b> = strange and a little scary, often quiet. <b>ominous</b> = a sign that something bad will happen. <b>grim</b> = serious, unpleasant, without hope.",
+ items:[
+ "The empty school at night was completely silent, and the whole place felt {eerie*|grim|ominous}.",
+ "Dark clouds gathered over the house: it was an {eerie|grim|ominous*} sign that a storm was coming.",
+ "The news from the hospital was {eerie|grim*|ominous}: the doctors had very little hope.",
+ "Soft music was coming from the empty room, which sounded strangely {eerie*|grim|ominous}.",
+ "The reports about unemployment made {eerie|grim*|ominous} reading for the government.",
+ "An {eerie|grim|ominous*} message appeared on the screen: “You have 24 hours.”"
+ ]},
+{num:"4",title:"Offer, suggest, ask, invite + ... ?",type:"choice",ac:3,
+ instr:"Choose the correct pattern.",
+ note:"<b>offer</b> + to do · <b>invite / ask</b> + someone + to do · <b>suggest</b> + doing, or suggest (that) + subject + verb. We do not say “suggest someone to do”.",
+ items:[
+ "She offered {to help*|helping|me to help} with the decorations.",
+ "I suggest {you to call|calling*|to call} the teacher.",
+ "They invited us {to come*|come|coming} to their Halloween party.",
+ "He asked me {to turn*|turn|turning} the music down.",
+ "Sasha suggested {us to meet|that we meet*|to meet us} at six.",
+ "Mike offered {me a lift*|to me a lift|me to a lift} to the party."
+ ]},
+{num:"5",title:"Small traps from class",type:"choice",ac:4,
+ instr:"Choose the correct option.",
+ note:"Rivers take <b>the</b> (the Ganges, the Nile). Single mountains take no article (Mount Everest, Everest); mountain ranges take <b>the</b> (the Himalayas, the Alps). Lakes take no article.",
+ items:[
+ "Millions of people bathe in {the*|no article} Ganges every year.",
+ "Few people have climbed {the|no article*} Mount Everest without oxygen.",
+ "Mount Everest is in {the*|no article} Himalayas.",
+ "Have you ever been to {the|no article*} Lake Baikal?",
+ "There is a skeleton {in*|on|at} the picture on page 3.",
+ "The astronauts drove a {lunar rover*|moon car|space bike} on the Moon."
+ ]},
+{num:"6",title:"Lesson words: fill the gaps",type:"gap",ac:5,
+ instr:"Type the word from the box.",
+ bank:["attire","ambience","soiree","lurking","stencil","stuffy","monstrous"],
+ items:[
+ "Formal [attire] is required for the party: no jeans, please.",
+ "The candles and soft music created a cosy [ambience] in the room.",
+ "They invited fifty people to an elegant [soiree] at their house.",
+ "Something was [lurking] in the dark corner of the basement.",
+ "We used a [stencil] to draw the face on the pumpkin before carving.",
+ "The party was boring, and the room was hot and [stuffy].",
+ "The [monstrous] shadow on the wall made the children scream."
+ ]},
+{num:"7",title:"Your turn: write",type:"write",ac:6,
+ instr:"Write 5–6 sentences: how do people celebrate Halloween in your country, or what did you do last Halloween? Use at least 3 words from this lesson. (Not scored.)"}
+];
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>s.replace(/<[^>]*>/g,"");
+const norm=s=>s.toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?,;]+$/,"").replace(/\s+/g," ").trim();
+const WORDS=/eerie|ominous|grim|lurk|monstrous|attire|ambience|ambiance|soiree|stuffy|stencil|affect|effect|influence|impact/gi;
+
+function choiceItem(it){
+  const parts=it.split(/(\{[^}]*\})/),groups=[];
+  parts.forEach(p=>{if(p[0]==="{"){const o=p.slice(1,-1).split("|");groups.push({opts:o.map(x=>x.replace("*","")),ans:o.findIndex(x=>x.includes("*")),sel:-1})}});
+  return {parts,groups};
+}
+function lineOf(c){
+  let gi=0;const s=c.parts.map(p=>{if(p[0]!=="{")return p;const g=c.groups[gi++];return g.sel<0?"___":g.opts[g.sel]}).join("");
+  const wr=c.groups.filter(g=>g.sel!==g.ans).map(g=>g.opts[g.ans]);
+  return {ok:!wr.length,line:s+(wr.length?"   (correct: "+wr.join("; ")+")":"")};
+}
+function build(sec,box){
+  const st={};
+  if(sec.d.type==="choice"){
+    const L=sec.d.items.map(it=>typeof it==="string"?{c:choiceItem(it)}:{tf:it});
+    const render=()=>{
+      box.innerHTML=L.map((o,i)=>{
+        if(o.c){let gi=0;const h=o.c.parts.map(p=>{if(p[0]!=="{")return esc(p);const g=gi++;return `<span class="pills">`+o.c.groups[g].opts.map((x,k)=>`<button class="pill" data-i="${i}" data-g="${g}" data-k="${k}">${esc(x)}</button>`).join("")+`</span>`}).join("");
+          return `<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${h}</div>`}
+        return `<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.tf.tf)} <span class="pills"><button class="pill" data-i="${i}" data-k="1">True</button><button class="pill" data-i="${i}" data-k="0">False</button></span></div>`}).join("");
+    };
+    const paint=(show)=>{
+      L.forEach((o,i)=>{const it=$("#"+sec.id+"-"+i);it.classList.remove("ok","no");
+        it.querySelectorAll(".pill").forEach(b=>{b.classList.remove("sel","right","wrong");const k=+b.dataset.k;
+          if(o.c){const g=o.c.groups[+b.dataset.g];if(g.sel===k)b.classList.add("sel")}else{if(o.sel===(k===1))b.classList.add("sel")}})});
+    };
+    const mark=()=>{L.forEach((o,i)=>{const it=$("#"+sec.id+"-"+i);const ok=o.c?lineOf(o.c).ok:o.sel===o.tf.a;it.classList.add(ok?"ok":"no");
+      it.querySelectorAll(".pill").forEach(b=>{const k=+b.dataset.k;if(o.c){const g=o.c.groups[+b.dataset.g];if(g.sel===k)b.classList.add(g.sel===g.ans?"right":"wrong")}else if(o.sel===(k===1))b.classList.add(o.sel===o.tf.a?"right":"wrong")})})};
+    box.onclick=e=>{const b=e.target.closest(".pill");if(!b||sec.revealed)return;const i=+b.dataset.i,o=L[i];
+      if(o.c)o.c.groups[+b.dataset.g].sel=+b.dataset.k;else o.sel=b.dataset.k==="1";paint();};
+    render();
+    return {total:L.length,
+      check(){mark();return L.filter(o=>o.c?lineOf(o.c).ok:o.sel===o.tf.a).length},
+      report(){return L.map(o=>o.c?lineOf(o.c):{ok:o.sel===o.tf.a,line:`"${o.tf.tf}" – you chose ${o.sel===undefined?"nothing":o.sel?"True":"False"}; correct: ${o.tf.a?"True":"False"}`+(o.tf.fix?" ("+o.tf.fix+")":"")})},
+      fill(){L.forEach(o=>{if(o.c)o.c.groups.forEach(g=>g.sel=g.ans);else o.sel=o.tf.a});paint();mark()}};
+  }
+  if(sec.d.type==="gap"){
+    const L=sec.d.items.map(s=>{const m=s.match(/\[([^\]]+)\]/);return {pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),ans:m[1]}});
+    box.innerHTML=(sec.d.bank?`<div class="bank">`+sec.d.bank.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
+    const val=i=>box.querySelectorAll(".gap")[i].value;
+    const okf=i=>norm(val(i))===norm(L[i].ans);
+    return {total:L.length,
+      check(){let n=0;L.forEach((o,i)=>{const ok=okf(i);if(ok)n++;const it=$("#"+sec.id+"-"+i);it.classList.remove("ok","no");it.classList.add(ok?"ok":"no")});return n},
+      report(){return L.map((o,i)=>{const v=val(i).trim();return {ok:okf(i),line:o.pre+(v||"___")+o.post+(okf(i)?"":"   (correct: "+o.ans+")")}})},
+      fill(){L.forEach((o,i)=>box.querySelectorAll(".gap")[i].value=o.ans);this.check()}};
+  }
+  if(sec.d.type==="write"){
+    box.innerHTML=`<textarea rows="7" id="wr" placeholder="Write here..."></textarea><ul class="check" id="ck"><li data-k="s">5 or more sentences</li><li data-k="w">3 or more words from the lesson</li></ul>`;
+    const ta=$("#wr",box);const info=()=>{const t=ta.value;const sn=(t.match(/[^.!?]+[.!?]+/g)||[]).length;const w=new Set((t.match(WORDS)||[]).map(x=>x.toLowerCase())).size;
+      $("[data-k=s]",box).classList.toggle("y",sn>=5);$("[data-k=w]",box).classList.toggle("y",w>=3)};
+    ta.oninput=info;
+    return {total:0,check(){return 0},report(){return []},fill(){},text:()=>ta.value.trim()};
+  }
+}
+const root=$("#root");
+const S=SECS.map((d,idx)=>{
+  const sec=Object.assign({id:"t"+d.num,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]},{d});
+  const card=document.createElement("section");card.className="card";card.style.setProperty("--ac",ACC[d.ac]);
+  card.innerHTML=`<h2><span>${d.num}</span>${d.title}</h2><p class="instr">${d.instr}</p>`+
+   (d.video?`<div class="note"><iframe src="https://www.youtube-nocookie.com/embed/R-VRAemIvbI?start=17" allowfullscreen title="Halloween video"></iframe><p style="margin:8px 0 0">Can't see it? <a href="https://www.youtube.com/watch?v=R-VRAemIvbI&t=17s" target="_blank" rel="noopener">Open the video on YouTube</a>.</p></div>`:"")+
+   (d.note?`<div class="note">${d.note}</div>`:"")+`<div class="body"></div>`+
+   (d.type!=="write"?`<div class="btns"><button class="btn" data-a="c">Check</button><button class="btn sec" data-a="s">Show answers</button><button class="btn sec" data-a="r">Try again</button><span class="res"></span></div>`:"");
+  root.appendChild(card);
+  const boxEl=$(".body",card);
+  sec.mount=()=>{sec.api=build(sec,boxEl);sec.api.sec=sec};
+  sec.mount();
+  const res=$(".res",card);
+  card.addEventListener("click",e=>{const a=e.target.dataset&&e.target.dataset.a;if(!a)return;
+    if(a==="c"){if(sec.revealed){res.textContent="Answers were shown. Press Try again first.";return}
+      sec.score=sec.api.check();sec.checked=true;record(sec);res.textContent=sec.score+" / "+sec.api.total;upd()}
+    if(a==="s"){sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="Answers shown (no score)";upd()}
+    if(a==="r"){sec.mount();sec.revealed=false;sec.checked=false;sec.score=0;res.textContent="";upd()}});
+  return sec;
+});
+function record(sec){
+  sec.api.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}});
+}
+function upd(){
+  const tot=S.reduce((a,s)=>a+s.api.total,0),got=S.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+  $("#score").textContent=got+" / "+tot;$("#fill").style.width=(tot?got/tot*100:0)+"%";
+}
+function buildReport(){
+  const nm=$("#who").value.trim()||"(no name)";
+  let o=`Halloween homework – ${nm} (${new Date().toLocaleString()})\n\n`;let T=0,G=0;
+  S.forEach(s=>{if(s.d.type==="write")return;const st=s.revealed?"answers shown":s.checked?s.score+" / "+s.api.total:"not checked";
+    o+=`Task ${s.d.num} ${s.d.title}: ${st}\n`;T+=s.api.total;if(s.checked&&!s.revealed)G+=s.score});
+  o+=`\nTotal: ${G} / ${T}\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n`;
+  let any=false;
+  S.forEach(s=>{if(!s.log.length)return;any=true;o+=`\nTask ${s.d.num} ${s.d.title}\n`;
+    s.log.forEach(e=>{o+=`  ✗ ${e.line}   [${s.lastOk[e.i]?"fixed on retry":"still wrong"}]\n`})});
+  if(!any)o+="\n(none)\n";
+  const w=S.find(s=>s.d.type==="write");const t=w&&w.api.text();
+  o+=`\nWriting:\n${t||"(nothing)"}\n`;return o;
+}
+window.HW={sections:S,buildReport};
+$("#copy").onclick=()=>{const t=buildReport();const done=()=>{$("#msg").textContent="Copied! Paste it in the chat."};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,fb)}else fb();
+  function fb(){const a=document.createElement("textarea");a.value=t;document.body.appendChild(a);a.select();try{document.execCommand("copy")}catch(e){}a.remove();done()}};
+upd();
+</script></body></html>
