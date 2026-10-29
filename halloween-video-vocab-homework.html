@@ -28,6 +28,7 @@ input[type=text],textarea{width:100%;background:#17132a;color:var(--ink);border:
 .pill{background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:20px;padding:3px 12px;cursor:pointer;font:inherit;font-size:.92rem}
 .pill.sel{border-color:var(--ac);background:#3a3060}
 .pill.right{border-color:var(--ok);background:#1d4a38}.pill.wrong{border-color:var(--bad);background:#552a35}
+select.dd{background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:10px;padding:3px 6px;font:inherit;font-size:.92rem;margin:2px 4px;max-width:100%}select.dd.right{border-color:var(--ok);background:#1d4a38}select.dd.wrong{border-color:var(--bad);background:#552a35}
 .gap{display:inline-block;padding:1px 6px;margin:0 3px;border-radius:6px;text-align:center;font-size:.95rem}
 .gap.ok{border-color:var(--ok)}.gap.no{border-color:var(--bad)}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
@@ -96,30 +97,42 @@ const SECS=[
  "There is a skeleton {in*|on|at} the picture on page 3.",
  "The astronauts drove a {lunar rover*|moon car|space bike} on the Moon."
  ]},
-{num:"5",title:"Lesson words: fill the gaps",type:"gap",ac:5,
- instr:"Type the word from the box.",
- bank:["attire","ambience","soiree","lurking","stencil","stuffy","monstrous"],
+{num:"5",title:"Which word fits?",type:"choice",dd:true,ac:5,
+ instr:"Choose the word that fits the sentence. Two of the three words are completely wrong.",
  items:[
- "Formal [attire] is required for the party: no jeans, please.",
- "The candles and soft music created a cosy [ambience] in the room.",
- "They invited fifty people to an elegant [soiree] at their house.",
- "Something was [lurking] in the dark corner of the basement.",
- "We used a [stencil] to draw the face on the pumpkin before carving.",
- "The party was boring, and the room was hot and [stuffy].",
- "The [monstrous] shadow on the wall made the children scream."
+ "The empty school was completely silent at night, and soft music sounded strangely {eerie*|monstrous|attire} in the dark corridor.",
+ "The children screamed when they saw the {monstrous*|ambience|soiree} creature with ten legs and huge teeth.",
+ "The doctor has {grim*|attire|lurking} news for the family: there is very little hope.",
+ "Dark clouds are gathering over the house, a clear and {ominous*|soiree|lurking} sign that a storm is coming.",
+ "Something is {lurking*|soiree|attire} in the dark corner of the basement.",
+ "Formal {attire*|ambience|soiree} is required for the party: no jeans, please.",
+ "The candles and soft music create a relaxed, romantic {ambience*|attire|soiree} in the restaurant.",
+ "We are all invited to the {soiree*|attire|ambience} at the ambassador's house on Friday evening."
  ]},
-{num:"6",title:"Your turn: write",type:"write",ac:6,
+{num:"6",title:"Write the word",type:"gap",ac:7,
+ instr:"Type the missing word from today's lesson. The first letter is a hint.",
+ items:[
+ "A thick fog covered the graveyard, and the silence was strangely [eerie].",
+ "In the film, a [monstrous] spider the size of a bus attacked the town.",
+ "The situation is [grim]: the company is losing money, and nobody sees a way out.",
+ "Black clouds were gathering, which was an [ominous] sign for our picnic.",
+ "Don't go near the lake: there might be crocodiles [lurking] in the water.",
+ "Guests came in beautiful evening [attire]: long dresses and tuxedos.",
+ "The food is good, but the real reason we go there is the cosy [ambience/ambiance].",
+ "The invitation said: “Join us for an elegant [soiree] with music and champagne.”"
+ ]},
+{num:"7",title:"Your turn: write",type:"write",ac:6,
  instr:"Write 5–6 sentences: how do people celebrate Halloween in your country, or what did you do last Halloween? Use at least 3 words from this lesson. (Not scored.)"}
 ];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const plain=s=>s.replace(/<[^>]*>/g,"");
 const norm=s=>s.toLowerCase().replace(/[’‘]/g,"'").replace(/[.!?,;]+$/,"").replace(/\s+/g," ").trim();
-const WORDS=/eerie|ominous|grim|lurk|monstrous|attire|ambience|ambiance|soiree|stuffy|stencil|affect|effect|influence|impact/gi;
+const WORDS=/eerie|ominous|grim|lurk|monstrous|attire|ambience|ambiance|soiree|affect|effect|influence|impact/gi;
 
-function choiceItem(it){
+function choiceItem(it,shuf){
   const parts=it.split(/(\{[^}]*\})/),groups=[];
-  parts.forEach(p=>{if(p[0]==="{"){const o=p.slice(1,-1).split("|");groups.push({opts:o.map(x=>x.replace("*","")),ans:o.findIndex(x=>x.includes("*")),sel:-1})}});
+  parts.forEach(p=>{if(p[0]==="{"){let o=p.slice(1,-1).split("|");if(shuf)for(let k=o.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[o[k],o[j]]=[o[j],o[k]]}groups.push({opts:o.map(x=>x.replace("*","")),ans:o.findIndex(x=>x.includes("*")),sel:-1})}});
   return {parts,groups};
 }
 function lineOf(c){
@@ -130,22 +143,25 @@ function lineOf(c){
 function build(sec,box){
   const st={};
   if(sec.d.type==="choice"){
-    const L=sec.d.items.map(it=>typeof it==="string"?{c:choiceItem(it)}:{tf:it});
+    const L=sec.d.items.map(it=>typeof it==="string"?{c:choiceItem(it,sec.d.dd)}:{tf:it});
     const render=()=>{
       box.innerHTML=L.map((o,i)=>{
-        if(o.c){let gi=0;const h=o.c.parts.map(p=>{if(p[0]!=="{")return esc(p);const g=gi++;return `<span class="pills">`+o.c.groups[g].opts.map((x,k)=>`<button class="pill" data-i="${i}" data-g="${g}" data-k="${k}">${esc(x)}</button>`).join("")+`</span>`}).join("");
+        if(o.c){let gi=0;const h=o.c.parts.map(p=>{if(p[0]!=="{")return esc(p);const g=gi++;if(sec.d.dd)return `<select class="dd" data-i="${i}" data-g="${g}"><option value="-1">choose…</option>`+o.c.groups[g].opts.map((x,k)=>`<option value="${k}">${esc(x)}</option>`).join("")+`</select>`;return `<span class="pills">`+o.c.groups[g].opts.map((x,k)=>`<button class="pill" data-i="${i}" data-g="${g}" data-k="${k}">${esc(x)}</button>`).join("")+`</span>`}).join("");
           return `<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${h}</div>`}
         return `<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.tf.tf)} <span class="pills"><button class="pill" data-i="${i}" data-k="1">True</button><button class="pill" data-i="${i}" data-k="0">False</button></span></div>`}).join("");
     };
     const paint=(show)=>{
       L.forEach((o,i)=>{const it=$("#"+sec.id+"-"+i);it.classList.remove("ok","no");
+        it.querySelectorAll("select").forEach(sl=>{sl.value=o.c.groups[+sl.dataset.g].sel;sl.classList.remove("right","wrong")});
         it.querySelectorAll(".pill").forEach(b=>{b.classList.remove("sel","right","wrong");const k=+b.dataset.k;
           if(o.c){const g=o.c.groups[+b.dataset.g];if(g.sel===k)b.classList.add("sel")}else{if(o.sel===(k===1))b.classList.add("sel")}})});
     };
     const mark=()=>{L.forEach((o,i)=>{const it=$("#"+sec.id+"-"+i);const ok=o.c?lineOf(o.c).ok:o.sel===o.tf.a;it.classList.add(ok?"ok":"no");
+      it.querySelectorAll("select").forEach(sl=>{const g=o.c.groups[+sl.dataset.g];sl.classList.add(g.sel===g.ans?"right":"wrong")});
       it.querySelectorAll(".pill").forEach(b=>{const k=+b.dataset.k;if(o.c){const g=o.c.groups[+b.dataset.g];if(g.sel===k)b.classList.add(g.sel===g.ans?"right":"wrong")}else if(o.sel===(k===1))b.classList.add(o.sel===o.tf.a?"right":"wrong")})})};
     box.onclick=e=>{const b=e.target.closest(".pill");if(!b||sec.revealed)return;const i=+b.dataset.i,o=L[i];
       if(o.c)o.c.groups[+b.dataset.g].sel=+b.dataset.k;else o.sel=b.dataset.k==="1";paint();};
+    box.onchange=e=>{const sl=e.target.closest("select");if(!sl||sec.revealed)return;L[+sl.dataset.i].c.groups[+sl.dataset.g].sel=+sl.value};
     render();
     return {total:L.length,
       check(){mark();return L.filter(o=>o.c?lineOf(o.c).ok:o.sel===o.tf.a).length},
@@ -153,15 +169,15 @@ function build(sec,box){
       fill(){L.forEach(o=>{if(o.c)o.c.groups.forEach(g=>g.sel=g.ans);else o.sel=o.tf.a});paint();mark()}};
   }
   if(sec.d.type==="gap"){
-    const L=sec.d.items.map(s=>{const m=s.match(/\[([^\]]+)\]/);return {pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),ans:m[1]}});
+    const L=sec.d.items.map(s=>{const m=s.match(/\[([^\]]+)\]/);return {pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),ans:m[1].split("/")[0]+(m[1].includes("/")?"/"+m[1].split("/").slice(1).join("/"):"")}});
     const bk=sec.d.bank?sec.d.bank.slice():null;if(bk)for(let k=bk.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[bk[k],bk[j]]=[bk[j],bk[k]]}
-    box.innerHTML=(bk?`<div class="bank">`+bk.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" style="width:${o.ans.length+3}ch" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
+    box.innerHTML=(bk?`<div class="bank">`+bk.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" style="width:${o.ans.split("/")[0].length+3}ch" placeholder="${o.ans[0]}…" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
     const val=i=>box.querySelectorAll(".gap")[i].value;
-    const okf=i=>norm(val(i))===norm(L[i].ans);
+    const okf=i=>L[i].ans.split("/").some(a=>norm(val(i))===norm(a));
     return {total:L.length,
       check(){let n=0;L.forEach((o,i)=>{const ok=okf(i);if(ok)n++;const it=$("#"+sec.id+"-"+i);it.classList.remove("ok","no");it.classList.add(ok?"ok":"no")});return n},
-      report(){return L.map((o,i)=>{const v=val(i).trim();return {ok:okf(i),line:o.pre+(v||"___")+o.post+(okf(i)?"":"   (correct: "+o.ans+")")}})},
-      fill(){L.forEach((o,i)=>box.querySelectorAll(".gap")[i].value=o.ans);this.check()}};
+      report(){return L.map((o,i)=>{const v=val(i).trim();return {ok:okf(i),line:o.pre+(v||"___")+o.post+(okf(i)?"":"   (correct: "+o.ans.split("/")[0]+")")}})},
+      fill(){L.forEach((o,i)=>box.querySelectorAll(".gap")[i].value=o.ans.split("/")[0]);this.check()}};
   }
   if(sec.d.type==="write"){
     box.innerHTML=`<textarea rows="7" id="wr" placeholder="Write here..."></textarea><ul class="check" id="ck"><li data-k="s">5 or more sentences</li><li data-k="w">3 or more words from the lesson</li></ul>`;
