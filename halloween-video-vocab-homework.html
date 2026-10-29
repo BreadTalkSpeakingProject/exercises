@@ -28,7 +28,7 @@ input[type=text],textarea{width:100%;background:#17132a;color:var(--ink);border:
 .pill{background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:20px;padding:3px 12px;cursor:pointer;font:inherit;font-size:.92rem}
 .pill.sel{border-color:var(--ac);background:#3a3060}
 .pill.right{border-color:var(--ok);background:#1d4a38}.pill.wrong{border-color:var(--bad);background:#552a35}
-.gap{width:9.5em;display:inline-block;padding:3px 8px;margin:0 3px;border-radius:8px}
+.gap{display:inline-block;padding:1px 6px;margin:0 3px;border-radius:6px;text-align:center;font-size:.95rem}
 .gap.ok{border-color:var(--ok)}.gap.no{border-color:var(--bad)}
 .btns{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
 .btn{background:var(--ac,#ff9a3c);color:#1b1530;border:0;border-radius:10px;padding:8px 16px;font:inherit;font-weight:700;cursor:pointer}
@@ -76,29 +76,16 @@ const SECS=[
  "What is the side {affect|effect*} of this medicine?",
  "The weather didn't {effect|affect*} our plans."
  ]},
-{num:"3",title:"Eerie, grim or ominous?",type:"choice",ac:2,
- instr:"Choose the best word.",
- note:"<b>eerie</b> = strange and a little scary, often quiet. <b>ominous</b> = a sign that something bad will happen. <b>grim</b> = serious, unpleasant, without hope.",
- items:[
- "The empty school at night was completely silent, and the whole place felt {eerie*|grim|ominous}.",
- "Dark clouds gathered over the house: it was an {eerie|grim|ominous*} sign that a storm was coming.",
- "The news from the hospital was {eerie|grim*|ominous}: the doctors had very little hope.",
- "Soft music was coming from the empty room, which sounded strangely {eerie*|grim|ominous}.",
- "The reports about unemployment made {eerie|grim*|ominous} reading for the government.",
- "An {eerie|grim|ominous*} message appeared on the screen: “You have 24 hours.”"
- ]},
-{num:"4",title:"Offer, suggest, ask, invite + ... ?",type:"choice",ac:3,
+{num:"3",title:"Offer or suggest + ... ?",type:"choice",ac:3,
  instr:"Choose the correct pattern.",
- note:"<b>offer</b> + to do · <b>invite / ask</b> + someone + to do · <b>suggest</b> + doing, or suggest (that) + subject + verb. We do not say “suggest someone to do”.",
+ note:"<b>offer</b> + to do · <b>suggest</b> + doing, or suggest (that) + subject + verb. We do not say “suggest someone to do”.",
  items:[
  "She offered {to help*|helping|me to help} with the decorations.",
  "I suggest {you to call|calling*|to call} the teacher.",
- "They invited us {to come*|come|coming} to their Halloween party.",
- "He asked me {to turn*|turn|turning} the music down.",
- "Sasha suggested {us to meet|that we meet*|to meet us} at six.",
- "Mike offered {me a lift*|to me a lift|me to a lift} to the party."
+ "Our teacher suggested {us to meet|that we meet*|to meet us} at six.",
+ "My neighbour offered {me a lift*|to me a lift|me to a lift} to the party."
  ]},
-{num:"5",title:"Small traps from class",type:"choice",ac:4,
+{num:"4",title:"Small traps from class",type:"choice",ac:4,
  instr:"Choose the correct option.",
  note:"Rivers take <b>the</b> (the Ganges, the Nile). Single mountains take no article (Mount Everest, Everest); mountain ranges take <b>the</b> (the Himalayas, the Alps). Lakes take no article.",
  items:[
@@ -109,7 +96,7 @@ const SECS=[
  "There is a skeleton {in*|on|at} the picture on page 3.",
  "The astronauts drove a {lunar rover*|moon car|space bike} on the Moon."
  ]},
-{num:"6",title:"Lesson words: fill the gaps",type:"gap",ac:5,
+{num:"5",title:"Lesson words: fill the gaps",type:"gap",ac:5,
  instr:"Type the word from the box.",
  bank:["attire","ambience","soiree","lurking","stencil","stuffy","monstrous"],
  items:[
@@ -121,7 +108,7 @@ const SECS=[
  "The party was boring, and the room was hot and [stuffy].",
  "The [monstrous] shadow on the wall made the children scream."
  ]},
-{num:"7",title:"Your turn: write",type:"write",ac:6,
+{num:"6",title:"Your turn: write",type:"write",ac:6,
  instr:"Write 5–6 sentences: how do people celebrate Halloween in your country, or what did you do last Halloween? Use at least 3 words from this lesson. (Not scored.)"}
 ];
 const $=(s,r=document)=>r.querySelector(s);
@@ -167,7 +154,8 @@ function build(sec,box){
   }
   if(sec.d.type==="gap"){
     const L=sec.d.items.map(s=>{const m=s.match(/\[([^\]]+)\]/);return {pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),ans:m[1]}});
-    box.innerHTML=(sec.d.bank?`<div class="bank">`+sec.d.bank.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
+    const bk=sec.d.bank?sec.d.bank.slice():null;if(bk)for(let k=bk.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[bk[k],bk[j]]=[bk[j],bk[k]]}
+    box.innerHTML=(bk?`<div class="bank">`+bk.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" style="width:${o.ans.length+3}ch" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
     const val=i=>box.querySelectorAll(".gap")[i].value;
     const okf=i=>norm(val(i))===norm(L[i].ans);
     return {total:L.length,
