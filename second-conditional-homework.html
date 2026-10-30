@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Second Conditional</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--gold:#f6e7b8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);line-height:1.2}
+.sub{font-weight:300;font-size:24px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.box{background:#fff;border-left:4px solid #d9b94d;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15.5px}
+.box.t{border-left-color:var(--taupe)}
+.wb{text-align:center;font-weight:600;background:#fff;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:16px;line-height:1.7}
+.graph{display:block;width:100%;max-width:640px;margin:10px auto 0;border-radius:8px;background:#fff}
+.src{font-size:12.5px;color:var(--grey-l);text-align:center;margin:2px 0 10px}
+.q{padding:9px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:24px;color:var(--grey-l);font-size:14px}
+input.gap,input.ln{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:3px 10px;background:#fff;color:var(--ink)}
+input.gap{width:190px;max-width:100%}
+input.ln{width:100%;margin-top:5px}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+input.ok,select.ok,textarea.ok{background:var(--green)!important;border-color:var(--green-d)!important}
+input.bad,select.bad,textarea.bad{background:var(--red)!important;border-color:var(--red-d)!important}
+textarea.wr{width:100%;min-height:110px;font:inherit;border:1.5px solid var(--taupe);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical;margin-top:6px}
+.exp{margin:6px 0 0 0;padding:8px 12px;border-radius:8px;font-size:14.8px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.scheme{display:grid;gap:8px;margin:8px 0}
+.scheme.c4{grid-template-columns:repeat(4,1fr)}.scheme.c3{grid-template-columns:repeat(3,1fr)}
+.st{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px;position:relative}
+.st b{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-right:6px}
+.st:not(:last-child)::after{content:"\2192";position:absolute;right:6px;top:6px;color:var(--grey-l)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.chk li{color:var(--grey-l)}.chk li::before{content:"\2610  "}
+.chk li.on{color:var(--green-d);font-weight:600}.chk li.on::before{content:"\2611  "}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+.hw{background:#fdf3da}table.rt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}table.rt td,table.rt th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.rt th{background:var(--taupe);color:#fff;font-weight:600}.rt b{color:var(--taupe)}
+@media(max-width:720px){
+  .txt{flex:1 1 0;min-width:0;max-width:100%}select{width:100%;white-space:normal}table.rt{font-size:14px}table.rt td,table.rt th{padding:6px 6px}
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:20px}.sub{font-size:19px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .scheme.c4,.scheme.c3{grid-template-columns:1fr 1fr}
+  input.gap{width:150px}
+}
+.dt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}
+.dt th,.dt td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-word}
+.dt th{background:var(--taupe);color:#fff;font-weight:600}
+.dt td.k{font-weight:600;color:var(--taupe);width:22%}
+.dt .fact{display:none}.dt tr.open .fact{display:block}.dt tr.open .ph{display:none}
+.dt .ph{color:var(--grey-l)}
+.dt .ex{font-style:italic;color:var(--grey-l);font-size:14px}
+details.wh{background:#fff;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15px}
+details.wh summary{cursor:pointer;font-weight:600;color:var(--taupe)}
+details.wh li{margin:4px 0}
+ol.qs{padding-left:22px}ol.qs li{margin:6px 0}
+@media(max-width:720px){.dt{font-size:14px}.dt th,.dt td{padding:6px 6px}.dt td.k{width:26%}}
+.aud{margin:8px 0 12px}.aud audio{width:100%}.aud .am{font-size:13.5px;color:var(--red-d);margin-top:4px}
+.role{background:#fff;border-left:4px solid var(--green-d);border-radius:8px;padding:10px 16px;margin:10px 0}.role ul{margin:6px 0 0;padding-left:20px}.role li{margin:4px 0}
+.chat{background:#e7ebf0;border-radius:14px;padding:0;overflow:hidden;margin:10px 0;border:1px solid var(--line)}
+.chat .top{background:#517da2;color:#fff;padding:10px 16px;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.chat .top small{font-weight:400;opacity:.85}
+.chat .msgs{padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+.m{color:#1c1c1c;max-width:82%;padding:7px 12px 6px;border-radius:14px;font-size:15.5px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.m .who2{display:block;font-weight:600;font-size:13px;margin-bottom:1px}
+.m .tm{display:block;text-align:right;font-size:11px;color:#8a8a8a;margin-top:2px}
+.m.o{align-self:flex-end;background:#e1ffc7;border-bottom-right-radius:4px}.m.o .who2{color:#3d6b2a}
+.m.n{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}.m.n .who2{color:#a35a1a}
+.hl2.on{background:#ffe08a;border-radius:4px;padding:0 2px}
+.hl1.on{background:#bfe3ff;border-radius:4px;padding:0 2px}
+.formula{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.formula .f{background:#fff;border-radius:10px;padding:10px 14px;border-top:4px solid var(--taupe);font-size:15.5px}
+.formula .f.a{border-top-color:#d9b94d}.formula .f.b{border-top-color:#517da2}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:10px 0}
+.tp{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.8px;transition:.2s}
+.tp b{display:block;font-size:16px;margin-bottom:4px}
+.tp ul{margin:0;padding-left:18px}.tp li{margin:2px 0}
+.tp.pick{border-color:#d9b94d;background:#fdf3da;transform:scale(1.03);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.qbox{background:#fff;border-left:4px solid #517da2;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:16px;min-height:44px}
+.qs2{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;color:var(--grey);font-size:14.5px}
+@media(max-width:720px){.m{max-width:94%}.formula{grid-template-columns:1fr}.topics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Second Conditional</h1><div class="sub">Imagine it · Orion Motors and Nova Retail</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\b(is|are|was|were|will|do|does|did)n't\b/g,"$1 not").replace(/won't/g,"will not").replace(/'ll\b/g," will").replace(/centre/g,"center").replace(/'/g,"").replace(/[.,!?;:"()]/g," ").replace(/\s+/g," ").trim();
+const anyOf=(v,list)=>list.some(a=>norm(a)===norm(v));
+const subj=(subs,rests)=>{const o=[];subs.forEach(a=>rests.forEach(b=>o.push(a+" "+b)));return o};
+const stripSeq=v=>norm(v).replace(/^(first|then|after that|next|finally|and then)\s+/,"").replace(/^(then|after that|next|finally)\s+/,"");
+
+
+
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CARD=(num,title,note,html)=>{const el=document.createElement("section");el.className="card";el.innerHTML="<h2>Task "+num+": "+title+"</h2><p class=\"note\">"+note+"</p>"+html;host.appendChild(el);return el};
+/* ============ ENGINE ============ */
+const secs=[],host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div>";
+  host.appendChild(el);return el;
+}
+function addTools(el,sec){
+  const t=document.createElement("div");t.className="tools";
+  t.innerHTML="<button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span>";
+  el.appendChild(t);
+  const res=$(".res",t),msg=$(".msg",t),items=sec.items;
+  $("[data-a=check]",t).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",t).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",t).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+}
+function mkSec(num,label,items,el){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items,extra:null};
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  addTools(el,sec);secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,ans){
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(ans)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(ans)+"</b>. ";
+  box.innerHTML=head+html.replace(/^<b>[^<]*<\/b>\.?\s*/,"");
+}
+function row(body,labelHtml,n){
+  const q=document.createElement("div");q.className="q";
+  q.innerHTML="<div class=\"line\"><span class=\"n\">"+n+"</span><span class=\"txt\">"+labelHtml+"</span></div><div class=\"exp\"></div>";
+  body.appendChild(q);return q;
+}
+/* item with inline control */
+function inlineItem(body,n,tpl,kind,opts,okFn,ansDisp,why,lineFn){
+  const [pre,post]=tpl.split("{{}}");
+  const ctl=kind==="sel"?"<select>"+["<option value=\"\">choose…</option>"].concat(opts.map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("")+"</select>":"<input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">";
+  const q=row(body,esc(pre)+ctl+esc(post),n);
+  const c=$(kind==="sel"?"select":"input",q),box=$(".exp",q);
+  const clear=()=>{c.className=kind==="sel"?"":"gap";box.className="exp";box.innerHTML=""};
+  c.addEventListener(kind==="sel"?"change":"input",clear);
+  return {
+    ok:()=>okFn(c.value),
+    line:()=>lineFn(c.value.trim()),
+    mark:ok=>{c.className=(kind==="sel"?"":"gap ")+(ok?"ok":"bad");setExp(box,ok,why,ansDisp)},
+    show:()=>{c.value=ansDisp;c.className=kind==="sel"?"":"gap";setExp(box,null,why,ansDisp)},
+    reset:()=>{c.value="";clear()}
+  };
+}
+/* item with full-width line input */
+function lineItem(body,n,labelHtml,okFn,modelAns,why,lineFn){
+  const q=row(body,labelHtml,n);
+  const inp=document.createElement("input");inp.type="text";inp.className="ln";inp.autocomplete="off";inp.spellcheck=false;
+  q.insertBefore(inp,$(".exp",q));const box=$(".exp",q);
+  inp.addEventListener("input",()=>{inp.className="ln";box.className="exp";box.innerHTML=""});
+  return {
+    ok:()=>okFn(inp.value),
+    line:()=>lineFn(inp.value.trim()),
+    mark:ok=>{inp.className="ln "+(ok?"ok":"bad");setExp(box,ok,why,modelAns)},
+    show:()=>{inp.value=modelAns;inp.className="ln";setExp(box,null,why,modelAns)},
+    reset:()=>{inp.value="";inp.className="ln";box.className="exp";box.innerHTML=""}
+  };
+}
+function staticQs(body,list){list.forEach((t,i)=>{const q=document.createElement("div");q.className="q";q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+t+"</span></div>";body.appendChild(q)})}
+function writeBox(body,placeholder,checks,model){
+  const ta=document.createElement("textarea");ta.className="wr";ta.placeholder=placeholder;body.appendChild(ta);
+  const ul=document.createElement("ul");ul.className="chk";body.appendChild(ul);
+  const lis=checks.map(c=>{const li=document.createElement("li");li.textContent=c[0];ul.appendChild(li);return li});
+  const upd=()=>{const t=ta.value;checks.forEach((c,i)=>lis[i].className=c[1](t)?"on":"")};
+  ta.addEventListener("input",upd);
+  let mb=null;
+  if(model){mb=document.createElement("div");mb.className="exp";body.appendChild(mb)}
+  return {ta,upd,showModel:()=>{if(mb){mb.className="exp";mb.innerHTML="<b>Model answer.</b> "+model}},hideModel:()=>{if(mb){mb.className="exp";mb.innerHTML=""}},reset:()=>{ta.value="";upd();if(mb){mb.innerHTML=""}}};
+}
+const hasN=(t,re,n)=>((t.match(re)||[]).length>=n);
+const SEL=(body,n,tpl,right,wrong,why)=>inlineItem(body,n,tpl,"sel",sh([right].concat(wrong)),v=>v===right,right,why,v=>"\""+tpl.replace("{{}}",v||"___")+"\" – (correct: "+right+")");
+const wc=v=>v.trim().split(/\s+/).filter(Boolean).length;
+const fix=v=>v.replace(/[‘’]/g,"'");
+/* ---------- Task 1: chat ---------- */
+(function(){
+ const MSG=[
+  ["n","10:02","Hi Orion! Is it true that your CEO is leaving next year?"],
+  ["o","10:03","Yes. We are currently looking for a successor. A committee is choosing the candidates."],
+  ["n","10:03","Will you choose an outsider?"],
+  ["o","10:04","Maybe. <span class=\"hl2\">If we chose an outsider, the transition would be difficult, but we would get fresh ideas.</span>"],
+  ["n","10:05","<span class=\"hl2\">If I were you, I would look at candidates from other industries.</span>"],
+  ["o","10:05","Ha! <span class=\"hl2\">If you were on our committee, you would choose someone crazy!</span> 😄"],
+  ["n","10:06","Probably! Our revenue grew by 8% this year, but our net profit fell."],
+  ["o","10:07","<span class=\"hl2\">What would you do if you had more profit?</span>"],
+  ["n","10:08","<span class=\"hl2\">If we had more money, we would open fifty new shops.</span> And <span class=\"hl2\">we would stop outsourcing our deliveries.</span>"],
+  ["o","10:09","<span class=\"hl2\">If you stopped outsourcing, you would need thousands of new drivers.</span>"],
+  ["n","10:10","Our subsidiary in Poland could help. <span class=\"hl2\">If it had a bigger warehouse, it would handle all our deliveries.</span>"],
+  ["o","10:11","We are a multinational company, but we are still controlled by one family. <span class=\"hl2\">If the family heard that idea, they would say no.</span>"],
+  ["n","10:12","Fair enough! When does the committee decide?"],
+  ["o","10:13","<span class=\"hl1\">If the committee agrees on Friday, we will announce the new CEO on Monday.</span>"],
+  ["n","10:13","<span class=\"hl1\">If you announce it, I will be the first to congratulate you.</span> 🎉"],
+  ["o","10:14","Thanks, Nova! Talk on Monday 🙂"]
+ ];
+ let h="<p>Orion Motors and Nova Retail are two imaginary companies. Read their Telegram chat.</p><div class=\"chat\"><div class=\"top\"><span>Orion Motors &amp; Nova Retail</span><small>2 members · online</small></div><div class=\"msgs\">";
+ MSG.forEach(m=>{h+="<div class=\"m "+m[0]+"\"><span class=\"who2\">"+(m[0]==="o"?"Orion Motors":"Nova Retail")+"</span>"+m[2]+"<span class=\"tm\">"+m[1]+"</span></div>"});
+ h+="</div></div><div class=\"tools\"><button class=\"btn ghost\" id=\"h2\" type=\"button\">Highlight the second conditional</button><button class=\"btn ghost\" id=\"h1\" type=\"button\">Highlight the first conditional</button><button class=\"btn ghost\" id=\"h0\" type=\"button\">Clear</button></div>"+
+ "<details class=\"wh\"><summary>Word help (open only if you need it)</summary><ul><li><b>successor</b>: the person who takes someone&#39;s job after them</li><li><b>outsider</b>: a person who is not from inside the company</li><li><b>controlled by</b>: with the power to make decisions</li><li><b>multinational company</b>: a company that works in many countries</li><li><b>subsidiary</b>: a smaller company that a bigger company owns</li><li><b>outsourcing</b>: giving some work to another company</li><li><b>transition</b>: a change from one situation to another</li><li><b>currently</b>: now, at the present time</li><li><b>revenue</b>: all the money a company earns</li><li><b>net profit</b>: the money left after all costs</li><li><b>committee</b>: a small group that makes a decision</li><li><b>candidate</b>: a person who wants a job</li></ul></details>";
+ CARD(1,"Read the chat","Read the conversation. Which sentences are about imaginary situations? Underline them in your head, then press the button to check.",h);
+ const tg=(c,on)=>document.querySelectorAll("."+c).forEach(e=>e.classList.toggle("on",on));
+ $("#h2").addEventListener("click",()=>{tg("hl2",true);tg("hl1",false)});
+ $("#h1").addEventListener("click",()=>{tg("hl1",true);tg("hl2",false)});
+ $("#h0").addEventListener("click",()=>{tg("hl1",false);tg("hl2",false)});
+})();
+/* ---------- Task 2: understand ---------- */
+(function(){
+ const el=mkCard(2,"Understand the chat","Choose the best ending for each sentence.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["Orion Motors is currently looking for {{}}.","a successor",["a new warehouse","a subsidiary"],"<b>a successor</b>. Orion says: <i>We are currently looking for a successor.</i>"],
+  ["The candidates are chosen by {{}}.","a committee",["Nova Retail","the family"],"<b>a committee</b>. <i>A committee is choosing the candidates.</i>"],
+  ["Orion says that an outsider would bring {{}}.","fresh ideas",["higher revenue","a smaller committee"],"<b>fresh ideas</b>. <i>…we would get fresh ideas.</i>"],
+  ["The transition to a new CEO would be {{}}.","difficult",["easy","cheap"],"<b>difficult</b>. <i>The transition would be difficult.</i>"],
+  ["This year, Nova&#39;s revenue {{}}.","grew by 8%",["fell by 8%","did not change"],"<b>grew by 8%</b>. <i>Our revenue grew by 8%.</i>"],
+  ["Nova&#39;s net profit {{}}.","fell",["grew","doubled"],"<b>fell</b>. <i>…but our net profit fell.</i> Revenue went up, but profit went down."],
+  ["With more money, Nova would {{}}.","open fifty new shops",["buy Orion Motors","close its subsidiary"],"<b>open fifty new shops</b>. <i>If we had more money, we would open fifty new shops.</i>"],
+  ["If Nova stopped outsourcing, it would need {{}}.","thousands of new drivers",["a new CEO","fewer warehouses"],"<b>thousands of new drivers</b>. <i>If you stopped outsourcing, you would need thousands of new drivers.</i>"],
+  ["Orion Motors is controlled by {{}}.","one family",["the committee","its subsidiary in Poland"],"<b>one family</b>. <i>…we are still controlled by one family.</i>"],
+  ["If the committee agrees on Friday, Orion will announce the new CEO {{}}.","on Monday",["on Friday","next year"],"<b>on Monday</b>. <i>…we will announce the new CEO on Monday.</i>"]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,q[0].replace(/&#39;/g,"'"),q[1],q[2],q[3])));
+ mkSec(2,"Understand the chat",it,el);
+})();
+/* ---------- Task 3: complete the rule ---------- */
+(function(){
+ const el=mkCard(3,"Complete the rule","Complete the rule in simple words. Choose the correct word or phrase.");
+ const body=$(".body",el);const it=[];
+ const R=[
+  ["The second conditional is about {{}} situations in the present or the future.","imaginary",["real","finished","regular"],"<b>imaginary</b>. We talk about things that are not true now, or very unlikely. <i>If I were the CEO…</i> (I am not the CEO.)"],
+  ["In the if-part, we use the {{}}.","past simple",["present simple","will + verb","past perfect"],"<b>past simple</b>. <i>If we had more money…</i>"],
+  ["But this past simple does not talk about the past. It shows that the situation is {{}}.","not real",["finished","polite","regular"],"<b>not real</b>. <i>If I had a private jet</i> does not mean yesterday. It means: I do not have one now."],
+  ["In the result-part, we use {{}} + the base verb.","would",["will","did","had"],"<b>would</b>. <i>…we would open fifty new shops.</i>"],
+  ["The negative of would is {{}}.","wouldn't",["won't","didn't","not would"],"<b>wouldn&#39;t</b>. <i>I wouldn&#39;t choose an outsider.</i>"],
+  ["The short form of would is {{}}: I&#39;d, you&#39;d, she&#39;d.","&#39;d",["&#39;ll","&#39;s","n&#39;t"],"<b>&#39;d</b>. <i>She&#39;d say no.</i> (Be careful: &#39;d can also be <i>had</i>, but in this rule it is <i>would</i>.)"],
+  ["After the if-part we write a {{}} when the if-part comes first.","comma",["full stop","question mark","dash"],"<b>comma</b>. <i>If I were you, I would wait.</i> With the if-part last, there is no comma: <i>I would wait if I were you.</i>"],
+  ["With <i>I, he, she, it</i> we usually use {{}} after <i>if</i> in formal English.","were",["am","be","will be"],"<b>were</b>. <i>If I were you…</i> / <i>If she were here…</i> In informal speech, many people also say <i>was</i>."],
+  ["To ask a question, we say: What {{}} you do if you won a million?","would",["will","did","are"],"<b>would</b>. In the question, <i>would</i> comes before the subject, and the if-part has <i>won</i> (past simple)."],
+  ["The result-part can also come {{}}: I would travel more if I had time.","first",["never","only in questions","after two commas"],"<b>first</b>. The two parts can change places. The meaning is the same."]
+ ];
+ R.forEach((q,i)=>{const tpl=q[0].replace(/<\/?i>/g,"").replace(/&#39;/g,"'");const right=q[1].replace(/&#39;/g,"'");it.push(SEL(body,i+1,tpl,right,q[2].map(x=>x.replace(/&#39;/g,"'")),q[3]))});
+ mkSec(3,"Complete the rule",it,el);
+})();
+/* ---------- Task 4: controlled practice ---------- */
+(function(){
+ const el=mkCard(4,"Choose the correct option","<div class=\"formula\"><div class=\"f a\"><b>If</b> + past simple, <b>would</b> + base verb</div><div class=\"f b\">I would travel more <b>if</b> I had time.</div></div>Choose the correct option.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["If I {{}} the CEO of Orion Motors, I would work less.","were",["am","will be"],"<b>were</b>. Imaginary situation (I am not the CEO): past simple form in the if-part."],
+  ["If we had more money, we {{}} new shops.","would open",["will open","opened"],"<b>would open</b>. Result-part of the second conditional: would + base verb."],
+  ["What would you do if the committee {{}} you?","chose",["will choose","choose"],"<b>chose</b>. The if-part uses the past simple, even for the future."],
+  ["She {{}} the job if she spoke French.","would get",["gets","will get"],"<b>would get</b>. <i>She spoke French</i> is past simple, so the result needs would."],
+  ["If Nova stopped outsourcing, it {{}} more staff.","would need",["needs","needed"],"<b>would need</b>. Not real now, so would + base verb."],
+  ["I {{}} an outsider if I were on the committee.","wouldn't choose",["won't choose","didn't choose"],"<b>wouldn&#39;t choose</b>. Negative result: wouldn&#39;t + base verb."],
+  ["If our revenue {{}} higher, we would pay everyone a bonus.","were",["would be","is"],"<b>were</b>. The if-part never has would: not <i>would be</i>."],
+  ["Would you apply if the company {{}} you a good salary?","offered",["would offer","offers"],"<b>offered</b>. The if-part uses the past simple. Would is only in the result-part."],
+  ["If the subsidiary {{}} bigger, it would employ more people.","were",["would be","is"],"<b>were</b>. Imaginary: the subsidiary is not bigger now."],
+  ["If I {{}} your successor, I would keep your team.","were",["will be","am"],"<b>were</b>. <i>If I were…</i> is the usual form."]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,q[0],q[1],q[2],q[3].replace(/&#39;/g,"'"))));
+ mkSec(4,"Choose the correct option",it,el);
+})();
+/* ---------- Task 5: sentence starters ---------- */
+(function(){
+ const el=mkCard(5,"Sentence starters","Finish each sentence. Write the rest. Remember: <b>if + past simple</b>, <b>would + base verb</b>. There are many good answers.");
+ const body=$(".body",el);const it=[];
+ const resOk=v=>wc(v)>=3&&(/\b(would|wouldn't|could|might)\b/i.test(fix(v))||/'d\b/i.test(fix(v)))&&!/\bwill\b/i.test(v);
+ const ifOk=v=>wc(v)>=3&&!/\b(will|would|won't)\b/i.test(fix(v));
+ const S=[
+  ["If I were the CEO of a multinational company, I","res","would visit all our subsidiaries."],
+  ["If our company had more revenue, we","res","would raise salaries."],
+  ["If I were on the committee, I","res","would choose an outsider."],
+  ["If Nova stopped outsourcing, it","res","would need more drivers."],
+  ["If I could choose my successor, I","res","would choose someone honest and brave."],
+  ["I would be very happy if","if","my boss gave me a free week of holiday."],
+  ["I wouldn&#39;t take the job if","if","the salary was too low."],
+  ["If the company had a subsidiary in Brazil, it","res","would sell more cars there."],
+  ["What would you do if","if","you were the director of a big company?"],
+  ["If the candidate spoke three languages, the committee","res","would probably choose him."]
+ ];
+ S.forEach((s,i)=>{
+  const ok=s[1]==="res"?resOk:ifOk;
+  const why=s[1]==="res"?"A good answer starts with <b>would</b> (or &#39;d, wouldn&#39;t) + the base verb. Your sentence needs at least three words and no <i>will</i>.":"A good answer is in the <b>past simple</b> (no <i>will</i>, no <i>would</i> after <i>if</i>). Your sentence needs at least three words.";
+  it.push(lineItem(body,i+1,"<i>"+s[0]+"</i> …",ok,s[2],"<b>"+s[2]+"</b> "+why.replace(/&#39;/g,"'"),v=>"\""+s[0].replace(/&#39;/g,"'")+" …\" – you wrote: \""+(v||"(nothing)")+"\"; model: \""+s[2]+"\""));
+ });
+ mkSec(5,"Sentence starters",it,el);
+})();
+/* ---------- Task 6: free speaking ---------- */
+(function(){
+ const T=[
+  ["⚽","Sport",["you could play for any team in the world","you broke a world record","you met your favourite player"]],
+  ["✈️","Travel",["you could travel anywhere tomorrow","you lived in another country","you missed your flight"]],
+  ["💰","Money",["you won a million dollars","you found a wallet in the street","you had a very rich uncle"]],
+  ["💼","Work",["you were your boss&#39;s boss","you could choose any job","you worked from home every day"]],
+  ["🍕","Food",["you were a chef for one day","you could only eat one food for a year","you had a restaurant"]],
+  ["💻","Technology",["you had a robot assistant","you had no internet for a month","you invented a new app"]],
+  ["🎮","Free time",["you had a free day tomorrow","you had an extra hour every day","you could learn any hobby"]],
+  ["🎓","Study",["you could change one rule at university","you had a free year","you could study abroad"]],
+  ["🏙️","City life",["you were the mayor of your city","you had a free car","you lived on a farm"]],
+  ["🦸","Superpowers",["you were invisible for a day","you could speak every language","you could fly"]],
+  ["🏢","Companies",["you owned a multinational company","you were the new CEO of Orion Motors","you had a subsidiary in another country"]]
+ ];
+ let h="<div class=\"box\"><b>How to play</b><br>1 Press <b>Spin</b> or choose a topic yourself.<br>2 Make questions with the prompts: <i>What would you do if …? · Where would you go if …? · Would you … if …?</i><br>3 Your teacher answers with <b>would</b>. Then you answer the same question.<br>4 Write your questions and answers in the box. Aim for 8 or more.</div><div class=\"tools\"><button class=\"btn\" id=\"spin\" type=\"button\">🎲 Spin</button><span class=\"msg\">Random topic</span></div><div class=\"qbox\" id=\"qb\">Press Spin to choose a topic.</div><div class=\"topics\">";
+ T.forEach((t,i)=>{h+="<div class=\"tp\" data-i=\""+i+"\"><b>"+t[0]+" "+t[1]+"</b><ul>"+t[2].map(p=>"<li>…if "+p+"</li>").join("")+"</ul></div>"});
+ h+="</div>";
+ const el=CARD(6,"Free speaking: topic box","Ask and answer second conditional questions about different topics.",h);
+ const pick=(i)=>{document.querySelectorAll(".tp").forEach(e=>e.classList.toggle("pick",+e.dataset.i===i));const t=T[i];const p=t[2][Math.floor(Math.random()*t[2].length)].replace(/&#39;/g,"'");$("#qb").innerHTML="<b>"+t[0]+" "+t[1]+"</b>: What would you do if "+esc(p)+"?"};
+ let last=-1;
+ $("#spin").addEventListener("click",()=>{let i;do{i=Math.floor(Math.random()*T.length)}while(i===last);last=i;pick(i)});
+ el.querySelectorAll(".tp").forEach(e=>e.addEventListener("click",()=>{last=+e.dataset.i;pick(last)}));
+ const w=writeBox(el,"Write your questions and answers here, one pair on each line. For example:\nWhat would you do if you won a million dollars? – I would buy a flat and travel.",[
+  ["8 or more questions (?)",t=>hasN(t,/\?/g,8)],
+  ["8 or more times: if",t=>hasN(t,/\bif\b/gi,8)],
+  ["8 or more times: would",t=>hasN(t,/\bwould\b|'d\b|wouldn't/gi,8)]]);
+ secs.push({num:6,label:"Free speaking",total:0,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items:[],extra:w});
+})();
+/* ---------- Task 7: first or second? ---------- */
+(function(){
+ const el=mkCard(7,"First or second conditional?","<table class=\"rt\"><tr><th></th><th>First conditional</th><th>Second conditional</th></tr><tr><td><b>Situation</b></td><td>real, possible, likely</td><td>imaginary, unlikely</td></tr><tr><td><b>If-part</b></td><td>present simple</td><td>past simple</td></tr><tr><td><b>Result</b></td><td>will + base verb</td><td>would + base verb</td></tr><tr><td><b>Example</b></td><td>If the committee agrees, we will announce it.</td><td>If we chose an outsider, it would be difficult.</td></tr></table>Which conditional is it? Choose.");
+ const body=$(".body",el);const it=[];
+ const A="First conditional: real or possible",B="Second conditional: imaginary or unlikely";
+ const Q=[
+  ["If the committee agrees on Friday, we will announce the new CEO on Monday.",A],
+  ["If I were the CEO, I would work from the beach.",B],
+  ["If it rains tomorrow, the match will be cancelled.",A],
+  ["If I won a million dollars, I would buy a company.",B],
+  ["If you study hard, you will pass the exam.",A],
+  ["If she had a private jet, she would fly to Paris every weekend.",B],
+  ["If we get the contract, we will hire five new people.",A],
+  ["If Nova stopped outsourcing, it would need thousands of drivers.",B],
+  ["If I see the manager, I will give him the report.",A],
+  ["If I were an outsider, I would feel nervous on the first day.",B]
+ ];
+ Q.forEach((q,i)=>{
+  const why=q[1]===A?"<b>First conditional</b>. It is a real possibility in the future. <i>if</i> + present simple, <i>will</i> + base verb.":"<b>Second conditional</b>. It is imaginary or very unlikely. <i>if</i> + past simple, <i>would</i> + base verb.";
+  it.push(inlineItem(body,i+1,q[0]+" → {{}}","sel",sh([A,B]),v=>v===q[1],q[1],why,v=>"\""+q[0]+"\" – you chose "+(v||"(nothing)")+"; correct: "+q[1]));
+ });
+ mkSec(7,"First or second conditional?",it,el);
+})();
+/* ---------- Task 8: choose the correct form ---------- */
+(function(){
+ const el=mkCard(8,"Compare: choose the correct form","Is the situation real or imaginary? Choose the correct form.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["If the committee {{}} Anna, she will become the new CEO.","chooses",["chose","would choose"],"<b>chooses</b>. It is possible, and the result has <i>will</i>: first conditional, so present simple."],
+  ["If I {{}} the head of the committee, I would choose Anna.","were",["am","will be"],"<b>were</b>. Imaginary (I am not the head), and the result has <i>would</i>: second conditional."],
+  ["We {{}} the revenue figures tomorrow if the report is ready.","will send",["would send","sent"],"<b>will send</b>. The if-part is present simple, so this is the first conditional: will + base verb."],
+  ["I would travel the world if I {{}} more time.","had",["have","will have"],"<b>had</b>. The result has <i>would</i>, so the if-part is past simple."],
+  ["If it {{}} tomorrow, we will stay at home.","rains",["rained","would rain"],"<b>rains</b>. The result has <i>will</i>, so the if-part is present simple."],
+  ["If our net profit {{}} higher, we would give everyone a bonus.","were",["is","will be"],"<b>were</b>. The result has <i>would</i>: second conditional, imaginary."],
+  ["What will you do if the company {{}} you a job tomorrow?","offers",["offered","would offer"],"<b>offers</b>. <i>Will</i> in the question: first conditional, a real possibility, so present simple after <i>if</i>."],
+  ["What would you do if the company {{}} you a job tomorrow?","offered",["offers","will offer"],"<b>offered</b>. <i>Would</i> in the question: second conditional, so past simple after <i>if</i>."],
+  ["If you stop outsourcing, the transition {{}} difficult.","will be",["would be","was"],"<b>will be</b>. The if-part is present simple (<i>stop</i>), so the result has <i>will</i>."],
+  ["He would be a good successor if he {{}} more experience.","had",["has","will have"],"<b>had</b>. The result has <i>would</i>, so the if-part is past simple."]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,q[0],q[1],q[2],q[3])));
+ mkSec(8,"Compare: choose the correct form",it,el);
+})();
+
+/* ============ BAR / REPORT / SAVE ============ */
+const scored=secs.filter(s=>s.total>0);
+const TOTAL=scored.reduce((a,s)=>a+s.total,0);
+const got=()=>scored.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Second conditional lesson – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  scored.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  scored.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  let wr="";
+  secs.forEach(s=>{if(s.extra&&s.extra.ta&&s.extra.ta.value.trim())wr+="\nTask "+s.num+" "+s.label+" – your text:\n"+s.extra.ta.value.trim()+"\n"});
+  if(wr)t+="\nWRITING / NOTES (not scored)\n"+wr;
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select,textarea")),dst=[].slice.call(clone.querySelectorAll("input,select,textarea"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else if(el.tagName==="TEXTAREA"){dst[i].textContent=el.value;dst[i].setAttribute("readonly","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,textarea{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Second_conditional_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
