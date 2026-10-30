@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Interview English – Homework 1</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#2B2030; --card:#372F3B; --card2:#413746; --cream:#F0E6D8; --muted:#BDB0BE;
+  --amber:#D9A441; --teal:#5E8C8A; --copper:#C77D4F; --rose:#B98A9E;
+  --ok:#7FBF8E; --bad:#E58A7B; --line:#4D4252;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--cream);font-family:Poppins,system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;font-size:16px;line-height:1.55}
+body{overflow-x:hidden}
+.wrap{max-width:820px;margin:0 auto;padding:0 16px 80px}
+header.top{padding:28px 0 8px}
+header.top h1{margin:0 0 4px;font-size:1.7rem;font-weight:600}
+header.top p{margin:0;color:var(--muted)}
+.namebox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:16px 0 4px}
+.namebox label{color:var(--muted);font-size:.9rem}
+input.name{background:var(--card);border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:8px 12px;font:inherit;min-width:220px;max-width:100%}
+.bar{position:sticky;top:0;z-index:20;background:rgba(43,32,48,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin:0 -16px;padding:10px 16px}
+.bar .in{max-width:820px;margin:0 auto;display:flex;align-items:center;gap:14px}
+.bar .track{flex:1;height:8px;border-radius:8px;background:var(--card2);overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--amber);transition:width .3s}
+.bar .txt{font-weight:600;white-space:nowrap}
+.card{background:var(--card);border-radius:20px;padding:22px 20px;margin:22px 0;border-top:5px solid var(--amber)}
+.card.t2{border-top-color:var(--teal)} .card.t3{border-top-color:var(--copper)} .card.t4{border-top-color:var(--rose)}
+.chead{display:flex;align-items:center;gap:12px}
+.chead h2{margin:0;font-size:1.25rem;font-weight:600}
+.num{width:34px;height:34px;border-radius:50%;background:var(--amber);color:#2B2030;display:grid;place-items:center;font-weight:600;flex:none}
+.t2 .num{background:var(--teal)} .t3 .num{background:var(--copper)} .t4 .num{background:var(--rose)}
+.intro{color:var(--muted);margin:8px 0 16px}
+.item{display:flex;gap:12px;padding:14px 0;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.item .n{color:var(--muted);width:22px;flex:none;font-weight:500}
+.item .ic{flex:1;min-width:0}
+.wrong{color:var(--bad);margin-bottom:6px}
+.wrong mark{background:rgba(229,138,123,.18);color:var(--bad);text-decoration:line-through;border-radius:4px;padding:0 3px}
+.fix{margin-bottom:2px}
+input.tx,select.sel{background:var(--bg);color:var(--cream);border:1.5px solid var(--line);border-radius:8px;padding:5px 9px;font:inherit;max-width:100%}
+input.tx.gap{width:18ch;margin:0 3px}
+input.tx.wide{width:100%;margin-top:2px}
+select.sel{margin:0 3px;cursor:pointer}
+input.tx:focus,select.sel:focus{outline:2px solid var(--amber);outline-offset:1px}
+.ok{border-color:var(--ok)!important;background:rgba(127,191,142,.12)!important}
+.bad{border-color:var(--bad)!important;background:rgba(229,138,123,.12)!important}
+.expl{margin-top:8px;padding:10px 12px;border-radius:10px;background:var(--card2);font-size:.92rem;border-left:4px solid var(--line)}
+.expl.ok{border-left-color:var(--ok);background:var(--card2)!important}
+.expl.bad{border-left-color:var(--bad);background:var(--card2)!important}
+.expl b{color:var(--amber)}
+.defs{display:grid;grid-template-columns:1fr;gap:6px;margin:0 0 14px;padding:12px;border-radius:12px;background:var(--card2)}
+.defs div{font-size:.95rem}.defs b{color:var(--teal);margin-right:6px}
+.mrow{display:flex;align-items:center;gap:10px;padding:8px 0;border-top:1px solid var(--line);flex-wrap:wrap}
+.mrow:first-of-type{border-top:0}
+.mrow .w{font-weight:600;min-width:210px}
+.mrow .after{color:var(--muted);font-size:.9rem;flex-basis:100%;padding-left:32px}
+.q{background:var(--card2);border-radius:14px;padding:12px 14px;margin:14px 0 6px}
+.q .who{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--rose);font-weight:600}
+.ans{padding:2px 14px 12px;border-left:3px solid var(--rose);margin:0 0 6px 10px}
+.ans .who{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px}
+button.b{font:inherit;font-weight:500;border:0;border-radius:12px;padding:9px 18px;cursor:pointer;background:var(--amber);color:#2B2030}
+.t2 button.b{background:var(--teal);color:#fff}.t3 button.b{background:var(--copper);color:#fff}.t4 button.b{background:var(--rose);color:#2B2030}
+button.b.ghost{background:transparent!important;color:var(--cream)!important;border:1.5px solid var(--line)}
+button.b:hover{filter:brightness(1.08)}
+.res{font-weight:600;margin-left:6px}
+.msg{color:var(--amber);margin-top:8px;font-size:.92rem;min-height:1px}
+.final{background:var(--card);border-radius:20px;padding:22px 20px;margin:22px 0;text-align:center}
+.final button{background:var(--amber);color:#2B2030;font:inherit;font-weight:600;border:0;border-radius:14px;padding:12px 26px;cursor:pointer;font-size:1.05rem}
+.final p{color:var(--muted);margin:10px 0 0}
+#copied{color:var(--ok);font-weight:600;min-height:1.5em;margin-top:10px}
+@media (max-width:520px){
+  header.top h1{font-size:1.4rem}
+  .card{padding:18px 14px}
+  input.tx.gap{width:15ch}
+  .mrow .w{min-width:100%}
+  .mrow .after{padding-left:0}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>Interview English · Homework 1</h1>
+    <p>Head Mixologist at Anantara · 4 tasks · about 25 minutes</p>
+    <div class="namebox"><label for="name">Your name</label><input id="name" class="name" type="text" placeholder="Alexandra" autocomplete="off"></div>
+  </header>
+  <div class="bar"><div class="in"><div class="track"><div class="fill" id="fill"></div></div><div class="txt" id="ptxt">0 / 0</div></div></div>
+  <main id="tasks"></main>
+  <div class="final">
+    <button id="copy">Copy my results</button>
+    <p>Do all the tasks, press “Copy my results” and paste the text in our chat.</p>
+    <div id="copied"></div>
+  </div>
+</div>
+
+<script>
+const TITLE = "Interview English – Homework 1";
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+const plain = s => String(s).replace(/<[^>]*>/g,"");
+function norm(s){
+  s = (s||"").toLowerCase().replace(/[’‘]/g,"'").trim();
+  const c = {is:"isn't",are:"aren't",was:"wasn't",were:"weren't",did:"didn't",do:"don't",does:"doesn't"};
+  s = s.replace(/\b(is|are|was|were|did|do|does) not\b/g,(m,a)=>c[a]);
+  return s.replace(/[.!?,;:]+$/,"").replace(/\s+/g," ").trim();
+}
+const inList = (typed, answers) => { const t = norm(typed); return t !== "" && answers.some(a => norm(a) === t); };
+function choiceLine(text, chosen){
+  const m = text.match(/\{([^}]*)\}/);
+  const opts = m[1].split("|");
+  const right = opts.find(o => o.endsWith("*")).slice(0,-1);
+  const line = text.replace(m[0], chosen ? chosen : "___");
+  return {ok: chosen === right, line: line + "   (correct: " + right + ")", right};
+}
+
+/* ---------------- DATA ---------------- */
+
+/* Task 1: fix the mistakes (from our lesson) */
+const T1 = [
+  {kind:"sent", wrong:"How is that called?",
+   answers:["What is that called","What do you call that","What's that called","What is it called","What do you call it","What is this called","What do you call this"],
+   model:"What is that called?",
+   expl:`In Russian we say «Как это называется?», so we translate it word for word and get “How is that called?”. In English, “how” does not work here. Ask a “what” question: “What is that called?” or “What do you call that?”.`},
+  {kind:"gap", pre:"", bad:"At", post:" Sunday I'm having an interview at the hotel.", answers:["On"],
+   expl:`Days take “on”: on Sunday, on Monday, on my birthday. “At” is for clock times (at 5 pm) and “in” is for months and years (in July, in 2026).`},
+  {kind:"gap", pre:"I'm working at the Four Seasons ", bad:"at", post:" Saint Petersburg.", answers:["in"],
+   expl:`Cities, towns and countries take “in”: in Saint Petersburg, in Oman. Use “at” for a specific place or point, like at the Four Seasons or at the bar.`},
+  {kind:"gap", pre:"There ", bad:"are a few", post:" information about this test.", answers:["is little","is some","is not much","isn't much","is a lot of","is a little","is enough","is no"],
+   expl:`“Information” is uncountable: we cannot say “a few information” or “informations”. With uncountable nouns we use “little”, “some”, “not much” or “a lot of”, and a singular verb: “There is little information”. “A few” is only for countable plural nouns (a few hotels).`},
+  {kind:"gap", pre:"I found the answer ", bad:"in the", post:" internet.", answers:["on the"],
+   expl:`We say “on the internet” (also on the web, on social media, on TV). We use “on” for things that are online or broadcast.`},
+  {kind:"gap", pre:"I really like the ", bad:"conception", post:" of this bar.", answers:["concept"],
+   expl:`“Conception” is the moment when a baby begins to exist, or the way a person understands something (a conception of freedom). For an idea or a model of a bar, a menu or a product, use “concept”: “the concept of this bar”.`},
+  {kind:"gap", pre:"I try to help guests by being ", bad:"empathic", post:".", answers:["empathetic","understanding"],
+   expl:`“Empathic” is a rare, technical word. In everyday English and in interviews, use “empathetic” (or “understanding”). The noun is “empathy”.`}
+];
+
+/* Task 2: vocabulary matching */
+const T2_WORDS = [
+  {w:"values", a:"B"},
+  {w:"a wide range of", a:"D"},
+  {w:"sustainable", a:"G"},
+  {w:"make guests feel at home", a:"F"},
+  {w:"go the extra mile", a:"A"},
+  {w:"take pride in", a:"H"},
+  {w:"work under pressure", a:"E"},
+  {w:"be open to (feedback, new ideas)", a:"C"}
+];
+const T2_DEFS = {
+  A:"do more than people expect",
+  B:"the beliefs that guide a company",
+  C:"be willing to listen and consider something new",
+  D:"many different kinds of",
+  E:"do your job well when it is very busy or stressful",
+  F:"help guests feel comfortable and relaxed",
+  G:"good for the environment and able to continue for a long time",
+  H:"feel proud of your work and do it well"
+};
+
+/* Task 3: dropdown sentences about Anantara. Correct option marked with * */
+const T3 = [
+  `Anantara's first resort opened in {1991|2001*|2011} in Hua Hin, Thailand.`,
+  `Minor Hotels has five core {valuables|value|values*}, such as customer focus and innovation.`,
+  `Anantara hotels are in {a wide range|a wide range of*|wide range in} places, from cities to private islands.`,
+  `Minor Hotels wants to be {sustain|sustainable*|sustainably}, so it has banned single-use plastics in front-of-house areas.`,
+  `The company promises to reach Net Zero {since|until|by*} 2050.`,
+  `In Oman, Anantara {have|has*|are having} two resorts.`,
+  `Anantara Al Jabal Al Akhdar is 2,000 metres {above*|under|beside} sea level.`,
+  `Anantara's job descriptions ask team members to {take proud of|take pride in*|be pride of} their work.`,
+  `The company wants its team to {go the extra miles|make the extra mile|go the extra mile*} for every guest.`,
+  `A good bartender {make|makes*|is make} guests feel at home.`,
+  `Head Mixologists often {works|working|work*} under pressure on busy nights.`,
+  `A good team leader should {be opened to|open to|be open to*} new ideas.`
+];
+
+/* Task 4: interview questions + answers with hint-free gaps. [a|b|c] = accepted answers (first is the model) */
+const T4 = [
+  {q:"Why do you want to work for Anantara?",
+   s:[`I admire the company's [values|core values], especially people development and innovation.`,
+      `Also, Anantara has hotels in [a wide range of|a wide variety of] places, so I can learn a lot.`]},
+  {q:"Tell me about a project you are proud of.",
+   s:[`Last year I created a menu that was [sustainable]: I used local fruit and almost no plastic.`,
+      `Guests loved that we did not waste anything.`]},
+  {q:"How do you make your guests happy?",
+   s:[`I always try to [make guests feel at home|make my guests feel at home|make the guests feel at home|make people feel at home]. I learn their names and remember their favourite drinks.`,
+      `If a guest has a special day, I [go the extra mile|always go the extra mile|will go the extra mile|go that extra mile] and prepare a surprise.`]},
+  {q:"Can you work in a very busy bar?",
+   s:[`Yes. On Friday nights the bar is full, but I can [work under pressure|work well under pressure] and stay calm.`]},
+  {q:"How do you react to feedback?",
+   s:[`I'm [open to|very open to|always open to] feedback because it helps me improve, and I listen to my team too.`]},
+  {q:"What is important for you at work?",
+   s:[`I [take pride in|take great pride in|am proud of|take a lot of pride in] my work. For me, a clean bar and a perfect drink are very important.`]}
+];
+
+/* ---------------- CORE ---------------- */
+const sections = [];
+
+function record(sec){
+  if(!sec.api.report) return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i] = r.ok;
+    if(!r.ok){
+      const k = i+"|"+r.line;
+      if(!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i, line:r.line}); }
+    }
+  });
+}
+
+function updateProgress(){
+  let got=0, tot=0;
+  sections.forEach(s=>{ tot += s.total; if(s.checked && !s.revealed) got += s.score; });
+  $("#ptxt").textContent = got + " / " + tot;
+  $("#fill").style.width = (tot ? got/tot*100 : 0) + "%";
+}
+
+function makeTask(cfg){
+  const sec = {id:cfg.id, num:cfg.num, label:cfg.label, total:0, score:0, checked:false, revealed:false,
+               api:null, log:[], seen:new Set(), lastOk:[]};
+  const card = document.createElement("section");
+  card.className = "card t"+cfg.num;
+  card.innerHTML =
+    `<div class="chead"><span class="num">${cfg.num}</span><h2>${cfg.label}</h2></div>
+     <p class="intro">${cfg.intro}</p>
+     <div class="body"></div>
+     <div class="btns">
+       <button class="b check">Check</button>
+       <button class="b ghost show">Show answers</button>
+       <button class="b ghost again">Try again</button>
+       <span class="res"></span>
+     </div>
+     <div class="msg"></div>`;
+  $("#tasks").appendChild(card);
+  const body = $(".body", card), res = $(".res", card), msg = $(".msg", card);
+  const rebuild = () => { sec.api = cfg.build(body); sec.total = sec.api.total; };
+  rebuild();
+  sections.push(sec);
+
+  $(".check", card).onclick = () => {
+    msg.textContent = "";
+    if(sec.revealed){ msg.textContent = "You have seen the answers for this task. Press “Try again” to do it yourself."; return; }
+    sec.score = sec.api.check();
+    sec.checked = true;
+    record(sec);
+    res.textContent = sec.score + " / " + sec.total;
+    updateProgress();
+  };
+  $(".show", card).onclick = () => {
+    msg.textContent = "";
+    sec.api.fill();
+    sec.revealed = true; sec.checked = false; sec.score = 0;
+    res.textContent = "answers shown";
+    updateProgress();
+  };
+  $(".again", card).onclick = () => {
+    rebuild();
+    sec.revealed = false; sec.checked = false; sec.score = 0;
+    res.textContent = ""; msg.textContent = "";
+    updateProgress();
+  };
+  return sec;
+}
+
+/* ---------- generic helpers for typed gaps ---------- */
+function mkInput(cls){
+  const i = document.createElement("input");
+  i.type = "text"; i.className = "tx " + (cls||"gap");
+  i.autocomplete = "off"; i.autocapitalize = "off"; i.spellcheck = false;
+  i.addEventListener("input", ()=> i.classList.remove("ok","bad"));
+  return i;
+}
+function mark(el, ok){ el.classList.remove("ok","bad"); el.classList.add(ok ? "ok" : "bad"); }
+
+/* ---------- Task 1 ---------- */
+function buildT1(body){
+  body.innerHTML = "";
+  const rows = T1.map((it,i)=>{
+    const d = document.createElement("div"); d.className = "item";
+    const wrongHtml = it.kind==="sent" ? esc(it.wrong) : esc(it.pre)+"<mark>"+esc(it.bad)+"</mark>"+esc(it.post);
+    d.innerHTML = `<div class="n">${i+1}</div><div class="ic"><div class="wrong">✗ ${wrongHtml}</div><div class="fixrow fix"></div><div class="expl" hidden></div></div>`;
+    const fr = $(".fixrow", d);
+    let inp;
+    if(it.kind==="sent"){ inp = mkInput("wide"); inp.placeholder = "Write the correct sentence"; fr.appendChild(inp); }
+    else { fr.append(document.createTextNode("✓ " + it.pre)); inp = mkInput("gap"); fr.appendChild(inp); fr.append(document.createTextNode(it.post)); }
+    body.appendChild(d);
+    return {it, inp, ex:$(".expl", d)};
+  });
+  const model = it => it.kind==="sent" ? it.model : it.pre + it.answers[0] + it.post;
+  const isOk = r => inList(r.inp.value, r.it.answers);
+  const showEx = (r, ok) => {
+    r.ex.hidden = false; r.ex.className = "expl " + (ok?"ok":"bad");
+    r.ex.innerHTML = (ok ? "<b>✔ Correct.</b> " : "<b>✗ Not quite.</b> Correct: ") + (ok ? "" : "“" + esc(model(r.it)) + "” ") + "<br>" + r.it.expl;
+  };
+  return {
+    total: rows.length,
+    check(){ let n=0; rows.forEach(r=>{ const ok=isOk(r); if(ok) n++; mark(r.inp, ok); showEx(r, ok); }); return n; },
+    report(){
+      return rows.map(r=>{
+        const ok = isOk(r), v = r.inp.value.trim();
+        if(r.it.kind==="sent")
+          return {ok, line:`"${r.it.wrong}" – you wrote: "${v || "(nothing)"}"; model: "${r.it.model}"`};
+        return {ok, line: r.it.pre + (v || "___") + r.it.post + "   (correct: " + r.it.answers[0] + ")"};
+      });
+    },
+    fill(){ rows.forEach(r=>{ r.inp.value = r.it.kind==="sent" ? r.it.model.replace(/[?.!]$/,"") : r.it.answers[0]; mark(r.inp,true); showEx(r,true); }); }
+  };
+}
+
+/* ---------- Task 2 ---------- */
+function buildT2(body){
+  body.innerHTML = "";
+  const defs = document.createElement("div"); defs.className = "defs";
+  defs.innerHTML = Object.keys(T2_DEFS).map(k=>`<div><b>${k}</b>${esc(T2_DEFS[k])}</div>`).join("");
+  body.appendChild(defs);
+  const rows = T2_WORDS.map((it,i)=>{
+    const d = document.createElement("div"); d.className = "mrow";
+    d.innerHTML = `<span class="w">${i+1}. ${esc(it.w)}</span>`;
+    const s = document.createElement("select"); s.className = "sel";
+    s.innerHTML = `<option value="">choose…</option>` + Object.keys(T2_DEFS).map(k=>`<option value="${k}">${k}</option>`).join("");
+    s.addEventListener("change", ()=> s.classList.remove("ok","bad"));
+    d.appendChild(s);
+    body.appendChild(d);
+    return {it, s};
+  });
+  return {
+    total: rows.length,
+    check(){ let n=0; rows.forEach(r=>{ const ok = r.s.value===r.it.a; if(ok) n++; mark(r.s, ok); }); return n; },
+    report(){
+      return rows.map(r=>{
+        const ok = r.s.value===r.it.a;
+        const chosen = r.s.value ? T2_DEFS[r.s.value] : "(nothing)";
+        return {ok, line:`"${r.it.w}" – you matched: "${chosen}"; correct: "${T2_DEFS[r.it.a]}"`};
+      });
+    },
+    fill(){ rows.forEach(r=>{ r.s.value = r.it.a; mark(r.s,true); }); }
+  };
+}
+
+/* ---------- Task 3 ---------- */
+function buildT3(body){
+  body.innerHTML = "";
+  const rows = T3.map((text,i)=>{
+    const m = text.match(/\{([^}]*)\}/);
+    const opts = m[1].split("|").map(o=>({t:o.replace(/\*$/,""), ok:o.endsWith("*")}));
+    const d = document.createElement("div"); d.className = "item";
+    const ic = document.createElement("div"); ic.className = "ic";
+    const [pre, post] = text.split(m[0]);
+    const s = document.createElement("select"); s.className = "sel";
+    s.innerHTML = `<option value="">choose…</option>` + opts.map(o=>`<option value="${esc(o.t)}">${esc(o.t)}</option>`).join("");
+    s.addEventListener("change", ()=> s.classList.remove("ok","bad"));
+    ic.append(document.createTextNode(pre), s, document.createTextNode(post));
+    d.innerHTML = `<div class="n">${i+1}</div>`; d.appendChild(ic);
+    body.appendChild(d);
+    return {text, s, right:opts.find(o=>o.ok).t};
+  });
+  return {
+    total: rows.length,
+    check(){ let n=0; rows.forEach(r=>{ const ok=r.s.value===r.right; if(ok) n++; mark(r.s, ok); }); return n; },
+    report(){ return rows.map(r=>{ const c = choiceLine(r.text, r.s.value); return {ok:c.ok, line:c.line}; }); },
+    fill(){ rows.forEach(r=>{ r.s.value = r.right; mark(r.s,true); }); }
+  };
+}
+
+/* ---------- Task 4 ---------- */
+function buildT4(body){
+  body.innerHTML = "";
+  const gaps = [];
+  T4.forEach((qa,qi)=>{
+    const qd = document.createElement("div"); qd.className = "q";
+    qd.innerHTML = `<div class="who">Interviewer</div>${esc(qa.q)}`;
+    body.appendChild(qd);
+    const ad = document.createElement("div"); ad.className = "ans";
+    ad.innerHTML = `<div class="who">You</div>`;
+    const p = document.createElement("div");
+    qa.s.forEach((sent,si)=>{
+      const parts = sent.split(/\[([^\]]+)\]/);   // text, gap, text, gap, ...
+      const sentGaps = [];
+      for(let k=1;k<parts.length;k+=2){ sentGaps.push(parts[k].split("|")); }
+      sentGaps.forEach((answers,gi)=>{
+        // find segments
+      });
+      let gi = 0;
+      for(let k=0;k<parts.length;k++){
+        if(k%2===0){ p.append(document.createTextNode(parts[k])); }
+        else {
+          const inp = mkInput("gap");
+          p.appendChild(inp);
+          gaps.push({inp, answers:sentGaps[gi], sent, parts, gi});
+          gi++;
+        }
+      }
+      p.append(document.createTextNode(" "));
+    });
+    ad.appendChild(p);
+    body.appendChild(ad);
+  });
+  const lineFor = (g, typed) => {
+    let k = 0, out = "";
+    for(let i=0;i<g.parts.length;i++){
+      if(i%2===0) out += g.parts[i];
+      else { out += (k===g.gi) ? (typed || "___") : g.parts[i].split("|")[0]; k++; }
+    }
+    return out + "   (correct: " + g.answers[0] + ")";
+  };
+  return {
+    total: gaps.length,
+    check(){ let n=0; gaps.forEach(g=>{ const ok = inList(g.inp.value, g.answers); if(ok) n++; mark(g.inp, ok); }); return n; },
+    report(){ return gaps.map(g=>({ok:inList(g.inp.value, g.answers), line:lineFor(g, g.inp.value.trim())})); },
+    fill(){ gaps.forEach(g=>{ g.inp.value = g.answers[0]; mark(g.inp,true); }); }
+  };
+}
+
+makeTask({id:"t1", num:1, label:"Fix the mistakes",
+  intro:"These mistakes come from our lesson. Correct each one. After you press Check you will see why it was a mistake.",
+  build:buildT1});
+makeTask({id:"t2", num:2, label:"Match the vocabulary",
+  intro:"Match each word or phrase from the lesson with its definition (A–H).",
+  build:buildT2});
+makeTask({id:"t3", num:3, label:"Anantara: choose the best option",
+  intro:"Choose the one option that fits. Two options are wrong. Watch the grammar and the subject–verb agreement.",
+  build:buildT3});
+makeTask({id:"t4", num:4, label:"Interview answers",
+  intro:"Read the possible interview questions and the answers. In every gap, write a word or phrase from our target vocabulary. There are no hints: you decide which one fits and in which form.",
+  build:buildT4});
+
+/* ---------------- REPORT ---------------- */
+function buildReport(){
+  const name = $("#name").value.trim() || "Student";
+  const d = new Date();
+  const stamp = d.toLocaleDateString("en-GB") + " " + d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+  let out = `${TITLE} – ${name} (${stamp})\n\n`;
+  let got=0, tot=0;
+  sections.forEach(s=>{
+    tot += s.total; if(s.checked && !s.revealed) got += s.score;
+    const st = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "not checked");
+    out += `Task ${s.num} ${s.label}: ${st}\n`;
+  });
+  out += `Total: ${got} / ${tot}\n\n`;
+  out += "MISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any = false;
+  sections.forEach(s=>{
+    if(!s.log.length) return;
+    any = true;
+    out += `\nTask ${s.num} ${s.label}\n`;
+    s.log.forEach(e=>{
+      out += `  ✗ ${e.line}   [${s.lastOk[e.i] ? "fixed on retry" : "still wrong"}]\n`;
+    });
+  });
+  if(!any) out += "\nNo mistakes logged.\n";
+  return out;
+}
+window.HW = {sections, buildReport};
+
+$("#copy").onclick = async () => {
+  const text = buildReport();
+  const note = $("#copied");
+  let done = false;
+  try { await navigator.clipboard.writeText(text); done = true; } catch(e){}
+  if(!done){
+    try{
+      const ta = document.createElement("textarea");
+      ta.value = text; ta.style.position="fixed"; ta.style.opacity="0";
+      document.body.appendChild(ta); ta.focus(); ta.select();
+      done = document.execCommand("copy");
+      document.body.removeChild(ta);
+    }catch(e){}
+  }
+  note.textContent = done ? "Copied! Paste it in the chat." : "Could not copy. Please select the text manually.";
+  setTimeout(()=>{ note.textContent = ""; }, 5000);
+};
+updateProgress();
+</script>
+</body>
+</html>
