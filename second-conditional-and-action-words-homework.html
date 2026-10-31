@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Homework: Second Conditional and economy words</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1c1c1c;--grey:#525050;--grey-l:#7b7777;--taupe:#625b53;--cream:#f2ecde;--green:#e2efd9;--green-d:#3d6b2a;--red:#f6d9d3;--red-d:#a33a26;--line:#d9d2c3;--gold:#f6e7b8}
+*{box-sizing:border-box}
+body{margin:0;background:#fff;color:var(--ink);font:400 17px/1.55 "Open Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.sheet{max-width:960px;margin:0 auto;padding-bottom:60px}
+.hd{padding:34px 36px 6px}
+.hd h1{margin:0;font-weight:600;font-size:28px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey);line-height:1.2}
+.sub{font-weight:300;font-size:24px;color:var(--grey-l);margin-top:6px}
+.who{display:flex;gap:12px;align-items:baseline;padding:18px 36px 4px}
+.who input{font:inherit;border:0;border-bottom:1.5px dotted var(--taupe);background:transparent;padding:2px 6px;width:240px;max-width:60%}
+.bar{position:sticky;top:0;z-index:5;background:#fff;border-bottom:1px solid var(--line);margin-top:10px}
+.bar .in{display:flex;align-items:center;gap:14px;padding:8px 36px;font-size:14px;color:var(--grey-l)}
+.track{flex:1;height:8px;background:var(--cream);border-radius:8px;overflow:hidden}
+.fill{height:100%;width:0;background:var(--taupe);transition:width .3s}
+.score{font-weight:600;color:var(--ink);min-width:64px;text-align:right}
+.card{margin:26px 36px 0;padding:22px 24px;background:var(--cream);border:1.5px dotted var(--taupe);border-radius:14px}
+.card h2{margin:0 0 6px;font-size:20px;font-weight:600;color:var(--grey)}
+.card .note{margin:0 0 14px;font-size:14.5px;color:var(--grey-l)}
+.card p{margin:6px 0}
+.box{background:#fff;border-left:4px solid #d9b94d;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15.5px}
+.box.t{border-left-color:var(--taupe)}
+.wb{text-align:center;font-weight:600;background:#fff;border-radius:8px;padding:8px 12px;margin:10px 0;font-size:16px;line-height:1.7}
+.graph{display:block;width:100%;max-width:640px;margin:10px auto 0;border-radius:8px;background:#fff}
+.src{font-size:12.5px;color:var(--grey-l);text-align:center;margin:2px 0 10px}
+.q{padding:9px 0;border-top:1px dotted var(--taupe)}
+.q:first-of-type{border-top:0}
+.line{display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.n{display:inline-block;min-width:24px;color:var(--grey-l);font-size:14px}
+input.gap,input.ln{font:inherit;border:1.5px solid var(--taupe);border-radius:8px;padding:3px 10px;background:#fff;color:var(--ink)}
+input.gap{width:190px;max-width:100%}
+input.ln{width:100%;margin-top:5px}
+select{font:inherit;padding:3px 8px;border:1.5px solid var(--taupe);border-radius:8px;background:#fff;color:var(--ink);max-width:100%}
+input.ok,select.ok,textarea.ok{background:var(--green)!important;border-color:var(--green-d)!important}
+input.bad,select.bad,textarea.bad{background:var(--red)!important;border-color:var(--red-d)!important}
+textarea.wr{width:100%;min-height:110px;font:inherit;border:1.5px solid var(--taupe);border-radius:10px;padding:10px 12px;background:#fff;resize:vertical;margin-top:6px}
+.exp{margin:6px 0 0 0;padding:8px 12px;border-radius:8px;font-size:14.8px;line-height:1.5;background:#fff;border-left:4px solid var(--taupe)}
+.exp.ok{border-left-color:var(--green-d)}.exp.bad{border-left-color:var(--red-d)}
+.exp b.r{color:var(--green-d)}.exp b.w{color:var(--red-d)}
+.exp:empty{display:none}
+.scheme{display:grid;gap:8px;margin:8px 0}
+.scheme.c4{grid-template-columns:repeat(4,1fr)}.scheme.c3{grid-template-columns:repeat(3,1fr)}
+.st{background:#fff;border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:15px;position:relative}
+.st b{display:inline-block;background:var(--taupe);color:#fff;border-radius:50%;width:22px;height:22px;line-height:22px;text-align:center;font-size:12px;margin-right:6px}
+.st:not(:last-child)::after{content:"\2192";position:absolute;right:6px;top:6px;color:var(--grey-l)}
+.chk{list-style:none;margin:8px 0 0;padding:0;font-size:14.5px;display:flex;flex-wrap:wrap;gap:4px 16px}
+.chk li{color:var(--grey-l)}.chk li::before{content:"\2610  "}
+.chk li.on{color:var(--green-d);font-weight:600}.chk li.on::before{content:"\2611  "}
+.tools{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:16px}
+.btn{font:600 15px "Open Sans",system-ui,sans-serif;border:0;border-radius:10px;padding:9px 18px;background:var(--taupe);color:#fff;cursor:pointer}
+.btn:hover{background:#4d473f}
+.btn.ghost{background:transparent;color:var(--taupe);box-shadow:inset 0 0 0 1.5px var(--taupe)}
+.btn.ghost:hover{background:#fff}
+.res{font-weight:600}.msg{font-size:14.5px;color:var(--grey-l)}
+.out{margin:30px 36px 0}
+.copied{font-size:15px;font-weight:600;color:var(--green-d);margin-left:10px}
+.hint{font-size:13.5px;color:var(--grey-l);margin:12px 0 0}
+.savedbar{margin:14px 36px 0;padding:10px 16px;border:1.5px dotted var(--taupe);border-radius:10px;background:var(--cream);font-size:14.5px}
+.log pre{white-space:pre-wrap;font:14px/1.5 ui-monospace,Menlo,Consolas,monospace;margin:0}
+.hw{background:#fdf3da}table.rt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}table.rt td,table.rt th{padding:7px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}table.rt th{background:var(--taupe);color:#fff;font-weight:600}.rt b{color:var(--taupe)}
+@media(max-width:720px){
+  .txt{flex:1 1 0;min-width:0;max-width:100%}select{width:100%;white-space:normal}table.rt{font-size:14px}table.rt td,table.rt th{padding:6px 6px}
+  body{font-size:16px}
+  .hd,.who,.bar .in{padding-left:16px;padding-right:16px}
+  .hd h1{font-size:20px}.sub{font-size:19px}
+  .card,.out,.savedbar{margin-left:16px;margin-right:16px}
+  .card{padding:16px 14px}
+  .scheme.c4,.scheme.c3{grid-template-columns:1fr 1fr}
+  input.gap{width:150px}
+}
+.dt{width:100%;border-collapse:collapse;background:#fff;border-radius:8px;overflow:hidden;font-size:15.5px;margin:8px 0}
+.dt th,.dt td{padding:9px 10px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;word-break:break-word}
+.dt th{background:var(--taupe);color:#fff;font-weight:600}
+.dt td.k{font-weight:600;color:var(--taupe);width:22%}
+.dt .fact{display:none}.dt tr.open .fact{display:block}.dt tr.open .ph{display:none}
+.dt .ph{color:var(--grey-l)}
+.dt .ex{font-style:italic;color:var(--grey-l);font-size:14px}
+details.wh{background:#fff;border-radius:8px;padding:8px 14px;margin:10px 0;font-size:15px}
+details.wh summary{cursor:pointer;font-weight:600;color:var(--taupe)}
+details.wh li{margin:4px 0}
+ol.qs{padding-left:22px}ol.qs li{margin:6px 0}
+@media(max-width:720px){.dt{font-size:14px}.dt th,.dt td{padding:6px 6px}.dt td.k{width:26%}}
+.aud{margin:8px 0 12px}.aud audio{width:100%}.aud .am{font-size:13.5px;color:var(--red-d);margin-top:4px}
+.role{background:#fff;border-left:4px solid var(--green-d);border-radius:8px;padding:10px 16px;margin:10px 0}.role ul{margin:6px 0 0;padding-left:20px}.role li{margin:4px 0}
+.chat{background:#e7ebf0;border-radius:14px;padding:0;overflow:hidden;margin:10px 0;border:1px solid var(--line)}
+.chat .top{background:#517da2;color:#fff;padding:10px 16px;font-weight:600;font-size:15.5px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.chat .top small{font-weight:400;opacity:.85}
+.chat .msgs{padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+.m{color:#1c1c1c;max-width:82%;padding:7px 12px 6px;border-radius:14px;font-size:15.5px;line-height:1.45;box-shadow:0 1px 1px rgba(0,0,0,.08)}
+.m .who2{display:block;font-weight:600;font-size:13px;margin-bottom:1px}
+.m .tm{display:block;text-align:right;font-size:11px;color:#8a8a8a;margin-top:2px}
+.m.o{align-self:flex-end;background:#e1ffc7;border-bottom-right-radius:4px}.m.o .who2{color:#3d6b2a}
+.m.n{align-self:flex-start;background:#fff;border-bottom-left-radius:4px}.m.n .who2{color:#a35a1a}
+.hl2.on{background:#ffe08a;border-radius:4px;padding:0 2px}
+.hl1.on{background:#bfe3ff;border-radius:4px;padding:0 2px}
+.formula{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+.formula .f{background:#fff;border-radius:10px;padding:10px 14px;border-top:4px solid var(--taupe);font-size:15.5px}
+.formula .f.a{border-top-color:#d9b94d}.formula .f.b{border-top-color:#517da2}
+.topics{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;margin:10px 0}
+.tp{background:#fff;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14.8px;transition:.2s}
+.tp b{display:block;font-size:16px;margin-bottom:4px}
+.tp ul{margin:0;padding-left:18px}.tp li{margin:2px 0}
+.tp.pick{border-color:#d9b94d;background:#fdf3da;transform:scale(1.03);box-shadow:0 3px 10px rgba(0,0,0,.12)}
+.qbox{background:#fff;border-left:4px solid #517da2;border-radius:8px;padding:10px 14px;margin:10px 0;font-size:16px;min-height:44px}
+.qs2{display:flex;flex-wrap:wrap;gap:6px 14px;margin-top:6px;color:var(--grey);font-size:14.5px}
+@media(max-width:720px){.m{max-width:94%}.formula{grid-template-columns:1fr}.topics{grid-template-columns:1fr 1fr}}
+</style>
+</head>
+<body>
+<div class="sheet">
+<header class="hd"><h1>Homework</h1><div class="sub">Second conditional · words with -action · company words</div></header>
+<div class="who"><label for="nm">Your name</label><input id="nm" type="text" autocomplete="off" placeholder="type here"></div>
+<div class="bar"><div class="in"><span>Progress</span><div class="track"><div class="fill" id="fill"></div></div><span class="score" id="score">0 / 0</span></div></div>
+<div id="secs"></div>
+
+<section class="out">
+  <button class="btn" id="copy" type="button">Copy my results</button> <button class="btn ghost" id="save" type="button">Save HTML</button><span class="copied" id="copied" hidden>Copied! Paste it in the chat.</span><span class="copied" id="saved" hidden>Saved! Check your Downloads folder.</span>
+  <p class="hint">“Save HTML” downloads a copy of this page with your answers locked in, so you can keep it or send it to your teacher.</p>
+</section>
+</div>
+<script>
+(function(){
+"use strict";
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const plain=s=>String(s).replace(/<[^>]*>/g,"");
+const norm=s=>String(s||"").toLowerCase().replace(/[‘’]/g,"'").replace(/\b(is|are|was|were|will|do|does|did)n't\b/g,"$1 not").replace(/won't/g,"will not").replace(/'ll\b/g," will").replace(/centre/g,"center").replace(/'/g,"").replace(/[.,!?;:"()]/g," ").replace(/\s+/g," ").trim();
+const anyOf=(v,list)=>list.some(a=>norm(a)===norm(v));
+const subj=(subs,rests)=>{const o=[];subs.forEach(a=>rests.forEach(b=>o.push(a+" "+b)));return o};
+const stripSeq=v=>norm(v).replace(/^(first|then|after that|next|finally|and then)\s+/,"").replace(/^(then|after that|next|finally)\s+/,"");
+
+
+
+const sh=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const CARD=(num,title,note,html)=>{const el=document.createElement("section");el.className="card";el.innerHTML="<h2>Task "+num+": "+title+"</h2><p class=\"note\">"+note+"</p>"+html;host.appendChild(el);return el};
+/* ============ ENGINE ============ */
+const secs=[],host=$("#secs");
+function mkCard(num,title,note){
+  const el=document.createElement("section");el.className="card";
+  el.innerHTML="<h2>Task "+num+": "+esc(title)+"</h2><p class=\"note\">"+note+"</p><div class=\"body\"></div>";
+  host.appendChild(el);return el;
+}
+function addTools(el,sec){
+  const t=document.createElement("div");t.className="tools";
+  t.innerHTML="<button class=\"btn\" data-a=\"check\" type=\"button\">Check</button><button class=\"btn ghost\" data-a=\"show\" type=\"button\">Show answers</button><button class=\"btn ghost\" data-a=\"retry\" type=\"button\">Try again</button><span class=\"res\"></span><span class=\"msg\"></span>";
+  el.appendChild(t);
+  const res=$(".res",t),msg=$(".msg",t),items=sec.items;
+  $("[data-a=check]",t).addEventListener("click",()=>{
+    if(sec.revealed){msg.textContent="Answers were shown. Press Try again to practise.";return}
+    let sc=0;items.forEach(it=>{const ok=it.ok();if(ok)sc++;it.mark(ok)});
+    sec.score=sc;sec.checked=true;msg.textContent="";res.textContent=sc+" / "+sec.total;record(sec);updateBar();
+  });
+  $("[data-a=show]",t).addEventListener("click",()=>{items.forEach(it=>it.show());sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="";msg.textContent="Answers shown. Press Try again to practise.";updateBar()});
+  $("[data-a=retry]",t).addEventListener("click",()=>{items.forEach(it=>it.reset());sec.revealed=false;sec.checked=false;sec.score=0;sec.lastOk=sec.lastOk.map(()=>false);res.textContent="";msg.textContent="";updateBar()});
+}
+function mkSec(num,label,items,el){
+  const sec={num,label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items,extra:null};
+  sec.report=()=>items.map(it=>({ok:it.ok(),line:it.line()}));
+  addTools(el,sec);secs.push(sec);return sec;
+}
+function record(sec){sec.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}})}
+function setExp(box,ok,html,ans){
+  box.className="exp "+(ok===null?"":ok?"ok":"bad");
+  const head=ok===null?"<b class=\"r\">Answer: "+esc(ans)+".</b> ":ok?"<b class=\"r\">✓ Correct.</b> ":"<b class=\"w\">✗ Not correct.</b> The right answer is <b>"+esc(ans)+"</b>. ";
+  box.innerHTML=head+html.replace(/^<b>[^<]*<\/b>\.?\s*/,"");
+}
+function row(body,labelHtml,n){
+  const q=document.createElement("div");q.className="q";
+  q.innerHTML="<div class=\"line\"><span class=\"n\">"+n+"</span><span class=\"txt\">"+labelHtml+"</span></div><div class=\"exp\"></div>";
+  body.appendChild(q);return q;
+}
+/* item with inline control */
+function inlineItem(body,n,tpl,kind,opts,okFn,ansDisp,why,lineFn){
+  const [pre,post]=tpl.split("{{}}");
+  const ctl=kind==="sel"?"<select>"+["<option value=\"\">choose…</option>"].concat(opts.map(o=>"<option value=\""+esc(o)+"\">"+esc(o)+"</option>")).join("")+"</select>":"<input class=\"gap\" type=\"text\" autocomplete=\"off\" autocapitalize=\"none\" autocorrect=\"off\" spellcheck=\"false\">";
+  const q=row(body,esc(pre)+ctl+esc(post),n);
+  const c=$(kind==="sel"?"select":"input",q),box=$(".exp",q);
+  const clear=()=>{c.className=kind==="sel"?"":"gap";box.className="exp";box.innerHTML=""};
+  c.addEventListener(kind==="sel"?"change":"input",clear);
+  return {
+    ok:()=>okFn(c.value),
+    line:()=>lineFn(c.value.trim()),
+    mark:ok=>{c.className=(kind==="sel"?"":"gap ")+(ok?"ok":"bad");setExp(box,ok,why,ansDisp)},
+    show:()=>{c.value=ansDisp;c.className=kind==="sel"?"":"gap";setExp(box,null,why,ansDisp)},
+    reset:()=>{c.value="";clear()}
+  };
+}
+/* item with full-width line input */
+function lineItem(body,n,labelHtml,okFn,modelAns,why,lineFn){
+  const q=row(body,labelHtml,n);
+  const inp=document.createElement("input");inp.type="text";inp.className="ln";inp.autocomplete="off";inp.spellcheck=false;
+  q.insertBefore(inp,$(".exp",q));const box=$(".exp",q);
+  inp.addEventListener("input",()=>{inp.className="ln";box.className="exp";box.innerHTML=""});
+  return {
+    ok:()=>okFn(inp.value),
+    line:()=>lineFn(inp.value.trim()),
+    mark:ok=>{inp.className="ln "+(ok?"ok":"bad");setExp(box,ok,why,modelAns)},
+    show:()=>{inp.value=modelAns;inp.className="ln";setExp(box,null,why,modelAns)},
+    reset:()=>{inp.value="";inp.className="ln";box.className="exp";box.innerHTML=""}
+  };
+}
+function staticQs(body,list){list.forEach((t,i)=>{const q=document.createElement("div");q.className="q";q.innerHTML="<div class=\"line\"><span class=\"n\">"+(i+1)+"</span><span>"+t+"</span></div>";body.appendChild(q)})}
+function writeBox(body,placeholder,checks,model){
+  const ta=document.createElement("textarea");ta.className="wr";ta.placeholder=placeholder;body.appendChild(ta);
+  const ul=document.createElement("ul");ul.className="chk";body.appendChild(ul);
+  const lis=checks.map(c=>{const li=document.createElement("li");li.textContent=c[0];ul.appendChild(li);return li});
+  const upd=()=>{const t=ta.value;checks.forEach((c,i)=>lis[i].className=c[1](t)?"on":"")};
+  ta.addEventListener("input",upd);
+  let mb=null;
+  if(model){mb=document.createElement("div");mb.className="exp";body.appendChild(mb)}
+  return {ta,upd,showModel:()=>{if(mb){mb.className="exp";mb.innerHTML="<b>Model answer.</b> "+model}},hideModel:()=>{if(mb){mb.className="exp";mb.innerHTML=""}},reset:()=>{ta.value="";upd();if(mb){mb.innerHTML=""}}};
+}
+const hasN=(t,re,n)=>((t.match(re)||[]).length>=n);
+const SEL=(body,n,tpl,right,wrong,why)=>inlineItem(body,n,tpl,"sel",sh([right].concat(wrong)),v=>v===right,right,why,v=>"\""+tpl.replace("{{}}",v||"___")+"\" – (correct: "+right+")");
+const GAP=(body,n,tpl,ans,why)=>inlineItem(body,n,tpl,"gap",null,v=>anyOf(v,ans),ans[0],why,v=>"\""+tpl.replace("{{}}",v||"___")+"\" – (correct: "+ans[0]+")");
+/* 1 */
+(function(){
+ const el=mkCard(1,"Words with -action","Choose the word that matches the meaning.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["One act of buying or selling: {{}}","transaction",["traction","fraction"],"<b>transaction</b>. For example, paying for a coffee with your card is a transaction."],
+  ["When the economy gets smaller: {{}}","contraction",["extraction","attraction"],"<b>contraction</b>. The opposite is <i>growth</i> or <i>expansion</i>."],
+  ["Taking oil, gas or metal out of the ground: {{}}","extraction",["contraction","reaction"],"<b>extraction</b>. <i>extract</i> = take out."],
+  ["The happy feeling when you get what you want: {{}}","satisfaction",["inaction","interaction"],"<b>satisfaction</b>. <i>customer satisfaction</i> is very important for a company."],
+  ["What you do or say after something happens: {{}}","reaction",["transaction","fraction"],"<b>reaction</b>. <i>The market&#39;s reaction to the news</i>."],
+  ["When people talk or work together: {{}}","interaction",["inaction","traction"],"<b>interaction</b>. <i>inter-</i> means between."],
+  ["When a new idea starts to get more and more support: {{}}","traction",["attraction","extraction"],"<b>traction</b>. We say a project <i>gains traction</i>."],
+  ["A small part of something: {{}}","fraction",["reaction","satisfaction"],"<b>fraction</b>. <i>a fraction of the price</i> = a very small part of it."],
+  ["Something that makes people want to come or buy: {{}}","attraction",["contraction","transaction"],"<b>attraction</b>. <i>tourist attraction</i>, or the attraction of a low price."],
+  ["When nobody does anything: {{}}","inaction",["interaction","reaction"],"<b>inaction</b>. <i>in-</i> means not. The opposite is <i>action</i>."]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,q[0],q[1],q[2],q[3].replace(/&#39;/g,"'"))));
+ mkSec(1,"Words with -action",it,el);
+})();
+/* 2 */
+(function(){
+ const el=mkCard(2,"-action words in sentences","Write the correct word in each gap. Use each word once.");
+ const body=$(".body",el);const it=[];
+ body.insertAdjacentHTML("beforeend","<div class=\"wb\">fraction · reaction · interaction · contraction · transaction · traction · satisfaction · extraction</div>");
+ const Q=[
+  ["Every {{}} on my card is saved in the bank app.","transaction","<b>transaction</b>. One payment = one transaction."],
+  ["In a recession, the economy is in {{}}: it gets smaller.","contraction","<b>contraction</b>. The economy gets smaller."],
+  ["Oil {{}} creates many jobs in the north of the country.","extraction","<b>extraction</b>. Taking oil out of the ground."],
+  ["We give every customer a survey to measure their {{}}.","satisfaction","<b>satisfaction</b>. How happy the customers are."],
+  ["The stock market&#39;s {{}} to the bad news was fast: prices fell.","reaction","<b>reaction</b>. What happened after the news."],
+  ["The new app is finally gaining {{}}: thousands of people download it every day.","traction","<b>traction</b>. <i>gain traction</i> = get more and more support."],
+  ["He paid only a {{}} of the real price.","fraction","<b>fraction</b>. A very small part of the price."],
+  ["Good {{}} between the sales team and the designers helps the company.","interaction","<b>interaction</b>. People talking and working together."]
+ ];
+ Q.forEach((q,i)=>it.push(GAP(body,i+1,q[0].replace(/&#39;/g,"'"),[q[1]],q[2])));
+ mkSec(2,"-action words in sentences",it,el);
+})();
+/* 3 */
+(function(){
+ const el=mkCard(3,"Second conditional: choose the correct form","Choose the correct option.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["If I {{}} a lot of money, I would start my own company.","had",["have","would have"],"<b>had</b>. If-part = past simple."],
+  ["What would you do if your company {{}} outsourcing?","stopped",["stops","would stop"],"<b>stopped</b>. After <i>if</i> we use the past simple, not would."],
+  ["My brother {{}} abroad if he spoke English better.","would work",["works","worked"],"<b>would work</b>. Result-part = would + base verb."],
+  ["If our revenue doubled, we {{}} a new office.","would open",["will open","opened"],"<b>would open</b>. <i>doubled</i> is past simple, so the result needs would."],
+  ["If I {{}} you, I wouldn't accept that offer.","were",["am","would be"],"<b>were</b>. <i>If I were you</i> is the usual way to give advice."],
+  ["They wouldn't lose customers if the service {{}} better.","were",["would be","is"],"<b>were</b>. Not <i>would be</i> in the if-part."],
+  ["Would you sell the company if someone {{}} you a billion dollars?","offered",["would offer","offers"],"<b>offered</b>. Past simple after <i>if</i>."],
+  ["If the CEO {{}} the net profit, he would be very happy.","saw",["sees","would see"],"<b>saw</b>. Imaginary situation, so past simple."],
+  ["I {{}} nervous if I were an outsider in a big committee.","would feel",["feel","felt"],"<b>would feel</b>. <i>were</i> in the if-part, so the result has would."],
+  ["Customers wouldn't be angry if every transaction {{}} fast.","were",["would be","is"],"<b>were</b>. The if-part uses past simple (<i>were</i>), not would."]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,q[0],q[1],q[2],q[3])));
+ mkSec(3,"Second conditional: choose the correct form",it,el);
+})();
+/* 4 */
+(function(){
+ const el=mkCard(4,"Put the verb in the correct form","Write the verb in brackets in the correct form. Both <i>would</i> and the short form <i>&#39;d</i> are fine, but write the whole verb phrase.".replace("&#39;","'"));
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["If I {{}} (be) the director, I would change the schedule.",["were"],"<b>were</b>. If-part, past simple of <i>be</i>."],
+  ["She would buy a new car if she {{}} (have) enough money.",["had"],"<b>had</b>. If-part, past simple."],
+  ["If the company {{}} (open) a subsidiary in Spain, it would hire local staff.",["opened"],"<b>opened</b>. If-part, past simple."],
+  ["We {{}} (not / outsource) the work if we had more employees.",["wouldn't outsource","would not outsource","wouldnt outsource"],"<b>wouldn&#39;t outsource</b>. Negative result: wouldn&#39;t + base verb."],
+  ["What would you do if you {{}} (win) a million dollars?",["won"],"<b>won</b>. If-part, past simple."],
+  ["If the transition {{}} (be) easier, the new CEO would be happier.",["were"],"<b>were</b>. If-part, past simple of <i>be</i>."],
+  ["He {{}} (not / take) the job if the salary was low.",["wouldn't take","would not take","wouldnt take"],"<b>wouldn&#39;t take</b>. Negative result."],
+  ["My parents {{}} (be) proud if I became a CEO.",["would be","'d be"],"<b>would be</b>. Result-part: would + base verb."],
+  ["If they {{}} (sell) their shares, they would get a lot of money.",["sold"],"<b>sold</b>. If-part, irregular past simple of <i>sell</i>."],
+  ["I {{}} (travel) more if I didn&#39;t work so much.",["would travel","'d travel"],"<b>would travel</b>. Result-part: would + base verb."]
+ ];
+ Q.forEach((q,i)=>it.push(GAP(body,i+1,q[0].replace(/&#39;/g,"'"),q[1],q[2].replace(/&#39;/g,"'"))));
+ mkSec(4,"Put the verb in the correct form",it,el);
+})();
+/* 5 */
+(function(){
+ const el=mkCard(5,"Company words in the second conditional","Write the correct word in each gap. Use each word once.");
+ const body=$(".body",el);const it=[];
+ body.insertAdjacentHTML("beforeend","<div class=\"wb\">revenue · candidate · outsourcing · successor · committee · subsidiary · transition · outsider</div>");
+ const Q=[
+  ["If our CEO retired tomorrow, who would be her {{}}?","successor","<b>successor</b>. The person who takes the job next."],
+  ["The company would look different if an {{}} became the new boss.","outsider","<b>outsider</b>. A person from outside the company."],
+  ["If we had a {{}} in Brazil, we would sell more there.","subsidiary","<b>subsidiary</b>. A smaller company that your company owns."],
+  ["We would save time if we stopped {{}} our customer service.","outsourcing","<b>outsourcing</b>. Giving work to another company. After <i>stop</i> we use -ing."],
+  ["The {{}} to the new system would be easy if everyone had training.","transition","<b>transition</b>. A change from one situation to another."],
+  ["If our {{}} fell by half, we would close two shops.","revenue","<b>revenue</b>. All the money a company earns."],
+  ["If I were on the {{}}, I would ask every candidate three questions.","committee","<b>committee</b>. A small group that makes a decision."],
+  ["She would get the job if she were the best {{}}.","candidate","<b>candidate</b>. A person who wants the job."]
+ ];
+ Q.forEach((q,i)=>it.push(GAP(body,i+1,q[0],[q[1]],q[2])));
+ mkSec(5,"Company words in the second conditional",it,el);
+})();
+/* 6 */
+(function(){
+ const el=mkCard(6,"Which sentence is correct?","Choose the correct sentence.");
+ const body=$(".body",el);const it=[];
+ const Q=[
+  ["If I were rich, I would buy a factory.",["If I would be rich, I would buy a factory.","If I am rich, I would buy a factory."],"No <i>would</i> after <i>if</i>, and no present simple with <i>would</i>."],
+  ["What would you do if you lost your job?",["What will you do if you lost your job?","What would you do if you would lose your job?"],"<i>would</i> in the question, past simple after <i>if</i>."],
+  ["She wouldn't work there if the salary were low.",["She won't work there if the salary were low.","She wouldn't work there if the salary would be low."],"Result: wouldn't + base verb. If-part: past simple."],
+  ["If we had more staff, we could open earlier.",["If we would have more staff, we could open earlier.","If we had more staff, we can open earlier."],"If-part past simple, result <i>could</i> (a kind of <i>would</i>)."],
+  ["The committee would choose me if I were a better candidate.",["The committee will choose me if I were a better candidate.","The committee would choose me if I would be a better candidate."],"<i>would</i> only in the result-part."],
+  ["If the market reacted badly, the shares would fall.",["If the market would react badly, the shares would fall.","If the market reacts badly, the shares would fall."],"Both parts match: past simple + would."],
+  ["I would be happier if I worked less.",["I will be happier if I worked less.","I would be happier if I would work less."],"<i>would</i> in the result-part, past simple in the if-part."],
+  ["Would you buy it if it were cheaper?",["Will you buy it if it were cheaper?","Would you buy it if it would be cheaper?"],"<i>would</i> at the start, past simple (<i>were</i>) after <i>if</i>."]
+ ];
+ Q.forEach((q,i)=>it.push(SEL(body,i+1,"{{}}",q[0],q[1],"<b>"+q[0]+"</b> "+q[2])));
+ mkSec(6,"Which sentence is correct?",it,el);
+})();
+/* 7 */
+(function(){
+ const el=mkCard(7,"First or second conditional?","Is the situation real or imaginary? Choose.");
+ const body=$(".body",el);const it=[];
+ const A="First conditional: real or possible",B="Second conditional: imaginary or unlikely";
+ const Q=[
+  ["If the contract is signed today, we will start work on Monday.",A],
+  ["If I owned a multinational company, I would live in Dubai.",B],
+  ["If the transaction fails, the bank will call you.",A],
+  ["If customer satisfaction were higher, our revenue would grow faster.",B],
+  ["If we use fewer suppliers, we will save money.",A],
+  ["If I had a successor, I would retire tomorrow.",B],
+  ["If you send the report now, the committee will read it before lunch.",A],
+  ["If the economy were in contraction, many companies would lose money.",B]
+ ];
+ Q.forEach((q,i)=>{
+  const why=q[1]===A?"<b>First conditional</b>. A real possibility. <i>if</i> + present simple, <i>will</i> + base verb.":"<b>Second conditional</b>. Imaginary or unlikely. <i>if</i> + past simple, <i>would</i> + base verb.";
+  it.push(inlineItem(body,i+1,q[0]+" → {{}}","sel",sh([A,B]),v=>v===q[1],q[1],why,v=>"\""+q[0]+"\" – you chose "+(v||"(nothing)")+"; correct: "+q[1]));
+ });
+ mkSec(7,"First or second conditional?",it,el);
+})();
+/* 8 */
+(function(){
+ const el=CARD(8,"Write: if I owned a company","Imagine you are the owner of a company. Write <b>8 sentences</b> about what you would do. Use the second conditional. Use at least <b>2 words with -action</b> and <b>3 words</b> from Task 5.",
+  "<div class=\"box\">For example: <i>If I owned a company, I would open a subsidiary in Italy. If our customer satisfaction were low, I would talk to every customer.</i></div>");
+ const ACT=/\b(transaction|contraction|extraction|satisfaction|reaction|traction|fraction|interaction|attraction|inaction)s?\b/gi;
+ const TW=/\b(successor|outsider|subsidiary|outsourcing|transition|revenue|committee|candidate|currently|net profit|controlled by|multinational)s?\b/gi;
+ const w=writeBox(el,"Write your 8 sentences here…",[
+  ["8 sentences",t=>hasN(t,/[.!?](\s|$)/g,8)],
+  ["8 times: if",t=>hasN(t,/\bif\b/gi,8)],
+  ["8 times: would",t=>hasN(t,/\bwould\b|'d\b|wouldn't|wouldn’t/gi,8)],
+  ["2 words with -action",t=>hasN(t,ACT,2)],
+  ["3 company words",t=>hasN(t,TW,3)]]);
+ secs.push({num:8,label:"Writing",total:0,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[],items:[],extra:w});
+})();
+/* ============ BAR / REPORT / SAVE ============ */
+const scored=secs.filter(s=>s.total>0);
+const TOTAL=scored.reduce((a,s)=>a+s.total,0);
+const got=()=>scored.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+function updateBar(){$("#fill").style.width=(100*got()/TOTAL)+"%";$("#score").textContent=got()+" / "+TOTAL}
+function buildReport(){
+  const d=new Date(),p=n=>String(n).padStart(2,"0");
+  const nm=($("#nm").value||"").trim()||"(no name)";
+  let t="Second conditional homework – "+nm+" ("+d.getFullYear()+"-"+p(d.getMonth()+1)+"-"+p(d.getDate())+" "+p(d.getHours())+":"+p(d.getMinutes())+")\n\n";
+  scored.forEach(s=>{t+="Task "+s.num+" "+s.label+": "+(s.revealed?"answers shown":s.checked?s.score+" / "+s.total:"not checked")+"\n"});
+  t+="\nTotal: "+got()+" / "+TOTAL+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  scored.forEach(s=>{if(!s.log.length)return;any=true;t+="\nTask "+s.num+" "+s.label+"\n";s.log.forEach(e=>{t+="  ✗ "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]\n"})});
+  if(!any)t+="\n(no mistakes recorded)\n";
+  let wr="";
+  secs.forEach(s=>{if(s.extra&&s.extra.ta&&s.extra.ta.value.trim())wr+="\nTask "+s.num+" "+s.label+" – your text:\n"+s.extra.ta.value.trim()+"\n"});
+  if(wr)t+="\nWRITING / NOTES (not scored)\n"+wr;
+  return t;
+}
+$("#copy").addEventListener("click",()=>{
+  const txt=buildReport();const m=$("#copied");
+  const done=()=>{m.hidden=false;setTimeout(()=>{m.hidden=true},3500)};
+  const fb=()=>{const ta=document.createElement("textarea");ta.value=txt;ta.style.cssText="position:fixed;left:-999px";document.body.appendChild(ta);ta.select();try{document.execCommand("copy")}catch(e){}document.body.removeChild(ta);done()};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fb)}else fb();
+});
+function saveHtml(){
+  const d=new Date(),pad=n=>String(n).padStart(2,"0");
+  const day=d.getFullYear()+"-"+pad(d.getMonth()+1)+"-"+pad(d.getDate());
+  const clone=document.documentElement.cloneNode(true);
+  const src=[].slice.call(document.querySelectorAll("input,select,textarea")),dst=[].slice.call(clone.querySelectorAll("input,select,textarea"));
+  src.forEach((el,i)=>{
+    if(el.tagName==="SELECT"){[].slice.call(dst[i].options).forEach((o,j)=>{if(j===el.selectedIndex)o.setAttribute("selected","");else o.removeAttribute("selected")});dst[i].setAttribute("disabled","")}
+    else if(el.tagName==="TEXTAREA"){dst[i].textContent=el.value;dst[i].setAttribute("readonly","")}
+    else{dst[i].setAttribute("value",el.value);dst[i].setAttribute("readonly","");dst[i].setAttribute("tabindex","-1")}
+  });
+  [].slice.call(clone.querySelectorAll("script,.tools,.out")).forEach(n=>n.remove());
+  const st=document.createElement("style");st.textContent="input,textarea{pointer-events:none}select:disabled{color:#1c1c1c;opacity:1}";clone.querySelector("head").appendChild(st);
+  const note=document.createElement("div");note.className="savedbar";
+  const nm=($("#nm").value||"").trim();
+  note.innerHTML="<b>Saved answers</b> · "+day+"<span id=\"nmv\"></span> · Score: <b>"+got()+" / "+TOTAL+"</b>";
+  if(nm){note.querySelector("#nmv").textContent=" · "+nm}
+  const hd=clone.querySelector("header.hd");hd.parentNode.insertBefore(note,hd.nextSibling);
+  const box=document.createElement("section");box.className="card log";
+  const h=document.createElement("h2");h.textContent="My results";const pre=document.createElement("pre");pre.textContent=buildReport();
+  box.appendChild(h);box.appendChild(pre);clone.querySelector(".sheet").appendChild(box);
+  const blob=new Blob(["<!DOCTYPE html>\n"+clone.outerHTML],{type:"text/html;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="Second_conditional_homework_answers_"+day+".html";
+  document.body.appendChild(a);a.click();document.body.removeChild(a);setTimeout(()=>URL.revokeObjectURL(url),4000);
+  const m=$("#saved");m.hidden=false;setTimeout(()=>{m.hidden=true},4500);
+}
+$("#save").addEventListener("click",saveHtml);
+window.HW={sections:secs,buildReport,saveHtml};
+updateBar();
+})();
+</script>
+</body>
+</html>
