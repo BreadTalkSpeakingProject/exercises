@@ -319,6 +319,7 @@ function matchEngine(host,cfg){
     });
   };
   api.fill=function(){left.forEach(function(l,i){sels[i].value=ans[i];clearMark(rows[i]);clearMark(sels[i]);});};
+  api.getState=function(){return sels.map(function(x){return x.value;});};api.setState=function(a){sels.forEach(function(x,i){x.value=(a&&a[i])||"";});};
   return api;
 }
 
