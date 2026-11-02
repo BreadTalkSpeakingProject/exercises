@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Revision: Quantifiers, Vocabulary &amp; Mistakes</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0e1113; --card:#0e1113; --coral:#fc5034; --pale:#ffc0b6; --grid:#3c3a3f;
+  --ink:#ffffff; --muted:#b9b4b8; --ok:#4cc38a; --bad:#ff5d73; --field:#171a1d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"M PLUS Rounded 1c",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;font-size:17px;line-height:1.5}
+.wrap{max-width:860px;margin:0 auto;padding:0 16px 72px}
+header{padding:32px 0 8px;text-align:center}
+h1{font-family:Georgia,"Times New Roman",serif;font-weight:700;color:var(--pale);font-size:clamp(28px,6vw,42px);margin:0 0 8px}
+.sub{color:var(--muted);margin:0 0 18px}
+.name{display:flex;gap:10px;align-items:center;justify-content:center;flex-wrap:wrap;margin-bottom:6px}
+.name input{background:var(--field);color:var(--ink);border:2px solid var(--grid);border-radius:14px;padding:10px 14px;font:inherit;min-width:230px}
+.name input:focus,.fld:focus,textarea:focus,select:focus{outline:none;border-color:var(--coral)}
+.bar{position:sticky;top:0;z-index:5;background:rgba(14,17,19,.96);border-bottom:2px solid var(--grid);padding:10px 16px;margin:0 -16px 26px;display:flex;align-items:center;gap:14px}
+.bar .track{flex:1;height:10px;border-radius:99px;background:var(--grid);overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--coral);transition:width .3s}
+.bar .num{font-family:Georgia,serif;font-weight:700;color:var(--pale);white-space:nowrap}
+.card{position:relative;border:3px solid var(--coral);border-radius:40px;background:var(--card);padding:62px 26px 26px;margin:70px 0}
+.badge{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);width:92px;height:92px;border-radius:50%;background:var(--card);border:3px solid var(--coral);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-weight:700;font-size:48px;color:var(--pale)}
+.card h2{font-family:Georgia,serif;font-weight:700;color:var(--pale);font-size:clamp(20px,4vw,26px);text-align:center;margin:0 0 6px}
+.card .how{text-align:center;color:var(--muted);margin:0 0 20px}
+.defs{border:2px solid var(--grid);border-radius:18px;padding:12px 16px;margin-bottom:18px}
+.defs div{padding:3px 0}
+.defs b{color:var(--coral);font-family:Georgia,serif;margin-right:6px}
+.row{border-top:2px solid var(--grid);padding:14px 0;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.row:first-of-type{border-top:0}
+.row .n{color:var(--coral);font-family:Georgia,serif;font-weight:700;min-width:26px}
+.row .t{flex:1 1 260px}
+.row .t i{font-style:normal;color:var(--pale)}
+select,.fld,textarea{background:var(--field);color:var(--ink);border:2px solid var(--grid);border-radius:14px;padding:9px 12px;font:inherit}
+select{min-width:76px}
+.fld{width:100%;margin-top:8px}
+.item2{border-top:2px solid var(--grid);padding:14px 0}
+.item2:first-of-type{border-top:0}
+.item2 .s{display:flex;gap:12px}
+.item2 u{color:var(--pale);text-decoration:underline;text-decoration-color:var(--coral);text-decoration-thickness:3px;text-underline-offset:4px;font-weight:500}
+.bank{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 18px;justify-content:center}
+.chip{border:2px solid var(--coral);color:var(--pale);border-radius:99px;padding:4px 14px;font-size:15px}
+.ok{border-color:var(--ok)!important}
+.no{border-color:var(--bad)!important}
+.mark{font-weight:700;margin-left:6px}
+.mark.ok{color:var(--ok)}.mark.no{color:var(--bad)}
+.note{color:var(--muted);font-size:14px;margin-top:6px}
+.btns{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+button{font:inherit;font-weight:700;cursor:pointer;border-radius:99px;padding:9px 20px;border:2px solid var(--coral);background:transparent;color:var(--pale)}
+button.main{background:var(--coral);color:#0e1113}
+button:hover{filter:brightness(1.12)}
+.score{margin-left:auto;font-family:Georgia,serif;font-weight:700;color:var(--pale)}
+textarea{width:100%;min-height:210px;resize:vertical}
+.chk{list-style:none;padding:0;margin:12px 0 0}
+.chk li{padding:2px 0;color:var(--muted)}
+.chk li.done{color:var(--ok)}
+.chk li::before{content:"○ "}
+.chk li.done::before{content:"✓ "}
+.final{text-align:center}
+.final p{color:var(--muted)}
+.msg{color:var(--ok);font-weight:700;min-height:1.4em;margin-top:10px}
+.grp{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;margin:2px 4px}
+.pill{padding:3px 12px;font-size:15px;font-weight:500;border-width:2px;color:var(--pale);background:transparent}
+.pill.on{background:var(--coral);color:#0e1113}
+.pill.ok{border-color:var(--ok);background:var(--ok);color:#0e1113}
+.pill.no{border-color:var(--bad);background:var(--bad);color:#0e1113}
+.gapin{background:var(--field);color:var(--ink);border:2px solid var(--grid);border-radius:12px;padding:3px 10px;font:inherit;width:150px;margin:0 4px}
+.gapin:focus{outline:none;border-color:var(--coral)}
+@media(max-width:560px){.card{padding:58px 16px 20px;border-radius:30px}.badge{width:78px;height:78px;font-size:40px}.row .t{flex-basis:100%}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Revision · Grammar &amp; Vocabulary</h1>
+  <p class="sub">Five tasks. Press <b>Check</b> in each task, then copy your results for the teacher.</p>
+  <div class="name"><label for="who">Your name:</label><input id="who" placeholder="Type your name" autocomplete="name"></div>
+</header>
+<div class="bar"><div class="track"><div class="fill" id="fill"></div></div><div class="num" id="tot">0 / 0</div></div>
+
+<section class="card" id="c1">
+  <div class="badge">1</div>
+  <h2>Quantifiers</h2>
+  <p class="how">Choose the correct option in every gap. Some sentences have two gaps: check the verb too.</p>
+  
+  <div id="body1"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="0">Check</button><button data-act="show" data-s="0">Show answers</button><button data-act="again" data-s="0">Try again</button><span class="score" id="sc0"></span></div>
+</section>
+
+<section class="card" id="c2">
+  <div class="badge">2</div>
+  <h2>Fix the sentence</h2>
+  <p class="how">Correct the mistake. <b>One sentence has no mistake:</b> leave it as it is.</p>
+  
+  <div id="body2"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="1">Check</button><button data-act="show" data-s="1">Show answers</button><button data-act="again" data-s="1">Try again</button><span class="score" id="sc1"></span></div>
+</section>
+
+<section class="card" id="c3">
+  <div class="badge">3</div>
+  <h2>Personality adjectives</h2>
+  <p class="how">Write a word from the box in each gap. Two words are extra.</p>
+  <div class="bank" id="bank3"></div>
+  <div id="body3"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="2">Check</button><button data-act="show" data-s="2">Show answers</button><button data-act="again" data-s="2">Try again</button><span class="score" id="sc2"></span></div>
+</section>
+
+<section class="card" id="c4">
+  <div class="badge">4</div>
+  <h2>Sleep &amp; the bedroom</h2>
+  <p class="how">Choose the phrase that fits the meaning and the grammar.</p>
+  
+  <div id="body4"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="3">Check</button><button data-act="show" data-s="3">Show answers</button><button data-act="again" data-s="3">Try again</button><span class="score" id="sc3"></span></div>
+</section>
+
+<section class="card" id="c5">
+  <div class="badge">5</div>
+  <h2>Halloween idioms</h2>
+  <p class="how">Choose the idiom that fits. Watch the form of the verb.</p>
+  
+  <div id="body5"></div>
+  <div class="btns"><button class="main" data-act="check" data-s="4">Check</button><button data-act="show" data-s="4">Show answers</button><button data-act="again" data-s="4">Try again</button><span class="score" id="sc4"></span></div>
+</section>
+
+<section class="card final" id="fin">
+  <div class="badge">✓</div>
+  <h2>Send it to your teacher</h2>
+  <p>This copies your score and your mistakes. Paste it in the chat.</p>
+  <div class="btns" style="justify-content:center"><button class="main" id="copy">Copy my results</button></div>
+  <div class="msg" id="msg"></div>
+</section>
+</div>
+
+<script>
+const norm = s => (s||"").toLowerCase().replace(/[‘’`]/g,"'").replace(/-/g," ").replace(/[.,!?;:"“”]/g,"").replace(/'/g,"").replace(/\s+/g," ").trim();
+const plain = s => (s||"").replace(/<[^>]+>/g,"");
+const esc = s => (s||"").replace(/[&<>"]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+/* ---------- data ---------- */
+const Q1 = [
+  `We have {fewer|less*|a few} time than we thought, so every minute {count|counts*}.`,
+  `{A few|Few*|Little} of my neighbours {is|are*} happy about the new road, so they are planning to complain.`,
+  `How {many|much*} luggage {do|does*} she usually take on a weekend trip?`,
+  `There {isn't|aren't*} {much|many*} cars on this street at night, so it feels very quiet.`,
+  `Several of the students in my group {has|have*} already sent the project, but {a little|a few*|much} of the others are still working.`,
+  `I don't have {some|no|any*} free time this week.`,
+  `There's {few|a little*|a few} milk in the fridge, enough for two coffees.`,
+  `The city needs {less|much|fewer*} cars and {many|few|more*} public transport.`,
+  `A lot of information {is*|are} available online, but {few|little*} of it is reliable.`,
+  `Most of the money {were|was*} spent on food, but most of the guests {was|were*} still hungry.`,
+  `Each of the rooms in this hotel {have|has*} its own balcony.`
+];
+const T2 = [
+  {s:`We are waiting our answer.`, ok:[`we are waiting for our answer`,`we're waiting for our answer`], model:`We are waiting for our answer.`},
+  {s:`It made so big impact on me.`, ok:[`it made such a big impact on me`,`it had such a big impact on me`,`it made a big impact on me`,`it had a big impact on me`], model:`It made such a big impact on me.`},
+  {s:`He was angry to people.`, ok:[`he was angry with people`,`he was angry at people`], model:`He was angry with people.`},
+  {s:`If I were you, I would wake someone up.`, ok:[`if i were you i would wake someone up`,`i would wake someone up if i were you`], model:`If I were you, I would wake someone up.`, right:true},
+  {s:`I don't know what does this word mean.`, ok:[`i don't know what this word means`], model:`I don't know what this word means.`},
+  {s:`There is a lot of people in the queue.`, ok:[`there are a lot of people in the queue`,`there are lots of people in the queue`,`there are many people in the queue`], model:`There are a lot of people in the queue.`},
+  {s:`Let's discuss about the problem.`, ok:[`let's discuss the problem`], model:`Let's discuss the problem.`},
+  {s:`My friend gave me a good advice.`, ok:[`my friend gave me good advice`,`my friend gave me some good advice`,`my friend gave me a good piece of advice`,`my friend gave me a piece of good advice`], model:`My friend gave me good advice.`},
+  {s:`I need some more informations about the trip.`, ok:[`i need some more information about the trip`,`i need more information about the trip`], model:`I need some more information about the trip.`}
+];
+const T3 = [
+  {s:`My sister is so [sensitive] that even a small joke about her haircut can make her cry.`, ok:[`sensitive`]},
+  {s:`The twins are very [picky] about food: they only eat five different dishes and send back a plate if it has one tiny mushroom.`, ok:[`picky`]},
+  {s:`Teenagers who are [rebellious] often break the rules just to show that they can decide for themselves.`, ok:[`rebellious`]},
+  {s:`Her mood changes every hour, so her friends say she is too [moody] to plan a surprise party with.`, ok:[`moody`]},
+  {s:`The new student was too [timid] to speak in class: she whispered her answers and blushed every time the teacher looked at her.`, ok:[`timid`]},
+  {s:`Both of my brothers are [short-tempered]: they get angry in seconds when somebody interrupts them, but they calm down quickly.`, ok:[`short-tempered`]},
+  {s:`A [sensible] person always thinks before acting, so nobody was surprised when Mia saved her money instead of buying a new phone.`, ok:[`sensible`]},
+  {s:`I felt really [awkward] at the party because I didn't know anybody and I spilled juice on the host's carpet.`, ok:[`awkward`]}
+];
+const BANK3 = [`awkward`,`rebellious`,`stubborn`,`picky`,`short-tempered`,`generous`,`sensitive`,`timid`,`moody`,`sensible`];
+const Q4 = [
+  `After the long hike, everybody {tossed and turned|slept like a log*|dozed off} all night, so nobody {heard*|hear} the storm.`,
+  `My brother is a very {heavy|light*|deep} sleeper: the smallest noise {wakes*|wake} him up.`,
+  `I was reading on the sofa when I suddenly {dozed off*|tossed and turned|slept like a log} and dropped my book.`,
+  `He couldn't sleep: he {dozed off|slept like a log|tossed and turned*} for hours because the neighbours were having a party.`,
+  `Every morning the {pillowcase|fitted sheet*|blanket} comes off the corners of my mattress, because the elastic is old.`,
+  `The street lamp shines straight into my room, so I'm going to buy {fitted sheets|a night light|blackout curtains*}.`
+];
+const Q5 = [
+  `Their cabin is {out of harm's way|in the middle of nowhere*|over my dead body}: the nearest shop {is*|are} forty kilometres away.`,
+  `Sell my grandmother's piano? {Still waters run deep|Nothing ventured, nothing gained|Over my dead body*}!`,
+  `Tom looks shy, but he writes brilliant songs and speaks four languages. {Nothing ventured, nothing gained|Still waters run deep*|Out of harm's way}.`,
+  `Be careful with Sam: he {kicks the bucket|talks behind people's backs*|is out of harm's way} and then smiles at them the next day.`,
+  `Please keep the matches {over my dead body|in the middle of nowhere|out of harm's way*} so the children can't reach them.`,
+  `I'm afraid to apply for the job abroad, but {still waters run deep|nothing ventured, nothing gained*|over my dead body}.`
+];
+
+/* ---------- choice tasks (pills) ---------- */
+function parseItem(str){
+  const parts=[]; let last=0, m; const re=/\{([^{}]+)\}/g;
+  while((m=re.exec(str))){
+    if(m.index>last) parts.push({t:str.slice(last,m.index)});
+    parts.push({g:m[1].split("|").map(o=>({o:o.replace(/\*$/,""), ok:/\*$/.test(o)}))});
+    last=re.lastIndex;
+  }
+  if(last<str.length) parts.push({t:str.slice(last)});
+  return parts;
+}
+function makeChoice(bodyId, items){
+  const P = items.map(parseItem);
+  const body = document.getElementById(bodyId);
+  const draw = () => {
+    body.innerHTML = P.map((parts,i)=>`<div class="row" data-i="${i}"><span class="n">${i+1}</span><span class="t">${parts.map(p=>p.t!==undefined?esc(p.t):`<span class="grp">${p.g.map((o,j)=>`<button type="button" class="pill" data-o="${j}">${esc(o.o)}</button>`).join("")}</span>`).join("")}<span class="mark"></span></span></div>`).join("");
+  };
+  draw();
+  const rows = () => [...body.querySelectorAll(".row")];
+  const picks = r => [...r.querySelectorAll(".grp")].map(g=>{ const b=g.querySelector(".pill.on"); return b?+b.dataset.o:-1; });
+  const groups = i => P[i].filter(p=>p.g);
+  const itemOk = (i,r) => { const pk=picks(r); return groups(i).every((g,k)=> pk[k]>=0 && g.g[pk[k]].ok); };
+  const line = (i,r) => {
+    const pk=picks(r); let k=0; const wrong=[];
+    const s = P[i].map(p=>{ if(p.t!==undefined) return p.t; const g=p.g, c=pk[k]; const right=g.find(o=>o.ok).o; if(!(c>=0 && g[c].ok)) wrong.push(right); k++; return c>=0?g[c].o:"___"; }).join("");
+    return wrong.length ? `${s}   (correct: ${wrong.join("; ")})` : s;
+  };
+  return {
+    total: items.length,
+    check(){
+      let n=0;
+      rows().forEach((r,i)=>{
+        const ok=itemOk(i,r), pk=picks(r), gs=groups(i);
+        r.querySelectorAll(".grp").forEach((g,k)=>{ g.querySelectorAll(".pill").forEach(b=>b.classList.remove("ok","no")); const b=g.querySelector(".pill.on"); if(b){ b.classList.add(gs[k].g[+b.dataset.o].ok?"ok":"no"); } });
+        const mk=r.querySelector(".mark"); mk.textContent = ok?" ✓":" ✗"; mk.className="mark "+(ok?"ok":"no");
+        if(ok) n++;
+      });
+      return n;
+    },
+    report(){ return rows().map((r,i)=>({ok:itemOk(i,r), line:line(i,r)})); },
+    fill(){ rows().forEach((r,i)=>{ r.querySelectorAll(".grp").forEach((g,k)=>{ g.querySelectorAll(".pill").forEach((b,j)=>b.classList.toggle("on", groups(i)[k].g[j].ok)); }); }); },
+    reset: draw
+  };
+}
+document.addEventListener("click", e=>{
+  const b=e.target.closest(".pill"); if(!b) return;
+  const g=b.closest(".grp"); g.querySelectorAll(".pill").forEach(x=>x.classList.remove("on","ok","no")); b.classList.add("on");
+  const mk=b.closest(".row").querySelector(".mark"); if(mk){ mk.textContent=""; mk.className="mark"; }
+});
+
+/* ---------- task 2: fix the sentence ---------- */
+function makeFix(){
+  const body=document.getElementById("body2");
+  const draw=()=>{ body.innerHTML = T2.map((it,i)=>`<div class="item2" data-i="${i}"><div class="s"><span class="n" style="color:var(--coral);font-family:Georgia,serif;font-weight:700;min-width:26px">${i+1}</span><span class="mark"></span></div><input class="fld" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(it.s)}"></div>`).join(""); };
+  draw();
+  const items=()=>[...body.querySelectorAll(".item2")];
+  const good=(i,v)=>T2[i].ok.map(norm).includes(norm(v));
+  return {
+    total:T2.length,
+    check(){
+      let n=0;
+      items().forEach((r,i)=>{ const inp=r.querySelector("input"), mk=r.querySelector(".mark"); const g=good(i,inp.value);
+        inp.classList.toggle("ok",g); inp.classList.toggle("no",!g); mk.textContent=g?"✓":"✗"; mk.className="mark "+(g?"ok":"no"); if(g) n++; });
+      return n;
+    },
+    report(){ return items().map((r,i)=>{ const v=r.querySelector("input").value.trim(), g=good(i,v);
+      return {ok:g, line: g ? `"${T2[i].s}" → ${v}` : `"${T2[i].s}" – you wrote: "${v||"(nothing)"}"; model: "${T2[i].model}"`}; }); },
+    fill(){ items().forEach((r,i)=>{ r.querySelector("input").value=T2[i].model; }); },
+    reset: draw
+  };
+}
+
+/* ---------- task 3: gap fill with a word bank ---------- */
+function makeGaps(){
+  document.getElementById("bank3").innerHTML = BANK3.map(b=>`<span class="chip">${esc(b)}</span>`).join("");
+  const body=document.getElementById("body3");
+  const draw=()=>{ body.innerHTML = T3.map((it,i)=>`<div class="item2" data-i="${i}"><div class="s"><span class="n" style="color:var(--coral);font-family:Georgia,serif;font-weight:700;min-width:26px">${i+1}</span><span>${esc(it.s).replace(/\[(.+?)\]/,`<input class="gapin" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="gap ${i+1}">`)}<span class="mark"></span></span></div></div>`).join(""); };
+  draw();
+  const items=()=>[...body.querySelectorAll(".item2")];
+  const good=(i,v)=>T3[i].ok.map(norm).includes(norm(v));
+  const full=(i,w)=>T3[i].s.replace(/\[(.+?)\]/, w);
+  return {
+    total:T3.length,
+    check(){ let n=0;
+      items().forEach((r,i)=>{ const inp=r.querySelector("input"), mk=r.querySelector(".mark"); const g=good(i,inp.value);
+        inp.classList.toggle("ok",g); inp.classList.toggle("no",!g); mk.textContent=g?" ✓":" ✗"; mk.className="mark "+(g?"ok":"no"); if(g) n++; });
+      return n; },
+    report(){ return items().map((r,i)=>{ const v=r.querySelector("input").value.trim(), g=good(i,v);
+      return {ok:g, line: g ? full(i,T3[i].ok[0]) : `${full(i,v||"___")}   (correct: ${T3[i].ok[0]})`}; }); },
+    fill(){ items().forEach((r,i)=>{ r.querySelector("input").value=T3[i].ok[0]; }); },
+    reset: draw
+  };
+}
+
+/* ---------- sections ---------- */
+const sections = [
+  {label:"Quantifiers", api:makeChoice("body1",Q1)},
+  {label:"Fix the sentence", api:makeFix()},
+  {label:"Personality adjectives", api:makeGaps()},
+  {label:"Sleep & the bedroom", api:makeChoice("body4",Q4)},
+  {label:"Halloween idioms", api:makeChoice("body5",Q5)}
+].map((s,k)=>Object.assign(s,{num:k+1,total:s.api.total,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]}));
+const GRAND = sections.reduce((a,s)=>a+s.total,0);
+document.getElementById("tot").textContent = "0 / "+GRAND;
+
+function record(sec){
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){ const k=i+"|"+r.line; if(!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i,line:r.line}); } }
+  });
+}
+function refresh(){
+  const got = sections.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+  document.getElementById("tot").textContent = got+" / "+GRAND;
+  document.getElementById("fill").style.width = (100*got/GRAND)+"%";
+  sections.forEach((s,k)=>{
+    const el=document.getElementById("sc"+k);
+    el.textContent = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "");
+  });
+}
+document.addEventListener("click", e=>{
+  const b=e.target.closest("button[data-act]"); if(!b) return;
+  const sec=sections[+b.dataset.s], act=b.dataset.act;
+  if(act==="check"){
+    if(sec.revealed){ document.getElementById("sc"+b.dataset.s).textContent="Press Try again first"; return; }
+    sec.score=sec.api.check(); sec.checked=true; record(sec);
+  } else if(act==="show"){
+    sec.api.fill(); sec.api.check(); sec.revealed=true; sec.checked=false; sec.score=0;
+  } else if(act==="again"){
+    sec.api.reset(); sec.revealed=false; sec.checked=false; sec.score=0; sec.lastOk=[];
+  }
+  refresh();
+});
+
+/* ---------- report ---------- */
+function buildReport(){
+  const who=(document.getElementById("who").value||"").trim()||"(no name)";
+  const d=new Date(); const pad=n=>String(n).padStart(2,"0");
+  const when=`${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  const out=[`Revision: Grammar & Vocabulary – ${who} (${when})`,""];
+  let got=0;
+  sections.forEach(s=>{
+    let st = s.revealed ? "answers shown" : (s.checked ? s.score+" / "+s.total : "not checked");
+    if(s.checked&&!s.revealed) got+=s.score;
+    out.push(`Task ${s.num} ${s.label}: ${st}`);
+  });
+  out.push(`Total: ${got} / ${GRAND}`,"","MISTAKES (every wrong answer, including ones fixed on retry)","");
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length) return; any=true;
+    out.push(`Task ${s.num} ${s.label}`);
+    s.log.forEach(e=>{ const tag = s.lastOk[e.i] ? "[fixed on retry]" : "[still wrong]"; out.push(`  ✗ ${plain(e.line)}   ${tag}`); });
+    out.push("");
+  });
+  if(!any) out.push("(none)","");
+  return out.join("\n").trim();
+}
+async function copyText(t){
+  try{ await navigator.clipboard.writeText(t); return true; }
+  catch(e){
+    const ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select();
+    let ok=false; try{ ok=document.execCommand("copy"); }catch(_){} document.body.removeChild(ta); return ok;
+  }
+}
+document.getElementById("copy").addEventListener("click", async()=>{
+  const ok=await copyText(buildReport());
+  const m=document.getElementById("msg"); m.textContent = ok ? "Copied! Paste it in the chat." : "Could not copy. Select the text and copy it by hand.";
+});
+window.HW = {sections, buildReport};
+</script>
+</body>
+</html>
