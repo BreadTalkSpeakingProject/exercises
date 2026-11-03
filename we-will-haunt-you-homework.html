@@ -105,8 +105,52 @@ const SECS=[
  "Surely you read this book at school. → {You will have read this book at school.*|You will read this book at school.|You would read this book at school.}",
  "The washing machine refused to work yesterday. → {The washing machine wouldn’t work yesterday.*|The washing machine won’t have worked yesterday.|The washing machine won’t work yesterday.}"
  ]},
-{num:"6",title:"Your turn: write",type:"write",ac:5,
- instr:"Write 5–6 sentences: what do you think your family or friends have done this morning, without asking them? Use will have + V3 at least 3 times. (Not scored.)"}
+{num:"6",title:"Past habits: would or used to?",type:"choice",ac:6,shuf:true,
+ instr:"Choose the correct form for a habit in the past.",
+ note:"<b>would</b> = repeated actions in the past (<i>every Sunday we would visit my gran</i>). For states (be, live, have, love, hate) we say <b>used to</b>, not would: <i>I used to live in Kazan.</i>",
+ items:[
+ "Every summer we {would*|will|are} rent a cabin by the lake.",
+ "I {would|used to*|will} be afraid of the dark when I was little.",
+ "My dad {would*|will|had} wake us up with loud music on Saturday mornings.",
+ "We {would|used to*|will} live in a tiny village before we moved to the city.",
+ "Every evening my grandmother {would*|will|used} sit on the porch and tell us ghost stories.",
+ "I {would|used to*|will} hate broccoli, but now I love it."
+ ]},
+{num:"7",title:"Annoying habits and typical behaviour: will",type:"choice",ac:7,shuf:true,
+ instr:"Choose will or would. Is the habit about now or about the past?",
+ note:"<b>will</b> = typical or annoying behaviour <b>now</b>: <i>He will always leave the door open. It drives me crazy!</i> About the <b>past</b> we use <b>would</b>: <i>When he was younger, he would always leave the door open.</i>",
+ items:[
+ "My neighbour {will*|would|did} always play loud music at midnight. It drives me crazy!",
+ "Babies {will*|would|are} cry when they are hungry.",
+ "He {will*|would|did} sit for hours in front of the TV, and nothing can stop him.",
+ "When my brother was younger, he {would*|will|did} always borrow my clothes without asking.",
+ "Every year my aunt {will*|would|had} send me a ridiculous sweater for Christmas, and I never know what to say.",
+ "Accidents {will*|would|did} happen, so don’t worry."
+ ]},
+{num:"8",title:"Refusals: won’t or wouldn’t?",type:"choice",ac:0,shuf:true,
+ instr:"Choose the correct form. Look at the time clue.",
+ note:"<b>won’t</b> = refuses (now). <b>wouldn’t</b> = refused (past). It works for people and for things: <i>the door won’t open</i>, <i>the car wouldn’t start this morning</i>.",
+ items:[
+ "Right now the printer is broken and it {won’t*|wouldn’t|hasn’t} print anything.",
+ "Last night my laptop {wouldn’t*|won’t|hasn’t} turn on, so I couldn’t finish my homework.",
+ "I’ve asked him politely, but at the moment he {won’t*|wouldn’t|hasn’t} listen to anyone.",
+ "When I was a teenager, I {wouldn’t*|won’t|haven’t} eat vegetables however hard my mum tried.",
+ "The door is stuck. It just {won’t*|wouldn’t|hasn’t} open!",
+ "The kids were tired, but they {wouldn’t*|won’t|haven’t} go to bed yesterday."
+ ]},
+{num:"9",title:"Write: will, would, won’t, wouldn’t",type:"gap",ac:1,
+ bank:["will","would","won’t","wouldn’t"],
+ instr:"Type the missing word from the box. You can use a word more than once.",
+ items:[
+ "When I was little, my brother [would] always hide under the table when guests came.",
+ "Don’t ask him for help, he [won’t/will not] listen.",
+ "My cat [will] sit on my keyboard whenever I try to work. It’s so annoying!",
+ "I begged her to stay, but she [wouldn’t/would not] change her mind.",
+ "Every Sunday my grandfather [would] tell us stories about the old days.",
+ "The window is stuck: it [won’t/will not] close."
+ ]},
+{num:"10",title:"Your turn: write",type:"write",ac:5,
+ instr:"Write 6–8 sentences. (a) Something you or someone you know always does that is annoying. (b) What you would do as a kid. (c) Something that wouldn’t work or someone who wouldn’t listen. (d) A guess about what someone did yesterday, with will have + V3. (Not scored.)"}
 ];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -164,9 +208,9 @@ function build(sec,box){
       fill(){L.forEach((o,i)=>box.querySelectorAll(".gap")[i].value=o.ans.split("/")[0]);this.check()}};
   }
   if(sec.d.type==="write"){
-    box.innerHTML=`<textarea rows="7" id="wr" placeholder="Write here..."></textarea><ul class="check" id="ck"><li data-k="s">5 or more sentences</li><li data-k="w">3 or more sentences with will have + V3</li></ul>`;
-    const ta=$("#wr",box);const info=()=>{const t=ta.value;const sn=(t.match(/[^.!?]+[.!?]+/g)||[]).length;const w=(t.replace(/’/g,"'").match(WORDS)||[]).length;
-      $("[data-k=s]",box).classList.toggle("y",sn>=5);$("[data-k=w]",box).classList.toggle("y",w>=3)};
+    box.innerHTML=`<textarea rows="7" id="wr" placeholder="Write here..."></textarea><ul class="check" id="ck"><li data-k="s">6 or more sentences</li><li data-k="w">4 or more uses of will, would, won\'t or wouldn\'t</li><li data-k="h">one will have + V3 sentence</li></ul>`;
+    const ta=$("#wr",box);const info=()=>{const t=ta.value;const sn=(t.match(/[^.!?]+[.!?]+/g)||[]).length;const t2=t.replace(/’/g,"'");const w=(t2.match(/\b(will|would|won't|wouldn't|'ll)\b|\bwon't|\bwouldn't|'ll\b/gi)||[]).length;const h=(t2.match(WORDS)||[]).length;
+      $("[data-k=s]",box).classList.toggle("y",sn>=6);$("[data-k=w]",box).classList.toggle("y",w>=4);$("[data-k=h]",box).classList.toggle("y",h>=1)};
     ta.oninput=info;
     return {total:0,check(){return 0},report(){return []},fill(){},text:()=>ta.value.trim()};
   }
