@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAVE and Stereotypes — Homework</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#f7f2ea;--ink:#2a2118;--muted:#7a6e60;--card:#fffdf8;--line:#e3d9c8;--gold:#b8860b;--ok:#2d7a4f;--bad:#c0392b;--accent:#b8860b}
+body{font-family:'Poppins',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55;padding:0 0 70px;font-size:15px}
+.bar{position:sticky;top:0;z-index:10;background:#2a2118;color:#fff;padding:10px 16px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.bar b{font-size:14px;letter-spacing:.04em}
+.track{flex:1;min-width:120px;height:8px;background:#4b3f33;border-radius:99px;overflow:hidden}
+.fill{height:100%;width:0;background:#e0b84a;transition:width .3s}
+.bar .sc{font-weight:600;font-size:14px;white-space:nowrap}
+.wrap{max-width:820px;margin:0 auto;padding:22px 16px 0}
+h1{font-size:clamp(24px,5vw,34px);line-height:1.2;margin-bottom:6px}
+h1 em{color:var(--gold);font-style:normal}
+.sub{color:var(--muted);margin-bottom:18px}
+.namebox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+.namebox input{font:inherit;padding:8px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;min-width:200px;flex:1;max-width:320px}
+.intro{background:#fff;border:1.5px solid var(--line);border-left:5px solid var(--gold);border-radius:12px;padding:14px 16px;margin-bottom:16px}
+.intro p+p{margin-top:8px}
+details{background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 16px;margin-bottom:22px}
+summary{cursor:pointer;font-weight:600}
+table{border-collapse:collapse;width:100%;margin-top:10px;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--muted);font-weight:600}
+.task{background:var(--card);border:1.5px solid var(--line);border-top:6px solid var(--accent);border-radius:14px;padding:16px;margin-bottom:22px}
+.th{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.num{background:var(--accent);color:#fff;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;font-weight:700;flex:none}
+.th h2{font-size:18px;flex:1}
+.badge{font-size:13px;font-weight:600;color:var(--muted);white-space:nowrap}
+.inst{color:var(--muted);font-size:14px;margin:4px 0 12px}
+.item{padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;margin-bottom:8px;transition:background .15s,border-color .15s}
+.item.ok{border-color:var(--ok);background:#eef8f1}
+.item.bad{border-color:var(--bad);background:#fdf0ee}
+.item .n{font-weight:600;color:var(--muted);margin-right:6px}
+.pills{display:inline-flex;gap:6px;flex-wrap:wrap;vertical-align:middle;margin:2px 4px}
+.pill{font:inherit;font-size:14px;padding:3px 12px;border-radius:99px;border:1.5px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.pill:hover{border-color:var(--accent)}
+.pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.pill.ok{background:var(--ok);border-color:var(--ok);color:#fff}
+.pill.bad{background:var(--bad);border-color:var(--bad);color:#fff}
+input.gap,input.typed{font:inherit;padding:4px 10px;border:1.5px solid var(--line);border-radius:8px;background:#fff;outline:none}
+input.gap{width:160px;max-width:100%}
+input.typed{width:100%;margin-top:8px}
+input.gap:focus,input.typed:focus,textarea:focus{border-color:var(--accent)}
+.hint{color:var(--muted);font-size:13px;margin-left:4px}
+.q{font-weight:500}
+.aave{display:inline-block;background:#f3ead7;border-radius:6px;padding:1px 8px;font-weight:600}
+.tiles{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px;min-height:36px}
+.tile{font:inherit;font-size:14px;padding:4px 12px;border-radius:8px;border:1.5px solid var(--line);background:#fff;cursor:pointer}
+.tile:hover{border-color:var(--accent)}
+.tiles.ans{background:#faf5e8;border:1.5px dashed var(--line);border-radius:10px;padding:6px}
+.tiles.ans:empty::before{content:"Click the words to build the sentence";color:var(--muted);font-size:13px;padding:4px 6px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.btn{font:inherit;font-size:13px;font-weight:600;padding:8px 16px;border-radius:99px;border:2px solid var(--ink);background:var(--ink);color:#fff;cursor:pointer}
+.btn.sec{background:transparent;color:var(--ink)}
+.btn:hover{opacity:.85}
+.sug{margin-top:8px;font-size:14px;color:#1f5f3a;background:#eef5ee;border-radius:8px;padding:6px 10px}
+.msg{font-size:13px;color:var(--bad);margin-top:8px;min-height:1em}
+textarea{width:100%;min-height:170px;font:inherit;padding:10px 12px;border:1.5px solid var(--line);border-radius:10px;background:#fff;resize:vertical}
+.chk{list-style:none;margin-top:10px}
+.chk li{font-size:14px;color:var(--muted);padding:2px 0}
+.chk li.done{color:var(--ok);font-weight:600}
+.chk li::before{content:"○ "}
+.chk li.done::before{content:"✓ "}
+.final{background:#fff;border:2px solid var(--ink);border-radius:14px;padding:16px;margin-top:10px}
+.final .msg{color:var(--ok)}
+@media(max-width:520px){body{font-size:14px}.pill{font-size:13px}}
+</style>
+</head>
+<body>
+<div class="bar"><b>AAVE &amp; Stereotypes</b><div class="track"><div class="fill" id="fill"></div></div><span class="sc" id="sc">0 / 0</span></div>
+<div class="wrap">
+<h1>AAVE and <em>stereotypes</em> — homework</h1>
+<p class="sub">Vocabulary, grammar and a short writing task from our lesson on stereotypes and African American Vernacular English.</p>
+<div class="namebox"><label for="nm"><b>Your name:</b></label><input id="nm" type="text" placeholder="Type your name"></div>
+
+<div class="intro">
+<p><b>Before you start.</b> AAVE (African American Vernacular English) is a legitimate dialect of English with its own consistent grammar. It is not "broken" or "lazy" English. Misunderstanding it is one of the ways language differences turn into prejudice.</p>
+<p>Each task has three buttons: <b>Check</b> (marks every answer), <b>Show answers</b> (fills them in, no score) and <b>Try again</b>. At the end, press <b>Copy my results</b> and paste the report into the chat.</p>
+</div>
+
+<details>
+<summary>Cheat sheet: key words and AAVE features</summary>
+<table>
+<tr><th>Word</th><th>Pronunciation (AmE)</th><th>Meaning</th></tr>
+<tr><td>stereotype</td><td>/ˈster.i.ə.taɪp/</td><td>an oversimplified, widely held belief about a group</td></tr>
+<tr><td>prejudice</td><td>/ˈpredʒ.ə.dɪs/</td><td>a negative opinion about a group formed without real knowledge</td></tr>
+<tr><td>discrimination</td><td>/dɪˌskrɪm.ɪˈneɪ.ʃən/</td><td>unfair treatment of people because of their group</td></tr>
+<tr><td>bias</td><td>/ˈbaɪ.əs/</td><td>a tendency to favor or dislike someone, often unconsciously</td></tr>
+<tr><td>marginalization</td><td>/ˌmɑːr.dʒɪ.nə.laɪˈzeɪ.ʃən/</td><td>pushing a group to the edges of society, denying it power</td></tr>
+<tr><td>caricature</td><td>/ˈker.ɪ.kə.tʃʊr/</td><td>an exaggerated, distorted picture of a group, used for mockery</td></tr>
+<tr><td>racial trope</td><td>/ˈreɪ.ʃəl troʊp/</td><td>a repeated pattern in stories that relies on racial stereotypes</td></tr>
+<tr><td>systemic inequality</td><td>/sɪˈstem.ɪk ˌɪn.ɪˈkwɑː.lə.ɾi/</td><td>institutions that keep producing unequal results for different groups</td></tr>
+</table>
+<table>
+<tr><th>AAVE feature</th><th>Example</th><th>Standard English</th></tr>
+<tr><td>habitual <i>be</i></td><td>She be working late.</td><td>She usually works late.</td></tr>
+<tr><td><i>done</i> (completed)</td><td>He done finished.</td><td>He has already finished.</td></tr>
+<tr><td>stressed <i>BEEN</i></td><td>I BEEN knew that.</td><td>I have known that for a long time.</td></tr>
+<tr><td><i>finna</i></td><td>I'm finna leave.</td><td>I'm about to leave.</td></tr>
+<tr><td>negative concord</td><td>I ain't got no money.</td><td>I don't have any money.</td></tr>
+<tr><td>copula deletion</td><td>They outside.</td><td>They are outside.</td></tr>
+</table>
+</details>
+
+<div id="tasks"></div>
+
+<div class="final">
+<b>All done?</b>
+<div class="btns"><button class="btn" id="copy">Copy my results</button></div>
+<div class="msg" id="copymsg"></div>
+</div>
+</div>
+
+<script>
+const $=s=>document.querySelector(s);
+function el(tag,cls,html){const e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+function plain(h){const d=document.createElement('div');d.innerHTML=h;return d.textContent}
+function norm(s){
+  s=(s||'').toLowerCase().replace(/[’‘]/g,"'");
+  s=s.replace(/\b(he|she|it|that|there|where|who|what)'s\b/g,'$1 is').replace(/\bi'm\b/g,'i am').replace(/\b(you|we|they)'re\b/g,'$1 are').replace(/'ve\b/g,' have').replace(/'ll\b/g,' will').replace(/\bdon't\b/g,'do not').replace(/\bdoesn't\b/g,'does not');
+  return s.replace(/[.,!?;:"“”]/g,'').replace(/\s+/g,' ').trim();
+}
+function parseChoice(t){
+  const parts=[];const re=/\{([^}]*)\}/g;let last=0,m;
+  while((m=re.exec(t))){
+    if(m.index>last)parts.push(t.slice(last,m.index));
+    const opts=m[1].split('|').map(o=>({t:o.replace(/\*$/,''),c:/\*$/.test(o)}));
+    for(let a=opts.length-1;a>0;a--){const b=Math.floor(Math.random()*(a+1));[opts[a],opts[b]]=[opts[b],opts[a]]}
+    parts.push({opts:opts.map(o=>o.t),ci:opts.findIndex(o=>o.c)});
+    last=re.lastIndex;
+  }
+  if(last<t.length)parts.push(t.slice(last));
+  return parts;
+}
+function choiceLine(parts,s){
+  let out='';const fix=[];
+  parts.forEach((x,g)=>{
+    if(typeof x==='string')out+=plain(x);
+    else{out+=(s[g]>=0?x.opts[s[g]]:'___');if(s[g]!==x.ci)fix.push(x.opts[x.ci]);}
+  });
+  return out.replace(/\s+/g,' ').trim()+(fix.length?'   (correct: '+fix.join(' / ')+')':'');
+}
+
+/* ---------- builders ---------- */
+function buildChoice(body,def){
+  const items=def.items.map(parseChoice);
+  const sel=items.map(p=>p.map(x=>typeof x==='string'?null:-1));
+  const cards=[],grps=[];
+  items.forEach((parts,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));
+    grps[i]=[];
+    parts.forEach((x,g)=>{
+      if(typeof x==='string'){c.appendChild(el('span',null,x));return}
+      const grp=el('span','pills');
+      x.opts.forEach((o,k)=>{
+        const b=el('button','pill');b.type='button';b.textContent=o;
+        b.onclick=()=>{sel[i][g]=k;[...grp.children].forEach((bb,kk)=>{bb.classList.toggle('on',kk===k);bb.classList.remove('ok','bad')});c.classList.remove('ok','bad')};
+        grp.appendChild(b);
+      });
+      c.appendChild(grp);grps[i][g]=grp;
+    });
+    body.appendChild(c);cards.push(c);
+  });
+  const okOf=(i)=>items[i].every((x,g)=>typeof x==='string'||sel[i][g]===x.ci);
+  return{
+    total:items.length,
+    check(){
+      let sc=0;
+      items.forEach((parts,i)=>{
+        parts.forEach((x,g)=>{
+          if(typeof x==='string')return;
+          [...grps[i][g].children].forEach((b,k)=>{b.classList.remove('ok','bad');if(k===sel[i][g])b.classList.add(sel[i][g]===x.ci?'ok':'bad')});
+        });
+        const ok=okOf(i);cards[i].classList.toggle('ok',ok);cards[i].classList.toggle('bad',!ok);if(ok)sc++;
+      });
+      return sc;
+    },
+    report(){return items.map((parts,i)=>({ok:okOf(i),line:choiceLine(parts,sel[i])}))},
+    fill(){
+      items.forEach((parts,i)=>parts.forEach((x,g)=>{
+        if(typeof x==='string')return;
+        sel[i][g]=x.ci;[...grps[i][g].children].forEach((b,k)=>{b.classList.toggle('on',k===x.ci);b.classList.remove('ok','bad')});
+      }));
+    }
+  };
+}
+
+function buildGap(body,def){
+  const rx=/\[([^\]|]+)\|([^\]]*)\]/;
+  const data=def.items.map(s=>{const m=s.match(rx);return{pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),acc:m[1].split('/'),hint:m[2]}});
+  const inputs=[],cards=[];
+  data.forEach((d,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));
+    c.appendChild(el('span',null,d.pre));
+    const inp=el('input','gap');inp.type='text';inp.autocomplete='off';inp.setAttribute('autocapitalize','off');inp.spellcheck=false;
+    inp.oninput=()=>c.classList.remove('ok','bad');
+    c.appendChild(inp);c.appendChild(el('span','hint','('+d.hint+')'));c.appendChild(el('span',null,d.post));
+    body.appendChild(c);inputs.push(inp);cards.push(c);
+  });
+  const okOf=i=>data[i].acc.map(norm).includes(norm(inputs[i].value));
+  return{
+    total:data.length,
+    check(){let sc=0;data.forEach((d,i)=>{const ok=okOf(i);cards[i].classList.toggle('ok',ok);cards[i].classList.toggle('bad',!ok);if(ok)sc++});return sc},
+    report(){return data.map((d,i)=>{const ok=okOf(i);const v=inputs[i].value.trim()||'___';return{ok,line:(plain(d.pre)+v+plain(d.post)).replace(/\s+/g,' ').trim()+(ok?'':'   (correct: '+d.acc[0]+')')}})},
+    fill(){data.forEach((d,i)=>{inputs[i].value=d.acc[0];cards[i].classList.remove('ok','bad')})}
+  };
+}
+
+function buildTF(body,def){
+  const sel=def.items.map(()=>-1);const cards=[],grps=[];
+  def.items.forEach((it,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));c.appendChild(el('span',null,it.s));
+    const grp=el('span','pills');
+    ['True','False'].forEach((o,k)=>{
+      const b=el('button','pill');b.type='button';b.textContent=o;
+      b.onclick=()=>{sel[i]=k;[...grp.children].forEach((bb,kk)=>{bb.classList.toggle('on',kk===k);bb.classList.remove('ok','bad')});c.classList.remove('ok','bad')};
+      grp.appendChild(b);
+    });
+    c.appendChild(grp);body.appendChild(c);cards.push(c);grps.push(grp);
+  });
+  const corr=i=>def.items[i].a?0:1;
+  return{
+    total:def.items.length,
+    check(){let sc=0;def.items.forEach((it,i)=>{[...grps[i].children].forEach((b,k)=>{b.classList.remove('ok','bad');if(k===sel[i])b.classList.add(sel[i]===corr(i)?'ok':'bad')});const ok=sel[i]===corr(i);cards[i].classList.toggle('ok',ok);cards[i].classList.toggle('bad',!ok);if(ok)sc++});return sc},
+    report(){return def.items.map((it,i)=>({ok:sel[i]===corr(i),line:'"'+plain(it.s)+'" – you chose '+(sel[i]<0?'nothing':(sel[i]===0?'True':'False'))+'; correct: '+(it.a?'True':'False')}))},
+    fill(){def.items.forEach((it,i)=>{sel[i]=corr(i);[...grps[i].children].forEach((b,k)=>{b.classList.toggle('on',k===corr(i));b.classList.remove('ok','bad')})})}
+  };
+}
+
+function buildTyped(body,def){
+  const inputs=[],cards=[];
+  def.items.forEach((it,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));c.appendChild(el('span','aave',it.p));
+    const inp=el('input','typed');inp.type='text';inp.placeholder='Standard English…';inp.autocomplete='off';inp.setAttribute('autocapitalize','off');inp.spellcheck=false;
+    inp.oninput=()=>c.classList.remove('ok','bad');
+    c.appendChild(inp);body.appendChild(c);inputs.push(inp);cards.push(c);
+  });
+  const okOf=i=>def.items[i].acc.map(norm).includes(norm(inputs[i].value));
+  return{
+    total:def.items.length,
+    check(){let sc=0;def.items.forEach((it,i)=>{const ok=okOf(i);cards[i].classList.toggle('ok',ok);cards[i].classList.toggle('bad',!ok);if(ok)sc++});return sc},
+    report(){return def.items.map((it,i)=>({ok:okOf(i),line:'"'+it.p+'" – you wrote: '+(inputs[i].value.trim()?'"'+inputs[i].value.trim()+'"':'(nothing)')+'; model: "'+it.model+'"'}))},
+    fill(){def.items.forEach((it,i)=>{inputs[i].value=it.model;cards[i].classList.remove('ok','bad')})}
+  };
+}
+
+function buildOrder(body,def){
+  const st=def.items.map(it=>({pool:it.tiles.map((w,k)=>k),ans:[]}));
+  const cards=[],zones=[];
+  function draw(i){
+    const it=def.items[i],s=st[i],z=zones[i];
+    z.pool.innerHTML='';z.ans.innerHTML='';
+    s.ans.forEach(k=>{const b=el('button','tile');b.type='button';b.textContent=it.tiles[k];b.onclick=()=>{s.ans.splice(s.ans.indexOf(k),1);s.pool.push(k);s.pool.sort((a,b)=>a-b);cards[i].classList.remove('ok','bad');draw(i)};z.ans.appendChild(b)});
+    s.pool.forEach(k=>{const b=el('button','tile');b.type='button';b.textContent=it.tiles[k];b.onclick=()=>{s.pool.splice(s.pool.indexOf(k),1);s.ans.push(k);cards[i].classList.remove('ok','bad');draw(i)};z.pool.appendChild(b)});
+  }
+  def.items.forEach((it,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));c.appendChild(el('span','aave',it.p));
+    const ans=el('div','tiles ans'),pool=el('div','tiles');
+    c.appendChild(ans);c.appendChild(pool);body.appendChild(c);cards.push(c);zones.push({ans,pool});draw(i);
+  });
+  const made=i=>st[i].ans.map(k=>def.items[i].tiles[k]).join(' ');
+  const okOf=i=>norm(made(i))===norm(def.items[i].ans);
+  return{
+    total:def.items.length,
+    check(){let sc=0;def.items.forEach((it,i)=>{const ok=okOf(i);cards[i].classList.toggle('ok',ok);cards[i].classList.toggle('bad',!ok);if(ok)sc++});return sc},
+    report(){return def.items.map((it,i)=>({ok:okOf(i),line:'"'+it.p+'" – you made: '+(st[i].ans.length?'"'+made(i)+'"':'(nothing)')+'; correct: "'+it.ans+'"'}))},
+    fill(){def.items.forEach((it,i)=>{const ws=it.ans.split(' ');const used=[];st[i].ans=ws.map(w=>{const k=it.tiles.findIndex((t,idx)=>t===w&&!used.includes(idx));used.push(k);return k});st[i].pool=it.tiles.map((w,k)=>k).filter(k=>!used.includes(k));cards[i].classList.remove('ok','bad');draw(i)})}
+  };
+}
+
+function buildFree(body,def){
+  const inputs=[],sugs=[];
+  def.items.forEach((it,i)=>{
+    const c=el('div','item');c.appendChild(el('span','n',(i+1)+'.'));c.appendChild(el('span','aave',it.p));
+    const inp=el('input','typed');inp.type='text';inp.placeholder='Standard English…';inp.autocomplete='off';inp.setAttribute('autocapitalize','off');inp.spellcheck=false;
+    c.appendChild(inp);
+    const sg=el('div','sug','Suggested: '+it.sug.join(' / '));sg.style.display='none';c.appendChild(sg);
+    body.appendChild(c);inputs.push(inp);sugs.push(sg);
+  });
+  return{
+    total:0,check(){return 0},report(){return[]},
+    fill(){sugs.forEach(x=>x.style.display='block')},
+    extra(){return def.items.map((it,i)=>inputs[i].value.trim()?'"'+it.p+'" → '+inputs[i].value.trim()+'   (suggested: '+it.sug[0]+')':null).filter(Boolean)}
+  };
+}
+
+function buildWriting(body,def){
+  const ta=el('textarea');ta.placeholder='Write here…';body.appendChild(ta);
+  const ul=el('ul','chk');body.appendChild(ul);
+  const rules=[
+    ['At least 6 sentences',t=>(t.match(/[.!?](\s|$)/g)||[]).length>=6],
+    ['At least 4 words from the lesson (stereotype, prejudice, discrimination, bias, marginalization, caricature, trope, inequality)',t=>(t.match(/stereotyp|prejudic|discriminat|bias|marginali|caricatur|trope|inequalit/gi)||[]).length>=4],
+    ['A contrast word (however, although, while, but, on the other hand)',t=>/\b(however|although|though|while|but|on the other hand)\b/i.test(t)],
+    ['An opinion phrase (I think, I believe, in my opinion, I would argue)',t=>/\b(i think|i believe|in my opinion|i would argue|to me|i feel)\b/i.test(t)]
+  ];
+  const lis=rules.map(r=>{const li=el('li',null,r[0]);ul.appendChild(li);return li});
+  const upd=()=>rules.forEach((r,i)=>lis[i].classList.toggle('done',r[1](ta.value)));
+  ta.oninput=upd;upd();
+  return{total:0,check(){return 0},report(){return[]},fill(){},text(){return ta.value.trim()}};
+}
+
+/* ---------- task data ---------- */
+const TASKS=[
+{kind:'choice',title:'Choose the correct word',accent:'#b8860b',inst:'Pick the word that fits each sentence.',items:[
+ 'Believing that all teenagers are lazy is a {caricature|stereotype*|discrimination}.',
+ 'The landlord refused to rent to them because of their accent. That is {bias|discrimination*|marginalization}.',
+ 'He has a {prejudice*|trope|caricature} against people he has never even met.',
+ 'A cartoon that shows a whole nation as greedy and lazy is a {caricature*|bias|prejudice}.',
+ 'A hero who always dies first because he is the only minority character is a racial {trope*|inequality|prejudice}.',
+ 'Even fair-minded judges can have an unconscious {bias*|discrimination|marginalization} when they decide a case.',
+ 'When a community has no voice in politics and no power, we talk about {marginalization*|caricature|stereotype}.',
+ 'Unequal schools, housing and pay that keep repeating for one group are examples of systemic {inequality*|prejudice|trope}.'
+]},
+{kind:'gap',title:'Word forms',accent:'#2e6b8a',inst:'Write the correct form of the word in brackets (noun, verb, adjective…).',items:[
+ 'It is [stereotypical|stereotype] to think that all teenagers are glued to their phones.',
+ 'Some landlords [discriminate|discrimination] against families with pets.',
+ 'He is not a bad person, but he can be a bit [prejudiced|prejudice] about accents.',
+ 'The new policy will [marginalize|marginalization] small farmers even more.',
+ 'The documentary was [biased|bias] because it showed only one side of the story.',
+ 'The comedian [exaggerated|exaggerate] every habit of the character to make us laugh.',
+ 'There is a lot of [inequality|equal] between rich and poor neighbourhoods.'
+]},
+{kind:'choice',title:'Stereotype and its story',accent:'#8e44ad',inst:'Read the short story and choose the stereotype that grew out of it. Start each sentence with "Black people…".',items:[
+ 'After slavery, a cheap food became popular in many families, and many cooks sold it. Racist media later twisted this into a mocking joke. <br>→ Black people {love fried chicken*|love watermelon|are naturally musical}.',
+ 'Racist propaganda showed newly freed people eating a fruit in exaggerated ways, to make them look childish and lazy. <br>→ Black people {love watermelon*|cannot swim well|love fried chicken}.',
+ 'Many enslaved people were deliberately not allowed to learn this skill, and later many public pools were segregated. <br>→ Black people {cannot swim well*|are naturally better athletes|are always cool}.',
+ 'Hollywood often used a storytelling device in which minority characters were eliminated early in the plot. <br>→ Black people {die first in horror films*|are naturally musical|cannot swim well}.',
+ 'African American communities helped to create jazz, blues, funk and rock. Over time this was simplified into a myth. <br>→ Black people {are naturally musical*|are naturally better athletes|love watermelon}.',
+ 'Black athletes became very visible in professional sports, but this was sometimes used to support biological myths about race. <br>→ Black people {are naturally better athletes*|are always cool|die first in horror films}.'
+]},
+{kind:'tf',title:'True or false?',accent:'#c0392b',inst:'Decide if each statement is true or false, according to our lesson.',items:[
+ {s:'AAVE is a legitimate dialect with its own grammar rules.',a:true},
+ {s:'AAVE is just slang that people use when they are lazy.',a:false},
+ {s:'Habitual <i>be</i> shows that something happens regularly.',a:true},
+ {s:'"She be working late" means that she is working late right now.',a:false},
+ {s:'Stressed <i>BEEN</i> shows that something started a long time ago.',a:true},
+ {s:'Double negatives such as "I ain\'t got no money" follow a consistent rule, and many languages (for example, Russian) work in the same way.',a:true},
+ {s:'Prejudice and systemic inequality mean exactly the same thing.',a:false},
+ {s:'A stereotype can still be harmful even when it sounds positive.',a:true}
+]},
+{kind:'free',title:'Rewrite in Standard English',accent:'#d35400',inst:'Rewrite each sentence in Standard English. There is more than one good way to do it, so this task is not scored. When you finish, press "Show suggested answers" and compare.',items:[
+ {p:'He be sleeping in class.',sug:['He usually sleeps in class.','He always sleeps in class.','He sleeps in class all the time.']},
+ {p:'We ain\'t got no time.',sug:['We don\'t have any time.','We have no time.']},
+ {p:'She done cooked dinner.',sug:['She has already cooked dinner.','She already cooked dinner.']},
+ {p:'Where she at?',sug:['Where is she?']},
+ {p:'They finna eat.',sug:['They are about to eat.','They are going to eat.','They are getting ready to eat.']},
+ {p:'I BEEN had this phone.',sug:['I\'ve had this phone for a long time.','I\'ve had this phone for ages.']},
+ {p:'He tryna help you.',sug:['He is trying to help you.','He\'s trying to help you.']},
+ {p:'You late again.',sug:['You are late again.','You\'re late again.']}
+]},
+{kind:'order',title:'Build the sentence',accent:'#7d3c98',inst:'Click the words in the right order to make the Standard English version of each sentence.',items:[
+ {p:'My cousin be playing basketball after work.',tiles:['usually','My','plays','cousin','after','basketball','work.'],ans:'My cousin usually plays basketball after work.'},
+ {p:'She done finished the report.',tiles:['finished','She','already','the','has','report.'],ans:'She has already finished the report.'},
+ {p:'They finna start the show.',tiles:['start','They','about','the','are','to','show.'],ans:'They are about to start the show.'},
+ {p:'I ain\'t got no plans for tonight.',tiles:['any','I','plans','do','for','not','have','tonight.'],ans:'I do not have any plans for tonight.'},
+ {p:'Why you acting like that?',tiles:['acting','Why','that?','you','are','like'],ans:'Why are you acting like that?'}
+]},
+{kind:'choice',title:'Prepositions and patterns',accent:'#1f618d',inst:'Choose the correct preposition or linking word.',items:[
+ 'Older workers often face discrimination {against*|to|for} when they apply for jobs.',
+ 'She has a strong prejudice {against*|to|on} people from other cities.',
+ 'There is a clear bias {against*|at|in} women in this field.',
+ 'The report talks about the marginalization {of*|to|for} minority groups.',
+ 'Have you heard the stereotype {that*|which|what} all teenagers are lazy?',
+ 'It is not kind to make fun {of*|at|with} someone\'s accent.',
+ 'Critics said the film stereotypes older people {as*|like|to} forgetful.',
+ 'We discussed the inequality {between*|among|from} rich and poor schools.'
+]},
+{kind:'writing',title:'Writing: comedy and stereotypes',accent:'#117a65',inst:'Can comedy reduce racial bias, or can it reinforce it? When does satire become offensive rather than critical? Write 6–8 sentences with your opinion. This task is not scored, but the checklist shows what to include.'}
+];
+
+/* ---------- engine ---------- */
+const BUILD={choice:buildChoice,gap:buildGap,tf:buildTF,typed:buildTyped,free:buildFree,order:buildOrder,writing:buildWriting};
+const sections=[];
+const host=$('#tasks');
+
+function record(sec){
+  if(!sec.api.report)return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){const k=i+'|'+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}
+  });
+}
+function updateBar(){
+  let got=0,tot=0;
+  sections.forEach(s=>{tot+=s.total;if(s.checked&&!s.revealed)got+=s.score});
+  $('#sc').textContent=got+' / '+tot;
+  $('#fill').style.width=(tot?Math.round(got/tot*100):0)+'%';
+}
+TASKS.forEach((def,idx)=>{
+  const card=el('div','task');card.style.setProperty('--accent',def.accent);
+  const th=el('div','th');th.appendChild(el('div','num',String(idx+1)));th.appendChild(el('h2',null,def.title));
+  const badge=el('span','badge','');th.appendChild(badge);card.appendChild(th);
+  card.appendChild(el('div','inst',def.inst));
+  const body=el('div','body');card.appendChild(body);
+  const sec={id:idx+1,num:idx+1,label:def.title,total:0,score:0,checked:false,revealed:false,api:null,log:[],seen:new Set(),lastOk:[],def};
+  const msg=el('div','msg');
+  function setup(){
+    body.innerHTML='';sec.api=BUILD[def.kind](body,def);sec.total=sec.api.total;
+    sec.score=0;sec.checked=false;sec.revealed=false;msg.textContent='';
+    badge.textContent=sec.total?('0 / '+sec.total):'not scored';
+  }
+  setup();
+  if(def.kind==='free'){
+    const btns=el('div','btns');
+    const bs=el('button','btn','Show suggested answers');bs.type='button';
+    bs.onclick=()=>sec.api.fill();
+    btns.append(bs);card.appendChild(btns);
+  }else if(def.kind!=='writing'){
+    const btns=el('div','btns');
+    const bc=el('button','btn','Check'),bs=el('button','btn sec','Show answers'),br=el('button','btn sec','Try again');
+    [bc,bs,br].forEach(b=>b.type='button');
+    bc.onclick=()=>{
+      if(sec.revealed){msg.textContent='Answers are shown. Press "Try again" to practise for real.';return}
+      msg.textContent='';sec.score=sec.api.check();sec.checked=true;record(sec);
+      badge.textContent=sec.score+' / '+sec.total;updateBar();
+    };
+    bs.onclick=()=>{sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;badge.textContent='answers shown';msg.textContent='';updateBar()};
+    br.onclick=()=>{setup();updateBar()};
+    btns.append(bc,bs,br);card.appendChild(btns);card.appendChild(msg);
+  }
+  host.appendChild(card);sections.push(sec);
+});
+updateBar();
+
+function buildReport(){
+  const name=($('#nm').value||'').trim()||'(no name)';
+  const d=new Date();const stamp=d.toLocaleDateString()+' '+d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
+  const L=['AAVE and Stereotypes homework – '+name+' ('+stamp+')',''];
+  let got=0,tot=0;
+  sections.forEach(s=>{
+    if(!s.total){return}
+    tot+=s.total;
+    let st;
+    if(s.revealed)st='answers shown';else if(!s.checked)st='not checked';else{st=s.score+' / '+s.total;got+=s.score}
+    L.push('Task '+s.num+' '+s.label+': '+st);
+  });
+  L.push('','Total: '+got+' / '+tot,'','MISTAKES (every wrong answer, including ones fixed on retry)','');
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length)return;any=true;
+    L.push('Task '+s.num+' '+s.label);
+    s.log.forEach(e=>L.push('  ✗ '+e.line+'   ['+(s.lastOk[e.i]?'fixed on retry':'still wrong')+']'));
+    L.push('');
+  });
+  if(!any)L.push('(no mistakes recorded)','');
+  sections.forEach(s=>{
+    if(s.api&&s.api.extra){const ex=s.api.extra();if(ex.length){L.push('Task '+s.num+' '+s.label+' – what you wrote (not scored)');ex.forEach(x=>L.push('  '+x));L.push('')}}
+  });
+  const w=sections.find(s=>s.def.kind==='writing');
+  L.push('Writing:',w&&w.api.text()?w.api.text():'(nothing written)');
+  return L.join('\n');
+}
+window.HW={sections,buildReport};
+
+$('#copy').onclick=()=>{
+  const t=buildReport(),m=$('#copymsg');
+  const done=()=>{m.textContent='Copied! Paste it in the chat.'};
+  const fb=()=>{const ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');done()}catch(e){m.textContent='Could not copy. Select and copy manually.'}document.body.removeChild(ta)};
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(t).then(done,fb);else fb();
+};
+</script>
+</body>
+</html>
