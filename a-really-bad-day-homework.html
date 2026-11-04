@@ -1,0 +1,349 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>A Really Bad Day – Homework</title>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#262626; --cream:#fffcf5; --yellow:#ffe66d; --blue:#284ed8; --coral:#ff6b5e;
+  --ok:#1f9d55; --okbg:#e3f6ea; --bad:#d6342a; --badbg:#fde8e6; --soft:#dde6ff;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Fredoka",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--yellow);color:var(--ink);line-height:1.5;font-size:17px}
+.wrap{max-width:780px;margin:0 auto;padding:16px 16px 60px}
+header.top{background:var(--cream);border:3px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--ink);padding:18px 20px;margin:12px 0 18px}
+header.top h1{margin:0 0 4px;font-size:30px;color:var(--blue);letter-spacing:.5px}
+header.top p{margin:4px 0}
+.namebox{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+.namebox label{font-weight:600}
+.namebox input{font:inherit;padding:8px 12px;border:2px solid var(--ink);border-radius:12px;background:#fff;min-width:200px;flex:1}
+.bar{position:sticky;top:0;z-index:20;background:var(--cream);border:3px solid var(--ink);border-radius:16px;padding:8px 14px;margin-bottom:18px;display:flex;align-items:center;gap:12px}
+.bar .track{flex:1;height:14px;border-radius:10px;background:#e9e4d3;overflow:hidden;border:2px solid var(--ink)}
+.bar .fill{height:100%;width:0;background:var(--coral);transition:width .3s}
+.bar .num{font-weight:600;white-space:nowrap}
+.card{--acc:var(--blue);background:var(--cream);border:3px solid var(--ink);border-radius:22px;box-shadow:6px 6px 0 var(--ink);padding:16px 18px 18px;margin-bottom:22px}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.badge{background:var(--acc);color:#fff;border:3px solid var(--ink);border-radius:12px;min-width:44px;height:44px;display:flex;align-items:center;justify-content:center;font-weight:600;font-size:22px}
+.card h2{margin:0;font-size:23px}
+.instr{margin:6px 0 12px;color:#444}
+.video{position:relative;padding-top:56.25%;border-radius:14px;overflow:hidden;border:3px solid var(--ink);margin:8px 0 6px;background:#000}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vlink{display:inline-block;margin:4px 0 12px;color:var(--blue);font-weight:500}
+.item{padding:10px 12px;border-radius:14px;border:2px solid transparent;margin-bottom:8px;background:#fff}
+.item.ok{background:var(--okbg);border-color:var(--ok)}
+.item.bad{background:var(--badbg);border-color:var(--bad)}
+.item .n{display:inline-block;min-width:26px;font-weight:600;color:var(--acc)}
+.grp{display:inline-flex;flex-wrap:wrap;gap:6px;vertical-align:middle;margin:2px 2px}
+.quiz .grp{display:flex;margin-top:8px}
+.pill{font:inherit;font-size:16px;border:2px solid var(--acc);color:var(--ink);background:#fff;border-radius:999px;padding:4px 14px;cursor:pointer}
+.pill:hover{background:var(--soft)}
+.pill.sel{background:var(--acc);color:#fff}
+.pill.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.pill.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.evidence{margin-top:8px;padding:8px 12px;border-radius:12px;background:var(--soft);font-size:15px}
+.evidence b{color:var(--blue)}
+.bank{display:flex;flex-wrap:wrap;gap:8px;padding:10px 12px;border:2px dashed var(--acc);border-radius:14px;margin-bottom:12px;background:#fff}
+.chip{background:var(--acc);color:#fff;border-radius:999px;padding:3px 14px;font-weight:500}
+input.gap{font:inherit;border:0;border-bottom:3px solid var(--acc);background:#f6f3ea;padding:2px 8px;width:9.5em;max-width:100%;border-radius:6px 6px 0 0;text-align:center}
+.item.ok input.gap,.item.ok textarea{border-color:var(--ok)}
+.item.bad input.gap,.item.bad textarea{border-color:var(--bad)}
+textarea{font:inherit;width:100%;border:2px solid var(--acc);border-radius:12px;padding:8px 10px;background:#fff;resize:vertical}
+textarea.fix{min-height:56px;margin-top:6px}
+.btns{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;align-items:center}
+.btn{font:inherit;font-weight:600;border:3px solid var(--ink);border-radius:14px;padding:7px 18px;background:var(--acc);color:#fff;cursor:pointer;box-shadow:3px 3px 0 var(--ink)}
+.btn.alt{background:#fff;color:var(--ink)}
+.btn:active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ink)}
+.res{font-weight:600;margin-left:4px}
+.final{text-align:center}
+.final .btn{background:var(--blue);font-size:19px;padding:10px 26px}
+.msg{margin-top:10px;font-weight:600;color:var(--ok);min-height:1.4em}
+@media(max-width:520px){body{font-size:16px}.card{padding:14px 12px 16px}header.top h1{font-size:25px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <h1>A Really Bad Day</h1>
+    <p>Homework · gradable and ungradable adjectives</p>
+    <div class="namebox"><label for="name">Your name:</label><input id="name" type="text" placeholder="Type your name" autocomplete="off"></div>
+  </header>
+  <div class="bar"><div class="track"><div class="fill" id="fill"></div></div><div class="num" id="barnum">0 / 0</div></div>
+  <div id="cards"></div>
+  <div class="card final" style="--acc:#284ed8">
+    <p>When you finish, press the button and paste the text in the chat.</p>
+    <button class="btn" id="copy">Copy my results</button>
+    <div class="msg" id="copied"></div>
+  </div>
+</div>
+
+<script>
+(function(){
+const $=(s,r)=>(r||document).querySelector(s);
+const el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!==undefined)e.innerHTML=h;return e;};
+const plain=h=>{const d=document.createElement("div");d.innerHTML=h;return d.textContent;};
+const norm=s=>String(s).toLowerCase().replace(/[\u2019\u2018]/g,"'").replace(/\s+/g," ").replace(/[.!?]+$/,"").trim();
+
+/* ---------- choice tasks (pills) ---------- */
+function parseChoice(s){
+  const parts=[];let last=0;
+  s.replace(/\{([^}]+)\}/g,function(m,g,idx){
+    parts.push(s.slice(last,idx));
+    parts.push({opts:g.split("|").map(o=>({t:o.replace(/\*$/,""),ok:/\*$/.test(o)}))});
+    last=idx+m.length;return m;
+  });
+  parts.push(s.slice(last));
+  return parts;
+}
+function choiceTask(host,items,mode){
+  host.innerHTML="";
+  const gOk=g=>g.opts.every((o,oi)=>o.ok===g.sel.has(oi));
+  const chosen=g=>[...g.sel].sort((a,b)=>a-b).map(oi=>g.opts[oi].t).join(" + ");
+  const correct=g=>g.opts.filter(o=>o.ok).map(o=>o.t).join(" + ");
+  const rows=items.map((it,i)=>{
+    const parts=mode==="quiz"?[it.q+" ",{opts:it.opts.map(o=>({t:o.replace(/\*$/,""),ok:/\*$/.test(o)}))}]:parseChoice(it.text);
+    const row=el("div","item"+(mode==="quiz"?" quiz":""));
+    row.appendChild(el("span","n",(i+1)+"."));
+    const groups=[];
+    parts.forEach(p=>{
+      if(typeof p==="string"){const s=el("span");s.innerHTML=p;row.appendChild(s);return;}
+      const g={opts:p.opts,sel:new Set(),btns:[]};
+      const box=el("span","grp");
+      p.opts.forEach((o,oi)=>{
+        const b=el("button","pill",o.t);b.type="button";
+        b.addEventListener("click",()=>{
+          if(mode==="multi"){if(g.sel.has(oi))g.sel.delete(oi);else g.sel.add(oi);}
+          else g.sel=new Set([oi]);
+          g.btns.forEach((x,xi)=>{x.classList.toggle("sel",g.sel.has(xi));x.classList.remove("right","wrong");});
+          row.classList.remove("ok","bad");
+        });
+        g.btns.push(b);box.appendChild(b);
+      });
+      groups.push(g);row.appendChild(box);
+    });
+    let ev=null;
+    if(mode==="quiz"){ev=el("div","evidence","");ev.style.display="none";ev.innerHTML="<b>In the video ["+it.time+"]:</b> \u201c"+it.quote+"\u201d";row.appendChild(ev);}
+    host.appendChild(row);
+    return {it,parts,groups,row,ev};
+  });
+  const itemOk=r=>r.groups.every(gOk);
+  const line=r=>{
+    if(mode==="quiz"){
+      const g=r.groups[0];
+      return r.it.q+"  \u2013 you chose: "+(g.sel.size?chosen(g):"nothing")+"; correct: "+correct(g);
+    }
+    let k=0;
+    const sentence=r.parts.map(p=>{
+      if(typeof p==="string")return plain(p);
+      const g=r.groups[k++];return g.sel.size?chosen(g):"___";
+    }).join("");
+    const wrong=r.groups.filter(g=>!gOk(g));
+    return sentence+(wrong.length?"   (correct: "+wrong.map(correct).join(", ")+")":"");
+  };
+  return {
+    total:items.length,
+    check(){
+      let n=0;
+      rows.forEach(r=>{
+        const ok=itemOk(r);if(ok)n++;
+        r.row.classList.remove("ok","bad");r.row.classList.add(ok?"ok":"bad");
+        r.groups.forEach(g=>g.btns.forEach((b,bi)=>{b.classList.remove("right","wrong");if(g.sel.has(bi))b.classList.add(g.opts[bi].ok?"right":"wrong");}));
+        if(r.ev)r.ev.style.display="block";
+      });
+      return n;
+    },
+    report(){return rows.map(r=>({ok:itemOk(r),line:line(r)}));},
+    fill(){
+      rows.forEach(r=>{
+        r.groups.forEach(g=>{g.sel=new Set();g.opts.forEach((o,oi)=>{if(o.ok)g.sel.add(oi);});g.btns.forEach((b,bi)=>{b.classList.remove("wrong","right");b.classList.toggle("sel",g.sel.has(bi));});});
+        r.row.classList.remove("ok","bad");
+        if(r.ev)r.ev.style.display="block";
+      });
+    }
+  };
+}
+
+/* ---------- typed gaps with a word bank ---------- */
+function gapTask(host,items,bank){
+  host.innerHTML="";
+  const b=el("div","bank");bank.forEach(w=>b.appendChild(el("span","chip",w)));host.appendChild(b);
+  const rows=items.map((it,i)=>{
+    const row=el("div","item");row.appendChild(el("span","n",(i+1)+"."));
+    const pieces=it.t.split("___");
+    const inp=el("input","gap");inp.type="text";inp.autocomplete="off";inp.autocapitalize="off";inp.spellcheck=false;
+    inp.addEventListener("input",()=>row.classList.remove("ok","bad"));
+    const s1=el("span");s1.textContent=pieces[0];const s2=el("span");s2.textContent=pieces[1];
+    row.appendChild(s1);row.appendChild(inp);row.appendChild(s2);host.appendChild(row);
+    return {it,row,inp,pieces};
+  });
+  const ok=r=>r.it.a.map(norm).indexOf(norm(r.inp.value))>=0;
+  return {
+    total:items.length,
+    check(){let n=0;rows.forEach(r=>{const o=ok(r);if(o)n++;r.row.classList.remove("ok","bad");r.row.classList.add(o?"ok":"bad");});return n;},
+    report(){return rows.map(r=>{
+      const o=ok(r);const typed=r.inp.value.trim();
+      return {ok:o,line:r.pieces[0]+(typed||"___")+r.pieces[1]+(o?"":"   (correct: "+r.it.a[0]+")")};
+    });},
+    fill(){rows.forEach(r=>{r.inp.value=r.it.a[0];r.row.classList.remove("ok","bad");});}
+  };
+}
+
+/* ---------- fix the sentence ---------- */
+function fixTask(host,items){
+  host.innerHTML="";
+  const rows=items.map((it,i)=>{
+    const row=el("div","item");row.appendChild(el("span","n",(i+1)+"."));
+    const ta=el("textarea","fix");ta.value=it.s;ta.rows=2;ta.spellcheck=false;
+    ta.addEventListener("input",()=>row.classList.remove("ok","bad"));
+    row.appendChild(ta);host.appendChild(row);
+    return {it,row,ta};
+  });
+  const ok=r=>{
+    const v=norm(r.ta.value);
+    if(r.it.keep)return v===norm(r.it.s);
+    return r.it.accept.some(re=>re.test(v));
+  };
+  return {
+    total:items.length,
+    check(){let n=0;rows.forEach(r=>{const o=ok(r);if(o)n++;r.row.classList.remove("ok","bad");r.row.classList.add(o?"ok":"bad");});return n;},
+    report(){return rows.map(r=>({ok:ok(r),line:"\""+r.it.s+"\" \u2013 you wrote: \""+(r.ta.value.trim()||"(nothing)")+"\"; model: \""+r.it.model+"\""}));},
+    fill(){rows.forEach(r=>{r.ta.value=r.it.model;r.row.classList.remove("ok","bad");});}
+  };
+}
+
+/* ---------- sections ---------- */
+const SECTIONS=[];
+const cardsHost=$("#cards");
+function record(sec){
+  if(!sec.api.report)return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i:i,line:r.line});}}
+  });
+}
+function updateBar(){
+  let got=0,tot=0;
+  SECTIONS.forEach(s=>{if(!s.scored)return;tot+=s.total;if(s.checked&&!s.revealed)got+=s.score;});
+  $("#barnum").textContent=got+" / "+tot;
+  $("#fill").style.width=(tot?Math.round(got/tot*100):0)+"%";
+}
+function addSection(def){
+  const sec={id:def.id,num:def.num,label:def.label,total:def.total,scored:def.scored!==false,score:0,checked:false,revealed:false,api:null,log:[],seen:new Set(),lastOk:[]};
+  const card=el("section","card");card.style.setProperty("--acc",def.accent);
+  card.innerHTML="<div class=\"head\"><span class=\"badge\">"+def.num+"</span><h2>"+def.title+"</h2></div><p class=\"instr\">"+def.instr+"</p>";
+  if(def.pre){const p=el("div","",def.pre);card.appendChild(p);}
+  const body=el("div","body");card.appendChild(body);
+  const btns=el("div","btns");const res=el("span","res");
+  sec.build=function(){body.innerHTML="";sec.api=def.build(body);sec.checked=false;sec.revealed=false;sec.score=0;res.textContent="";updateBar();};
+  if(sec.scored){
+    const bc=el("button","btn","Check");bc.type="button";
+    const bs=el("button","btn alt","Show answers");bs.type="button";
+    const br=el("button","btn alt","Try again");br.type="button";
+    bc.addEventListener("click",()=>{
+      if(sec.revealed){res.textContent="Answers are shown, so this try has no score. Press Try again.";return;}
+      sec.score=sec.api.check();sec.checked=true;record(sec);res.textContent=sec.score+" / "+sec.total;updateBar();
+    });
+    bs.addEventListener("click",()=>{sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="Answers shown (no score)";updateBar();});
+    br.addEventListener("click",()=>sec.build());
+    btns.appendChild(bc);btns.appendChild(bs);btns.appendChild(br);btns.appendChild(res);card.appendChild(btns);
+  }
+  cardsHost.appendChild(card);
+  SECTIONS.push(sec);sec.build();
+}
+
+/* ---------- content ---------- */
+addSection({id:"t1",num:1,label:"Watch the video again",title:"Watch the video again",accent:"#284ed8",total:6,
+  instr:"Watch the video and choose the correct answer. After you press Check, you will see what was said in the video and when.",
+  pre:"<div class=\"video\"><iframe src=\"https://www.youtube-nocookie.com/embed/fF6Skl8eKnA\" title=\"Travel Influencers Realize They Are on Wrong Flight\" allow=\"accelerometer; encrypted-media; picture-in-picture\" allowfullscreen></iframe></div><a class=\"vlink\" href=\"https://youtu.be/fF6Skl8eKnA\" target=\"_blank\" rel=\"noopener\">Open the video on YouTube</a>",
+  build:function(host){return choiceTask(host,[
+    {q:"Where were the two women going?",opts:["To Rome","To the south of France*","To Tunisia","To New York"],time:"00:02\u201300:05",quote:"Two influencers were super excited when they boarded their plane on their way to the south of France."},
+    {q:"Where did the women end up?",opts:["In Italy","In Spain","In Europe","In Africa*"],time:"00:11",quote:"Instead of going to Europe, they found themselves in Africa."},
+    {q:"What did the women do when they realized the mistake?",opts:["They kept giggling*","They shouted at the pilot","They went to sleep","They called their parents"],time:"00:32\u201300:35",quote:"These ladies can\u2019t stop giggling when they realize their flight\u2026"},
+    {q:"How did the other passengers react?",opts:["They all wanted to help","They did not notice anything","Some enjoyed it and some did not like it*","They were frightened"],time:"00:59\u201301:01",quote:"They\u2019re either entertained by us or hate us."},
+    {q:"Why did the women get a ticket to the wrong place?",opts:["The flight to Nice was cancelled","The agent misheard the name of the city*","The women chose Tunisia","Their friend booked it"],time:"01:12\u201301:15",quote:"They say the ticket agent apparently heard Tuni as in the capital of Tunisia."},
+    {q:"What do travel experts advise passengers to do?",opts:["Always buy tickets online","Arrive at the airport a day earlier","Check with the gate agent that the plane is going to the right place*","Never travel alone"],time:"01:57\u201302:04",quote:"Travel experts say this is a reminder to always check with the gate agent that the plane you\u2019re boarding is going to the right destination."}
+  ],"quiz");}
+});
+
+addSection({id:"t2",num:2,label:"Choose the correct word",title:"Choose the correct word",accent:"#ff6b5e",total:10,
+  instr:"Choose all the correct words for each gap. Sometimes one word is correct and sometimes two. Press a word again to take it back.",
+  build:function(host){return choiceTask(host,[
+    {text:"My brother was {quite|a bit|absolutely*} furious when he saw the scratch on his new car."},
+    {text:"We were {a bit*|completely|absolutely} hungry after the game, so we just had some fruit."},
+    {text:"The service at the restaurant was {absolutely*|quite|really*} awful."},
+    {text:"I felt {absolutely|very*|completely} sad when my best friend moved abroad."},
+    {text:"After the long drive, Tom was {quite|completely*|a bit} exhausted."},
+    {text:"Their kitchen was {a bit|very|absolutely*} filthy."},
+    {text:"The children were {quite|really*|completely*} terrified when the thunder started."},
+    {text:"My neighbor was {very*|absolutely|completely} angry about the noise."},
+    {text:"The movie was {absolutely|completely|a bit*} bad, but we stayed until the end."},
+    {text:"Maria was {very|absolutely*|really*} heartbroken when she lost her dog."}
+  ],"multi");}
+});
+
+addSection({id:"t3",num:3,label:"Complete the gaps",title:"Complete the gaps",accent:"#1f9d8a",total:8,
+  instr:"Use the words in the box. One word is extra.",
+  build:function(host){return gapTask(host,[
+    {t:"After a ten-hour night shift, Sofia was completely ___.",a:["exhausted"]},
+    {t:"Our neighbors\u2019 kitchen was absolutely ___ \u2013 nobody had washed the dishes for a month.",a:["filthy"]},
+    {t:"I\u2019m only ___ hungry, so I\u2019ll just have a small snack.",a:["a bit"]},
+    {t:"When the lights went out, the children were really ___.",a:["terrified"]},
+    {t:"My grades were ___ bad this semester \u2013 the worst I\u2019ve ever had.",a:["very"]},
+    {t:"It was a really ___ day \u2013 my car broke down and I lost my keys.",a:["awful"]},
+    {t:"Hugo was completely ___ when the shop refused to give him his money back.",a:["furious"]},
+    {t:"We didn\u2019t have lunch, so by the evening we were absolutely ___.",a:["starving"]}
+  ],["filthy","absolutely","terrified","a bit","starving","very","exhausted","awful","furious"]);}
+});
+
+addSection({id:"t4",num:4,label:"Fix the sentence",title:"Fix the sentence",accent:"#7b3fc0",total:8,
+  instr:"Correct the sentences in the boxes. If a sentence is already correct, leave it as it is.",
+  build:function(host){return fixTask(host,[
+    {s:"The hotel room was very filthy, so we asked for another one.",accept:[/^the hotel room was (absolutely |completely |really )?filthy, so we asked for another one$/,/^the hotel room was (very |really |quite )dirty, so we asked for another one$/],model:"The hotel room was absolutely filthy, so we asked for another one."},
+    {s:"Anna was absolutely tired after the long trip.",accept:[/^anna was (very |really |quite |a bit )tired after the long trip$/,/^anna was (absolutely |completely |really )?exhausted after the long trip$/],model:"Anna was very tired after the long trip."},
+    {s:"It was a really unlucky day for the whole team.",keep:true,model:"It was a really unlucky day for the whole team."},
+    {s:"My friends is quite exhausted after the game.",accept:[/^my friends are (absolutely |completely |really )?exhausted after the game$/,/^my friends are (quite |very |really |a bit )tired after the game$/],model:"My friends are completely exhausted after the game."},
+    {s:"The soup was more awful than the salad.",accept:[/^the soup was (much |a lot |far )?worse than the salad$/],model:"The soup was worse than the salad."},
+    {s:"I was a bit terrified when the dog ran toward me.",accept:[/^i was (absolutely |completely |really )?terrified when the dog ran towards? me$/,/^i was (a bit |quite |very |really )scared when the dog ran towards? me$/],model:"I was really terrified when the dog ran toward me."},
+    {s:"Their kitchen is absolutely dirty.",accept:[/^their kitchen is (very |really |quite |a bit )dirty$/,/^their kitchen is (absolutely |completely |really )?filthy$/],model:"Their kitchen is absolutely filthy."},
+    {s:"After the sad movie, the children was very heartbroken.",accept:[/^after the sad movie, the children were (absolutely |completely |really )?heartbroken$/,/^after the sad movie, the children were (very |really |quite |a bit )sad$/],model:"After the sad movie, the children were absolutely heartbroken."}
+  ]);}
+});
+
+/* ---------- report ---------- */
+function buildReport(){
+  const name=($("#name").value||"").trim()||"(no name)";
+  const d=new Date();const when=d.toLocaleDateString("en-GB")+" "+d.toLocaleTimeString("en-GB",{hour:"2-digit",minute:"2-digit"});
+  const out=["A Really Bad Day \u2013 Homework \u2013 "+name+" ("+when+")",""];
+  let got=0,tot=0;
+  SECTIONS.filter(s=>s.scored).forEach(s=>{
+    tot+=s.total;let st;
+    if(s.revealed)st="answers shown / not scored";
+    else if(!s.checked)st="not checked";
+    else{st=s.score+" / "+s.total;got+=s.score;}
+    out.push("Task "+s.num+" "+s.label+": "+st);
+  });
+  out.push("Total: "+got+" / "+tot,"","MISTAKES (every wrong answer, including ones fixed on retry)","");
+  let any=false;
+  SECTIONS.filter(s=>s.scored).forEach(s=>{
+    if(!s.log.length)return;any=true;
+    out.push("Task "+s.num+" "+s.label);
+    s.log.forEach(e=>out.push("  \u2717 "+e.line+"   ["+(s.lastOk[e.i]?"fixed on retry":"still wrong")+"]"));
+    out.push("");
+  });
+  if(!any)out.push("No mistakes logged.","");
+  return out.join("\n");
+}
+window.HW={sections:SECTIONS,buildReport:buildReport};
+$("#copy").addEventListener("click",function(){
+  const txt=buildReport();
+  const done=()=>{$("#copied").textContent="Copied! Paste it in the chat.";};
+  const fallback=()=>{const t=document.createElement("textarea");t.value=txt;t.style.position="fixed";t.style.opacity="0";document.body.appendChild(t);t.select();try{document.execCommand("copy");}catch(e){}document.body.removeChild(t);done();};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done,fallback);}else fallback();
+});
+updateBar();
+})();
+</script>
+</body>
+</html>
