@@ -9,7 +9,7 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:Poppins,system-u
 .wrap{max-width:820px;margin:0 auto;padding:16px 16px 80px}
 h1{font-size:1.7rem;margin:.4em 0 .1em}
 .sub{color:var(--mut);margin:0 0 14px}
-#bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line);display:flex;gap:12px;align-items:center}
+#bar{position:sticky;top:0;z-index:5;background:var(--bg);padding:10px 0;border-bottom:1px solid var(--line)}.prog{display:flex;gap:12px;align-items:center}#tabs{display:flex;gap:6px;margin-top:8px;overflow-x:auto}.tab{flex:0 0 auto;background:#17132a;color:var(--ink);border:2px solid var(--line);border-radius:20px;padding:5px 14px;font:inherit;font-size:.9rem;cursor:pointer;white-space:nowrap}.tab.on{background:#ffcf5c;color:#1b1530;border-color:#ffcf5c;font-weight:700}.pane{display:none}.pane.on{display:block}.ptext{line-height:2.4}.gn{color:var(--ac);font-size:.7rem;margin:0 2px 0 4px;font-weight:700}.ptext .why{line-height:1.5;margin-top:14px}.ptext select.dd{min-width:2.6em}
 #bar .track{flex:1;height:10px;background:var(--line);border-radius:6px;overflow:hidden}
 #bar .fill{height:100%;width:0;background:linear-gradient(90deg,#ff9a3c,#ffcf5c);transition:width .3s}
 #bar b{white-space:nowrap}
@@ -46,7 +46,7 @@ a{color:#ffcf5c}
 <body><div class="wrap">
 <h1>📚 Revision</h1>
 <p class="sub">Court vocabulary · participle clauses · will / would · punctuation</p>
-<div id="bar"><div class="track"><div class="fill" id="fill"></div></div><b id="score">0 / 0</b></div>
+<div id="bar"><div class="prog"><div class="track"><div class="fill" id="fill"></div></div><b id="score">0 / 0</b></div><div id="tabs"></div></div>
 <div class="name"><input type="text" id="who" placeholder="Your name"></div>
 <div id="root"></div>
 <div class="btns"><button class="btn" id="copy">Copy my results</button><span id="msg"></span></div>
@@ -54,7 +54,7 @@ a{color:#ffcf5c}
 <script>
 const ACC=["#ff9a3c","#b48cff","#4cc9f0","#ff6fa5","#7ddc7d","#ffcf5c","#ff8a5c","#9ad1ff"];
 const SECS=[
-{part:"A · Court vocabulary",num:"1",title:"Court words in context",type:"choice",ac:0,shuf:true,
+{part:"A · Court vocabulary",tab:"Court",num:"1",title:"Court words in context",type:"choice",ac:0,shuf:true,
  instr:"Choose the word that fits the sentence.",
  note:"<b>defendant</b> = the person accused. <b>plaintiff</b> = the person who brings the case. <b>verdict</b> = the decision (guilty / not guilty). <b>damages</b> = money the court orders you to pay. <b>injunction</b> = a court order to do or stop doing something. <b>proceedings</b> = the legal process. <b>nuisance</b> = something that disturbs others. <b>forensic</b> = scientific evidence from a crime scene. <b>liable</b> = legally responsible.",
  items:[
@@ -80,7 +80,7 @@ const SECS=[
  "The judge ruled {in favour of*|on favour of|for favour of} the tenants.",
  "The documents implicate the minister {in*|on|with} the scandal."
  ]},
-{num:"3",title:"Suing the state: type the word",type:"gap",ac:2,
+{num:"3",title:"Suing the state: type the word",type:"gap",ac:2,nohint:true,
  bank:["lawsuit","uncontested","verdict","press charges","accountable","litigation"],
  instr:"Type the missing word or phrase from the box.",
  items:[
@@ -91,7 +91,7 @@ const SECS=[
  "Managers must be [accountable] for the decisions they make.",
  "Years of [litigation] have cost both sides millions."
  ]},
-{part:"B · You have to see it to believe it: participle clauses",num:"4",title:"Choose the participle form",type:"choice",ac:3,shuf:true,
+{part:"B · You have to see it to believe it: participle clauses",tab:"Participles",num:"4",title:"Choose the participle form",type:"choice",ac:3,shuf:true,
  instr:"Choose the correct participle form.",
  note:"<b>V+ing</b> = at the same time or one after another: <i>Walking along the beach, we saw a dolphin.</i><br><b>V3</b> = passive meaning: <i>Built in 1850, the bridge is still used.</i><br><b>having + V3</b> = the first action was finished before the second: <i>Having missed the train, we took a taxi.</i><br><b>Same subject:</b> the participle clause and the main clause must have the same subject.",
  items:[
@@ -120,7 +120,7 @@ const SECS=[
  "[Having been told/having been told] the road was closed, we turned back. (tell)",
  "[Not wanting/not wanting] to wake the baby, he closed the door quietly. (want)"
  ]},
-{part:"C · We Will Haunt You: will and would",num:"7",title:"What does it express?",type:"choice",dd:true,ac:6,
+{part:"C · We Will Haunt You: will and would",tab:"Will / would",num:"7",title:"What does it express?",type:"choice",dd:true,ac:6,
  instr:"Choose what each sentence expresses.",
  note:"<b>would</b> = past habit · <b>will</b> = annoying or typical habit now · <b>will be doing</b> = a guess about now · <b>will have + V3</b> = a guess about the past · <b>won’t / wouldn’t</b> = refuses (now / past)",
  items:[
@@ -140,7 +140,7 @@ const SECS=[
  "My boss {will always send*|would always send|will always have sent} emails at midnight. It’s so annoying!",
  "It’s Sunday, 10 a.m. My parents {will be having*|would have|had} breakfast now."
  ]},
-{part:"D · It’s All Greek to Me: punctuation (tasks 6, 7, 8)",num:"9",title:"Punctuation mistakes or not?",type:"choice",ac:0,
+{part:"D · It’s All Greek to Me: punctuation (tasks 6, 7, 8)",tab:"Punctuation",num:"9",title:"Punctuation mistakes or not?",type:"choice",ac:0,
  instr:"True = the sentence is punctuated correctly. False = there is a mistake. After you press Check, read the explanation under each sentence.",
  note:"Quick rules: commas around <b>names you speak to</b> and <b>extra information</b> · comma before <b>and/but/so</b> when a new clause with a new subject follows · <b>no comma</b> before “that” after a verb · <b>colon</b> after a complete sentence to introduce a list or explanation · <b>em dash</b> for a sudden break.",
  items:[
@@ -150,7 +150,7 @@ const SECS=[
  {tf:"d) I will take this creature’s blood and will make my husband faithful for eternity.",a:true,why:"<b>Correct.</b> One subject with two verbs (<i>will take… and will make</i>) is not two clauses, so there is no comma before <i>and</i>.<br><i>Hera watched the hero and planned her revenge.</i> · <i>Zeus smiled, and Hera frowned.</i> (new subject, so a comma)"},
  {tf:"e) Without my help, he would never advance to any other labor.",a:true,why:"<b>Correct.</b> The comma after a short introductory phrase (about 3–4 words) is optional; here it adds emphasis. It is required after long phrases, clauses and words like <i>However, Firstly, Next,</i>.<br><i>When the monster woke up, Hercules ran.</i> (required) · <i>In the morning (,) he left.</i> (optional)"},
  {tf:"f) I assigned these tasks to my dear brother, making him one of the most renowned heroes of our time.",a:true,why:"<b>Correct.</b> A comma before an <i>-ing</i> phrase that adds a result to a complete sentence.<br><i>He killed the Hydra, saving the village.</i> · <i>She left early, hoping to avoid the crowd.</i>"},
- {tf:"g) Thanks God, my dad is back home and he doesn’t have to carry the burden of the heavens.",a:false,fix:"Thank God",why:"<b>Mistake:</b> the fixed phrase is <i>Thank God</i>, not <i>Thanks God</i>. The comma after <i>Thank God</i> is normal (an introductory interjection). The comma before <i>and he</i> is optional because both clauses are short.<br><i>Thank God, the storm is over.</i> · <i>Well, that was close.</i>"},
+ {tf:"g) Thank God, my dad is back home and he doesn’t have to carry the burden of the heavens.",a:true,why:"<b>Correct.</b> <i>Thank God</i> at the start is an interjection, so it is followed by a comma. The comma before <i>and he</i> is optional because both clauses are short.<br><i>Thank God, the storm is over.</i> · <i>Well, that was close.</i>"},
  {tf:"h) The Erymanthian Boar, flipping and flopping wildly, has managed to avoid being captured numerous times: you can catch it only when it’s still.",a:true,why:"<b>Correct.</b> Extra information in the middle of a sentence gets a pair of commas (<i>flipping and flopping wildly</i>). A colon introduces an explanation.<br><i>The cat, scared by the thunder, hid under the bed.</i> · <i>Rule one: never feed the lion.</i>"}
  ]},
 {num:"10",title:"True or false: punctuation rules",type:"choice",ac:1,
@@ -163,20 +163,10 @@ const SECS=[
  {tf:"5) It’s okay not to use commas when connecting two independent clauses.",a:false,why:"<b>False in general.</b> Use a comma + and/but/so, or a semicolon, or a period. A comma alone is a comma splice. Very short clauses can drop it: <i>Hercules fought and Hera plotted.</i><br><i>Hercules was strong, but Hera was determined.</i>"},
  {tf:"6) Generally, punctuation marks indicate pauses and changes in intonation.",a:true,why:"<b>True.</b> It is a guide, not a law: do not add a comma just because you pause.<br><i>Slowly, he opened the door.</i> · <i>Let’s eat, Grandma.</i> (not <i>Let’s eat Grandma.</i>)"}
  ]},
-{num:"11",title:"Punctuate Hercules’s text",type:"choice",dd:true,ac:2,
- instr:"Choose the correct punctuation for each gap (none = no mark). After Check, read the explanation.",
- items:[
- {s:"By the will of the gods{,*|:|none} I{,*|:|none} Hercules{,*|:|none} was condemned to twelve arduous labors.",why:"Commas after an introductory phrase and around <i>Hercules</i>, which is extra information that renames <i>I</i>."},
- {s:"I was condemned as penance for my past transgressions{:*|,|none} I slaughtered my whole family.",why:"A colon after a complete sentence introduces the explanation."},
- {s:"Each labor tested the limits of my strength{,*|;|none} courage{,*|;|none} and cunning.",why:"Commas in a list of three (Oxford comma before <i>and</i>)."},
- {s:"Firstly{,*|:|none} I slew the Nemean Lion{,*|none} impervious to weapons{,*|none}",why:"A comma after the sequence word <i>Firstly</i>. <i>impervious to weapons</i> is extra information, so it gets a pair of commas. (The board’s key leaves these two out; the commas are better.)"},
- {s:"The Erymanthian Boar proved to be a formidable opponent{,*|:|none} but I subdued it with my bare hands.",why:"Comma before <i>but</i> joins two clauses with different subjects."},
- {s:"I captured the Ceryneian Hind{,*|none} a creature of incredible speed and agility.",why:"A comma before a noun phrase that renames the noun (an appositive)."},
- {s:"The Stymphalian Birds were a relentless torment{—*|,|none} I used my arrows to drive them from the sky.",why:"An em dash for a sharp break. A comma would be a comma splice; no mark would be a run-on."},
- {s:"Crete’s brazen-footed Bull{,*|none} a symbol of Poseidon’s wrath{,*|none} I captured and brought to Eurystheus.",why:"The object is moved to the front for style; <i>a symbol of Poseidon’s wrath</i> is extra information, so a pair of commas."},
- {s:"Having gone through hell{,*|none} I can say that I rose from the ashes like a phoenix.",why:"A comma after an introductory <i>-ing</i> phrase."},
- {s:"I not only atoned for my sins{,|none*} but also forged myself into a true hero{,*|none} my name forever carved in the annals of legend.",why:"No comma inside <i>not only… but also…</i>; a comma before the extra phrase at the end (<i>my name forever carved…</i>)."}
- ]}
+{num:"11",title:"Punctuate Hercules’s text",type:"ptext",ac:2,
+ instr:"One text, many gaps. Choose the correct mark for each gap (none = no mark). After Check, read the explanations under the text.",
+ text:"By the will of the gods{,*|:|;|—|none} I{,*|:|;|—|none} Hercules{,*|:|;|—|none} was condemned to twelve arduous labors as penance for my past transgressions{:*|,|;|—|none} I slaughtered my whole family. Each labor tested the limits of my strength{,*|:|;|—|none} courage{,*|:|;|—|none} and cunning.\n\nFirstly{,*|:|;|—|none} I slew the Nemean Lion{,*|:|;|—|none} impervious to weapons. Next{,*|:|;|—|none} I vanquished the Lernaean Hydra{,*|:|;|—|none} whose severed heads grew back twofold. I captured the Ceryneian Hind{,*|:|;|—|none} a creature of incredible speed and agility.\n\nThe Erymanthian Boar proved to be a formidable opponent{,*|:|;|—|none} but I subdued it with my bare hands. I cleansed the Augean Stables{,*|:|;|—|none} a task many deemed impossible{,*|:|;|—|none} diverting two rivers to wash away years of filth. The Stymphalian Birds were a relentless torment{—*|,|:|;|none} I used my arrows to drive them from the sky.\n\nCrete’s brazen-footed Bull{,*|:|;|—|none} a symbol of Poseidon’s wrath{,*|:|;|—|none} I captured and brought to Eurystheus. I stole the Mares of Diomedes{,*|:|;|—|none} taming these flesh-eating steeds with my own strength. The belt of Hippolyta{none*|,|:|;|—} I acquired through cunning and combat.\n\nGeryon’s cattle{,*|:|;|—|none} guarded by a three-headed dog and a two-headed herdsman{,*|:|;|—|none} I herded across the ocean. The golden apples of the Hesperides{,*|:|;|—|none} protected by a sleepless dragon{,*|:|;|—|none} I retrieved with the aid of Atlas. Finally{,*|:|;|—|none} I descended into the underworld and brought back Cerberus.\n\nHaving gone through hell{,*|:|;|—|none} I can say that I rose from the ashes like a phoenix. I not only atoned for my sins{none*|,|:|;|—} but also forged myself into a true hero{,*|:|;|—|none} my name forever carved in the annals of legend.",
+ whyList:["1–3: a comma after the introductory phrase, and a pair of commas around <i>Hercules</i> (extra information that renames <i>I</i>).", "4: a colon after a complete sentence introduces the explanation.", "5–6: commas in a list of three (the comma before <i>and</i> is the Oxford comma).", "7, 9, 24: a comma after a sequence word (<i>Firstly, Next, Finally,</i>).", "8: <i>impervious to weapons</i> is extra information about the Lion, so it follows a comma. (The board’s key leaves it out.)", "10: <i>whose…</i> adds extra information about the Hydra, so a comma comes before it.", "11: a comma before a noun phrase that renames the noun (<i>a creature of…</i>).", "12: a comma before <i>but</i>, which joins two clauses with different subjects.", "13–14: <i>a task many deemed impossible</i> is extra information, so it gets a pair of commas. 15: an em dash for a sharp break; a comma would be a comma splice.", "16–17: the object is moved to the front, and <i>a symbol of Poseidon’s wrath</i> gets a pair of commas. 18: a comma before an <i>-ing</i> result phrase.", "19: no mark: <i>The belt of Hippolyta I acquired…</i> is just the object moved to the front, with no extra information to separate.", "20–23: each <i>guarded by… / protected by…</i> phrase is extra information, so a pair of commas.", "25: a comma after an introductory <i>-ing</i> phrase. 26: no comma inside <i>not only… but also…</i>. 27: a comma before the extra phrase at the end (<i>my name forever carved…</i>)."]}
 ];
 const $=(s,r=document)=>r.querySelector(s);
 const esc=s=>s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
@@ -196,6 +186,22 @@ function lineOf(c){
 }
 function build(sec,box){
   const st={};
+  if(sec.d.type==="ptext"){
+    const c=choiceItem(sec.d.text,true);let gi=0;
+    const html=c.parts.map(p=>{if(p[0]!=="{")return esc(p).replace(/\n\n/g,"<br><br>");const g=gi++;return `<sub class="gn">${g+1}</sub><select class="dd" data-g="${g}"><option value="-1">…</option>`+c.groups[g].opts.map((x,k)=>`<option value="${k}">${esc(x)}</option>`).join("")+`</select>`}).join("");
+    box.innerHTML=`<div class="item ptext" id="${sec.id}-0">${html}</div>`;
+    const sels=()=>box.querySelectorAll("select");
+    box.onchange=e=>{const sl=e.target.closest("select");if(!sl||sec.revealed)return;c.groups[+sl.dataset.g].sel=+sl.value;sl.classList.remove("right","wrong")};
+    const txt=[];c.parts.forEach(p=>{if(p[0]!=="{")txt.push(p)});
+    const lines=()=>c.groups.map((g,k)=>{const ok=g.sel===g.ans;const bef=txt[k].replace(/\s+/g," ").split(" ").slice(-5).join(" ");const aft=(txt[k+1]||"").replace(/\s+/g," ").trim().split(" ").slice(0,3).join(" ");const ch=g.sel<0?"___":(g.opts[g.sel]==="none"?"":g.opts[g.sel]);
+      return {ok,line:"["+(k+1)+"] …"+bef.trim()+ch+" "+aft+"…"+(ok?"":"   (correct: "+g.opts[g.ans]+")")}});
+    const mark=()=>{sels().forEach(sl=>{const g=c.groups[+sl.dataset.g];sl.classList.remove("right","wrong");sl.classList.add(g.sel===g.ans?"right":"wrong")});
+      const it=box.querySelector(".item");const old=it.querySelector(".why");if(old)old.remove();const d=document.createElement("div");d.className="why";d.innerHTML="<b>Explanations</b><br>"+sec.d.whyList.map(x=>"• "+x).join("<br>");it.appendChild(d)};
+    return {total:c.groups.length,
+      check(){mark();return c.groups.filter(g=>g.sel===g.ans).length},
+      report(){return lines()},
+      fill(){c.groups.forEach(g=>g.sel=g.ans);sels().forEach(sl=>sl.value=c.groups[+sl.dataset.g].ans);mark()}};
+  }
   if(sec.d.type==="choice"){
     const L=sec.d.items.map(it=>typeof it==="string"?{c:choiceItem(it,sec.d.dd||sec.d.shuf)}:it.tf?{tf:it}:{c:choiceItem(it.s,sec.d.dd||sec.d.shuf),why:it.why});
     const render=()=>{
@@ -225,7 +231,7 @@ function build(sec,box){
   if(sec.d.type==="gap"){
     const L=sec.d.items.map(s=>{const m=s.match(/\[([^\]]+)\]/);return {pre:s.slice(0,m.index),post:s.slice(m.index+m[0].length),ans:m[1].split("/")[0]+(m[1].includes("/")?"/"+m[1].split("/").slice(1).join("/"):"")}});
     const bk=sec.d.bank?sec.d.bank.slice():null;if(bk)for(let k=bk.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[bk[k],bk[j]]=[bk[j],bk[k]]}
-    box.innerHTML=(bk?`<div class="bank">`+bk.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" style="width:${o.ans.split("/")[0].length+3}ch" placeholder="${o.ans[0]}…" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
+    box.innerHTML=(bk?`<div class="bank">`+bk.map(w=>`<span>${w}</span>`).join("")+`</div>`:"")+L.map((o,i)=>`<div class="item" id="${sec.id}-${i}"><span class="n">${i+1}.</span>${esc(o.pre)}<input type="text" class="gap" style="width:${sec.d.nohint?16:o.ans.split("/")[0].length+3}ch" placeholder="${sec.d.nohint?"":o.ans[0]+"…"}" autocomplete="off" autocapitalize="off" spellcheck="false" data-i="${i}">${esc(o.post)}</div>`).join("");
     const val=i=>box.querySelectorAll(".gap")[i].value;
     const okf=i=>L[i].ans.split("/").some(a=>norm(val(i))===norm(a));
     return {total:L.length,
@@ -242,15 +248,16 @@ function build(sec,box){
   }
 }
 const root=$("#root");
+const PANES=[];let cur=null;
 const S=SECS.map((d,idx)=>{
-  if(d.part){const h=document.createElement("h3");h.className="part";h.textContent=d.part;root.appendChild(h)}
+  if(d.part){cur=document.createElement("div");cur.className="pane"+(PANES.length?"":" on");cur.dataset.t=d.tab;PANES.push({tab:d.tab,el:cur});root.appendChild(cur)}
   const sec=Object.assign({id:"t"+d.num,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]},{d});
   const card=document.createElement("section");card.className="card";card.style.setProperty("--ac",ACC[d.ac]);
   card.innerHTML=`<h2><span>${d.num}</span>${d.title}</h2><p class="instr">${d.instr}</p>`+
    (d.video?`<div class="note"><iframe src="https://www.youtube-nocookie.com/embed/R-VRAemIvbI?start=17" allowfullscreen title="Halloween video"></iframe><p style="margin:8px 0 0">Can't see it? <a href="https://www.youtube.com/watch?v=R-VRAemIvbI&t=17s" target="_blank" rel="noopener">Open the video on YouTube</a>.</p></div>`:"")+
    (d.note?`<div class="note">${d.note}</div>`:"")+`<div class="body"></div>`+
    (d.type!=="write"?`<div class="btns"><button class="btn" data-a="c">Check</button><button class="btn sec" data-a="s">Show answers</button><button class="btn sec" data-a="r">Try again</button><span class="res"></span></div>`:"");
-  root.appendChild(card);
+  cur.appendChild(card);
   const boxEl=$(".body",card);
   sec.mount=()=>{sec.api=build(sec,boxEl);sec.api.sec=sec};
   sec.mount();
@@ -260,13 +267,15 @@ const S=SECS.map((d,idx)=>{
       sec.score=sec.api.check();sec.checked=true;record(sec);res.textContent=sec.score+" / "+sec.api.total;upd()}
     if(a==="s"){sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;res.textContent="Answers shown (no score)";upd()}
     if(a==="r"){sec.mount();sec.revealed=false;sec.checked=false;sec.score=0;res.textContent="";upd()}});
-  return sec;
+  sec.pane=PANES.length-1;return sec;
 });
+const tabs=$("#tabs");PANES.forEach((p,i)=>{const b=document.createElement("button");b.className="tab"+(i?"":" on");b.dataset.i=i;p.btn=b;tabs.appendChild(b);b.onclick=()=>{PANES.forEach((q,j)=>{q.el.classList.toggle("on",j===i);q.btn.classList.toggle("on",j===i)});window.scrollTo({top:0,behavior:"smooth"})}});
 function record(sec){
   sec.api.report().forEach((r,i)=>{sec.lastOk[i]=r.ok;if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i,line:r.line})}}});
 }
 function upd(){
   const tot=S.reduce((a,s)=>a+s.api.total,0),got=S.reduce((a,s)=>a+(s.checked&&!s.revealed?s.score:0),0);
+  PANES.forEach((p,i)=>{const ss=S.filter(x=>x.pane===i);const t=ss.reduce((a,x)=>a+x.api.total,0),g=ss.reduce((a,x)=>a+(x.checked&&!x.revealed?x.score:0),0);p.btn.textContent=p.tab+" "+g+"/"+t});
   $("#score").textContent=got+" / "+tot;$("#fill").style.width=(tot?got/tot*100:0)+"%";
 }
 function buildReport(){
