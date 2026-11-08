@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Would you? Homework</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#262626;--bg:#fff7d6;--card:#fffcf5;--blue:#284ed8;--coral:#ff6b5e;--ok:#1f9d55;--bad:#d64545}
+*{box-sizing:border-box}
+body{margin:0;font-family:Poppins,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+.wrap{max-width:820px;margin:0 auto;padding:16px}
+h1{font-size:clamp(28px,6vw,40px);color:var(--blue);margin:8px 0 4px}
+.sub{margin:0 0 14px;font-weight:600}
+.name{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:10px 0 16px}
+.name input{flex:1;min-width:180px;padding:10px 12px;border:3px solid var(--ink);border-radius:12px;font:inherit;background:#fff}
+.bar{position:sticky;top:0;z-index:10;background:var(--ink);color:#fff;border-radius:0 0 14px 14px;padding:10px 14px;margin:0 -16px 18px;display:flex;align-items:center;gap:12px}
+.bar .track{flex:1;height:10px;background:#555;border-radius:6px;overflow:hidden}
+.bar .fill{height:100%;width:0;background:var(--coral);transition:width .3s}
+.bar b{white-space:nowrap}
+.card{background:var(--card);border:3px solid var(--ink);border-radius:22px;box-shadow:7px 7px 0 var(--ink);padding:26px 18px 18px;margin:34px 0;position:relative}
+.badge{position:absolute;top:-24px;left:50%;transform:translateX(-50%);background:var(--ink);color:#fff;font-weight:700;font-size:26px;padding:2px 22px;border-radius:12px}
+.card h2{margin:0 0 4px;font-size:20px;text-align:center}
+.card .intro{margin:0 0 14px;text-align:center;font-size:15px}
+.item{padding:10px 8px;border-radius:12px;margin:6px 0;border:2px solid transparent}
+.item.ok{background:#e4f7ea;border-color:var(--ok)}
+.item.bad{background:#fde8e8;border-color:var(--bad)}
+.n{display:inline-block;min-width:26px;height:26px;line-height:26px;text-align:center;border-radius:6px;background:var(--coral);font-weight:700;font-size:13px;margin-right:8px}
+.pill{font:inherit;font-size:14px;border:2px solid var(--blue);background:#fff;color:var(--blue);border-radius:999px;padding:3px 12px;margin:3px 4px 3px 0;cursor:pointer}
+.pill.sel{background:var(--blue);color:#fff}
+.pill.right{background:var(--ok);border-color:var(--ok);color:#fff}
+.pill.wrong{background:var(--bad);border-color:var(--bad);color:#fff}
+.grp{display:inline-block;margin-top:4px}
+input.gap,input.sent{font:inherit;border:2px solid var(--blue);border-radius:8px;padding:4px 8px;background:#fff}
+input.gap{width:170px}
+input.sent{width:100%;margin-top:6px}
+.hint{color:#666;font-size:13px}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+button.b{font:inherit;font-weight:600;border:3px solid var(--ink);background:#fff;border-radius:12px;padding:7px 16px;cursor:pointer}
+button.b.main{background:var(--coral)}
+.score{font-weight:700;margin-left:auto}
+.msg{font-size:14px;color:var(--bad);width:100%}
+.rules{background:#dde6ff}
+.rules ul{margin:6px 0 0;padding-left:20px}
+.rules li{margin:3px 0}
+textarea{width:100%;min-height:170px;font:inherit;border:2px solid var(--blue);border-radius:12px;padding:10px;background:#fff}
+.chk{list-style:none;padding:0;margin:8px 0 0}
+.chk li::before{content:"\25CB  ";color:#888}
+.chk li.ok::before{content:"\2714  ";color:var(--ok)}
+.final{text-align:center;margin:30px 0 50px}
+.final .b{font-size:18px;padding:12px 26px}
+.copied{margin-top:10px;font-weight:600;color:var(--ok);min-height:24px}
+</style>
+</head>
+<body>
+<div class="wrap">
+<h1>Would you?</h1>
+<p class="sub">Homework · Uses of <i>would</i></p>
+<div class="name"><label for="nm"><b>Name:</b></label><input id="nm" type="text" placeholder="Your name" autocomplete="off"></div>
+
+<div class="bar"><span>Score</span><div class="track"><div class="fill" id="fill"></div></div><b id="tot">0 / 0</b></div>
+
+<div class="card rules" style="margin-top:20px">
+<h2>Today&rsquo;s rules (cheat sheet)</h2>
+<ul>
+<li><b>A</b> repeated past: <i>We would go to the sea every summer.</i></li>
+<li><b>B</b> imaginary situation: <i>If I lived in New York, I would swim every day.</i></li>
+<li><b>C</b> soften an opinion: <i>I wouldn&rsquo;t say that.</i> / <i>I would say&hellip;</i></li>
+<li><b>D</b> future in the past: <i>I thought it would be easy.</i></li>
+<li><b>E</b> refusal / failure: <i>My laptop wouldn&rsquo;t start.</i></li>
+<li><b>F</b> polite want: <i>I would like a coffee, please.</i></li>
+<li>After <i>would</i>, a <i>when</i>-clause goes in the past: <i>It would be sunny when I <u>woke up</u>.</i></li>
+<li>Two full sentences need <i>and</i> / a full stop, not just a comma. Say <i>go for a walk</i>, <i>go for a bike ride</i>.</li>
+</ul>
+</div>
+
+<div id="main"></div>
+
+<div class="final">
+<button class="b main" id="copy">Copy my results</button>
+<div class="copied" id="copied"></div>
+<div class="hint">Press the button, then paste the text into the chat with your teacher.</div>
+</div>
+</div>
+
+<script>
+"use strict";
+const TITLE = "Would you? Homework";
+const sections = [];
+const $ = (s, r) => (r || document).querySelector(s);
+function el(tag, cls, html){ const e = document.createElement(tag); if(cls) e.className = cls; if(html != null) e.innerHTML = html; return e; }
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+function norm(s){
+  s = String(s || "").toLowerCase().replace(/[’‘`]/g, "'").replace(/\bswimming pool\b/g, "pool");
+  s = s.replace(/\b(i|you|he|she|it|we|they|who)'d\b/g, "$1 would").replace(/\bwouldn't\b/g, "would not");
+  s = s.replace(/\s+/g, " ").replace(/\s+,/g, ",").trim().replace(/[.!?]+$/, "").trim();
+  return s;
+}
+function plain(s){ return String(s).replace(/<[^>]*>/g, ""); }
+
+/* ---------- builders ---------- */
+function choiceTask(box, items){
+  const parsed = items.map(t => {
+    const groups = [], parts = []; let last = 0, m; const re = /\{([^}]+)\}/g;
+    while((m = re.exec(t))){
+      parts.push(t.slice(last, m.index));
+      groups.push(m[1].split("|").map(o => ({text: o.replace("*", ""), ok: o.indexOf("*") >= 0})));
+      last = re.lastIndex;
+    }
+    parts.push(t.slice(last));
+    return {parts, groups};
+  });
+  let chosen, rows = [];
+  function init(){ chosen = parsed.map(p => p.groups.map(() => -1)); }
+  init();
+  parsed.forEach((p, i) => {
+    const row = el("div", "item"); row.appendChild(el("span", "n", String(i + 1)));
+    p.parts.forEach((txt, k) => {
+      row.appendChild(document.createTextNode(txt));
+      if(k < p.groups.length){
+        const g = el("span", "grp");
+        p.groups[k].forEach((o, oi) => {
+          const b = el("button", "pill", esc(o.text)); b.type = "button";
+          b.onclick = () => { if(sec().revealed) return; chosen[i][k] = oi; paint(); row.className = "item"; };
+          g.appendChild(b);
+        });
+        row.appendChild(g);
+      }
+    });
+    box.appendChild(row); rows.push(row);
+  });
+  let sec = () => null;
+  function paint(show){
+    parsed.forEach((p, i) => p.groups.forEach((g, k) => {
+      const pills = rows[i].querySelectorAll(".grp")[k].querySelectorAll(".pill");
+      pills.forEach((b, oi) => {
+        b.className = "pill";
+        if(chosen[i][k] === oi) b.className += " sel";
+        if(show){
+          if(g[oi].ok) b.className = "pill right";
+          else if(chosen[i][k] === oi) b.className = "pill wrong";
+        }
+      });
+    }));
+  }
+  const okOf = i => parsed[i].groups.every((g, k) => chosen[i][k] >= 0 && g[chosen[i][k]].ok);
+  function line(i){
+    const p = parsed[i]; let s = "";
+    p.parts.forEach((txt, k) => { s += txt; if(k < p.groups.length) s += chosen[i][k] >= 0 ? p.groups[k][chosen[i][k]].text : "___"; });
+    const wrong = []; p.groups.forEach((g, k) => { if(!(chosen[i][k] >= 0 && g[chosen[i][k]].ok)) wrong.push(g.find(o => o.ok).text); });
+    return s.replace(/\s+/g, " ").trim() + (wrong.length ? "   (correct: " + wrong.join(" / ") + ")" : "");
+  }
+  return {
+    total: parsed.length,
+    bind(getSec){ sec = getSec; },
+    check(){ let n = 0; parsed.forEach((p, i) => { const ok = okOf(i); if(ok) n++; rows[i].className = "item " + (ok ? "ok" : "bad"); }); paint(true); return n; },
+    report(){ return parsed.map((p, i) => ({ok: okOf(i), line: line(i)})); },
+    fill(){ parsed.forEach((p, i) => p.groups.forEach((g, k) => { chosen[i][k] = g.findIndex(o => o.ok); })); rows.forEach(r => r.className = "item"); paint(true); },
+    reset(){ init(); rows.forEach(r => r.className = "item"); paint(); }
+  };
+}
+
+function typedTask(box, items, kind){
+  /* kind: "gap" (sentence with ___) or "sent" (rewrite whole sentence) */
+  const inputs = [], rows = [];
+  items.forEach((it, i) => {
+    const row = el("div", "item"); row.appendChild(el("span", "n", String(i + 1)));
+    const inp = document.createElement("input");
+    inp.type = "text"; inp.autocomplete = "off"; inp.spellcheck = false;
+    if(kind === "gap"){
+      inp.className = "gap";
+      const parts = it.s.split("___");
+      row.appendChild(document.createTextNode(parts[0])); row.appendChild(inp); row.appendChild(document.createTextNode(parts[1] || ""));
+    } else {
+      inp.className = "sent";
+      row.appendChild(el("span", null, esc(it.s)));
+      row.appendChild(el("div", "hint", esc(it.hint || "")));
+      row.appendChild(inp);
+    }
+    inp.oninput = () => { row.className = "item"; };
+    box.appendChild(row); inputs.push(inp); rows.push(row);
+  });
+  const okOf = i => { const v = norm(inputs[i].value); return v !== "" && items[i].ans.some(a => norm(a) === v); };
+  function line(i){
+    const v = inputs[i].value.trim(); const it = items[i];
+    if(kind === "gap"){
+      const sentence = it.s.replace("___", v || "___").replace(/\s*\([^)]*\)\s*/g, " ").replace(/\s+/g, " ").trim();
+      return sentence + "   (correct: " + it.model + ")";
+    }
+    return "\"" + it.s + "\" – you wrote: " + (v ? "\"" + v + "\"" : "(nothing)") + "; model: \"" + it.model + "\"";
+  }
+  return {
+    total: items.length,
+    bind(){},
+    check(){ let n = 0; items.forEach((it, i) => { const ok = okOf(i); if(ok) n++; rows[i].className = "item " + (ok ? "ok" : "bad"); }); return n; },
+    report(){ return items.map((it, i) => ({ok: okOf(i), line: line(i)})); },
+    fill(){ items.forEach((it, i) => { inputs[i].value = it.model; rows[i].className = "item"; }); },
+    reset(){ inputs.forEach((x, i) => { x.value = ""; rows[i].className = "item"; }); }
+  };
+}
+
+function writingTask(box){
+  const ta = document.createElement("textarea");
+  ta.placeholder = "Write here…";
+  box.appendChild(ta);
+  const list = el("ul", "chk");
+  const checks = [
+    ["6 or more sentences", t => (t.match(/[^.!?]+[.!?]+/g) || []).length >= 6],
+    ["at least 4 times would / 'd", t => (t.match(/\bwould\b|\b\w+['’]d\b/gi) || []).length >= 4],
+    ["one wouldn't", t => /wouldn['’]t/i.test(t)],
+    ["one when-clause in the past (when I woke up…)", t => /\bwhen I (woke|got|went|arrived|came|finished|left|had|met)\b/i.test(t)]
+  ];
+  checks.forEach(c => list.appendChild(el("li", null, esc(c[0]))));
+  box.appendChild(list);
+  function upd(){ const lis = list.querySelectorAll("li"); checks.forEach((c, i) => lis[i].className = c[1](ta.value) ? "ok" : ""); }
+  ta.oninput = upd;
+  return {
+    total: 0, bind(){},
+    check(){ upd(); return 0; },
+    report(){ return []; },
+    fill(){}, reset(){ ta.value = ""; upd(); },
+    text(){ return ta.value.trim(); }
+  };
+}
+
+/* ---------- sections ---------- */
+function addSection(num, label, intro, make, opts){
+  opts = opts || {};
+  const card = el("div", "card");
+  card.appendChild(el("div", "badge", String(num)));
+  card.appendChild(el("h2", null, esc(label)));
+  card.appendChild(el("p", "intro", intro));
+  const box = el("div");
+  card.appendChild(box);
+  const api = make(box);
+  const sec = {id: "t" + num, num, label, total: api.total, score: 0, checked: false, revealed: false, api, log: [], seen: new Set(), lastOk: []};
+  api.bind(() => sec);
+  if(!opts.noButtons){
+    const btns = el("div", "btns");
+    const bc = el("button", "b main", "Check"), bs = el("button", "b", "Show answers"), br = el("button", "b", "Try again");
+    const sc = el("span", "score", ""), msg = el("div", "msg", "");
+    [bc, bs, br].forEach(b => b.type = "button");
+    bc.onclick = () => {
+      if(sec.revealed){ msg.textContent = "Answers are shown. Press Try again to do this task."; return; }
+      msg.textContent = "";
+      sec.score = api.check(); sec.checked = true; record(sec);
+      sc.textContent = sec.score + " / " + sec.total; refresh();
+    };
+    bs.onclick = () => { api.fill(); sec.revealed = true; sec.checked = false; sec.score = 0; msg.textContent = ""; sc.textContent = "answers shown"; refresh(); };
+    br.onclick = () => { api.reset(); sec.revealed = false; sec.checked = false; sec.score = 0; msg.textContent = ""; sc.textContent = ""; refresh(); };
+    btns.append(bc, bs, br, sc, msg);
+    card.appendChild(btns);
+  }
+  $("#main").appendChild(card);
+  sections.push(sec);
+  return sec;
+}
+function record(sec){
+  if(!sec.api.report) return;
+  sec.api.report().forEach((r, i) => {
+    sec.lastOk[i] = r.ok;
+    if(!r.ok){ const k = i + "|" + r.line; if(!sec.seen.has(k)){ sec.seen.add(k); sec.log.push({i, line: r.line}); } }
+  });
+}
+function refresh(){
+  const total = sections.reduce((a, s) => a + s.total, 0);
+  const got = sections.reduce((a, s) => a + (s.checked && !s.revealed ? s.score : 0), 0);
+  $("#tot").textContent = got + " / " + total;
+  $("#fill").style.width = (total ? got / total * 100 : 0) + "%";
+}
+
+/* Task 1 */
+addSection(1, "Which rule is it?", "Choose the use of <i>would</i> in each sentence.", box => choiceTask(box, [
+  `"When I was little, we would go to the sea every summer." = {A repeated past*|B imaginary situation|C soften an opinion|D future in the past|E refusal / failure|F polite want}`,
+  `"If I could live anywhere, I would choose New York." = {A repeated past|B imaginary situation*|C soften an opinion|D future in the past|E refusal / failure|F polite want}`,
+  `"I wouldn't say that's the best idea." = {A repeated past|B imaginary situation|C soften an opinion*|D future in the past|E refusal / failure|F polite want}`,
+  `"I thought the trip would be easy." = {A repeated past|B imaginary situation|C soften an opinion|D future in the past*|E refusal / failure|F polite want}`,
+  `"My laptop wouldn't start this morning." = {A repeated past|B imaginary situation|C soften an opinion|D future in the past|E refusal / failure*|F polite want}`,
+  `"I would like a glass of water, please." = {A repeated past|B imaginary situation|C soften an opinion|D future in the past|E refusal / failure|F polite want*}`
+]));
+
+/* Task 2 */
+addSection(2, "Choose the correct form", "Pick the option that fits the sentence.", box => choiceTask(box, [
+  `When I was little, we {will go|would go*|are going} to my grandparents every weekend.`,
+  `If I lived in New York, I {will walk|would walk*|walked would} in the park every morning.`,
+  `It would be a sunny day when I {woke*|wake|will wake} up.`,
+  `I tried to open the window, but it {didn't want|wouldn't*|isn't} open.`,
+  `Before I moved, I thought it {would*|will|is} be easy.`,
+  `I {don't would say|wouldn't to say|wouldn't say*} that's the biggest problem.`,
+  `I {would like*|would to like|will like} to try the food in Japan.`,
+  `We went {to walk|for a walk*|on walk} and then rode our bikes.`
+]));
+
+/* Task 3 */
+addSection(3, "Write the verb", "Use <i>would</i> or <i>wouldn't</i> with the verb in brackets. Contractions (<i>'d</i>) are fine.", box => typedTask(box, [
+  {s: "Every weekend my grandma ___ (bake) pies for us.", ans: ["would bake", "'d bake"], model: "would bake"},
+  {s: "If I had a day off, I ___ (sleep) all day.", ans: ["would sleep", "'d sleep"], model: "would sleep"},
+  {s: "My laptop ___ (not start) this morning.", ans: ["wouldn't start", "would not start"], model: "wouldn't start"},
+  {s: "I thought the trip ___ (be) easy.", ans: ["would be", "'d be"], model: "would be"},
+  {s: "I ___ (like) a glass of water, please.", ans: ["would like", "'d like"], model: "would like"},
+  {s: "I ___ (not say) that. I think it's a good idea.", ans: ["wouldn't say", "would not say"], model: "wouldn't say"}
+], "gap"));
+
+/* Task 4 */
+addSection(4, "Fix the mistake", "Rewrite each sentence correctly. Use <i>would</i> where it says so.", box => typedTask(box, [
+  {s: "I visited my grandparents, my parents took me to the sea.", hint: "Use would (repeated past). Fix the comma splice.",
+   ans: ["I would visit my grandparents, and my parents would take me to the sea", "I would visit my grandparents and my parents would take me to the sea", "I would visit my grandparents. My parents would take me to the sea", "I would visit my grandparents, and my parents would take me to the sea.", "I would visit my grandparents; my parents would take me to the sea"],
+   model: "I would visit my grandparents, and my parents would take me to the sea."},
+  {s: "I'd swim in my swimming pool, I would rest.", hint: "Fix the comma splice. You don't need would twice.",
+   ans: ["I would swim in my pool and rest", "I would swim in my pool, and I would rest", "I would swim in my pool and I would rest", "I would swim in my pool, and then I would rest", "I would swim in my pool and then rest", "I would swim in my pool, then rest", "I would swim in my pool, and then rest", "I would swim in my pool and then I would rest", "I would swim in my pool. I would rest"],
+   model: "I'd swim in my pool and rest."},
+  {s: "It would be a sunny day when I wake up.", hint: "Check the tense after would.",
+   ans: ["It would be a sunny day when I woke up", "It would be sunny when I woke up"],
+   model: "It would be a sunny day when I woke up."},
+  {s: "It didn't want to work.", hint: "Use wouldn't (the machine refuses).",
+   ans: ["It wouldn't start", "It wouldn't work", "It would not start", "It would not work"],
+   model: "It wouldn't start."},
+  {s: "I went to walk.", hint: "Fix the fixed phrase.",
+   ans: ["I went for a walk"], model: "I went for a walk."},
+  {s: "After that I could take a ride by bike.", hint: "Use would. Say it like a native.",
+   ans: ["After that I would go for a bike ride", "After that I would ride my bike", "After that I would go for a ride on my bike", "Then I would go for a bike ride", "After that I would go on a bike ride"],
+   model: "After that I would go for a bike ride."}
+], "sent"));
+
+/* Task 5 */
+let writeSec = addSection(5, "Your typical day in New York", "Choose one place in New York where you live for the rest of your life. Write at least 6 sentences about a typical day there. Use <i>would</i>.", box => writingTask(box), {noButtons: true});
+
+/* ---------- report ---------- */
+function buildReport(){
+  const nm = ($("#nm").value || "").trim() || "(no name)";
+  const d = new Date();
+  const when = d.toLocaleDateString("en-GB") + " " + d.toLocaleTimeString("en-GB", {hour: "2-digit", minute: "2-digit"});
+  const out = [TITLE + " – " + nm + " (" + when + ")", ""];
+  let got = 0, total = 0;
+  sections.forEach(s => {
+    if(!s.total) return;
+    total += s.total;
+    let st;
+    if(s.revealed) st = "answers shown";
+    else if(s.checked){ st = s.score + " / " + s.total; got += s.score; }
+    else st = "not checked";
+    out.push("Task " + s.num + " " + s.label + ": " + st);
+  });
+  out.push("", "Total: " + got + " / " + total, "");
+  const mist = sections.filter(s => s.log.length);
+  out.push("MISTAKES (every wrong answer, including ones fixed on retry)", "");
+  if(!mist.length) out.push("(none)", "");
+  mist.forEach(s => {
+    out.push("Task " + s.num + " " + s.label);
+    s.log.forEach(e => out.push("  ✗ " + plain(e.line) + "   [" + (s.lastOk[e.i] ? "fixed on retry" : "still wrong") + "]"));
+    out.push("");
+  });
+  const w = writeSec.api.text();
+  out.push("Writing:", w || "(nothing written)");
+  return out.join("\n");
+}
+async function copyReport(){
+  const txt = buildReport(); const msg = $("#copied");
+  try{ await navigator.clipboard.writeText(txt); }
+  catch(e){
+    const t = document.createElement("textarea"); t.value = txt; t.style.position = "fixed"; t.style.opacity = "0";
+    document.body.appendChild(t); t.select(); try{ document.execCommand("copy"); }catch(_){} t.remove();
+  }
+  msg.textContent = "Copied! Paste it in the chat.";
+}
+$("#copy").onclick = copyReport;
+window.HW = {sections, buildReport};
+refresh();
+</script>
+</body>
+</html>
