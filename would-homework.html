@@ -70,7 +70,7 @@ textarea{width:100%;min-height:170px;font:inherit;border:2px solid var(--blue);b
 <li><b>E</b> refusal / failure: <i>My laptop wouldn&rsquo;t start.</i></li>
 <li><b>F</b> polite want: <i>I would like a coffee, please.</i></li>
 <li>After <i>would</i>, a <i>when</i>-clause goes in the past: <i>It would be sunny when I <u>woke up</u>.</i></li>
-<li>Two full sentences need <i>and</i> / a full stop, not just a comma. Say <i>go for a walk</i>, <i>go for a bike ride</i>.</li>
+<li>Useful phrases: <i>go for a walk</i>, <i>go for a bike ride</i>.</li>
 </ul>
 </div>
 
@@ -93,7 +93,7 @@ const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>
 function norm(s){
   s = String(s || "").toLowerCase().replace(/[’‘`]/g, "'").replace(/\bswimming pool\b/g, "pool");
   s = s.replace(/\b(i|you|he|she|it|we|they|who)'d\b/g, "$1 would").replace(/\bwouldn't\b/g, "would not");
-  s = s.replace(/\s+/g, " ").replace(/\s+,/g, ",").trim().replace(/[.!?]+$/, "").trim();
+  s = s.replace(/,/g, "").replace(/\s+/g, " ").trim().replace(/[.!?]+$/, "").trim();
   return s;
 }
 function plain(s){ return String(s).replace(/<[^>]*>/g, ""); }
@@ -282,44 +282,48 @@ addSection(1, "Which rule is it?", "Choose the use of <i>would</i> in each sente
 /* Task 2 */
 addSection(2, "Choose the correct form", "Pick the option that fits the sentence.", box => choiceTask(box, [
   `When I was little, we {will go|would go*|are going} to my grandparents every weekend.`,
-  `If I lived in New York, I {will walk|would walk*|walked would} in the park every morning.`,
-  `It would be a sunny day when I {woke*|wake|will wake} up.`,
-  `I tried to open the window, but it {didn't want|wouldn't*|isn't} open.`,
-  `Before I moved, I thought it {would*|will|is} be easy.`,
+  `If I lived in New York, I {am walking|would walk*|walk would} in the park every morning.`,
+  `On my perfect day, it would be sunny when I {woke*|would wake|am waking} up.`,
+  `I pushed the window again and again, but it {wouldn't*|won't|doesn't} open.`,
+  `Before I moved, I thought it {would*|had|did} be easy.`,
   `I {don't would say|wouldn't to say|wouldn't say*} that's the biggest problem.`,
-  `I {would like*|would to like|will like} to try the food in Japan.`,
+  `I {would like*|would to like|am liking} to try the food in Japan.`,
   `We went {to walk|for a walk*|on walk} and then rode our bikes.`
 ]));
 
 /* Task 3 */
 addSection(3, "Write the verb", "Use <i>would</i> or <i>wouldn't</i> with the verb in brackets. Contractions (<i>'d</i>) are fine.", box => typedTask(box, [
-  {s: "Every weekend my grandma ___ (bake) pies for us.", ans: ["would bake", "'d bake"], model: "would bake"},
+  {s: "When I was a child, my grandma ___ (bake) pies for us every weekend.", ans: ["would bake", "'d bake"], model: "would bake"},
   {s: "If I had a day off, I ___ (sleep) all day.", ans: ["would sleep", "'d sleep"], model: "would sleep"},
-  {s: "My laptop ___ (not start) this morning.", ans: ["wouldn't start", "would not start"], model: "wouldn't start"},
+  {s: "I pressed the button many times, but my laptop ___ (not start).", ans: ["wouldn't start", "would not start"], model: "wouldn't start"},
   {s: "I thought the trip ___ (be) easy.", ans: ["would be", "'d be"], model: "would be"},
   {s: "I ___ (like) a glass of water, please.", ans: ["would like", "'d like"], model: "would like"},
-  {s: "I ___ (not say) that. I think it's a good idea.", ans: ["wouldn't say", "would not say"], model: "wouldn't say"}
+  {s: "Some people say English is easy, but I ___ (not say) that.", ans: ["wouldn't say", "would not say"], model: "wouldn't say"}
 ], "gap"));
 
 /* Task 4 */
-addSection(4, "Fix the mistake", "Rewrite each sentence correctly. Use <i>would</i> where it says so.", box => typedTask(box, [
-  {s: "I visited my grandparents, my parents took me to the sea.", hint: "Use would (repeated past). Fix the comma splice.",
-   ans: ["I would visit my grandparents, and my parents would take me to the sea", "I would visit my grandparents and my parents would take me to the sea", "I would visit my grandparents. My parents would take me to the sea", "I would visit my grandparents, and my parents would take me to the sea.", "I would visit my grandparents; my parents would take me to the sea"],
-   model: "I would visit my grandparents, and my parents would take me to the sea."},
-  {s: "I'd swim in my swimming pool, I would rest.", hint: "Fix the comma splice. You don't need would twice.",
-   ans: ["I would swim in my pool and rest", "I would swim in my pool, and I would rest", "I would swim in my pool and I would rest", "I would swim in my pool, and then I would rest", "I would swim in my pool and then rest", "I would swim in my pool, then rest", "I would swim in my pool, and then rest", "I would swim in my pool and then I would rest", "I would swim in my pool. I would rest"],
-   model: "I'd swim in my pool and rest."},
-  {s: "It would be a sunny day when I wake up.", hint: "Check the tense after would.",
-   ans: ["It would be a sunny day when I woke up", "It would be sunny when I woke up"],
-   model: "It would be a sunny day when I woke up."},
-  {s: "It didn't want to work.", hint: "Use wouldn't (the machine refuses).",
-   ans: ["It wouldn't start", "It wouldn't work", "It would not start", "It would not work"],
-   model: "It wouldn't start."},
-  {s: "I went to walk.", hint: "Fix the fixed phrase.",
-   ans: ["I went for a walk"], model: "I went for a walk."},
-  {s: "After that I could take a ride by bike.", hint: "Use would. Say it like a native.",
-   ans: ["After that I would go for a bike ride", "After that I would ride my bike", "After that I would go for a ride on my bike", "Then I would go for a bike ride", "After that I would go on a bike ride"],
-   model: "After that I would go for a bike ride."}
+addSection(4, "Rewrite with would", "Rewrite each sentence with <i>would</i> or <i>wouldn't</i>. The hint tells you which rule to use.", box => typedTask(box, [
+  {s: "When I was little, I visited my grandparents every summer, and my parents took me to the sea.", hint: "Rule A: repeated past. Use would twice.",
+   ans: ["When I was little I would visit my grandparents every summer and my parents would take me to the sea", "When I was little I would visit my grandparents every summer. My parents would take me to the sea"],
+   model: "When I was little, I would visit my grandparents every summer, and my parents would take me to the sea."},
+  {s: "In my dream life, I swim in my pool every morning and then rest.", hint: "Rule B: imaginary situation.",
+   ans: ["In my dream life I would swim in my pool every morning and then rest", "In my dream life I would swim in my pool every morning and then I would rest", "In my dream life I would swim in my pool every morning and I would rest"],
+   model: "In my dream life, I would swim in my pool every morning and then rest."},
+  {s: "I don't think that's the biggest problem.", hint: "Rule C: soften your opinion (use wouldn't say).",
+   ans: ["I wouldn't say that's the biggest problem", "I wouldn't say that it's the biggest problem", "I would not say that's the biggest problem"],
+   model: "I wouldn't say that's the biggest problem."},
+  {s: "I thought it was going to be easy.", hint: "Rule D: future in the past.",
+   ans: ["I thought it would be easy", "I thought that it would be easy", "I thought it'd be easy"],
+   model: "I thought it would be easy."},
+  {s: "My laptop didn't start.", hint: "Rule E: the laptop 'refused' to start.",
+   ans: ["My laptop wouldn't start", "My laptop wouldn't turn on", "My laptop wouldn't work"],
+   model: "My laptop wouldn't start."},
+  {s: "I want a coffee, please.", hint: "Rule F: polite want.",
+   ans: ["I would like a coffee please", "I would like a coffee"],
+   model: "I would like a coffee, please."},
+  {s: "Every morning, I went for a walk and then I rode my bike.", hint: "Rule A: repeated past.",
+   ans: ["Every morning I would go for a walk and then I would ride my bike", "Every morning I would go for a walk and then ride my bike", "Every morning I would go for a walk and then I would go for a bike ride", "Every morning I would go for a walk and then go for a bike ride"],
+   model: "Every morning, I would go for a walk and then ride my bike."}
 ], "sent"));
 
 /* Task 5 */
