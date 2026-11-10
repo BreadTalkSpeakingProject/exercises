@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Common mistakes – homework</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f4ef;--ink:#1f1f24;--muted:#6b6b76;--card:#fff;--ok:#1e9e5a;--bad:#d64545;--line:#e6e2d8}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Poppins",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5;font-size:16px;overflow-x:hidden}
+header.top{padding:28px 16px 8px;max-width:860px;margin:0 auto}
+header.top h1{margin:0 0 4px;font-size:1.7rem;line-height:1.2}
+header.top p{margin:0;color:var(--muted)}
+.namebox{display:flex;gap:10px;align-items:center;margin-top:16px;flex-wrap:wrap}
+.namebox label{font-weight:600}
+.namebox input{flex:1;min-width:160px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;font:inherit;background:#fff}
+.namebox input:focus{outline:none;border-color:#2f80ed}
+#bar{position:sticky;top:0;z-index:20;background:rgba(246,244,239,.96);backdrop-filter:blur(6px);border-bottom:1px solid var(--line);padding:10px 16px;margin-top:14px}
+#bar .inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px}
+#bar .track{flex:1;height:10px;background:#e4e0d4;border-radius:99px;overflow:hidden}
+#bar .fill{height:100%;width:0;background:linear-gradient(90deg,#2f80ed,#1e9e5a);border-radius:99px;transition:width .3s}
+#bar .txt{font-weight:600;font-size:.95rem;white-space:nowrap}
+main{max-width:860px;margin:0 auto;padding:16px 16px 60px}
+details.rules{background:var(--card);border-radius:18px;border:1px solid var(--line);padding:14px 18px;margin-bottom:18px}
+details.rules summary{cursor:pointer;font-weight:600}
+details.rules ul{margin:10px 0 0;padding-left:20px}
+details.rules li{margin:4px 0}
+.card{background:var(--card);border-radius:22px;padding:18px 18px 16px;margin-bottom:20px;border-top:6px solid var(--accent,#2f80ed);box-shadow:0 2px 10px rgba(0,0,0,.05)}
+.card h2{margin:0 0 4px;font-size:1.15rem;display:flex;gap:10px;align-items:center}
+.card h2 .num{background:var(--accent);color:#fff;border-radius:50%;width:32px;height:32px;display:inline-flex;align-items:center;justify-content:center;font-size:.95rem;flex:none}
+.card .hint{color:var(--muted);font-size:.92rem;margin:0 0 12px}
+.item{padding:9px 10px;border-radius:12px;margin:4px 0;border:2px solid transparent;display:block}
+.item .n{display:inline-block;min-width:26px;color:var(--muted);font-weight:600}
+.item.ok{background:#e8f6ee;border-color:#9fdcb8}
+.item.bad{background:#fdeaea;border-color:#f1aaaa}
+.item.shown{background:#eef4fe;border-color:#bcd3f7}
+.grp{display:inline-flex;flex-wrap:wrap;gap:4px;margin:2px 4px;vertical-align:middle}
+.pill{font:inherit;font-size:.92rem;padding:3px 11px;border-radius:99px;border:2px solid var(--line);background:#fff;cursor:pointer;color:var(--ink)}
+.pill:hover{border-color:var(--accent)}
+.pill.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.gap{font:inherit;font-size:.95rem;padding:3px 9px;border:2px solid var(--line);border-radius:10px;width:150px;max-width:100%;margin:2px 4px;background:#fff}
+.gap:focus{outline:none;border-color:var(--accent)}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;align-items:center}
+.btns button{font:inherit;font-size:.92rem;font-weight:600;padding:8px 16px;border-radius:12px;border:none;cursor:pointer}
+.btn-check{background:var(--accent);color:#fff}
+.btn-show{background:#eceae2;color:var(--ink)}
+.btn-again{background:#fff;color:var(--ink);border:2px solid var(--line)!important}
+.msg{font-weight:600;margin-left:4px}
+textarea.write{width:100%;min-height:150px;padding:12px;border:2px solid var(--line);border-radius:14px;font:inherit;resize:vertical}
+textarea.write:focus{outline:none;border-color:var(--accent)}
+ul.check{list-style:none;padding:0;margin:10px 0 0}
+ul.check li{margin:3px 0;color:var(--muted)}
+ul.check li.done{color:var(--ok);font-weight:600}
+ul.check li::before{content:"○ "}
+ul.check li.done::before{content:"✓ "}
+.final{background:var(--card);border-radius:22px;padding:20px;text-align:center;border-top:6px solid #1f1f24}
+.final button{font:inherit;font-weight:700;font-size:1.05rem;padding:14px 28px;border:none;border-radius:14px;background:#1f1f24;color:#fff;cursor:pointer}
+.final .copied{margin-top:10px;font-weight:600;color:var(--ok);min-height:1.5em}
+@media (max-width:520px){header.top h1{font-size:1.4rem}.card{padding:14px 12px}.gap{width:120px}}
+</style>
+</head>
+<body>
+<header class="top">
+  <h1>Common mistakes – homework</h1>
+  <p>Fix the slips from our lesson. Do each task, press <b>Check</b>, and read the red lines. At the end press <b>Copy my results</b> and paste them in the chat.</p>
+  <div class="namebox"><label for="name">Your name:</label><input id="name" type="text" placeholder="Liubov" autocomplete="off"></div>
+</header>
+<div id="bar"><div class="inner"><div class="track"><div class="fill" id="fill"></div></div><div class="txt" id="txt">0 / 0</div></div></div>
+<main>
+  <details class="rules" open>
+    <summary>Quick reminder (open if you need it)</summary>
+    <ul>
+      <li><b>I don't / he doesn't</b> for habits and facts. <b>I'm … -ing</b> only for "right now". Verbs like <i>enjoy, miss, like, know</i> stay in present simple: "I enjoy the rain", "I miss this time".</li>
+      <li><b>so</b> + adjective (so long) · <b>such</b> + adjective + noun (such a long vacation).</li>
+      <li><b>a / an</b> for one thing (a/an issue) · <b>the</b> for something specific · <b>no article</b> in go to school, from Russia, with plural or uncountable nouns.</li>
+      <li>No <i>in</i> with <b>this / next / last</b> + time (this year, next year). We say <b>at</b> night, <b>at</b> 7 a.m., <b>in</b> summer, <b>all day</b> (no during).</li>
+      <li><b>do</b> = tasks and activities (do a favor, the dishes, homework) · <b>make</b> = create or produce (make a mistake, a decision, a call, money).</li>
+      <li><b>much</b> + uncountable (information, advice, money, time, homework) · <b>many</b> + countable (problems, lessons).</li>
+    </ul>
+  </details>
+  <div id="tasks"></div>
+  <div class="final">
+    <button id="copy" type="button">Copy my results</button>
+    <div class="copied" id="copied"></div>
+  </div>
+</main>
+
+<script>
+const COLORS=["#e49b10","#2f80ed","#27ae60","#9b51e0","#eb5757","#00a3a3","#f2994a","#3d7dca","#d6457a","#6c5ce7"];
+
+/* ---------- helpers ---------- */
+function el(tag,cls,txt){const e=document.createElement(tag);if(cls)e.className=cls;if(txt!==undefined)e.textContent=txt;return e;}
+function norm(s){
+  return String(s||"").toLowerCase().replace(/[’‘`´]/g,"'")
+    .replace(/\bis not\b/g,"isn't").replace(/\bdo not\b/g,"don't").replace(/\bdoes not\b/g,"doesn't")
+    .replace(/\bare not\b/g,"aren't").replace(/\bwas not\b/g,"wasn't").replace(/\bwere not\b/g,"weren't")
+    .replace(/\bdid not\b/g,"didn't").replace(/[.!?]+$/,"").replace(/\s+/g," ").trim();
+}
+function plain(s){return String(s).replace(/<[^>]*>/g,"");}
+function parse(str){
+  const parts=[];let last=0;const re=/\{([^}]*)\}/g;let m;
+  while((m=re.exec(str))){
+    if(m.index>last)parts.push({t:str.slice(last,m.index)});
+    const opts=m[1].split("|").map(o=>({o:o.replace(/\*$/,""),c:/\*$/.test(o)}));
+    parts.push({g:opts});last=re.lastIndex;
+  }
+  if(last<str.length)parts.push({t:str.slice(last)});
+  return parts;
+}
+function groupsOf(it){return it.filter(p=>p.g);}
+function itemOk(it,s){return groupsOf(it).every((p,gi)=>s[gi]>=0&&p.g[s[gi]].c);}
+function choiceLine(it,s){
+  let text="";const wrong=[];let gi=0;
+  it.forEach(p=>{
+    if(p.t!==undefined){text+=p.t;}
+    else{
+      const k=s[gi];text+=(k>=0?p.g[k].o:"___");
+      if(!(k>=0&&p.g[k].c))wrong.push(p.g.find(o=>o.c).o);
+      gi++;
+    }
+  });
+  return wrong.length?text+"   (correct: "+wrong.join(", ")+")":text;
+}
+
+/* ---------- task data ---------- */
+const DEFS=[
+ {type:"choice",label:"Present simple or continuous?",title:"Present simple or continuous? don't / doesn't",
+  hint:"Habits and facts = present simple. Stative verbs (enjoy, miss) stay simple.",
+  items:[
+   `My husband {don't|doesn't*|isn't} agree with me.`,
+   `I {don't take*|am not take|not take} my phone with me all day.`,
+   `In summer I {am enjoying|enjoy*} the rain.`,
+   `I {am missing|miss*} this time so much.`,
+   `Psychologists {says|say*} that sleep is important.`,
+   `Look! It {rains|is raining*} outside.`,
+   `I usually {am drinking|drink*} tea in the morning.`,
+   `My friends {doesn't|don't*} have a dress code at work.`,
+   `Sorry, I can't talk now. I {cook|am cooking*} dinner.`
+  ]},
+ {type:"choice",label:"so or such?",title:"so or such?",
+  hint:"so + adjective · such (a) + adjective + noun.",
+  items:[
+   `It was {so|such*} a long vacation.`,
+   `The vacation was {so*|such} long.`,
+   `It's not {so|such*} a big deal for me.`,
+   `She is {so*|such} kind. I really like her.`,
+   `They have {so|such*} beautiful weather in Norway.`,
+   `He is {so|such*} a good teacher.`,
+   `I'm {so*|such} tired today.`,
+   `We had {so|such*} a great time!`
+  ]},
+ {type:"choice",label:"Articles",title:"Articles: a / an / the / – (no article)",
+  hint:"Choose – when no article is needed.",
+  items:[
+   `It's not {a|an*|the} issue for me.`,
+   `My kids go to {a|the|–*} school every day.`,
+   `My friend is from {the|–*} Russia.`,
+   `She's from {the*|–} Netherlands.`,
+   `That's {a|an*} interesting idea.`,
+   `We live in {a|an*} old apartment.`,
+   `My best friend doesn't have {a|the|–*} headphones.`,
+   `Norway is {a|an|the*} most beautiful country I know.`
+  ]},
+ {type:"choice",label:"Prepositions",title:"Time and other prepositions",
+  hint:"Remember: this / next / last year = no in. Choose – when no word is needed.",
+  items:[
+   `We decided to repeat the trip {in|–*} this year.`,
+   `{In|–*} next year I'm planning to go abroad.`,
+   `I don't take my phone {during|–*} all day.`,
+   `I don't like going out {at*|in|on} night.`,
+   `I wake up {in|at*} 7 a.m. every day.`,
+   `{In these days|These days*}, many psychologists say it's good to rest.`,
+   `I love rainy weather {in*|on|at} summer.`,
+   `We discussed {about|–*} our plans.`,
+   `I really miss {about|–*} that time.`,
+   `It depends {from|on*} the weather.`
+  ]},
+ {type:"gap",label:"Passive: is called",title:"Passive: is called / was made",
+  hint:"Type the verb in the passive form. Example: The room (clean) every day → is cleaned.",
+  items:[
+   {t:`This village ___ (call) Viksa.`,ans:["is called","'s called"]},
+   {t:`What is this thing ___ in English? (call)`,ans:["called"]},
+   {t:`English ___ (speak) in many countries.`,ans:["is spoken"]},
+   {t:`My phone ___ (make) in China.`,ans:["was made","is made"]},
+   {t:`This book ___ (write) in 1990.`,ans:["was written"]}
+  ]},
+ {type:"choice",label:"do or make?",title:"do or make?",
+  hint:"do = tasks and activities · make = create or produce.",
+  items:[
+   `Could you {make|do*} me a favor?`,
+   `Everyone {makes*|does} mistakes.`,
+   `I need to {make*|do} a decision soon.`,
+   `I always {make|do*} my homework in the evening.`,
+   `Can I {make*|do} a quick phone call?`,
+   `Who {makes|does*} the dishes in your house?`,
+   `She {makes*|does} a lot of money.`,
+   `I {have*|make|do} an English lesson every Tuesday.`
+  ]},
+ {type:"choice",label:"much or many?",title:"Countable or uncountable? much / many",
+  hint:"information, advice, money, time, homework, weather = uncountable.",
+  items:[
+   `There is too {many|much*} information in this lesson.`,
+   `I need {an advice|some advice*}.`,
+   `She has so {much|many*} problems.`,
+   `I don't have {many|much*} free time.`,
+   `How {many|much*} money did you spend?`,
+   `I have a lot of {homeworks|homework*} today.`,
+   `The weather {are|is*} nice in Sweden.`,
+   `How {many*|much} lessons do you have a week?`
+  ]},
+ {type:"choice",label:"Lesson review",title:"Lesson review: common slips",
+  hint:"Words and phrases from today's board.",
+  items:[
+   `I like to {decide|solve*} problems quickly.`,
+   `I always {take*|give|bring} my phone with me when I leave the house.`,
+   `It's hard for me to {give*|bring|make} compliments to strangers.`,
+   `What do you want to {get*|take} for your birthday?`,
+   `The ice latte {costed|cost*} 600 rubles.`,
+   `Do you enjoy listening {–|to*} music?`,
+   `My best friend {hasn't|doesn't have*} headphones.`,
+   `A lot of people say you must {to|–*} watch these movies.`,
+   `She is watching a new TV {cereal|serial|series*}.`,
+   `Do you want to live in a {more|–*} bigger apartment?`
+  ]}
+];
+
+/* ---------- sections ---------- */
+const sections=[];
+const tasksEl=document.getElementById("tasks");
+
+function record(sec){
+  if(!sec.api.report)return;
+  sec.api.report().forEach((r,i)=>{
+    sec.lastOk[i]=r.ok;
+    if(!r.ok){const k=i+"|"+r.line;if(!sec.seen.has(k)){sec.seen.add(k);sec.log.push({i:i,line:r.line});}}
+  });
+}
+
+function makeCard(sec,color,def,bodyEl,withButtons){
+  const card=el("section","card");card.style.setProperty("--accent",color);
+  const h=el("h2");const n=el("span","num",String(sec.num));h.append(n,document.createTextNode(def.title));
+  card.append(h,el("p","hint",def.hint));card.append(bodyEl);
+  if(withButtons){
+    const btns=el("div","btns");
+    const bc=el("button","btn-check","Check");bc.type="button";
+    const bs=el("button","btn-show","Show answers");bs.type="button";
+    const ba=el("button","btn-again","Try again");ba.type="button";
+    const msg=el("span","msg");
+    bc.onclick=()=>{
+      if(sec.revealed){msg.textContent="You saw the answers. Press Try again to do it yourself.";return;}
+      sec.score=sec.api.check();sec.checked=true;record(sec);
+      msg.textContent=sec.score+" / "+sec.total;updateBar();
+    };
+    bs.onclick=()=>{sec.api.fill();sec.revealed=true;sec.checked=false;sec.score=0;msg.textContent="Answers shown – no score. Press Try again to practise.";updateBar();};
+    ba.onclick=()=>{sec.api.reset();sec.revealed=false;sec.checked=false;sec.score=0;msg.textContent="";updateBar();};
+    btns.append(bc,bs,ba,msg);card.append(btns);
+  }
+  tasksEl.append(card);
+}
+
+function choiceTask(def,num,color){
+  const items=def.items.map(parse);
+  const sel=items.map(it=>groupsOf(it).map(()=>-1));
+  const rows=[];
+  const list=el("div");
+  const sec={id:"t"+num,num:num,label:def.label,total:items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]};
+  function render(cls){
+    list.innerHTML="";
+    items.forEach((it,i)=>{
+      const row=el("div","item"+(cls?" "+cls:""));
+      row.append(el("span","n",(i+1)+"."));
+      let gi=0;
+      it.forEach(p=>{
+        if(p.t!==undefined){row.append(document.createTextNode(p.t));}
+        else{
+          const gidx=gi++;const grp=el("span","grp");
+          p.g.forEach((o,k)=>{
+            const b=el("button","pill"+(sel[i][gidx]===k?" on":""),o.o);b.type="button";
+            b.onclick=()=>{
+              if(sec.revealed)return;
+              sel[i][gidx]=k;
+              Array.from(grp.children).forEach((c,kk)=>c.classList.toggle("on",kk===k));
+              row.classList.remove("ok","bad");
+            };
+            grp.append(b);
+          });
+          row.append(grp);
+        }
+      });
+      list.append(row);rows[i]=row;
+    });
+  }
+  sec.api={
+    total:items.length,
+    check(){let s=0;items.forEach((it,i)=>{const ok=itemOk(it,sel[i]);rows[i].classList.remove("ok","bad","shown");rows[i].classList.add(ok?"ok":"bad");if(ok)s++;});return s;},
+    report(){return items.map((it,i)=>({ok:itemOk(it,sel[i]),line:choiceLine(it,sel[i])}));},
+    fill(){items.forEach((it,i)=>{groupsOf(it).forEach((p,gi)=>{sel[i][gi]=p.g.findIndex(o=>o.c);});});render("shown");},
+    reset(){items.forEach((it,i)=>{sel[i]=groupsOf(it).map(()=>-1);});render();}
+  };
+  render();
+  makeCard(sec,color,def,list,true);
+  sections.push(sec);
+}
+
+function gapTask(def,num,color){
+  const list=el("div");const inputs=[];const rows=[];
+  const sec={id:"t"+num,num:num,label:def.label,total:def.items.length,score:0,checked:false,revealed:false,log:[],seen:new Set(),lastOk:[]};
+  def.items.forEach((it,i)=>{
+    const row=el("div","item");row.append(el("span","n",(i+1)+"."));
+    const parts=it.t.split("___");
+    row.append(document.createTextNode(parts[0]));
+    const inp=el("input","gap");inp.type="text";inp.autocomplete="off";inp.spellcheck=false;
+    inp.oninput=()=>row.classList.remove("ok","bad","shown");
+    row.append(inp,document.createTextNode(parts[1]||""));
+    list.append(row);inputs.push(inp);rows.push(row);
+  });
+  const okAt=i=>def.items[i].ans.map(norm).includes(norm(inputs[i].value));
+  sec.api={
+    total:def.items.length,
+    check(){let s=0;def.items.forEach((it,i)=>{const ok=okAt(i);rows[i].classList.remove("ok","bad","shown");rows[i].classList.add(ok?"ok":"bad");if(ok)s++;});return s;},
+    report(){return def.items.map((it,i)=>{
+      const parts=it.t.split("___");const typed=inputs[i].value.trim();
+      return {ok:okAt(i),line:parts[0]+(typed||"___")+(parts[1]||"")+"   (correct: "+it.ans[0]+")"};
+    });},
+    fill(){def.items.forEach((it,i)=>{inputs[i].value=it.ans[0];rows[i].classList.remove("ok","bad");rows[i].classList.add("shown");});},
+    reset(){inputs.forEach((x,i)=>{x.value="";rows[i].classList.remove("ok","bad","shown");});}
+  };
+  makeCard(sec,color,def,list,true);
+  sections.push(sec);
+}
+
+DEFS.forEach((d,i)=>{
+  const c=COLORS[i%COLORS.length];
+  if(d.type==="choice")choiceTask(d,i+1,c);
+  else gapTask(d,i+1,c);
+});
+
+/* ---------- progress ---------- */
+function updateBar(){
+  let got=0,tot=0;
+  sections.forEach(s=>{if(s.total){tot+=s.total;if(s.checked&&!s.revealed)got+=s.score;}});
+  document.getElementById("txt").textContent=got+" / "+tot;
+  document.getElementById("fill").style.width=(tot?Math.round(got/tot*100):0)+"%";
+}
+updateBar();
+
+/* ---------- report ---------- */
+function buildReport(){
+  const name=document.getElementById("name").value.trim()||"student";
+  const stamp=new Date().toLocaleString("en-GB");
+  let out="Common mistakes homework – "+name+" ("+stamp+")\n\n";
+  let got=0,tot=0;
+  sections.forEach(s=>{
+    if(!s.total)return;
+    tot+=s.total;let st;
+    if(s.revealed)st="answers shown";
+    else if(!s.checked)st="not checked";
+    else{st=s.score+" / "+s.total;got+=s.score;}
+    out+="Task "+s.num+" "+s.label+": "+st+"\n";
+  });
+  out+="Total: "+got+" / "+tot+"\n\nMISTAKES (every wrong answer, including ones fixed on retry)\n";
+  let any=false;
+  sections.forEach(s=>{
+    if(!s.log.length)return;
+    any=true;
+    out+="\nTask "+s.num+" "+s.label+"\n";
+    s.log.forEach(e=>{
+      const tag=s.lastOk[e.i]?"[fixed on retry]":"[still wrong]";
+      out+="  ✗ "+plain(e.line)+"   "+tag+"\n";
+    });
+  });
+  if(!any)out+="\n(no mistakes logged)\n";
+  return out;
+}
+window.HW={sections:sections,buildReport:buildReport};
+
+document.getElementById("copy").onclick=()=>{
+  const text=buildReport();const note=document.getElementById("copied");
+  function done(){note.textContent="Copied! Paste it in the chat.";}
+  function fallback(){
+    const ta=document.createElement("textarea");ta.value=text;ta.style.position="fixed";ta.style.opacity="0";
+    document.body.appendChild(ta);ta.select();
+    try{document.execCommand("copy");done();}catch(e){note.textContent="Could not copy. Select the text manually.";}
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(done,fallback);}
+  else fallback();
+};
+</script>
+</body>
+</html>
