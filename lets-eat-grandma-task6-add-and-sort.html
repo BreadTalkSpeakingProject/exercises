@@ -16,12 +16,12 @@ html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:"Ope
 .score{font-weight:700;font-size:calc(var(--u)*3);white-space:nowrap}
 .card{flex:1;background:var(--pink);border:calc(var(--u)*.35) solid var(--line);border-radius:calc(var(--u)*2.4);padding:calc(var(--u)*3);display:flex;flex-direction:column;gap:calc(var(--u)*2.4);min-height:0;overflow:auto}
 .step{font-weight:700;color:var(--red);font-size:calc(var(--u)*2.6)}
-.sent{font-size:calc(var(--u)*4.4);line-height:1.9;background:#fff;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*2) calc(var(--u)*2.4)}
+.sent{font-size:calc(var(--u)*4.2);line-height:1.9;background:#fff;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*2) calc(var(--u)*2.4)}
 .w{display:inline}
-.g{display:inline-flex;align-items:center;justify-content:center;padding-bottom:calc(var(--u)*1.2)!important;min-width:calc(var(--u)*2.6);height:calc(var(--u)*5);margin:0 calc(var(--u)*.3);padding:0 calc(var(--u)*.4);border:calc(var(--u)*.3) dashed #e8c9c1;border-radius:calc(var(--u)*1);background:#fff;font-weight:700;font-size:calc(var(--u)*4.4);line-height:1;font-family:inherit;color:var(--red);cursor:pointer;vertical-align:middle;text-align:center}
+.g{display:inline-flex;align-items:center;justify-content:center;padding-bottom:calc(var(--u)*1.2)!important;min-width:calc(var(--u)*1.7);height:calc(var(--u)*5);margin:0 calc(var(--u)*.3);padding:0 calc(var(--u)*.4);border:calc(var(--u)*.3) dashed #e8c9c1;border-radius:calc(var(--u)*1);background:#fff;font-weight:700;font-size:calc(var(--u)*4.4);line-height:1;font-family:inherit;color:var(--red);cursor:pointer;vertical-align:middle;text-align:center}
 .g:hover{border-color:var(--red)}
 .g.has{border-style:solid;border-color:var(--red);background:var(--pink)}
-.g.right{border-color:var(--ok);background:#e6f6ee;color:var(--ok)}.g.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
+.g.miss{border-style:dashed;border-color:var(--ok);color:var(--ok);background:#e6f6ee}.g.right{border-color:var(--ok);background:#e6f6ee;color:var(--ok)}.g.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
 .hint{font-size:calc(var(--u)*2.3);color:#6b5a55}
 .label{font-weight:700;font-size:calc(var(--u)*2.8)}
 .rules{display:flex;flex-wrap:wrap;gap:calc(var(--u)*1.2)}
@@ -41,7 +41,7 @@ html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:"Ope
 <div class="card" id="card"></div>
 </div>
 <script>
-// {x} marks a gap with the correct mark. {,?} = comma or nothing both accepted. {;|.} = semicolon or period.
+// {x} after a word = the correct mark after it. {,?} = comma or nothing. {;|.} = semicolon or period.
 const ITEMS=[
 {t:"When the lights went out{,} everyone stayed calm.",r:["3"],why:"<b>Rule 3.</b> A time clause at the start needs a comma."},
 {t:"Everyone stayed calm when the lights went out.",r:["none"],why:"<b>No punctuation needed.</b> A time clause at the end has no comma."},
@@ -59,56 +59,53 @@ const ITEMS=[
 const MARKS=["",",",":",";","."];
 const RULES=["1","2","3","4","5","6","7","8","none"];
 const LEG="<b>1</b> list · <b>2</b> and/but/so + two clauses · <b>3</b> time or if clause first · <b>4</b> starter word · <b>5</b> extra information · <b>6</b> colon before a list · <b>7</b> colon before an explanation · <b>8</b> comma splice";
-// parse
 ITEMS.forEach(it=>{
-  const parts=it.t.split(/(\{[^}]*\})/);const words=[];const exp=[];let cur="";
-  parts.forEach(p=>{if(p[0]==="{"){words.push(cur.trim());cur="";const k=p.slice(1,-1);exp.push(k)}else cur+=p});
-  words.push(cur.trim());
-  it.words=words;it.exp=exp.map(k=>k==="?"?[""]:k.split("|").flatMap(x=>x==="," ?[","]:x==",?"?[",",""]:[x]));
-  it.sel=Array(exp.length).fill(0);it.rs=new Set();it.done=false;it.ok=null;
+  const words=[],exp=[];
+  it.t.split(/\s+/).forEach(tok=>{
+    const m=tok.match(/^(.*?)(\{([^}]*)\})?$/);words.push(m[1]);
+    if(m[3]!==undefined){const k=m[3];exp.push(k===",?"?[",",""]:k.split("|"))}else exp.push([""]);
+  });
+  exp.pop();
+  it.words=words;it.exp=exp;it.sel=Array(exp.length).fill(0);it.rs=new Set();it.done=false;it.ok=null;
 });
 let cur=0;
 const $=s=>document.querySelector(s);
-const capital=s=>s?s[0].toUpperCase()+s.slice(1):s;
-function okPunct(it){return it.sel.every((k,i)=>it.exp[i].includes(MARKS[k]))}
-function okRules(it){const need=new Set(it.r);return need.size===it.rs.size&&[...need].every(x=>it.rs.has(x))}
-function render(){
+const cap=s=>s?s[0].toUpperCase()+s.slice(1):s;
+const okPunct=it=>it.sel.every((k,i)=>it.exp[i].includes(MARKS[k]));
+const okRules=it=>{const need=new Set(it.r);return need.size===it.rs.size&&[...need].every(x=>it.rs.has(x))};
+function render(keep){
   const it=ITEMS[cur];
   $("#dots").innerHTML=ITEMS.map((x,i)=>`<button class="dot${i===cur?" on":""}${x.done?(x.ok?" ok":" no"):""}" data-i="${i}">${i+1}</button>`).join("");
   $("#score").textContent=ITEMS.filter(x=>x.done&&x.ok).length+" / "+ITEMS.length;
   let s="";
   it.words.forEach((w,i)=>{
-    const prevDot=i>0&&MARKS[it.sel[i-1]]===".";
-    s+=`<span class="w">${prevDot?capital(w):w}</span>`;
-    if(i<it.sel.length){const m=MARKS[it.sel[i]];const cls="g"+(m?" has":"")+(it.done?(it.exp[i].includes(m)?" right":" wrong"):"");
-      s+=`<button class="${cls}" data-g="${i}" ${it.done?"disabled":""}>${m||"&nbsp;"}</button>`}else s+=" ";
-    if(i<it.sel.length&&!it.sel.length) s+=" ";
-    if(i<it.words.length-1&&it.sel[i]===undefined) s+=" ";
+    const afterDot=i>0&&MARKS[it.sel[i-1]]===".";
+    s+=`<span class="w">${afterDot?cap(w):w}</span>`;
+    if(i<it.sel.length){
+      const m=MARKS[it.sel[i]];let cls="g"+(m?" has":""),txt=m;
+      if(it.done){const good=it.exp[i].includes(m);
+        if(m&&good)cls+=" right";else if(m&&!good)cls+=" wrong";else if(!m&&!good){cls+=" miss";txt=it.exp[i][0]}}
+      s+=`<button class="${cls}" data-g="${i}" ${it.done?"disabled":""} aria-label="gap ${i+1}">${txt||"&nbsp;"}</button>`;
+    }
   });
-  // words without a gap marker are joined with spaces: rebuild with explicit spaces
-  s="";
-  const toks=it.t.replace(/\{[^}]*\}/g,"\u0001").split(/(\u0001)/);
-  let gi=0;toks.forEach((tk,ti)=>{
-    if(tk==="\u0001"){const m=MARKS[it.sel[gi]];const cls="g"+(m?" has":"")+(it.done?(it.exp[gi].includes(m)?" right":" wrong"):"");
-      s+=`<button class="${cls}" data-g="${gi}" ${it.done?"disabled":""}>${m||"&nbsp;"}</button>`;gi++}
-    else{let txt=tk;if(ti>0&&gi>0&&MARKS[it.sel[gi-1]]==="."){txt=txt.replace(/^(\s*)(\S)/,(a,b,c)=>b+c.toUpperCase())}s+=`<span class="w">${txt}</span>`}});
   const rb=RULES.map(r=>{let c="r"+(r==="none"?" wide":"");if(it.rs.has(r))c+=" sel";
-    if(it.done){const need=it.r.includes(r)||(r==="none"&&it.r.includes("none"));if(it.rs.has(r))c=c.replace(" sel","")+(need?" right":" wrong");else if(need)c+=" miss"}
+    if(it.done){const need=it.r.includes(r);if(it.rs.has(r))c=c.replace(" sel","")+(need?" right":" wrong");else if(need)c+=" miss"}
     return `<button class="${c}" data-r="${r}" ${it.done?"disabled":""}>${r==="none"?"No punctuation needed":r}</button>`}).join("");
-  const fb=it.done?`<div class="fb${it.ok?"":" no"}"><b>${it.ok?"Correct!":"Not quite."}</b> ${okPunct(it)?"":"Check the marks. "}${okRules(it)?"":"Check the rule. "}${it.why}</div>`:"";
+  const fb=it.done?`<div class="fb${it.ok?"":" no"}"><b>${it.ok?"Correct!":"Not quite."}</b> ${okPunct(it)?"":"Check the marks: red = not needed, green dashed = missing. "}${okRules(it)?"":"Check the rule. "}${it.why}</div>`:"";
   $("#card").innerHTML=`<div class="step">Sentence ${cur+1} of ${ITEMS.length}</div>
-  <div class="hint">Tap a gap to add a mark: comma, colon, semicolon or period. Tap again to change it.</div>
+  <div class="hint">Click between any two words to add a mark. Click again to change it, or type , : ; . (Backspace clears).</div>
   <div class="sent">${s}</div>
   <div class="label">Which rule?</div>
   <div class="rules">${rb}</div>
   <div class="legend">${LEG}</div>
   ${fb}
   <div class="btns">${it.done?"":'<button class="btn" id="chk">Check</button>'}<button class="btn sec" id="prev"${cur===0?" disabled":""}>Back</button><button class="btn sec" id="next">${cur===ITEMS.length-1?"Start again":"Next"}</button></div>`;
+  if(keep!==undefined){const b=document.querySelector(`.g[data-g="${keep}"]`);if(b)b.focus()}
 }
 document.addEventListener("click",e=>{
   const it=ITEMS[cur];
   const d=e.target.closest(".dot");if(d){cur=+d.dataset.i;render();return}
-  const g=e.target.closest(".g");if(g&&!it.done){const i=+g.dataset.g;it.sel[i]=(it.sel[i]+1)%MARKS.length;render();return}
+  const g=e.target.closest(".g");if(g&&!it.done){const i=+g.dataset.g;it.sel[i]=(it.sel[i]+1)%MARKS.length;render(i);return}
   const r=e.target.closest(".r");if(r&&!it.done){const v=r.dataset.r;
     if(v==="none"){it.rs=it.rs.has("none")?new Set():new Set(["none"])}else{it.rs.delete("none");it.rs.has(v)?it.rs.delete(v):it.rs.add(v)}
     render();return}
@@ -116,6 +113,13 @@ document.addEventListener("click",e=>{
   if(e.target.id==="prev"&&cur>0){cur--;render();return}
   if(e.target.id==="next"){if(cur===ITEMS.length-1){ITEMS.forEach(x=>{x.sel=x.sel.map(()=>0);x.rs=new Set();x.done=false;x.ok=null});cur=0}else cur++;render()}
 });
-window.T6={ITEMS,okPunct,okRules,render,set:i=>{cur=i;render()}};
+document.addEventListener("keydown",e=>{
+  const g=e.target.closest&&e.target.closest(".g");const it=ITEMS[cur];if(!g||it.done)return;
+  const i=+g.dataset.g;let k=-1;
+  if(e.key===",")k=1;else if(e.key===":")k=2;else if(e.key===";")k=3;else if(e.key===".")k=4;
+  else if(e.key==="Backspace"||e.key==="Delete"||e.key==="Escape")k=0;
+  if(k>=0){e.preventDefault();it.sel[i]=k;render(i)}
+});
+window.T6={ITEMS,MARKS,okPunct,okRules,render,set:i=>{cur=i;render()}};
 render();
 </script></body></html>
