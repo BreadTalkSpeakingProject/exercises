@@ -302,32 +302,7 @@ addSection(3, "Write the verb", "Use <i>would</i> or <i>wouldn't</i> with the ve
 ], "gap"));
 
 /* Task 4 */
-addSection(4, "Rewrite with would", "Rewrite each sentence with <i>would</i> or <i>wouldn't</i>. The hint tells you which rule to use.", box => typedTask(box, [
-  {s: "When I was little, I visited my grandparents every summer, and my parents took me to the sea.", hint: "Rule A: repeated past. Use would twice.",
-   ans: ["When I was little I would visit my grandparents every summer and my parents would take me to the sea", "When I was little I would visit my grandparents every summer. My parents would take me to the sea"],
-   model: "When I was little, I would visit my grandparents every summer, and my parents would take me to the sea."},
-  {s: "In my dream life, I swim in my pool every morning and then rest.", hint: "Rule B: imaginary situation.",
-   ans: ["In my dream life I would swim in my pool every morning and then rest", "In my dream life I would swim in my pool every morning and then I would rest", "In my dream life I would swim in my pool every morning and I would rest"],
-   model: "In my dream life, I would swim in my pool every morning and then rest."},
-  {s: "I don't think that's the biggest problem.", hint: "Rule C: soften your opinion (use wouldn't say).",
-   ans: ["I wouldn't say that's the biggest problem", "I wouldn't say that it's the biggest problem", "I would not say that's the biggest problem"],
-   model: "I wouldn't say that's the biggest problem."},
-  {s: "I thought it was going to be easy.", hint: "Rule D: future in the past.",
-   ans: ["I thought it would be easy", "I thought that it would be easy", "I thought it'd be easy"],
-   model: "I thought it would be easy."},
-  {s: "My laptop didn't start.", hint: "Rule E: the laptop 'refused' to start.",
-   ans: ["My laptop wouldn't start", "My laptop wouldn't turn on", "My laptop wouldn't work"],
-   model: "My laptop wouldn't start."},
-  {s: "I want a coffee, please.", hint: "Rule F: polite want.",
-   ans: ["I would like a coffee please", "I would like a coffee"],
-   model: "I would like a coffee, please."},
-  {s: "Every morning, I went for a walk and then I rode my bike.", hint: "Rule A: repeated past.",
-   ans: ["Every morning I would go for a walk and then I would ride my bike", "Every morning I would go for a walk and then ride my bike", "Every morning I would go for a walk and then I would go for a bike ride", "Every morning I would go for a walk and then go for a bike ride"],
-   model: "Every morning, I would go for a walk and then ride my bike."}
-], "sent"));
-
-/* Task 5 */
-let writeSec = addSection(5, "Your typical day in New York", "Choose one place in New York where you live for the rest of your life. Write at least 6 sentences about a typical day there. Use <i>would</i>.", box => writingTask(box), {noButtons: true});
+let writeSec = addSection(4, "Your typical day in your city", "Imagine you had to choose one place in your city where you would live for the rest of your life. Write at least 6 sentences about a typical day there. Use <i>would</i>.", box => writingTask(box), {noButtons: true});
 
 /* ---------- report ---------- */
 function buildReport(){
