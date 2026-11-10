@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Task 6: Add and sort</title>
+<style>
+:root{--red:#d82600;--pink:#fbe8e4;--line:#efb3a7;--ink:#1a1a1a;--ok:#1f8f5a;--bad:#c62828;--u:1vmin}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:"Open Sans",system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+.app{height:100vh;display:flex;flex-direction:column;padding:calc(var(--u)*2.6) calc(var(--u)*3);gap:calc(var(--u)*1.8)}
+.top{display:flex;align-items:center;gap:calc(var(--u)*2)}
+.dots{display:flex;flex-wrap:wrap;gap:calc(var(--u)*.8);flex:1}
+.dot{width:calc(var(--u)*5.2);height:calc(var(--u)*5.2);border-radius:50%;border:calc(var(--u)*.35) solid var(--line);background:#fff;font-weight:700;font-size:calc(var(--u)*2.5);line-height:1;color:var(--red);cursor:pointer;padding:0;font-family:inherit}
+.dot.on{background:var(--red);color:#fff;border-color:var(--red)}
+.dot.ok{border-color:var(--ok);color:var(--ok)}.dot.no{border-color:var(--bad);color:var(--bad)}
+.dot.on.ok{background:var(--ok);color:#fff}.dot.on.no{background:var(--bad);color:#fff}
+.score{font-weight:700;font-size:calc(var(--u)*3);white-space:nowrap}
+.card{flex:1;background:var(--pink);border:calc(var(--u)*.35) solid var(--line);border-radius:calc(var(--u)*2.4);padding:calc(var(--u)*3);display:flex;flex-direction:column;gap:calc(var(--u)*2.4);min-height:0;overflow:auto}
+.step{font-weight:700;color:var(--red);font-size:calc(var(--u)*2.6)}
+.sent{font-size:calc(var(--u)*4.4);line-height:1.9;background:#fff;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*2) calc(var(--u)*2.4)}
+.w{display:inline}
+.g{display:inline-flex;align-items:center;justify-content:center;padding-bottom:calc(var(--u)*1.2)!important;min-width:calc(var(--u)*2.6);height:calc(var(--u)*5);margin:0 calc(var(--u)*.3);padding:0 calc(var(--u)*.4);border:calc(var(--u)*.3) dashed #e8c9c1;border-radius:calc(var(--u)*1);background:#fff;font-weight:700;font-size:calc(var(--u)*4.4);line-height:1;font-family:inherit;color:var(--red);cursor:pointer;vertical-align:middle;text-align:center}
+.g:hover{border-color:var(--red)}
+.g.has{border-style:solid;border-color:var(--red);background:var(--pink)}
+.g.right{border-color:var(--ok);background:#e6f6ee;color:var(--ok)}.g.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
+.hint{font-size:calc(var(--u)*2.3);color:#6b5a55}
+.label{font-weight:700;font-size:calc(var(--u)*2.8)}
+.rules{display:flex;flex-wrap:wrap;gap:calc(var(--u)*1.2)}
+.r{min-width:calc(var(--u)*6.2);height:calc(var(--u)*6.2);padding:0 calc(var(--u)*1.4);border-radius:calc(var(--u)*1.4);border:calc(var(--u)*.35) solid var(--line);background:#fff;font-weight:700;font-size:calc(var(--u)*3);line-height:1;font-family:inherit;color:var(--ink);cursor:pointer}
+.r.wide{font-size:calc(var(--u)*2.5)}
+.r.sel{background:var(--red);border-color:var(--red);color:#fff}
+.r.right{background:var(--ok);border-color:var(--ok);color:#fff}.r.wrong{background:var(--bad);border-color:var(--bad);color:#fff}.r.miss{border-color:var(--ok);color:var(--ok)}
+.legend{font-size:calc(var(--u)*2.1);color:#6b5a55;line-height:1.5}.legend b{color:var(--red)}
+.btns{display:flex;gap:calc(var(--u)*1.6);align-items:center;flex-wrap:wrap}
+.btn{background:var(--red);color:#fff;border:0;border-radius:calc(var(--u)*1.4);padding:calc(var(--u)*1.7) calc(var(--u)*3.2);font-weight:700;font-size:calc(var(--u)*3);line-height:1;font-family:inherit;cursor:pointer}
+.btn.sec{background:#fff;color:var(--ink);border:calc(var(--u)*.35) solid var(--line)}
+.fb{background:#fff;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*2) calc(var(--u)*2.4);font-size:calc(var(--u)*3);line-height:1.5;border-left:calc(var(--u)*1) solid var(--ok)}
+.fb.no{border-left-color:var(--bad)}.fb b{color:var(--red)}
+</style></head>
+<body><div class="app">
+<div class="top"><div class="dots" id="dots"></div><div class="score" id="score">0 / 12</div></div>
+<div class="card" id="card"></div>
+</div>
+<script>
+// {x} marks a gap with the correct mark. {,?} = comma or nothing both accepted. {;|.} = semicolon or period.
+const ITEMS=[
+{t:"When the lights went out{,} everyone stayed calm.",r:["3"],why:"<b>Rule 3.</b> A time clause at the start needs a comma."},
+{t:"Everyone stayed calm when the lights went out.",r:["none"],why:"<b>No punctuation needed.</b> A time clause at the end has no comma."},
+{t:"We bought apples{,} bread{,} cheese{,?} and a bottle of water.",r:["1"],why:"<b>Rule 1.</b> Commas separate the items in a list. The comma before the last <i>and</i> is optional."},
+{t:"She has lived in Rome for ten years{,} and she still gets lost.",r:["2"],why:"<b>Rule 2.</b> Two clauses with two subjects (<i>She… she…</i>) need a comma before <i>and</i>."},
+{t:"She has lived in Rome for ten years and still gets lost.",r:["none"],why:"<b>No punctuation needed.</b> One subject with two verbs is not two clauses."},
+{t:"The weather was awful{,} so we stayed at home.",r:["2"],why:"<b>Rule 2.</b> <i>so</i> = result, so it needs a comma before it."},
+{t:"My laptop{,} which I bought last year{,} has stopped working.",r:["5"],why:"<b>Rule 5.</b> Extra information about a thing we already know (only one laptop) goes between commas."},
+{t:"Unfortunately{,} the museum was closed on Monday.",r:["4"],why:"<b>Rule 4.</b> A comma after a starter word."},
+{t:"There was only one reason for the delay{:} the train had broken down.",r:["7"],why:"<b>Rule 7.</b> A colon after a complete sentence introduces an explanation."},
+{t:"I packed three things{:} a camera{,} a charger{,?} and a map.",r:["6","1"],why:"<b>Rules 6 and 1.</b> A colon after a complete sentence introduces a list, and commas separate the items."},
+{t:"It was raining heavily{;|.} we decided to stay in.",r:["8"],why:"<b>Rule 8, comma splice.</b> A comma alone cannot join two sentences. Fix it with a semicolon or a period, or with a comma + <i>so</i> (<i>…heavily, so we decided…</i>)."},
+{t:"If you need help{,} call me.",r:["3"],why:"<b>Rule 3.</b> An <i>if</i> clause at the start needs a comma."}
+];
+const MARKS=["",",",":",";","."];
+const RULES=["1","2","3","4","5","6","7","8","none"];
+const LEG="<b>1</b> list · <b>2</b> and/but/so + two clauses · <b>3</b> time or if clause first · <b>4</b> starter word · <b>5</b> extra information · <b>6</b> colon before a list · <b>7</b> colon before an explanation · <b>8</b> comma splice";
+// parse
+ITEMS.forEach(it=>{
+  const parts=it.t.split(/(\{[^}]*\})/);const words=[];const exp=[];let cur="";
+  parts.forEach(p=>{if(p[0]==="{"){words.push(cur.trim());cur="";const k=p.slice(1,-1);exp.push(k)}else cur+=p});
+  words.push(cur.trim());
+  it.words=words;it.exp=exp.map(k=>k==="?"?[""]:k.split("|").flatMap(x=>x==="," ?[","]:x==",?"?[",",""]:[x]));
+  it.sel=Array(exp.length).fill(0);it.rs=new Set();it.done=false;it.ok=null;
+});
+let cur=0;
+const $=s=>document.querySelector(s);
+const capital=s=>s?s[0].toUpperCase()+s.slice(1):s;
+function okPunct(it){return it.sel.every((k,i)=>it.exp[i].includes(MARKS[k]))}
+function okRules(it){const need=new Set(it.r);return need.size===it.rs.size&&[...need].every(x=>it.rs.has(x))}
+function render(){
+  const it=ITEMS[cur];
+  $("#dots").innerHTML=ITEMS.map((x,i)=>`<button class="dot${i===cur?" on":""}${x.done?(x.ok?" ok":" no"):""}" data-i="${i}">${i+1}</button>`).join("");
+  $("#score").textContent=ITEMS.filter(x=>x.done&&x.ok).length+" / "+ITEMS.length;
+  let s="";
+  it.words.forEach((w,i)=>{
+    const prevDot=i>0&&MARKS[it.sel[i-1]]===".";
+    s+=`<span class="w">${prevDot?capital(w):w}</span>`;
+    if(i<it.sel.length){const m=MARKS[it.sel[i]];const cls="g"+(m?" has":"")+(it.done?(it.exp[i].includes(m)?" right":" wrong"):"");
+      s+=`<button class="${cls}" data-g="${i}" ${it.done?"disabled":""}>${m||"&nbsp;"}</button>`}else s+=" ";
+    if(i<it.sel.length&&!it.sel.length) s+=" ";
+    if(i<it.words.length-1&&it.sel[i]===undefined) s+=" ";
+  });
+  // words without a gap marker are joined with spaces: rebuild with explicit spaces
+  s="";
+  const toks=it.t.replace(/\{[^}]*\}/g,"\u0001").split(/(\u0001)/);
+  let gi=0;toks.forEach((tk,ti)=>{
+    if(tk==="\u0001"){const m=MARKS[it.sel[gi]];const cls="g"+(m?" has":"")+(it.done?(it.exp[gi].includes(m)?" right":" wrong"):"");
+      s+=`<button class="${cls}" data-g="${gi}" ${it.done?"disabled":""}>${m||"&nbsp;"}</button>`;gi++}
+    else{let txt=tk;if(ti>0&&gi>0&&MARKS[it.sel[gi-1]]==="."){txt=txt.replace(/^(\s*)(\S)/,(a,b,c)=>b+c.toUpperCase())}s+=`<span class="w">${txt}</span>`}});
+  const rb=RULES.map(r=>{let c="r"+(r==="none"?" wide":"");if(it.rs.has(r))c+=" sel";
+    if(it.done){const need=it.r.includes(r)||(r==="none"&&it.r.includes("none"));if(it.rs.has(r))c=c.replace(" sel","")+(need?" right":" wrong");else if(need)c+=" miss"}
+    return `<button class="${c}" data-r="${r}" ${it.done?"disabled":""}>${r==="none"?"No punctuation needed":r}</button>`}).join("");
+  const fb=it.done?`<div class="fb${it.ok?"":" no"}"><b>${it.ok?"Correct!":"Not quite."}</b> ${okPunct(it)?"":"Check the marks. "}${okRules(it)?"":"Check the rule. "}${it.why}</div>`:"";
+  $("#card").innerHTML=`<div class="step">Sentence ${cur+1} of ${ITEMS.length}</div>
+  <div class="hint">Tap a gap to add a mark: comma, colon, semicolon or period. Tap again to change it.</div>
+  <div class="sent">${s}</div>
+  <div class="label">Which rule?</div>
+  <div class="rules">${rb}</div>
+  <div class="legend">${LEG}</div>
+  ${fb}
+  <div class="btns">${it.done?"":'<button class="btn" id="chk">Check</button>'}<button class="btn sec" id="prev"${cur===0?" disabled":""}>Back</button><button class="btn sec" id="next">${cur===ITEMS.length-1?"Start again":"Next"}</button></div>`;
+}
+document.addEventListener("click",e=>{
+  const it=ITEMS[cur];
+  const d=e.target.closest(".dot");if(d){cur=+d.dataset.i;render();return}
+  const g=e.target.closest(".g");if(g&&!it.done){const i=+g.dataset.g;it.sel[i]=(it.sel[i]+1)%MARKS.length;render();return}
+  const r=e.target.closest(".r");if(r&&!it.done){const v=r.dataset.r;
+    if(v==="none"){it.rs=it.rs.has("none")?new Set():new Set(["none"])}else{it.rs.delete("none");it.rs.has(v)?it.rs.delete(v):it.rs.add(v)}
+    render();return}
+  if(e.target.id==="chk"){it.done=true;it.ok=okPunct(it)&&okRules(it);render();return}
+  if(e.target.id==="prev"&&cur>0){cur--;render();return}
+  if(e.target.id==="next"){if(cur===ITEMS.length-1){ITEMS.forEach(x=>{x.sel=x.sel.map(()=>0);x.rs=new Set();x.done=false;x.ok=null});cur=0}else cur++;render()}
+});
+window.T6={ITEMS,okPunct,okRules,render,set:i=>{cur=i;render()}};
+render();
+</script></body></html>
