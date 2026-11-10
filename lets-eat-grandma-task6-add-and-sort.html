@@ -18,10 +18,10 @@ html,body{margin:0;height:100%;background:#fff;color:var(--ink);font-family:"Ope
 .step{font-weight:700;color:var(--red);font-size:calc(var(--u)*2.6)}
 .sent{font-size:calc(var(--u)*4.2);line-height:1.9;background:#fff;border-radius:calc(var(--u)*1.6);padding:calc(var(--u)*2) calc(var(--u)*2.4)}
 .w{display:inline}
-.g{display:inline-flex;align-items:center;justify-content:center;padding-bottom:calc(var(--u)*1.2)!important;min-width:calc(var(--u)*1.7);height:calc(var(--u)*5);margin:0 calc(var(--u)*.3);padding:0 calc(var(--u)*.4);border:calc(var(--u)*.3) dashed #e8c9c1;border-radius:calc(var(--u)*1);background:#fff;font-weight:700;font-size:calc(var(--u)*4.4);line-height:1;font-family:inherit;color:var(--red);cursor:pointer;vertical-align:middle;text-align:center}
+.g{display:inline-block;padding-bottom:0;min-width:calc(var(--u)*1.7);height:calc(var(--u)*5);margin:0 calc(var(--u)*.3);padding:0 calc(var(--u)*.4);border:calc(var(--u)*.3) dashed #e8c9c1;border-radius:calc(var(--u)*1);background:#fff;font-weight:700;font-size:calc(var(--u)*4.4);line-height:1;font-family:inherit;color:var(--red);cursor:pointer;vertical-align:middle;text-align:center}
 .g:hover{border-color:var(--red)}
-.g.has{border-style:solid;border-color:var(--red);background:var(--pink)}
-.g.miss{border-style:dashed;border-color:var(--ok);color:var(--ok);background:#e6f6ee}.g.right{border-color:var(--ok);background:#e6f6ee;color:var(--ok)}.g.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
+input.g{width:calc(var(--u)*3);padding:0;outline:none}input.g:focus{border-style:solid;border-color:var(--red);background:#fff4f1}.g.has{border-style:solid;border-color:var(--red);background:var(--pink)}
+.g.miss{border-style:dashed;border-color:var(--ok);color:var(--ok);background:#e6f6ee}input.g:disabled{opacity:1}.g.right{border-color:var(--ok);background:#e6f6ee;color:var(--ok)}.g.wrong{border-color:var(--bad);background:#fdeaea;color:var(--bad)}
 .hint{font-size:calc(var(--u)*2.3);color:#6b5a55}
 .label{font-weight:700;font-size:calc(var(--u)*2.8)}
 .rules{display:flex;flex-wrap:wrap;gap:calc(var(--u)*1.2)}
@@ -80,12 +80,12 @@ function render(keep){
   let s="";
   it.words.forEach((w,i)=>{
     const afterDot=i>0&&MARKS[it.sel[i-1]]===".";
-    s+=`<span class="w">${afterDot?cap(w):w}</span>`;
+    s+=`<span class="w" data-w="${i}">${afterDot?cap(w):w}</span>`;
     if(i<it.sel.length){
       const m=MARKS[it.sel[i]];let cls="g"+(m?" has":""),txt=m;
       if(it.done){const good=it.exp[i].includes(m);
         if(m&&good)cls+=" right";else if(m&&!good)cls+=" wrong";else if(!m&&!good){cls+=" miss";txt=it.exp[i][0]}}
-      s+=`<button class="${cls}" data-g="${i}" ${it.done?"disabled":""} aria-label="gap ${i+1}">${txt||"&nbsp;"}</button>`;
+      s+=`<input class="${cls}" data-g="${i}" maxlength="1" autocomplete="off" autocapitalize="off" spellcheck="false" value="${txt}" ${it.done?"disabled":""} aria-label="gap ${i+1}">`;
     }
   });
   const rb=RULES.map(r=>{let c="r"+(r==="none"?" wide":"");if(it.rs.has(r))c+=" sel";
@@ -93,7 +93,7 @@ function render(keep){
     return `<button class="${c}" data-r="${r}" ${it.done?"disabled":""}>${r==="none"?"No punctuation needed":r}</button>`}).join("");
   const fb=it.done?`<div class="fb${it.ok?"":" no"}"><b>${it.ok?"Correct!":"Not quite."}</b> ${okPunct(it)?"":"Check the marks: red = not needed, green dashed = missing. "}${okRules(it)?"":"Check the rule. "}${it.why}</div>`:"";
   $("#card").innerHTML=`<div class="step">Sentence ${cur+1} of ${ITEMS.length}</div>
-  <div class="hint">Click between any two words to add a mark. Click again to change it, or type , : ; . (Backspace clears).</div>
+  <div class="hint">Click between any two words and type the mark you think is needed: , : ; . Backspace clears it.</div>
   <div class="sent">${s}</div>
   <div class="label">Which rule?</div>
   <div class="rules">${rb}</div>
@@ -105,20 +105,18 @@ function render(keep){
 document.addEventListener("click",e=>{
   const it=ITEMS[cur];
   const d=e.target.closest(".dot");if(d){cur=+d.dataset.i;render();return}
-  const g=e.target.closest(".g");if(g&&!it.done){const i=+g.dataset.g;it.sel[i]=(it.sel[i]+1)%MARKS.length;render(i);return}
-  const r=e.target.closest(".r");if(r&&!it.done){const v=r.dataset.r;
+    const r=e.target.closest(".r");if(r&&!it.done){const v=r.dataset.r;
     if(v==="none"){it.rs=it.rs.has("none")?new Set():new Set(["none"])}else{it.rs.delete("none");it.rs.has(v)?it.rs.delete(v):it.rs.add(v)}
     render();return}
   if(e.target.id==="chk"){it.done=true;it.ok=okPunct(it)&&okRules(it);render();return}
   if(e.target.id==="prev"&&cur>0){cur--;render();return}
   if(e.target.id==="next"){if(cur===ITEMS.length-1){ITEMS.forEach(x=>{x.sel=x.sel.map(()=>0);x.rs=new Set();x.done=false;x.ok=null});cur=0}else cur++;render()}
 });
-document.addEventListener("keydown",e=>{
-  const g=e.target.closest&&e.target.closest(".g");const it=ITEMS[cur];if(!g||it.done)return;
-  const i=+g.dataset.g;let k=-1;
-  if(e.key===",")k=1;else if(e.key===":")k=2;else if(e.key===";")k=3;else if(e.key===".")k=4;
-  else if(e.key==="Backspace"||e.key==="Delete"||e.key==="Escape")k=0;
-  if(k>=0){e.preventDefault();it.sel[i]=k;render(i)}
+document.addEventListener("input",e=>{
+  const g=e.target;if(!g.classList||!g.classList.contains("g"))return;const it=ITEMS[cur];if(it.done)return;
+  const i=+g.dataset.g;const ch=g.value.slice(-1);const k=MARKS.indexOf(ch);
+  it.sel[i]=k>0?k:0;g.value=k>0?ch:"";g.classList.toggle("has",k>0);
+  const nw=document.querySelector(`.w[data-w="${i+1}"]`);if(nw){nw.textContent=k===4?cap(it.words[i+1]):it.words[i+1]}
 });
 window.T6={ITEMS,MARKS,okPunct,okRules,render,set:i=>{cur=i;render()}};
 render();
