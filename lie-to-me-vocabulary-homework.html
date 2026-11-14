@@ -1,0 +1,141 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>Lie To Me! — Vocabulary Homework</title>
+<style>
+:root{--purple:#5e397f;--ground:#79658d;--green:#c6d68d;--lilac:#eee7f6;--ink:#33243f;--paper:#fff;--line:#ded3e8;--good:#245f36;--bad:#9d2d38}
+*{box-sizing:border-box}body{margin:0;font:17px/1.6 Arial,sans-serif;color:var(--ink);background:var(--ground)}button,input,select{font:inherit}button,select{cursor:pointer}button{touch-action:manipulation}button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{outline:3px solid var(--purple);outline-offset:4px}button{border:0;border-radius:10px;padding:11px 18px;background:var(--purple);color:#fff;font-weight:700}button:hover{filter:brightness(.93)}button.secondary{background:var(--lilac);color:var(--purple)}button.quiet{background:transparent;color:var(--purple);text-decoration:underline;text-underline-offset:4px}button:disabled{opacity:.45;cursor:default}main{max-width:1060px;margin:auto;padding:36px 24px 60px}.hero{color:#fff;padding:12px 8px 30px}.eyebrow{margin:0 0 8px;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#ecf3d6;font-weight:700}h1{font-size:clamp(40px,7vw,68px);line-height:1.08;margin:0 0 15px;letter-spacing:-2px}.hero p{max-width:660px;margin:8px 0}.summary{display:flex;align-items:center;gap:16px;justify-content:space-between;margin:24px 0 0}.summary p{margin:0}.meter{height:7px;background:#ffffff40;border-radius:8px;overflow:hidden;margin-top:12px}.meter span{display:block;height:100%;background:var(--green);width:0;transition:width .2s}.vocabulary{display:flex;flex-wrap:wrap;gap:8px;padding:18px 22px;background:var(--green);border-radius:18px;color:var(--purple);margin-bottom:48px}.vocabulary strong{width:100%;font-size:13px;text-transform:uppercase;letter-spacing:.08em}.vocabulary span{background:#ffffff70;border-radius:8px;padding:4px 10px;font-size:15px}.exercise{position:relative;background:var(--paper);border:3px solid var(--green);border-radius:22px;padding:40px 30px 24px;margin:0 0 48px;scroll-margin-top:20px}.badge{position:absolute;top:-23px;left:50%;transform:translateX(-50%);display:grid;place-items:center;width:70px;height:44px;border-radius:9px;background:#262626;color:#fff;font-size:24px;font-weight:700}h2{text-align:center;color:var(--purple);font-size:25px;line-height:1.25;margin:0 0 10px}.instructions{text-align:center;max-width:760px;margin:0 auto 26px;color:#65536f}.item{border-top:1px solid var(--line);padding:18px 0}.item:first-child{border-top:0}.match-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,1fr);gap:16px;align-items:center}.prompt{margin:0}.num{color:var(--purple);font-weight:700;margin-right:8px}select,input[type=text]{width:100%;min-height:48px;border:2px solid #bba9cb;border-radius:9px;color:var(--ink);background:#fff;padding:9px 12px}select{font-size:16px}fieldset{border:0;padding:0;margin:0;min-width:0}legend{padding:0;width:100%}.options{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.option{position:relative;display:inline-flex;align-items:center;gap:7px;background:var(--lilac);border:2px solid transparent;border-radius:8px;padding:6px 15px;cursor:pointer}.option:has(input:checked){border-color:var(--purple);background:#e0e8bf}.option input{accent-color:var(--purple);width:17px;height:17px}.answer-input{max-width:480px;margin-top:10px}.bank{background:var(--lilac);border-radius:12px;padding:15px 18px;margin:0 0 12px;color:var(--purple)}.bank strong{display:block;font-size:13px;letter-spacing:.07em;text-transform:uppercase}.bank p{margin:5px 0 0}.feedback{margin:9px 0 0;min-height:0;font-size:15px}.feedback:empty{display:none}.correct .feedback{color:var(--good)}.incorrect .feedback{color:var(--bad)}.correct select,.correct input[type=text]{border-color:var(--good)}.incorrect select,.incorrect input[type=text]{border-color:var(--bad)}.sentence-box{display:flex;flex-wrap:wrap;align-content:flex-start;gap:7px;min-height:60px;padding:10px;border:2px dashed #bba9cb;border-radius:10px;margin:10px 0;background:#faf8fc}.sentence-box:empty:before{content:'Build your sentence here';color:#7a6b83;font-size:15px;padding:3px}.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:43px}.tile{padding:7px 13px;font-size:16px;background:var(--lilac);color:var(--purple);font-weight:400;border:1px solid #cab9d8;border-radius:7px}.sentence-box .tile{background:var(--green);border-color:#a7bc70}.actions{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;padding-top:20px;border-top:1px solid var(--line)}.status{flex-basis:100%;margin:6px 0 0;font-size:15px;color:var(--purple);font-weight:700;min-height:24px}.finish{background:var(--green);border-radius:18px;padding:23px;display:flex;align-items:center;flex-wrap:wrap;gap:12px}.finish p{flex:1 1 280px;margin:0;color:var(--purple)}.finish .secondary{background:#fff}.footer{color:#fff;font-size:14px;text-align:center;margin-top:24px}.small{font-size:14px}.noscript{padding:20px;background:#fff;border-radius:12px}.bottom-score{flex-basis:100%;color:var(--purple);font-weight:700;margin-top:6px}.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+@media(max-width:650px){main{padding:22px 14px 35px}.exercise{padding:38px 18px 20px}.match-row{grid-template-columns:1fr;gap:9px}h2{font-size:23px}.hero{padding-left:4px;padding-right:4px}.summary{gap:10px}.actions button{padding:10px 13px}.vocabulary{padding:16px}.finish{padding:18px}.option{padding:5px 11px}}
+@media print{body{background:#fff;color:#000}main{max-width:none;padding:0}.hero,.footer{color:#000}.hero{padding-bottom:16px}h1{font-size:36px}.eyebrow{color:#333}.exercise{break-inside:avoid;border:1px solid #777;margin-bottom:30px;padding:28px 16px 14px}.vocabulary{margin-bottom:30px}.actions,.finish,.meter,.summary,.tile-controls{display:none}.badge{print-color-adjust:exact}.feedback:empty{display:none}button{border:1px solid #999}.vocabulary,.bank,.option,.tile{background:#f3f3f3!important;color:#000}.hero p{color:#000}.instructions{margin-bottom:14px}.item{padding:10px 0}}
+</style>
+</head>
+<body>
+<main>
+<header class="hero">
+<p class="eyebrow">Individual homework · Vocabulary practice</p>
+<h1>Lie To Me!</h1>
+<p>Seven useful phrases. Four short exercises. Work on your own, then check your answers.</p>
+<div class="summary"><p>About 15 minutes</p><p id="progress-label">0 / 25 completed</p></div>
+<div class="meter" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="25" aria-valuenow="0"><span id="progress-fill"></span></div>
+</header>
+<aside class="vocabulary" aria-label="Lesson vocabulary"><strong>Your lesson vocabulary</strong><span>tell a lie / tell lies</span><span>tell the truth</span><span>talk nonsense</span><span>tell the difference</span><span>tell the time</span><span>speak up</span><span>say so</span></aside>
+<noscript><p class="noscript">Open this file in a browser with JavaScript enabled to use the exercises and answer checking.</p></noscript>
+<div id="exercises"></div>
+<div class="finish"><p>Finished? Check all four exercises together.</p><button type="button" id="check-all">Check all answers</button><button type="button" id="reset-all" class="secondary">Start again</button><div id="total-score" class="bottom-score" role="status" aria-live="polite"></div></div>
+<p class="footer" id="save-note">One file · Works offline</p>
+</main>
+<script id="homework-data" type="application/json">
+[
+ {"title":"Match the meaning","instruction":"Choose the correct phrase for each definition. Use each phrase once.","type":"match","options":["tell the time","talk nonsense","say so","tell a lie","speak up","tell the difference","tell the truth"],"items":[
+  {"prompt":"Say something that you know is not true.","answer":"tell a lie","note":"A lie is something you know is not true."},
+  {"prompt":"Say what really happened.","answer":"tell the truth","note":"The fixed phrase is tell the truth."},
+  {"prompt":"Say things that do not make sense.","answer":"talk nonsense","note":"Nonsense is language or ideas that do not make sense."},
+  {"prompt":"Recognise how two things are different.","answer":"tell the difference","note":"You can tell the difference between two things."},
+  {"prompt":"Read a clock and know what time it is.","answer":"tell the time","note":"We use tell the time when talking about reading a clock."},
+  {"prompt":"Express your opinion instead of staying silent.","answer":"speak up","note":"Speak up can mean express your opinion. It can also mean speak louder."},
+  {"prompt":"Say that something is true, using “so” instead of repeating it.","answer":"say so","note":"“Is it closed?” “The sign says so.” Here, so means that it is closed."}
+ ]},
+ {"title":"Choose the speech verb","instruction":"Choose say, speak, tell or talk to complete each phrase.","type":"choice","options":["say","speak","tell","talk"],"items":[
+  {"prompt":"Please ___ up. I can’t hear you.","answer":"speak","note":"Speak up means speak louder here."},
+  {"prompt":"Don’t ___ nonsense. That story makes no sense.","answer":"talk","note":"We say talk nonsense."},
+  {"prompt":"Can your little brother ___ the time on an analogue clock?","answer":"tell","note":"We say tell the time."},
+  {"prompt":"These bags look identical. Can you ___ the difference?","answer":"tell","note":"We say tell the difference."},
+  {"prompt":"I promise to ___ the truth about what happened.","answer":"tell","note":"We say tell the truth, with the."},
+  {"prompt":"You don’t need to ___ a lie to impress anyone.","answer":"tell","note":"We say tell a lie or tell lies."},
+  {"prompt":"“Why do I have to do it?” “Because I ___ so!”","answer":"say","note":"Because I say so is a fixed expression that gives no further explanation."}
+ ]},
+ {"title":"Complete the situations","instruction":"Type the missing phrase from the box. Use each phrase once, exactly as shown.","type":"gap","bank":["tell the difference","speak up","tell a lie","say so","talk nonsense","tell the time","tell the truth"],"items":[
+  {"prompt":"The teacher gave me the wrong mark. I’m shy, but I need to ___.","answer":"speak up","note":"Here, speak up means say what you think instead of staying silent."},
+  {"prompt":"I didn’t finish my homework. I won’t invent an excuse: I’ll ___.","answer":"tell the truth","note":"Tell the truth means say what really happened."},
+  {"prompt":"These two drinks taste exactly the same to me. I can’t ___.","answer":"tell the difference","note":"You cannot recognise how the two drinks are different."},
+  {"prompt":"My phone is dead, but there’s a clock on the wall. I can still ___.","answer":"tell the time","note":"You can read the clock and find out what time it is."},
+  {"prompt":"Don’t pretend you understand the topic. It’s better to ask than to ___.","answer":"talk nonsense","note":"Talk nonsense means say things that do not make sense."},
+  {"prompt":"I broke the cup. I’m tempted to ___ and blame the cat.","answer":"tell a lie","note":"Tell a lie means say something you know is not true."},
+  {"prompt":"“Is the meeting cancelled?” “I’m not sure. The manager didn’t ___.”","answer":"say so","note":"Say so means say that the meeting is cancelled, without repeating those words."}
+ ]},
+ {"title":"Build the sentence","instruction":"Click the words in the correct order. Start with the capital letter. Click a word in your sentence to put it back.","type":"order","items":[
+  {"prompt":"Make a question.","answer":"Can you tell the difference?","words":["the","tell","Can","difference?","you"],"note":"Can + subject + base verb: Can you tell the difference?"},
+  {"prompt":"Make a statement.","answer":"I can tell the time.","words":["time.","can","the","I","tell"],"note":"The fixed phrase tell the time follows can."},
+  {"prompt":"Make a request.","answer":"Please speak up in class.","words":["in","up","class.","Please","speak"],"note":"Keep the phrasal verb speak up together."},
+  {"prompt":"Make a negative statement.","answer":"She didn’t say so.","words":["so.","say","She","didn’t"],"note":"After didn’t, use the base form say."}
+ ]}
+]
+</script>
+<script>
+(()=>{
+'use strict';
+const exercises=JSON.parse(document.getElementById('homework-data').textContent);
+const KEY='lie-to-me-homework-v1';
+const normalise=s=>String(s).normalize('NFKC').toLowerCase().replace(/[’‘]/g,"'").trim().replace(/[.!?]+$/g,'').trim().replace(/\s+/g,' ');
+const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fresh=()=>exercises.map(ex=>({answers:ex.items.map(()=>ex.type==='order'?[]:''),checked:ex.items.map(()=>false),revealed:false}));
+let state=fresh(),storageAvailable=true;
+try{
+ const saved=JSON.parse(localStorage.getItem(KEY));
+ if(Array.isArray(saved)&&saved.length===exercises.length)state=saved.map((s,e)=>{
+  const safe=fresh()[e],ex=exercises[e];
+  if(!s||!Array.isArray(s.answers)||s.answers.length!==ex.items.length)return safe;
+  safe.answers=s.answers.map((a,i)=>ex.type==='order'?(Array.isArray(a)&&a.every(n=>Number.isInteger(n)&&n>=0&&n<ex.items[i].words.length)&&new Set(a).size===a.length?a:[]):(typeof a==='string'?a.slice(0,180):''));
+  safe.checked=ex.items.map((_,i)=>Boolean(s.checked&&s.checked[i]));safe.revealed=Boolean(s.revealed);return safe;
+ });
+}catch{storageAvailable=false;}
+function answer(e,i){const value=state[e].answers[i];return exercises[e].type==='order'?value.map(n=>exercises[e].items[i].words[n]).join(' '):value;}
+function correct(e,i){return normalise(answer(e,i))===normalise(exercises[e].items[i].answer);}
+function completed(e,i){return exercises[e].type==='order'?state[e].answers[i].length===exercises[e].items[i].words.length:Boolean(answer(e,i).trim());}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch{storageAvailable=false;}document.getElementById('save-note').textContent=storageAvailable?'Works offline · Your progress is saved in this browser':'Works offline · Progress is kept while this page stays open';}
+function progress(){let count=0;exercises.forEach((ex,e)=>ex.items.forEach((_,i)=>{if(completed(e,i))count++;}));document.getElementById('progress-label').textContent=count+' / 25 completed';document.querySelector('.meter').setAttribute('aria-valuenow',count);document.getElementById('progress-fill').style.width=(count/25*100)+'%';}
+function render(){
+ document.getElementById('exercises').innerHTML=exercises.map((ex,e)=>`<section class="exercise" id="exercise-${e}" aria-labelledby="heading-${e}"><span class="badge" aria-hidden="true">${e+1}</span><h2 id="heading-${e}"><span class="sr-only">Exercise ${e+1}: </span>${escape(ex.title)}</h2><p class="instructions">${escape(ex.instruction)}</p>${ex.bank?`<aside class="bank"><strong>Phrase bank</strong><p>${ex.bank.map(escape).join(' · ')}</p></aside>`:''}<div class="items">${ex.items.map((item,i)=>renderItem(ex,e,item,i)).join('')}</div><div class="actions"><button type="button" data-action="check" data-e="${e}">Check answers</button><button type="button" class="secondary" data-action="reveal" data-e="${e}">Show answers</button><button type="button" class="quiet" data-action="reset" data-e="${e}">Reset exercise</button><p class="status" id="status-${e}" role="status" aria-live="polite"></p></div></section>`).join('');
+ exercises.forEach((ex,e)=>{ex.items.forEach((_,i)=>{if(ex.type==='order')renderTiles(e,i);feedback(e,i);});if(state[e].checked.every(Boolean))sectionScore(e);});progress();save();
+}
+function renderItem(ex,e,item,i){
+ const id=`q-${e}-${i}`,attrs=`data-e="${e}" data-i="${i}"`,label=`<span class="num">${i+1}.</span>${escape(item.prompt)}`;
+ let content='';
+ if(ex.type==='match')content=`<div class="match-row"><label for="${id}">${label}</label><select id="${id}" ${attrs} aria-describedby="feedback-${e}-${i}"><option value="">Choose a phrase…</option>${ex.options.map(o=>`<option value="${escape(o)}" ${state[e].answers[i]===o?'selected':''}>${escape(o)}</option>`).join('')}</select></div>`;
+ if(ex.type==='choice')content=`<fieldset aria-describedby="feedback-${e}-${i}"><legend>${label}</legend><div class="options">${ex.options.map(o=>`<label class="option"><input type="radio" name="${id}" value="${escape(o)}" ${attrs} ${state[e].answers[i]===o?'checked':''}>${escape(o)}</label>`).join('')}</div></fieldset>`;
+ if(ex.type==='gap')content=`<label for="${id}">${label}</label><div class="answer-input"><input type="text" id="${id}" ${attrs} value="${escape(state[e].answers[i])}" placeholder="Type the missing phrase" autocomplete="off" spellcheck="false" maxlength="180" aria-describedby="feedback-${e}-${i}"></div>`;
+ if(ex.type==='order')content=`<p class="prompt" id="prompt-${e}-${i}">${label}</p><div class="sentence-box" id="sentence-${e}-${i}" role="group" aria-label="Your sentence, item ${i+1}"></div><div class="tiles" id="tiles-${e}-${i}" role="group" aria-label="Available words, item ${i+1}"></div>`;
+ return `<div class="item" id="item-${e}-${i}">${content}<p class="feedback" id="feedback-${e}-${i}" aria-live="polite"></p></div>`;
+}
+function renderTiles(e,i){
+ const words=exercises[e].items[i].words,chosen=state[e].answers[i];
+ document.getElementById(`sentence-${e}-${i}`).innerHTML=chosen.map((n,pos)=>`<button type="button" class="tile" data-action="remove-word" data-e="${e}" data-i="${i}" data-pos="${pos}" aria-label="Remove ${escape(words[n])}">${escape(words[n])}</button>`).join('');
+ document.getElementById(`tiles-${e}-${i}`).innerHTML=words.map((word,n)=>chosen.includes(n)?'':`<button type="button" class="tile" data-action="add-word" data-e="${e}" data-i="${i}" data-word="${n}">${escape(word)}</button>`).join('');
+}
+function feedback(e,i){
+ const item=document.getElementById(`item-${e}-${i}`),out=document.getElementById(`feedback-${e}-${i}`);item.classList.remove('correct','incorrect');
+ const control=item.querySelector('select,input[type="text"]');if(control)control.removeAttribute('aria-invalid');
+ if(!state[e].checked[i]){out.textContent='';return;}
+ if(state[e].revealed){item.classList.add('correct');out.textContent='Answer: '+exercises[e].items[i].answer+'. '+exercises[e].items[i].note;return;}
+ const ok=correct(e,i);item.classList.add(ok?'correct':'incorrect');if(control&&!ok)control.setAttribute('aria-invalid','true');
+ out.textContent=ok?'Correct. '+exercises[e].items[i].note:(completed(e,i)?'Not quite. Try again.':'Complete this answer, then check again.');
+}
+function sectionScore(e){const score=exercises[e].items.filter((_,i)=>correct(e,i)).length;document.getElementById('status-'+e).textContent=state[e].revealed?'Answers shown. Reset this exercise to try it on your own.':score+' / '+exercises[e].items.length+' correct'+(score===exercises[e].items.length?' — well done!':'. Review the marked answers.');return score;}
+function check(e){state[e].checked.fill(true);exercises[e].items.forEach((_,i)=>feedback(e,i));sectionScore(e);save();}
+function changed(e,i){state[e].checked[i]=false;feedback(e,i);document.getElementById('status-'+e).textContent=state[e].revealed?'Answers have been shown for this exercise.':'Answer changed. Check again when you’re ready.';document.getElementById('total-score').textContent='';progress();save();}
+document.addEventListener('input',event=>{const t=event.target;if(t.matches('input[type="text"][data-e]')){const e=+t.dataset.e,i=+t.dataset.i;state[e].answers[i]=t.value;changed(e,i);}});
+document.addEventListener('change',event=>{const t=event.target;if(t.matches('select[data-e],input[type="radio"][data-e]')){const e=+t.dataset.e,i=+t.dataset.i;state[e].answers[i]=t.value;changed(e,i);}});
+document.addEventListener('click',event=>{
+ const button=event.target.closest('button');if(!button)return;
+ if(button.id==='check-all'){let score=0;exercises.forEach((_,e)=>{check(e);score+=sectionScore(e);});document.getElementById('total-score').textContent=state.some(s=>s.revealed)?'Answer checking complete. Some answers were shown; reset those exercises for independent practice.':score+' / 25 correct'+(score===25?' — homework complete!':'. Review the marked answers and try again.');return;}
+ if(button.id==='reset-all'){state=fresh();render();document.getElementById('total-score').textContent='All exercises reset.';document.getElementById('check-all').focus();return;}
+ if(!button.dataset.action)return;
+ const e=+button.dataset.e,i=+button.dataset.i,action=button.dataset.action;
+ if(action==='check'){check(e);return;}
+ if(action==='reset'){state[e]=fresh()[e];render();document.getElementById('total-score').textContent='';document.querySelector(`[data-action="check"][data-e="${e}"]`).focus();return;}
+ if(action==='reveal'){
+  const ex=exercises[e];state[e].revealed=true;
+  ex.items.forEach((item,j)=>{if(ex.type==='order'){const remaining=item.words.map((_,n)=>n);state[e].answers[j]=item.answer.split(' ').map(word=>{const k=remaining.findIndex(n=>item.words[n]===word);return remaining.splice(k,1)[0];});}else state[e].answers[j]=item.answer;state[e].checked[j]=true;});
+  render();document.getElementById('total-score').textContent='';document.querySelector(`[data-action="reveal"][data-e="${e}"]`).focus();return;
+ }
+ if(action==='add-word'){state[e].answers[i].push(+button.dataset.word);renderTiles(e,i);changed(e,i);const next=document.querySelector(`#tiles-${e}-${i} button`)||document.querySelector(`#sentence-${e}-${i} button`);if(next)next.focus();}
+ if(action==='remove-word'){state[e].answers[i].splice(+button.dataset.pos,1);renderTiles(e,i);changed(e,i);const next=document.querySelector(`#sentence-${e}-${i} button`)||document.querySelector(`#tiles-${e}-${i} button`);if(next)next.focus();}
+});
+render();
+})();
+</script>
+</body>
+</html>
