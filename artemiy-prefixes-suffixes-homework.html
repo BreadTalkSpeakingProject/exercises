@@ -106,7 +106,7 @@ $('#download').addEventListener('click',()=>{
     s.items.forEach((q,j)=>lines.push((j+1)+'. '+q.prompt+' ['+q.base+'] | My answer: '+(state.answers[i][j]||'(blank)')+(state.submitted[i]?' | '+(accepted(state.answers[i][j],q)?'correct':'needs review; expected '+q.answer):'')));
     lines.push('');
   });
-  lines.push('Vocabulary source: ESL Brains — Immediate response (not) required. Practice sentences are original.');
+
   const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');
   a.href=url;a.download='Artemiy-word-formation-results.txt';a.click();setTimeout(()=>URL.revokeObjectURL(url),1000);
 });
