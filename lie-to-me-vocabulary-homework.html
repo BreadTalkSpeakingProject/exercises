@@ -17,14 +17,16 @@
 <header class="hero">
 <p class="eyebrow">Individual homework · Vocabulary practice</p>
 <h1>Lie To Me!</h1>
-<p>Seven useful phrases. Four short exercises. Work on your own, then check your answers.</p>
+<p>Seven useful phrases. Four short exercises. Work on your own, then check your answers. At the end, press <b>Copy my results</b> and paste them in the chat.</p>
+<label for="student-name">Your name</label>
+<input type="text" id="student-name" placeholder="Enter your name" autocomplete="name" maxlength="100" style="max-width:480px;display:block;margin-top:6px">
 <div class="summary"><p>About 15 minutes</p><p id="progress-label">0 / 25 completed</p></div>
 <div class="meter" role="progressbar" aria-label="Questions completed" aria-valuemin="0" aria-valuemax="25" aria-valuenow="0"><span id="progress-fill"></span></div>
 </header>
 <aside class="vocabulary" aria-label="Lesson vocabulary"><strong>Your lesson vocabulary</strong><span>tell a lie / tell lies</span><span>tell the truth</span><span>talk nonsense</span><span>tell the difference</span><span>tell the time</span><span>speak up</span><span>say so</span></aside>
 <noscript><p class="noscript">Open this file in a browser with JavaScript enabled to use the exercises and answer checking.</p></noscript>
 <div id="exercises"></div>
-<div class="finish"><p>Finished? Check all four exercises together.</p><button type="button" id="check-all">Check all answers</button><button type="button" id="reset-all" class="secondary">Start again</button><div id="total-score" class="bottom-score" role="status" aria-live="polite"></div></div>
+<div class="finish"><p>Finished? Check all four exercises, then copy your results and paste them in the chat.</p><button type="button" id="check-all">Check all answers</button><button type="button" id="copy-results">Copy my results</button><button type="button" id="reset-all" class="secondary">Start again</button><div id="total-score" class="bottom-score" role="status" aria-live="polite"></div><div id="copy-status" class="bottom-score" role="status" aria-live="polite"></div><div id="manual-copy" hidden style="width:100%"><label for="results-text">Select and copy your results:</label><textarea id="results-text" readonly rows="12" style="display:block;width:100%;font:inherit;margin-top:8px;padding:12px;border:2px solid var(--purple);border-radius:9px"></textarea></div></div>
 <p class="footer" id="save-note">One file · Works offline</p>
 </main>
 <script id="homework-data" type="application/json">
@@ -69,6 +71,7 @@
 'use strict';
 const exercises=JSON.parse(document.getElementById('homework-data').textContent);
 const KEY='lie-to-me-homework-v1';
+const REPORT_KEY=KEY+'-report';
 const normalise=s=>String(s).normalize('NFKC').toLowerCase().replace(/[’‘]/g,"'").trim().replace(/[.!?]+$/g,'').trim().replace(/\s+/g,' ');
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const fresh=()=>exercises.map(ex=>({answers:ex.items.map(()=>ex.type==='order'?[]:''),checked:ex.items.map(()=>false),revealed:false}));
@@ -82,10 +85,64 @@ try{
   safe.checked=ex.items.map((_,i)=>Boolean(s.checked&&s.checked[i]));safe.revealed=Boolean(s.revealed);return safe;
  });
 }catch{storageAvailable=false;}
+let studentName='',mistakes=[];
+try{
+ const saved=JSON.parse(localStorage.getItem(REPORT_KEY));
+ if(saved&&typeof saved.name==='string')studentName=saved.name.slice(0,100);
+ if(saved&&Array.isArray(saved.mistakes))mistakes=saved.mistakes.filter(m=>m&&Number.isInteger(m.e)&&Number.isInteger(m.i)&&exercises[m.e]?.items[m.i]&&typeof m.value==='string').map(m=>({e:m.e,i:m.i,value:m.value.slice(0,500)}));
+}catch{storageAvailable=false;}
+document.getElementById('student-name').value=studentName;
 function answer(e,i){const value=state[e].answers[i];return exercises[e].type==='order'?value.map(n=>exercises[e].items[i].words[n]).join(' '):value;}
 function correct(e,i){return normalise(answer(e,i))===normalise(exercises[e].items[i].answer);}
 function completed(e,i){return exercises[e].type==='order'?state[e].answers[i].length===exercises[e].items[i].words.length:Boolean(answer(e,i).trim());}
-function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch{storageAvailable=false;}document.getElementById('save-note').textContent=storageAvailable?'Works offline · Your progress is saved in this browser':'Works offline · Progress is kept while this page stays open';}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));localStorage.setItem(REPORT_KEY,JSON.stringify({name:studentName,mistakes}));}catch{storageAvailable=false;}document.getElementById('save-note').textContent=storageAvailable?'Works offline · Your progress is saved in this browser':'Works offline · Progress is kept while this page stays open';}
+function clearCopyStatus(){document.getElementById('copy-status').textContent='';document.getElementById('manual-copy').hidden=true;}
+function recordMistakes(e){
+ if(state[e].revealed)return;
+ exercises[e].items.forEach((_,i)=>{
+  const value=answer(e,i).trim();
+  if(!correct(e,i)&&!mistakes.some(m=>m.e===e&&m.i===i&&m.value===value))mistakes.push({e,i,value});
+ });
+}
+function buildReport(){
+ const lines=['Lie To Me! — Vocabulary Homework — '+(studentName.trim()||'student')+' ('+new Date().toLocaleString('en-GB')+')',''];
+ let earned=0,total=0;
+ exercises.forEach((ex,e)=>{
+  total+=ex.items.length;
+  const checked=state[e].checked.filter(Boolean).length;
+  const score=ex.items.filter((_,i)=>state[e].checked[i]&&correct(e,i)).length;
+  if(!state[e].revealed)earned+=score;
+  const status=state[e].revealed?'answers shown (not scored)':!checked?'not checked':score+' / '+ex.items.length+' correct'+(checked<ex.items.length?' ('+checked+' / '+ex.items.length+' checked)':'');
+  lines.push('Task '+(e+1)+' '+ex.title+': '+status);
+ });
+ lines.push('Total: '+earned+' / '+total+' (checked answers only; shown answers excluded)','','MY ANSWERS');
+ exercises.forEach((ex,e)=>{
+  lines.push('','Task '+(e+1)+' '+ex.title);
+  ex.items.forEach((item,i)=>{
+   const status=state[e].revealed?'answer shown':!state[e].checked[i]?'not checked':correct(e,i)?'correct':'wrong';
+   lines.push((i+1)+'. '+item.prompt+' — my answer: '+(answer(e,i).trim()||'(nothing)')+' ['+status+']');
+  });
+ });
+ lines.push('','MISTAKES (every wrong answer checked, including ones fixed on retry)');
+ if(!mistakes.length)lines.push('(no mistakes logged)');
+ mistakes.forEach(m=>{
+  const status=state[m.e].revealed?'answers shown':!state[m.e].checked[m.i]?'not rechecked':correct(m.e,m.i)?'fixed on retry':'still wrong';
+  const item=exercises[m.e].items[m.i];
+  lines.push('Task '+(m.e+1)+', item '+(m.i+1)+': '+item.prompt+' — I wrote: '+(m.value||'(nothing)')+'; correct: '+item.answer+' ['+status+']');
+ });
+ return lines.join('\n');
+}
+async function copyResults(){
+ const text=buildReport(),status=document.getElementById('copy-status'),box=document.getElementById('results-text');
+ let copied=false;
+ try{if(navigator.clipboard&&navigator.clipboard.writeText){await navigator.clipboard.writeText(text);copied=true;}}catch{}
+ if(!copied){
+  document.getElementById('manual-copy').hidden=false;box.value=text;box.focus();box.select();
+  try{copied=document.execCommand('copy');}catch{}
+ }
+ if(copied){document.getElementById('manual-copy').hidden=true;document.getElementById('copy-results').focus();status.textContent='Copied! Paste it in the chat.';}
+ else status.textContent='Automatic copying is unavailable. Select the results below and copy them manually.';
+}
 function progress(){let count=0;exercises.forEach((ex,e)=>ex.items.forEach((_,i)=>{if(completed(e,i))count++;}));document.getElementById('progress-label').textContent=count+' / 25 completed';document.querySelector('.meter').setAttribute('aria-valuenow',count);document.getElementById('progress-fill').style.width=(count/25*100)+'%';}
 function render(){
  document.getElementById('exercises').innerHTML=exercises.map((ex,e)=>`<section class="exercise" id="exercise-${e}" aria-labelledby="heading-${e}"><span class="badge" aria-hidden="true">${e+1}</span><h2 id="heading-${e}"><span class="sr-only">Exercise ${e+1}: </span>${escape(ex.title)}</h2><p class="instructions">${escape(ex.instruction)}</p>${ex.bank?`<aside class="bank"><strong>Phrase bank</strong><p>${ex.bank.map(escape).join(' · ')}</p></aside>`:''}<div class="items">${ex.items.map((item,i)=>renderItem(ex,e,item,i)).join('')}</div><div class="actions"><button type="button" data-action="check" data-e="${e}">Check answers</button><button type="button" class="secondary" data-action="reveal" data-e="${e}">Show answers</button><button type="button" class="quiet" data-action="reset" data-e="${e}">Reset exercise</button><p class="status" id="status-${e}" role="status" aria-live="polite"></p></div></section>`).join('');
@@ -114,19 +171,21 @@ function feedback(e,i){
  out.textContent=ok?'Correct. '+exercises[e].items[i].note:(completed(e,i)?'Not quite. Try again.':'Complete this answer, then check again.');
 }
 function sectionScore(e){const score=exercises[e].items.filter((_,i)=>correct(e,i)).length;document.getElementById('status-'+e).textContent=state[e].revealed?'Answers shown. Reset this exercise to try it on your own.':score+' / '+exercises[e].items.length+' correct'+(score===exercises[e].items.length?' — well done!':'. Review the marked answers.');return score;}
-function check(e){state[e].checked.fill(true);exercises[e].items.forEach((_,i)=>feedback(e,i));sectionScore(e);save();}
-function changed(e,i){state[e].checked[i]=false;feedback(e,i);document.getElementById('status-'+e).textContent=state[e].revealed?'Answers have been shown for this exercise.':'Answer changed. Check again when you’re ready.';document.getElementById('total-score').textContent='';progress();save();}
-document.addEventListener('input',event=>{const t=event.target;if(t.matches('input[type="text"][data-e]')){const e=+t.dataset.e,i=+t.dataset.i;state[e].answers[i]=t.value;changed(e,i);}});
+function check(e){clearCopyStatus();recordMistakes(e);state[e].checked.fill(true);exercises[e].items.forEach((_,i)=>feedback(e,i));sectionScore(e);save();}
+function changed(e,i){clearCopyStatus();state[e].checked[i]=false;feedback(e,i);document.getElementById('status-'+e).textContent=state[e].revealed?'Answers have been shown for this exercise.':'Answer changed. Check again when you’re ready.';document.getElementById('total-score').textContent='';progress();save();}
+document.addEventListener('input',event=>{const t=event.target;if(t.id==='student-name'){studentName=t.value;clearCopyStatus();save();return;}if(t.matches('input[type="text"][data-e]')){const e=+t.dataset.e,i=+t.dataset.i;state[e].answers[i]=t.value;changed(e,i);}});
 document.addEventListener('change',event=>{const t=event.target;if(t.matches('select[data-e],input[type="radio"][data-e]')){const e=+t.dataset.e,i=+t.dataset.i;state[e].answers[i]=t.value;changed(e,i);}});
 document.addEventListener('click',event=>{
  const button=event.target.closest('button');if(!button)return;
+ if(button.id==='copy-results'){copyResults();return;}
  if(button.id==='check-all'){let score=0;exercises.forEach((_,e)=>{check(e);score+=sectionScore(e);});document.getElementById('total-score').textContent=state.some(s=>s.revealed)?'Answer checking complete. Some answers were shown; reset those exercises for independent practice.':score+' / 25 correct'+(score===25?' — homework complete!':'. Review the marked answers and try again.');return;}
- if(button.id==='reset-all'){state=fresh();render();document.getElementById('total-score').textContent='All exercises reset.';document.getElementById('check-all').focus();return;}
+ if(button.id==='reset-all'){state=fresh();mistakes=[];clearCopyStatus();render();document.getElementById('total-score').textContent='All exercises reset.';document.getElementById('check-all').focus();return;}
  if(!button.dataset.action)return;
  const e=+button.dataset.e,i=+button.dataset.i,action=button.dataset.action;
  if(action==='check'){check(e);return;}
- if(action==='reset'){state[e]=fresh()[e];render();document.getElementById('total-score').textContent='';document.querySelector(`[data-action="check"][data-e="${e}"]`).focus();return;}
+ if(action==='reset'){state[e]=fresh()[e];clearCopyStatus();render();document.getElementById('total-score').textContent='';document.querySelector(`[data-action="check"][data-e="${e}"]`).focus();return;}
  if(action==='reveal'){
+  clearCopyStatus();
   const ex=exercises[e];state[e].revealed=true;
   ex.items.forEach((item,j)=>{if(ex.type==='order'){const remaining=item.words.map((_,n)=>n);state[e].answers[j]=item.answer.split(' ').map(word=>{const k=remaining.findIndex(n=>item.words[n]===word);return remaining.splice(k,1)[0];});}else state[e].answers[j]=item.answer;state[e].checked[j]=true;});
   render();document.getElementById('total-score').textContent='';document.querySelector(`[data-action="reveal"][data-e="${e}"]`).focus();return;
