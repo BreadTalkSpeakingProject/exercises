@@ -474,7 +474,7 @@
         {
           "id": "extra1",
           "number": "1–2",
-          "instruction": "Work with a partner. Complete the questions in A–C with the correct question word (are, did, do, how, what, when, where, which, who).",
+          "instruction": "Complete the questions in A–C with the correct question word (are, did, do, how, what, when, where, which, who).",
           "instruction2": "Match the questions to the answers to make eight conversations.",
           "type": "extra",
           "groups": [
@@ -638,19 +638,6 @@
       "optional": true,
       "tasks": [
         {
-          "id": "video1",
-          "number": "1",
-          "instruction": "Work with a partner. Ask and answer the questions.",
-          "type": "personal",
-          "items": [
-            "Do you have a large collection of photos and videos?",
-            "Who takes the most photos in your family?",
-            "What do you take photos of?",
-            "Where do you keep your photos?",
-            "How do you organize your photos and videos?"
-          ]
-        },
-        {
           "id": "video2",
           "number": "2",
           "instruction": "Watch the video. Write the names.",
@@ -699,13 +686,6 @@
               ]
             ]
           ]
-        },
-        {
-          "id": "video3",
-          "number": "3",
-          "instruction": "Work with a new partner. Think about what the speakers said. Whose photo habits are most similar to yours?",
-          "type": "personal",
-          "items": []
         }
       ]
     }
@@ -750,7 +730,7 @@ function renderTask(t,optional){sourceTasks.set(t.id,t);let body='';const opts={
  case 'info':{let i=0;body=`<div class="bank"><strong>A</strong>${t.banks.A.map(x=>`<span>${esc(x)}</span>`).join('')}</div><div class="section-label">B</div><div class="phrase-matches">${t.banks.B.map((x,j)=>`<div class="phrase-line">${field(`${t.id}-match-${j}`,`Workbook 3 match: ${x}`,t.matchKey[j],{...opts,model:t.matchModels[String(j)]||'',word:true})}<label for="${t.id}-match-${j}">${esc(x)}</label></div>`).join('')}</div><div class="info-sheet"><h4>TOP TIPS FOR STAYING HEALTHY</h4>${t.blocks.map(([heading,p])=>{const a=i++,b=i++;return `<div class="info-block"><h5>${gap(heading,field(`${t.id}-${a}`,`Workbook 3 ${a+1}`,t.key[a],{...opts,inline:true,model:model(t,a)}),a)}</h5><p>${gap(p,field(`${t.id}-${b}`,`Workbook 3 ${b+1}`,t.key[b],{...opts,inline:true}),b)}</p></div>`;}).join('')}</div>`+checkBar(t)+keyList(t);break;}
  case 'dialogues':body=`<div class="bank">${t.bank.map(x=>`<span>${esc(x)}</span>`).join('')}</div>`+t.items.map(([a,b],i)=>`<div class="row dialogue"><div class="turn"><span class="speaker">A</span><p>${gap(a,field(`${t.id}-${i}`,`Workbook 4 ${i+1}: ${a.replace('{gap}','…')}`,t.key[i],{...opts,inline:true,model:model(t,i)}),i)}</p></div><div class="turn"><span class="speaker">B</span><p>${esc(b)}</p></div></div>`).join('')+audio(t)+checkBar(t)+keyList(t);break;
  case 'conversation':{let i=0;body=`<img class="tennis-photo" src="${DATA.media.tennis}" width="660" height="460" alt="Two tennis players talking, from Workbook exercise 6">`+'<div class="dialogue">'+t.turns.map(([speaker,text])=>{let output=esc(text);if(text.includes('{gap}')){let j=i++;output=gap(text,field(`${t.id}-${j}`,`Workbook 6 ${j+1}`,t.key[j],{...opts,inline:true,model:model(t,j)}),j);}return `<div class="turn"><span class="speaker">${speaker}</span><p>${output}</p></div>`;}).join('')+'</div>'+checkBar(t)+keyList(t);break;}
- case 'extra':body=`<p>${esc(t.instruction2)}</p><p class="note">Three questions, three answers · Original partner worksheet. Use the small number boxes to match each conversation to a question in A.</p>`+t.groups.map(group=>`<h4>Questions ${group.label}</h4><div class="extra-grid">${group.questions.map((s,i)=>{let example=group.label==='A'?i===0:i===6;return `<div class="extra-cell ${example?'example':''}">${group.label==='A'?`<span class="num">${i+1}</span>`:''}${esc(s).replace('{gap}',field(`${t.id}-${group.label}-q${i}`,`Extra questions ${group.label}, cell ${i+1}`,group.words[i],{...opts,word:true,model:example?group.words[i]:''}))}${group.questionNums?`<label class="small-num">Conversation ${field(`${t.id}-${group.label}-qn${i}`,`Extra questions ${group.label}, cell ${i+1}: conversation`,String(group.questionNums[i]),{...opts,numeric:true,model:example?'1':''})}</label>`:''}</div>`;}).join('')}</div><h4>Answers ${group.label}</h4><div class="extra-grid">${group.answers.map((s,i)=>`<div class="extra-cell ${group.answerNums[i]===1?'example':''}">${esc(s)}<label class="small-num">Conversation ${field(`${t.id}-${group.label}-an${i}`,`Extra answers ${group.label}, cell ${i+1}: ${s}`,String(group.answerNums[i]),{...opts,numeric:true,model:group.answerNums[i]===1?'1':''})}</label></div>`).join('')}</div>`).join('')+checkBar(t)+keyList(t,extraKey(t));break;
+ case 'extra':body=`<p>${esc(t.instruction2)}</p><p class="note">Use the small number boxes to match each conversation to a question in A.</p>`+t.groups.map(group=>`<h4>Questions ${group.label}</h4><div class="extra-grid">${group.questions.map((s,i)=>{let example=group.label==='A'?i===0:i===6;return `<div class="extra-cell ${example?'example':''}">${group.label==='A'?`<span class="num">${i+1}</span>`:''}${esc(s).replace('{gap}',field(`${t.id}-${group.label}-q${i}`,`Extra questions ${group.label}, cell ${i+1}`,group.words[i],{...opts,word:true,model:example?group.words[i]:''}))}${group.questionNums?`<label class="small-num">Conversation ${field(`${t.id}-${group.label}-qn${i}`,`Extra questions ${group.label}, cell ${i+1}: conversation`,String(group.questionNums[i]),{...opts,numeric:true,model:example?'1':''})}</label>`:''}</div>`;}).join('')}</div><h4>Answers ${group.label}</h4><div class="extra-grid">${group.answers.map((s,i)=>`<div class="extra-cell ${group.answerNums[i]===1?'example':''}">${esc(s)}<label class="small-num">Conversation ${field(`${t.id}-${group.label}-an${i}`,`Extra answers ${group.label}, cell ${i+1}: ${s}`,String(group.answerNums[i]),{...opts,numeric:true,model:group.answerNums[i]===1?'1':''})}</label></div>`).join('')}</div>`).join('')+checkBar(t)+keyList(t,extraKey(t));break;
  case 'personal':body=t.items.length?t.items.map((s,i)=>`<div class="row"><label class="row-label" for="${t.id}-${i}"><span class="num">${i+1}</span>${esc(s)}</label>${field(`${t.id}-${i}`,`Video 1 ${i+1}: ${s}`,'',{...opts,personal:true})}</div>`).join(''):field(`${t.id}-response`,'Video 3: Whose photo habits are most similar to yours?','',{...opts,personal:true});body+='<p class="personal-note">Personal responses · no fixed answer.</p>';break;
  case 'video':{let i=0;body=`<img class="speakers-photo" src="${DATA.media.speakers}" width="730" height="103" alt="Vox pops speakers: Steven, Nitin, Matthew, William and Constance">`+t.groups.map(([heading,p,items,keys],gi)=>`<div class="video-group"><h4>${esc(heading)}</h4><p><span class="num">${gi+1}</span>${esc(p)}</p>${items.map((s,j)=>{let n=i++;return `<div class="row"><label for="${t.id}-${n}"><span class="letter">${String.fromCharCode(97+j)}</span> ${esc(s)}</label>${field(`${t.id}-${n}`,`Video ${gi+1}${String.fromCharCode(97+j)}: ${s}`,keys[j],opts)}</div>`;}).join('')}</div>`).join('')+checkBar(t)+keyList(t,t.groups.map(([h,p,items,keys],i)=>`<h4>${i+1} ${esc(h)}</h4><p>${keys.map((x,j)=>String.fromCharCode(97+j)+' '+esc(x)).join(' · ')}</p>`).join(''));break;}
  }
