@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Questions with Prepositions — Homework</title>
+<style>
+  :root {
+    color-scheme: light;
+    --paper: #f4f0eb;
+    --card: #fffdfa;
+    --ink: #262626;
+    --muted: #655951;
+    --red: #9d2c1c;
+    --accent: #c83720;
+    --rose: #fae7df;
+    --line: #e0cec1;
+    --green: #245b3f;
+    --green-bg: #eaf3eb;
+    --red-bg: #fcebe6;
+    --serif: Georgia, "Times New Roman", serif;
+    --sans: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  [hidden] { display: none !important; }
+  body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.55 var(--sans); }
+  .shell { width: min(100% - 2rem, 59rem); margin: auto; }
+  .masthead { padding: clamp(2.1rem, 7vw, 5rem) 0 1.2rem; border-bottom: 1px solid var(--accent); }
+  h1, h2, h3, p { margin: 0; }
+  h1 { font: 700 clamp(2.15rem, 6.1vw, 4rem)/1.05 var(--serif); letter-spacing: -.045em; text-wrap: balance; }
+  button, select, textarea { font: inherit; color: inherit; }
+  button { cursor: pointer; }
+  button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #146486; outline-offset: 3px; }
+  .tabs { display: grid; grid-template-columns: 1fr 1fr; gap: .45rem; padding: .45rem; background: #eae1d8; border-radius: 1rem; margin: 1.2rem 0; }
+  [role="tab"] { display: flex; align-items: center; text-align: left; gap: .72rem; padding: .6rem .75rem; border: 1px solid transparent; background: transparent; border-radius: .72rem; min-height: 3.65rem; }
+  [role="tab"][aria-selected="true"] { background: var(--card); border-color: var(--line); box-shadow: 0 1px 2px #37251b12; }
+  .tab-index { display: grid; place-items: center; color: #fff; background: var(--ink); border-radius: .42rem; width: 2.05rem; height: 2.05rem; flex: none; font: 700 1.15rem var(--serif); }
+  .tab-caption { display: grid; font-size: .96rem; line-height: 1.3; }
+  .tab-caption small { color: var(--muted); font-size: .74rem; font-weight: 650; }
+  [role="tabpanel"]:focus-visible { outline: 3px solid #146486; outline-offset: 5px; }
+  .postcard { display: grid; grid-template-columns: 1fr auto; gap: 1rem; align-items: center; border: 1px solid #e1ac9e; border-radius: 1.25rem; padding: clamp(1.05rem, 3.3vw, 1.85rem); background: #f9e4da; overflow: hidden; position: relative; }
+  .postcard.meals { background: #f4e9d7; border-color: #ddc8a7; }
+  .postcard h2 { font: 700 clamp(1.65rem, 4vw, 2.6rem)/1.1 var(--serif); text-wrap: balance; }
+  .postcard p { color: var(--muted); margin-top: .45rem; max-width: 33ch; }
+  .illustration { position: relative; width: clamp(6rem, 23vw, 13.4rem); height: clamp(5rem, 17vw, 9rem); }
+  .illustration::before, .illustration::after { content: ""; position: absolute; pointer-events: none; border-radius: 50%; }
+  .illustration::before { inset: 12% 10% 5%; background: #f2bca9; border: 2px dashed #ad4b36; transform: rotate(-9deg); }
+  .meals .illustration::before { background: #e7cd9f; border-color: #9c6d36; transform: rotate(8deg); }
+  .illustration::after { width: 17%; aspect-ratio: 1; border: 2px solid #b75037; right: 0; top: 7%; opacity: .64; }
+  .art { position: absolute; z-index: 1; line-height: 1; filter: drop-shadow(0 3px 2px #4d2e2224); }
+  .art.main { left: 24%; top: 15%; font-size: clamp(2.55rem, 8vw, 5.75rem); transform: rotate(-11deg); }
+  .art.side { right: 7%; bottom: 5%; font-size: clamp(1.4rem, 4.2vw, 2.7rem); transform: rotate(12deg); }
+  .art.tiny { left: 5%; top: 6%; font-size: clamp(1.1rem, 3vw, 2rem); transform: rotate(-14deg); }
+  .tasks { display: grid; gap: 1.55rem; padding: 1.65rem 0 0; }
+  .task { background: var(--card); border: 1.5px dashed #ad4b36; border-radius: 1.05rem; padding: clamp(.95rem, 3.2vw, 1.85rem); min-width: 0; }
+  .task-heading { display: grid; grid-template-columns: auto 1fr auto; gap: .7rem; align-items: center; }
+  .number { padding: .34rem .65rem; background: var(--ink); color: white; border-radius: .44rem; font: 700 1.18rem/1.1 var(--serif); }
+  h3 { font: 700 clamp(1.28rem, 3.4vw, 1.78rem)/1.15 var(--serif); }
+  .task-mark { font-size: 1.45rem; line-height: 1; }
+  .directions { color: var(--muted); margin: .62rem 0 1.05rem; }
+  .questions { display: grid; gap: .68rem; }
+  .question { padding: .82rem clamp(.72rem, 2.5vw, 1.05rem); margin: 0; min-inline-size: 0; background: #faf5ef; border: 1px solid transparent; border-radius: .7rem; }
+  .question:nth-child(even) { background: #f8eee7; }
+  .question[data-mark="correct"] { background: var(--green-bg); border-color: #a0bda8; }
+  .question[data-mark="incorrect"] { background: var(--red-bg); border-color: #dcb1a8; }
+  .prompt { font-weight: 670; }
+  .prompt-number { margin-right: .38rem; color: var(--red); font-variant-numeric: tabular-nums; }
+  .inline-choice { display: inline-block; max-width: 100%; margin: .22rem .24rem; padding: .36rem .55rem; border-radius: .45rem; background: #fff; border: 1px solid #ad9588; min-height: 2.55rem; }
+  .options { display: grid; gap: .34rem; margin-top: .55rem; }
+  .option { display: grid; grid-template-columns: 1.1rem minmax(0,1fr); gap: .48rem; align-items: start; padding: .43rem .55rem; border: 1px solid #e4d6cb; border-radius: .47rem; background: #fffdfa; cursor: pointer; }
+  .option:has(input:checked) { border-color: #9d5446; background: #fff0ea; }
+  .option input { margin: .28rem 0 0; accent-color: var(--red); }
+  .word-tray, .sentence { display: flex; flex-wrap: wrap; gap: .42rem; }
+  .sentence { margin: .58rem 0; padding: .5rem; min-height: 3.15rem; align-items: center; border: 1px dashed #b79d8d; border-radius: .5rem; background: #fffdfa; }
+  .empty-line { color: var(--muted); font-size: .88rem; }
+  .tile { background: #fffdfa; border: 1px solid #b69b89; border-radius: .38rem; min-height: 2.45rem; padding: .3rem .55rem; overflow-wrap: anywhere; }
+  .tile.chosen { color: #762a1a; border-color: #c37c69; background: #fbe5da; }
+  .tile:disabled { opacity: .4; cursor: default; }
+  .feedback { font-size: .91rem; margin-top: .45rem; }
+  .question[data-mark="correct"] .feedback { color: var(--green); }
+  .question[data-mark="incorrect"] .feedback { color: #7e2a1b; }
+  .actions { display: flex; align-items: center; flex-wrap: wrap; gap: .55rem; margin-top: .9rem; }
+  .button { border: 1px solid #b79a89; border-radius: .55rem; padding: .48rem .83rem; font-weight: 690; min-height: 2.7rem; background: var(--card); }
+  .button.primary { color: white; background: var(--red); border-color: var(--red); }
+  .button:hover { filter: brightness(.94); }
+  .task-score { color: var(--muted); font-size: .87rem; flex: 1 1 15rem; padding-left: .25rem; }
+  .results { margin: 1.65rem 0 2.8rem; background: #eae1d8; border: 1px solid var(--line); border-radius: 1rem; padding: clamp(.95rem, 3vw, 1.4rem); }
+  .results-bar { display: flex; align-items: center; gap: .7rem; flex-wrap: wrap; justify-content: space-between; }
+  .total-score { font-weight: 700; }
+  .copy-status { color: var(--muted); font-size: .9rem; }
+  .copy-status:not(:empty) { margin-top: .55rem; }
+  #result-text { width: 100%; min-height: 13rem; margin-top: .6rem; padding: .65rem; border: 1px solid #ad9588; background: var(--card); border-radius: .5rem; }
+  @media (max-width: 34rem) {
+    .shell { width: calc(100% - 1.1rem); }
+    .tabs { gap: .26rem; padding: .3rem; }
+    [role="tab"] { padding: .48rem .4rem; gap: .42rem; }
+    .tab-caption { font-size: .85rem; }
+    .tab-index { width: 1.55rem; height: 1.75rem; }
+    .postcard { gap: .3rem; }
+    .postcard p { font-size: .87rem; }
+    .task-score { padding-left: 0; }
+  }
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="masthead"><h1>Questions with Prepositions — Homework</h1></header>
+  <main>
+    <div class="tabs" role="tablist" aria-label="Homework parts">
+      <button id="tab-1" type="button" role="tab" aria-selected="true" aria-controls="part-1">
+        <span class="tab-index" aria-hidden="true">1</span>
+        <span class="tab-caption"><small>Part 1</small><strong>Summer to autumn</strong></span>
+      </button>
+      <button id="tab-2" type="button" role="tab" aria-selected="false" aria-controls="part-2" tabindex="-1">
+        <span class="tab-index" aria-hidden="true">2</span>
+        <span class="tab-caption"><small>Part 2</small><strong>Food and daily life</strong></span>
+      </button>
+    </div>
+    <section id="part-1" role="tabpanel" aria-labelledby="tab-1" tabindex="0">
+      <div class="postcard">
+        <div><h2>Summer to autumn</h2><p>Talk about seasons, interests and fears.</p></div>
+        <div class="illustration" aria-hidden="true"><span class="art main">🍂</span><span class="art side">☀️</span><span class="art tiny">🕷️</span></div>
+      </div>
+      <div class="tasks" id="tasks-1"></div>
+    </section>
+    <section id="part-2" role="tabpanel" aria-labelledby="tab-2" tabindex="0" hidden>
+      <div class="postcard meals">
+        <div><h2>Food and daily life</h2><p>Talk about meals, habits, plans and achievements.</p></div>
+        <div class="illustration" aria-hidden="true"><span class="art main">🍜</span><span class="art side">🏆</span><span class="art tiny">💬</span></div>
+      </div>
+      <div class="tasks" id="tasks-2"></div>
+    </section>
+    <section class="results" aria-label="Homework results">
+      <div class="results-bar"><p id="overall" class="total-score" aria-live="polite"></p><button id="copy-results" class="button primary" type="button">Copy Results</button></div>
+      <p id="copy-status" class="copy-status" role="status"></p>
+      <textarea id="result-text" aria-label="Results to copy" readonly hidden></textarea>
+    </section>
+    <noscript><p>Turn on JavaScript to use the homework activities.</p></noscript>
+  </main>
+</div>
+<script>
+"use strict";
+const homeworkTitle = "Questions with Prepositions — Homework";
+const choice = (prompt, options, answer, note = "") => ({prompt, options, answer, note});
+const blank = (prompt, answer, note = "") => ({prompt, answer, note});
+const build = (prompt, words, order) => ({prompt, words, order, answer: order.map(index => words[index]).join(" ")});
+const tasks = [
+  {
+    id: "p1-warm", part: 1, number: 1, icon: "🍁", title: "Warm-up: Summer and autumn", kind: "choice",
+    directions: "Choose the reply that directly answers each question.",
+    questions: [
+      choice("What were the highlights of this summer for you?", [
+        "I felt better whenever it stopped raining.",
+        "A trip to the coast and a weekend at a music festival.",
+        "Summer ends in August on my school calendar."
+      ], "A trip to the coast and a weekend at a music festival.", "Highlights are the best moments."),
+      choice("Who did you spend the last days of summer with?", [
+        "My cousins. They were visiting from out of town.",
+        "At a campsite near the lake.",
+        "The last week of August."
+      ], "My cousins. They were visiting from out of town.", "Who asks about people."),
+      choice("What does your mood depend on?", [
+        "I go for a walk most evenings.",
+        "My sister often calls me after work.",
+        "Mostly how much sleep I get."
+      ], "Mostly how much sleep I get.", "The reply names a factor that affects the speaker’s mood."),
+      choice("Which summer month did you enjoy the most?", [
+        "For most of the summer, I stayed in the city.",
+        "July, because I had two weeks off.",
+        "Swimming in the sea. I loved it."
+      ], "July, because I had two weeks off.", "The question asks you to name a month.")
+    ]
+  },
+  {
+    id: "p1-gaps", part: 1, number: 2, icon: "🎧", title: "The missing preposition", kind: "select",
+    directions: "Complete each question with a preposition from the menu.",
+    bank: ["at", "with", "of", "to", "in", "on"],
+    questions: [
+      blank("What topics are you really interested ___?", "in", "be interested in something"),
+      blank("What are you afraid ___?", "of", "be afraid of something"),
+      blank("Who do you usually spend your weekends ___?", "with", "spend time with someone"),
+      blank("What does your mood depend ___?", "on", "depend on something"),
+      blank("What are you good ___?", "at", "be good at something"),
+      blank("What music do you enjoy listening ___?", "to", "listen to something"),
+      blank("What does your typical meal consist ___?", "of", "consist of something")
+    ]
+  },
+  {
+    id: "p1-match", part: 1, number: 3, icon: "💬", title: "Find the right question", kind: "choice",
+    directions: "Read the answer first. Choose the question it answers.",
+    questions: [
+      choice("“Fresh bread, soup and a salad.”", [
+        "Who do you usually have lunch with?",
+        "What kind of music do you enjoy listening to?",
+        "What does your usual lunch consist of?"
+      ], "What does your usual lunch consist of?"),
+      choice("“My friend Lena. We usually go for a walk.”", [
+        "Who do you usually spend Sundays with?",
+        "What does your mood depend on?",
+        "What music do you listen to at weekends?"
+      ], "Who do you usually spend Sundays with?"),
+      choice("“Spiders, especially the big ones.”", [
+        "Who do you spend your weekends with?",
+        "What are you scared of?",
+        "What are you good at?"
+      ], "What are you scared of?", "Scared of and afraid of have a similar meaning."),
+      choice("“Repairing bikes. I can fix most things on my own.”", [
+        "What does your usual lunch consist of?",
+        "Who do you spend your free time with?",
+        "What are you good at?"
+      ], "What are you good at?"),
+      choice("“Mostly jazz and a little bit of rock.”", [
+        "What kind of music do you listen to?",
+        "Who do you go to gigs with?",
+        "What does your mood depend on?"
+      ], "What kind of music do you listen to?")
+    ]
+  },
+  {
+    id: "p1-build", part: 1, number: 4, icon: "🧩", title: "Build the questions", kind: "order",
+    directions: "Select the word groups in order. Each question ends with a preposition. Select a group again in your sentence to remove it.",
+    questions: [
+      build("Ask about the person someone went on holiday with.", ["with?", "go on holiday", "Who", "did you"], [2,3,1,0]),
+      build("Ask what makes someone’s mood change.", ["your mood", "depend", "What does", "on?"], [2,0,1,3]),
+      build("Ask which topics someone finds interesting.", ["are you", "in?", "What topics", "interested"], [2,0,3,1]),
+      build("Ask about the music someone enjoys.", ["listen", "do you", "to?", "What kind of music"], [3,1,0,2]),
+      build("Ask what usually makes up someone’s lunch.", ["consist", "of?", "your usual lunch", "What does"], [3,2,0,1])
+    ]
+  },
+  {
+    id: "p2-warm", part: 2, number: 1, icon: "☕", title: "Warm-up: Your meal and your day", kind: "choice",
+    directions: "Choose the reply that fits each question or situation.",
+    questions: [
+      choice("What did your lunch/dinner today consist of?", [
+        "It cost about twelve euros.",
+        "Rice, grilled vegetables and chicken.",
+        "I had dinner at half past seven."
+      ], "Rice, grilled vegetables and chicken.", "Consist of asks what the meal was made up of."),
+      choice("What did your day today consist of? Just work and your usual tasks or something interesting/exciting?", [
+        "I hope tomorrow will be more interesting.",
+        "I usually have lunch at my desk.",
+        "Mostly meetings, but after work I tried a dance class."
+      ], "Mostly meetings, but after work I tried a dance class."),
+      choice("Your classmate says, “I only had coffee for breakfast.” What can you say about their breakfast?", [
+        "It consisted of just coffee.",
+        "They had coffee with lunch.",
+        "They usually spend a lot on coffee."
+      ], "It consisted of just coffee."),
+      choice("“I did my usual tasks, but something exciting happened too.” Which reply gives an example of both?", [
+        "I answered my emails and went to two regular meetings.",
+        "I did my shopping, and later I won tickets to a concert.",
+        "I won free concert tickets, so I phoned a friend to tell her."
+      ], "I did my shopping, and later I won tickets to a concert.")
+    ]
+  },
+  {
+    id: "p2-gaps", part: 2, number: 2, icon: "🧠", title: "Which words go together?", kind: "select",
+    directions: "Choose the one preposition that completes each phrase in context.",
+    bank: ["for", "with", "of", "to", "at", "in"],
+    questions: [
+      blank("I’m looking forward ___ the weekend. I have exciting plans.", "to", "look forward to something"),
+      blank("I’m bad ___ remembering names, so I write them down.", "at", "be bad at doing something"),
+      blank("I’m proud ___ my progress in English.", "of", "be proud of something"),
+      blank("This café is famous ___ its homemade cakes.", "for", "be famous for something"),
+      blank("As a child, I dreamed ___ becoming a famous actor.", "of", "dream of doing something"),
+      blank("Please pay attention ___ the instructions before you start.", "to", "pay attention to something")
+    ]
+  },
+  {
+    id: "p2-context", part: 2, number: 3, icon: "🏆", title: "Match the phrase to the situation", kind: "select",
+    directions: "Read each situation and select the phrase that best describes it.",
+    bank: ["proud of", "pay attention to", "dreamed of", "bad at", "spend money on", "look forward to", "famous for", "talk about"],
+    questions: [
+      blank("I’ve worked on my English for two years and I’m pleased with the result. I’m ___ my progress.", "proud of"),
+      blank("Everyone in town knows this bakery because of its excellent bread. It’s ___ its bread.", "famous for"),
+      blank("I often forget instructions when I’m distracted. I need to ___ what the teacher says.", "pay attention to"),
+      blank("I’ve booked a trip next month and I’m excited about it. I ___ going away.", "look forward to"),
+      blank("When I was a kid, becoming a pilot was my biggest ambition. I ___ flying planes.", "dreamed of"),
+      blank("I want to hear your opinion and tell you mine. Let’s sit down and ___ the problem.", "talk about"),
+      blank("I find starting conversations difficult and I rarely know what to say. I’m ___ making small talk.", "bad at"),
+      blank("I pay for deliveries several times a week. I ___ takeaways.", "spend money on")
+    ]
+  },
+  {
+    id: "p2-build", part: 2, number: 4, icon: "✍️", title: "Turn the answers into questions", kind: "order",
+    directions: "Use the word groups to make a question for each answer. Select a group again in your sentence to remove it.",
+    questions: [
+      build("“I’m most proud of finishing my first marathon.”", ["proud", "are you most", "of?", "What"], [3,1,0,2]),
+      build("“I usually spend my money on food delivery.”", ["spend your money", "What", "on?", "do you usually"], [1,3,0,2]),
+      build("“My town is famous for its street art.”", ["your town", "for?", "What is", "famous"], [2,0,3,1]),
+      build("“When I was a child, I dreamed of becoming a singer.”", ["what did you", "of?", "As a child,", "dream"], [2,0,3,1]),
+      build("“I’m looking forward to a quiet weekend.”", ["looking", "What", "forward to?", "are you"], [1,3,0,2]),
+      build("“When I meet new people, I pay attention to how they listen.”", ["pay attention", "what do you", "to?", "When you meet new people,"], [3,1,0,2])
+    ]
+  }
+];
+
+const byId = id => document.getElementById(id);
+const tabs = [byId("tab-1"), byId("tab-2")];
+const panels = [byId("part-1"), byId("part-2")];
+const resultText = byId("result-text");
+const copyStatus = byId("copy-status");
+const state = new Map(tasks.map(task => [task.id, task.questions.map(() => ({answer: "", order: [], checked: false}))]));
+const views = new Map();
+
+function element(tag, options = {}) {
+  const node = document.createElement(tag);
+  if (options.classes) node.className = options.classes;
+  if (options.text !== undefined) node.textContent = options.text;
+  if (options.id) node.id = options.id;
+  return node;
+}
+
+function button(text, classes, action) {
+  const node = element("button", {text, classes});
+  node.type = "button";
+  node.addEventListener("click", action);
+  return node;
+}
+
+function activateTab(index, focus = false) {
+  tabs.forEach((tab, position) => {
+    const current = index === position;
+    tab.setAttribute("aria-selected", String(current));
+    tab.tabIndex = current ? 0 : -1;
+    panels[position].hidden = !current;
+  });
+  if (focus) tabs[index].focus();
+}
+
+tabs.forEach((tab, index) => {
+  tab.addEventListener("click", () => activateTab(index));
+  tab.addEventListener("keydown", event => {
+    const keys = {ArrowLeft: 1 - index, ArrowRight: 1 - index, Home: 0, End: 1};
+    if (!Object.hasOwn(keys, event.key)) return;
+    event.preventDefault();
+    activateTab(keys[event.key], true);
+  });
+});
+
+function mark(task, index) {
+  const model = state.get(task.id)[index];
+  if (task.kind === "order" && model.order.length < task.questions[index].words.length) return "unanswered";
+  if (!model.answer) return "unanswered";
+  if (!model.checked) return "unchecked";
+  return model.answer === task.questions[index].answer ? "correct" : "incorrect";
+}
+
+function tally(taskList) {
+  const totals = {correct: 0, incorrect: 0, unchecked: 0, unanswered: 0, total: 0};
+  for (const task of taskList) {
+    task.questions.forEach((_, index) => { totals[mark(task, index)]++; totals.total++; });
+  }
+  return totals;
+}
+
+function formatScore(score) {
+  return `${score.correct}/${score.total} correct · ${score.incorrect} incorrect · ${score.unchecked} unchecked · ${score.unanswered} unanswered`;
+}
+
+function renderFeedback(task, index) {
+  const view = views.get(task.id).rows[index];
+  const model = state.get(task.id)[index];
+  const question = task.questions[index];
+  const status = mark(task, index);
+  if (!model.checked) {
+    delete view.row.dataset.mark;
+    view.feedback.hidden = true;
+    view.feedback.textContent = "";
+    return;
+  }
+  view.row.dataset.mark = status;
+  view.feedback.hidden = false;
+  if (status === "correct") view.feedback.textContent = "✓ Correct" + (question.note ? ` · ${question.note}` : "");
+  if (status === "incorrect") view.feedback.textContent = `Correct answer: ${question.answer}` + (question.note ? ` · ${question.note}` : "");
+  if (status === "unanswered") view.feedback.textContent = task.kind === "order" && model.order.length ? "Unanswered. Use all the word groups to finish your question." : "Unanswered. Add an answer, then check again.";
+}
+
+function refresh(task) {
+  views.get(task.id).score.textContent = formatScore(tally([task]));
+  byId("overall").textContent = "Total · " + formatScore(tally(tasks));
+  if (!resultText.hidden) resultText.value = buildReport();
+}
+
+function updateAnswer(task, index, value) {
+  const model = state.get(task.id)[index];
+  model.answer = value;
+  model.checked = false;
+  renderFeedback(task, index);
+  refresh(task);
+}
+
+function drawOrder(task, index, focusTarget) {
+  const view = views.get(task.id).rows[index];
+  const question = task.questions[index];
+  const model = state.get(task.id)[index];
+  view.sentence.replaceChildren();
+  if (!model.order.length) view.sentence.append(element("span", {classes: "empty-line", text: "Your question will appear here."}));
+  model.order.forEach((token, position) => {
+    const current = button(question.words[token], "tile chosen", () => {
+      model.order.splice(position, 1);
+      updateAnswer(task, index, model.order.map(value => question.words[value]).join(" "));
+      drawOrder(task, index, token);
+    });
+    current.setAttribute("aria-label", `Remove ${question.words[token]}`);
+    view.sentence.append(current);
+  });
+  view.tokens.forEach((token, position) => { token.disabled = model.order.includes(position); });
+  if (focusTarget === "next") {
+    const next = view.tokens.find(token => !token.disabled) ?? view.sentence.lastElementChild;
+    next?.focus();
+  } else if (typeof focusTarget === "number") view.tokens[focusTarget].focus();
+}
+
+function renderTask(task) {
+  const studentArea = element("article", {classes: "task"});
+  const head = element("div", {classes: "task-heading"});
+  const id = task.id + "-title";
+  const number = element("span", {classes: "number", text: String(task.number)});
+  number.setAttribute("aria-hidden", "true");
+  const heading = element("h3", {id, text: task.title});
+  const icon = element("span", {classes: "task-mark", text: task.icon});
+  icon.setAttribute("aria-hidden", "true");
+  head.append(number, heading, icon);
+  studentArea.setAttribute("aria-labelledby", id);
+  const questions = element("div", {classes: "questions"});
+  const score = element("p", {classes: "task-score"});
+  score.setAttribute("aria-live", "polite");
+  const taskView = {score, rows: []};
+  views.set(task.id, taskView);
+
+  task.questions.forEach((question, index) => {
+    const row = element("div", {classes: "question"});
+    const prompt = element("p", {classes: "prompt", id: task.id + "-" + (index+1)});
+    prompt.append(element("span", {classes: "prompt-number", text: String(index+1) + "."}));
+    const feedback = element("p", {classes: "feedback"});
+    feedback.hidden = true;
+    const view = {row, feedback};
+    taskView.rows.push(view);
+    row.append(prompt);
+
+    if (task.kind === "select") {
+      const menu = element("select", {classes: "inline-choice"});
+      menu.setAttribute("aria-label", "Question " + (index+1) + ". " + question.prompt.replace("___", "blank"));
+      const empty = element("option", {text: "Choose…"});
+      empty.value = "";
+      menu.append(empty);
+      task.bank.forEach(value => {
+        const option = element("option", {text: value});
+        option.value = value;
+        menu.append(option);
+      });
+      const [before, after] = question.prompt.split("___");
+      prompt.append(document.createTextNode(before), menu, document.createTextNode(after));
+      menu.addEventListener("change", () => updateAnswer(task, index, menu.value));
+      view.clear = () => { menu.value = ""; };
+    } else if (task.kind === "choice") {
+      prompt.append(document.createTextNode(question.prompt));
+      const options = element("div", {classes: "options"});
+      options.setAttribute("role", "radiogroup");
+      options.setAttribute("aria-labelledby", prompt.id);
+      const radios = question.options.map(value => {
+        const option = element("label", {classes: "option"});
+        const radio = element("input");
+        radio.type = "radio";
+        radio.name = prompt.id;
+        radio.value = value;
+        radio.addEventListener("change", () => updateAnswer(task, index, value));
+        option.append(radio, element("span", {text: value}));
+        options.append(option);
+        return radio;
+      });
+      row.append(options);
+      view.clear = () => { for (const radio of radios) radio.checked = false; };
+    } else {
+      prompt.append(document.createTextNode(question.prompt));
+      const sentence = element("div", {classes: "sentence"});
+      sentence.setAttribute("role", "group");
+      sentence.setAttribute("aria-label", "Your question");
+      const tray = element("div", {classes: "word-tray"});
+      tray.setAttribute("role", "group");
+      tray.setAttribute("aria-label", "Word groups in question " + (index+1));
+      view.sentence = sentence;
+      view.tokens = question.words.map((word, position) => button(word, "tile", () => {
+        if (state.get(task.id)[index].order.includes(position)) return;
+        const order = state.get(task.id)[index].order;
+        order.push(position);
+        updateAnswer(task, index, order.map(token => question.words[token]).join(" "));
+        drawOrder(task, index, "next");
+      }));
+      tray.append(...view.tokens);
+      row.append(sentence, tray);
+      view.clear = () => drawOrder(task, index);
+      drawOrder(task, index);
+    }
+
+    row.append(feedback);
+    questions.append(row);
+  });
+
+  const actions = element("div", {classes: "actions"});
+  actions.append(
+    button("Check answers", "button primary", () => {
+      state.get(task.id).forEach((model, index) => { model.checked = true; renderFeedback(task, index); });
+      refresh(task);
+    }),
+    button("Try again", "button", () => {
+      state.get(task.id).forEach((model, index) => {
+        model.answer = "";
+        model.order = [];
+        model.checked = false;
+        taskView.rows[index].clear();
+        renderFeedback(task, index);
+      });
+      refresh(task);
+    }),
+    score
+  );
+  studentArea.append(head, element("p", {classes: "directions", text: task.directions}), questions, actions);
+  byId("tasks-" + task.part).append(studentArea);
+  refresh(task);
+}
+
+function buildReport() {
+  const lines = [homeworkTitle, "", "Total · " + formatScore(tally(tasks))];
+  for (const task of tasks) {
+    lines.push("", `Part ${task.part}, Exercise ${task.number} · ${task.title}`, formatScore(tally([task])));
+    task.questions.forEach((question, index) => {
+      const status = mark(task, index);
+      const model = state.get(task.id)[index];
+      if (status === "correct") return;
+      lines.push(`${index+1}. ${question.prompt}`);
+      if (status === "incorrect") {
+        lines.push(`   Your answer: ${model.answer}`, `   Correct answer: ${question.answer}`);
+      } else if (status === "unchecked") {
+        lines.push(`   Unchecked answer: ${model.answer}`);
+      } else {
+        lines.push(model.answer ? `   Unanswered (unfinished): ${model.answer}` : "   Unanswered");
+      }
+    });
+  }
+  return lines.join("\n");
+}
+
+tasks.forEach(renderTask);
+byId("copy-results").addEventListener("click", async () => {
+  const report = buildReport();
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error("Clipboard unavailable");
+    await navigator.clipboard.writeText(report);
+    resultText.hidden = true;
+    copyStatus.textContent = "Results copied.";
+  } catch {
+    resultText.hidden = false;
+    resultText.value = report;
+    resultText.focus();
+    resultText.select();
+    copyStatus.textContent = "Use Ctrl+C or Command+C to copy the selected results.";
+  }
+});
+</script>
+</body>
+</html>
