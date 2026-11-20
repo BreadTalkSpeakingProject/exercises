@@ -1,0 +1,456 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>IELTS Writing Task 2 Homework</title>
+  <style>
+    :root { color-scheme: light; --paper:#f6f1e7; --white:#fffdf8; --ink:#22263b; --muted:#5a5f70; --navy:#262b46; --gold:#e7c279; --line:#ddd5c7; --link:#3d4d8a; --good:#19654c; --bad:#9b342c; }
+    * { box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:1rem/1.62 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+    h1,h2,h3 { margin:0; font-family:Georgia,"Times New Roman",serif; font-weight:normal; line-height:1.16; }
+    h1 { font-size:clamp(2.6rem,7vw,5rem); letter-spacing:-.045em; max-width:18ch; }
+    h2 { font-size:clamp(1.9rem,4.5vw,3rem); letter-spacing:-.035em; }
+    h3 { font-size:clamp(1.35rem,3.2vw,2rem); letter-spacing:-.02em; }
+    h4,p { margin:0; }
+    a { color:var(--link); text-underline-offset:.18em; }
+    :focus-visible { outline:3px solid #765100; outline-offset:3px; }
+    :is(section,article)[id] { scroll-margin-top:5.9rem; }
+    .wrap { width:min(100% - 3rem, 72rem); margin-inline:auto; }
+    .reading-width { max-width:58rem; }
+    .skip { position:absolute; left:1rem; top:-12rem; z-index:5; background:white; padding:.5rem .75rem; }
+    .skip:focus { top:1rem; }
+    .hero { background:var(--navy); color:#fffdf8; padding:clamp(2.7rem,7vw,5.2rem) 0; border-bottom:3px solid var(--gold); }
+    .hero p { color:#f0dbaf; margin-top:1.15rem; font-size:1.08rem; }
+    .site-nav { position:sticky; top:0; z-index:2; background:var(--white); border-bottom:1px solid var(--line); }
+    .site-nav .wrap { display:flex; align-items:center; gap:clamp(.9rem,4vw,2rem); min-height:3.55rem; padding-block:.35rem; }
+    .site-nav a { font-size:.92rem; font-weight:650; text-decoration:none; }
+    .site-nav a:hover,.toc a:hover { text-decoration:underline; }
+    main { padding-block:clamp(2.4rem,6vw,4.5rem); }
+    .section-title { margin-bottom:1.45rem; }
+    .sheet { margin-bottom:clamp(3rem,7vw,5.6rem); }
+    .rules { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:.9rem; }
+    .rule,.part,.match-list,.extra { background:var(--white); border:1px solid var(--line); border-radius:12px; }
+    .rule { padding:1.1rem; }
+    .rule h3 { margin-bottom:.45rem; font:650 1.03rem/1.4 system-ui,sans-serif; }
+    .rule p,.phrase-list dd { color:var(--muted); }
+    .phrase-list { margin:.9rem 0 0; padding:1.25rem clamp(1rem,3vw,1.5rem); background:#efe6d5; border-radius:12px; }
+    .phrase-list dl { margin:.8rem 0 0; }
+    .phrase-list dl div { display:grid; grid-template-columns:minmax(6.6rem, .85fr) 4fr; column-gap:1rem; padding:.52rem 0; border-top:1px solid #d9cdb8; }
+    .phrase-list dt { font-weight:650; }
+    .phrase-list dd { margin:0; }
+    .match-note,.compare-note { color:var(--muted); margin:-.65rem 0 1.3rem; }
+    .match-list { padding:1.15rem 1.15rem .6rem 3rem; margin:0; }
+    .match-row { padding:0 .25rem 1rem .2rem; margin:0 0 .95rem; border-bottom:1px solid var(--line); }
+    .match-row:last-child { border:none; margin-bottom:0; }
+    .match-row::marker { color:var(--link); font-weight:700; }
+    .frame-text { margin-bottom:.65rem; }
+    select, textarea, button { font:inherit; }
+    select,textarea { color:var(--ink); background:#fff; border:1px solid #bcb8b3; border-radius:7px; }
+    select { max-width:100%; min-height:2.85rem; padding:.4rem .6rem; }
+    textarea { display:block; margin-top:.55rem; padding:.66rem .8rem; width:100%; resize:vertical; min-height:4.6rem; }
+    textarea::placeholder { color:#6a6e78; }
+    .match-row[data-result="correct"] select { border:2px solid var(--good); }
+    .match-row[data-result="retry"] select { border:2px solid var(--bad); }
+    .match-feedback { display:inline; margin-left:.55rem; font-size:.9rem; font-weight:600; }
+    .match-row[data-result="correct"] .match-feedback { color:var(--good); }
+    .match-row[data-result="retry"] .match-feedback { color:var(--bad); }
+    .actions { display:flex; flex-wrap:wrap; align-items:center; gap:.6rem .8rem; margin:1rem 0; }
+    button { cursor:pointer; min-height:2.8rem; padding:.4rem .86rem; border:1px solid var(--navy); border-radius:7px; color:var(--navy); background:var(--white); font-weight:650; }
+    button:first-child { background:var(--navy); color:white; }
+    button:hover { box-shadow:0 0 0 2px #cbb994; }
+    .extra { padding:.9rem 1rem; margin-top:1.15rem; }
+    details > summary { cursor:pointer; font-weight:650; }
+    details > summary::marker { color:var(--link); }
+    .extra p { margin-top:.65rem; }
+    .comparison { display:grid; grid-template-columns:minmax(10rem,14rem) minmax(0,1fr); gap:clamp(1rem,3vw,2.4rem); }
+    .toc { position:sticky; top:5rem; align-self:start; padding-right:.65rem; }
+    .toc h3 { font:700 .92rem/1.35 system-ui,sans-serif; }
+    .toc ol { margin:.65rem 0 0; padding-left:1.3rem; }
+    .toc li { margin:.43rem 0; font-size:.9rem; line-height:1.4; }
+    .toc a { text-decoration:none; }
+    .part { padding:clamp(1rem,3vw,1.75rem); margin-bottom:1.2rem; }
+    .part-head { display:flex; align-items:baseline; gap:.72rem; margin-bottom:1.15rem; }
+    .part-head span { flex:none; display:grid; place-items:center; height:1.75rem; min-width:1.75rem; border-radius:50%; background:#edddba; font-size:.88rem; font-weight:700; }
+    .prompt { margin:0 0 1rem; padding:.82rem 1rem; background:#eae6ee; border-left:3px solid #6d6687; }
+    .essay-full,.excerpt { background:#f4ebd9; border-radius:8px; padding:1rem; }
+    .essay-full h4,.excerpt h4 { margin-bottom:.5rem; font-weight:700; }
+    .essay-full p + p { margin-top:.8rem; }
+    .excerpts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:.8rem; align-items:start; }
+    .reveal { background:#eae6ee; }
+    .reveal p { margin-top:.65rem; }
+    .questions { padding-left:1.45rem; margin:1.25rem 0 1rem; }
+    .questions li { padding-left:.25rem; margin-top:.95rem; }
+    .questions li::marker { color:var(--link); font-weight:700; }
+    .answers { background:#edf1e8; border-radius:8px; padding:.68rem .92rem; }
+    .answers ol { margin:.7rem 0 .1rem; padding-left:1.45rem; }
+    .answers li + li { margin-top:.45rem; }
+    footer { border-top:1px solid var(--line); color:var(--muted); padding:1.3rem 0 2.8rem; font-size:.88rem; }
+    .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+    @media (max-width:50rem) {
+      .comparison { display:block; }
+      .toc { display:none; }
+      .rules { grid-template-columns:1fr; }
+    }
+    @media (max-width:35rem) {
+      .wrap { width:calc(100% - 1.5rem); }
+      .site-nav a { font-size:.83rem; line-height:1.3; }
+      .excerpts { grid-template-columns:1fr; }
+      .match-feedback { display:block; margin:.2rem 0 0; }
+      .phrase-list dl div { grid-template-columns:1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior:auto; } }
+  </style>
+</head>
+<body>
+  <a class="skip" href="#main">Skip to homework</a>
+  <header class="hero"><div class="wrap">
+    <h1>IELTS Writing Task 2 Homework</h1>
+    <p>Introductions, conclusions and the air-travel essay comparison</p>
+  </div></header>
+  <nav class="site-nav" aria-label="Homework sections"><div class="wrap">
+    <a href="#suggestions">Task 6 · Writing tips</a>
+    <a href="#matching">Task 9 · Matching</a>
+    <a href="#compare">Compare essays</a>
+  </div></nav>
+  <main id="main" class="wrap">
+    <section id="suggestions" class="sheet reading-width" aria-labelledby="suggestions-title">
+      <h2 class="section-title" id="suggestions-title">Introductions and conclusions</h2>
+      <div class="rules">
+        <div class="rule"><h3>DO · Open with the change the prompt describes</h3><p>“Air travel has become more affordable over time.” Then introduce both views and state your position.</p></div>
+        <div class="rule"><h3>DON’T · Start with a generic “Nowadays” sentence</h3><p>A broad “Nowadays” sentence uses space without saying what has changed about the cost of air travel.</p></div>
+        <div class="rule"><h3>DO · Give your final judgement</h3><p>Use “In conclusion” or “To conclude”. Recap the main ideas and restate your view. Save new ideas for the body.</p></div>
+      </div>
+      <div class="phrase-list">
+        <h3>Conclusion openers to avoid in this practice</h3>
+        <dl><div><dt>All in all</dt><dd>Sounds conversational here. “Overall” can express your judgement inside a sentence.</dd></div><div><dt>In sum</dt><dd>Can sound abrupt here. Leave space to explain why the trade-off is worth it.</dd></div><div><dt>To sum up</dt><dd>Signals a recap. Use “To conclude” here and give your verdict as well as a summary.</dd></div><div><dt>Finally</dt><dd>Can introduce one last argument, so the reader may expect another point.</dd></div><div><dt>In a nutshell</dt><dd>Sounds conversational here. Use the direct opener modelled above.</dd></div></dl>
+      </div>
+    </section>
+    <section id="matching" class="sheet reading-width" aria-labelledby="matching-title">
+      <h2 class="section-title" id="matching-title">Match the introduction frames</h2>
+      <p class="match-note">Match each introduction frame with its question type. Use each type once.</p>
+      <ol class="match-list">
+      <li class="match-row" data-answer="opinion">
+        <div class="frame-text">It is argued that ... This essay agrees/disagrees with that statement because ...</div>
+        <label class="sr-only" for="match-1">Question type for introduction 1</label>
+        <select id="match-1" data-save="match-1"><option value="">Choose a question type</option><option value="double">Double question</option><option value="outweigh">Advantages and disadvantages (outweigh)</option><option value="discussion">Discussion + opinion</option><option value="problems">Problems and solutions</option><option value="opinion">Opinion</option></select>
+        <div class="match-feedback" aria-live="polite"></div>
+      </li>
+      <li class="match-row" data-answer="discussion">
+        <div class="frame-text">Some say that ... while others would argue that ... This essay will argue that although [view you agree with less], [view you agree with].</div>
+        <label class="sr-only" for="match-2">Question type for introduction 2</label>
+        <select id="match-2" data-save="match-2"><option value="">Choose a question type</option><option value="double">Double question</option><option value="outweigh">Advantages and disadvantages (outweigh)</option><option value="discussion">Discussion + opinion</option><option value="problems">Problems and solutions</option><option value="opinion">Opinion</option></select>
+        <div class="match-feedback" aria-live="polite"></div>
+      </li>
+      <li class="match-row" data-answer="outweigh">
+        <div class="frame-text">This essay will argue that despite [disadvantage], [advantage] means the advantages far outweigh the drawbacks.</div>
+        <label class="sr-only" for="match-3">Question type for introduction 3</label>
+        <select id="match-3" data-save="match-3"><option value="">Choose a question type</option><option value="double">Double question</option><option value="outweigh">Advantages and disadvantages (outweigh)</option><option value="discussion">Discussion + opinion</option><option value="problems">Problems and solutions</option><option value="opinion">Opinion</option></select>
+        <div class="match-feedback" aria-live="polite"></div>
+      </li>
+      <li class="match-row" data-answer="problems">
+        <div class="frame-text">This essay will suggest that [problem] ... and the best solution is ...</div>
+        <label class="sr-only" for="match-4">Question type for introduction 4</label>
+        <select id="match-4" data-save="match-4"><option value="">Choose a question type</option><option value="double">Double question</option><option value="outweigh">Advantages and disadvantages (outweigh)</option><option value="discussion">Discussion + opinion</option><option value="problems">Problems and solutions</option><option value="opinion">Opinion</option></select>
+        <div class="match-feedback" aria-live="polite"></div>
+      </li>
+      <li class="match-row" data-answer="double">
+        <div class="frame-text">This essay will argue that [answer 1] and that [answer 2].</div>
+        <label class="sr-only" for="match-5">Question type for introduction 5</label>
+        <select id="match-5" data-save="match-5"><option value="">Choose a question type</option><option value="double">Double question</option><option value="outweigh">Advantages and disadvantages (outweigh)</option><option value="discussion">Discussion + opinion</option><option value="problems">Problems and solutions</option><option value="opinion">Opinion</option></select>
+        <div class="match-feedback" aria-live="polite"></div>
+      </li>
+      </ol>
+      <div class="actions">
+        <button type="button" id="check-matches">Check matches</button>
+        <button type="button" id="clear-matches">Reset matches</button>
+        <span id="match-status" role="status"></span>
+      </div>
+      <details class="extra">
+        <summary>What should the first sentence of an introduction never be?</summary>
+        <p>A generic background opening like “Nowadays” or “In the modern world”, or a copy of the question.</p>
+      </details>
+    </section>
+    <section id="compare" aria-labelledby="compare-title">
+      <h2 class="section-title" id="compare-title">What changes in a stronger essay?</h2>
+      <p class="compare-note">Read Essay A before revealing its band. Compare A with B, then B with C. Write your answers and reveal the notes when you’re ready.</p>
+      <div class="comparison">
+        <nav class="toc" aria-label="Essay comparison parts">
+          <h3>Comparison parts</h3><ol><li><a href="#part-1">Read first. Judge from evidence.</a></li><li><a href="#part-2">Introduction and position</a></li><li><a href="#part-3">Body 1: develop one claim</a></li><li><a href="#part-4">Body 2: make causation explicit</a></li><li><a href="#part-5">Conclusion: close the argument</a></li><li><a href="#part-6">Introduction and position</a></li><li><a href="#part-7">Body 1: acknowledge, then weigh</a></li><li><a href="#part-8">Body 2: connect cost and consequence</a></li><li><a href="#part-9">Conclusion and synthesis</a></li></ol>
+        </nav>
+        <div class="parts">
+    <article class="part" id="part-1" aria-labelledby="title-1">
+      <header class="part-head"><span aria-hidden="true">1</span><h3 id="title-1">Read first. Judge from evidence.</h3></header>
+      <blockquote class="prompt">Air travel has become cheaper than before. Some think it is a positive development, while others disagree. Discuss both views and give your opinion.</blockquote>
+      <div class="essay-full"><h4>Essay A</h4><p>Nowadays air travel has become cheaper than it used to be. While some people agree that is positive, others believe it is not, and I agree with that.</p><p>Some people believe cheaper air travel is beneficial because it allows more people to live a happier life. Firstly, travelling broadens the mind and helps people live a fuller life. People have a chance to learn about different cultures and compare how well they might live. It boosts the economy of countries where people go to. In general, cheaper air travel is a positive development.</p><p>Other people think that low cost air travel is a negative trend because it pollutes the atmosphere. More affordable airline tickets allow people to travel more. More planes are going to fly around and the air will be dirtier. This will have a negative effect on the atmosphere and make people less healthy. That is why many believe cheaper air travel is not positive and I agree with them.</p><p>In conclusion, cheaper air travel is a bad ideas because it will create more pollution.</p></div>
+      <ol class="questions">
+        <li><label for="note-1-1">Which band would you propose for Essay A? Build a case across all four criteria, rather than counting mistakes.</label>
+          <textarea id="note-1-1" data-save="note-1-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-1-2">Where does the first body paragraph stop developing its central claim? What happens to the argument at that point?</label>
+          <textarea id="note-1-2" data-save="note-1-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-1-3">Why is the second body paragraph easier to follow? Trace the causal chain, then decide what still limits the response.</label>
+          <textarea id="note-1-3" data-save="note-1-3" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-1-4">Which features demonstrate basic control, and which prevent that control from becoming a convincing higher-band response?</label>
+          <textarea id="note-1-4" data-save="note-1-4" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>Band 6.0. Essay A addresses both views, gives an opinion and uses a clear paragraph structure.</li><li>In body 1, the move to “It boosts the economy of countries where people go to.” diverts from the central claim about a fuller life.</li><li>Body 2 has a clearer chain: cheaper tickets → more travel → more planes → dirtier air → poorer health.</li><li>Clear paragraphing and a stated position show basic control. The limited development of ideas, mostly basic vocabulary and limited sentence variety keep the response at Band 6.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-2" aria-labelledby="title-2">
+      <header class="part-head"><span aria-hidden="true">2</span><h3 id="title-2">A → B · Introduction and position</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay A</h4><p>Nowadays air travel has become cheaper than it used to be. While some people agree that is positive, others believe it is not, and I agree with that.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay B</summary><p>These days travelling by a plane has become more affordable than it used to be. While some people believe it is a positive trend as it will make people live fuller live, I agree with those who are sure that it is a negative development because cheaper flights will cause harm to environment.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-2-1">Separate the topic paraphrase from the position. What can a reader predict from B that A leaves unspecified?</label>
+          <textarea id="note-2-1" data-save="note-2-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-2-2">How does B represent both views while committing to one? Identify the language that turns an opinion into a reasoned position.</label>
+          <textarea id="note-2-2" data-save="note-2-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>Band 7.0. A states an opinion. B also tells the reader why the writer holds that opinion, pointing to environmental harm.</li><li>B links the positive view to a fuller life and the negative view to environmental harm, identifying the writer’s side. The improvement is a position with arguments, beyond “I agree”.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-3" aria-labelledby="title-3">
+      <header class="part-head"><span aria-hidden="true">3</span><h3 id="title-3">A → B · Body 1: develop one claim</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay A</h4><p>Some people believe cheaper air travel is beneficial because it allows more people to live a happier life. Firstly, travelling broadens the mind and helps people live a fuller life. People have a chance to learn about different cultures and compare how well they might live. It boosts the economy of countries where people go to. In general, cheaper air travel is a positive development.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay B</summary><p>Some people believe that less expensive air travel is beneficial, since it will provide more people with an opportunity to live happier, fuller life. It is conventional wisdom that the more diverse experiences a person has, the happier they are. Of course, travel can be quite a bright experience in a person's lifetime, however, few people have a chance to travel. Thus, with more affordable air travel, more people have a chance to fill their lives with unforgettable moments, which will make them happier.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-3-1">Trace each argument. Where does A change direction, and how does B sustain one central claim?</label>
+          <textarea id="note-3-1" data-save="note-3-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-3-2">How do B’s collocations and final relative clause support its explanation, beyond making the language sound more sophisticated?</label>
+          <textarea id="note-3-2" data-save="note-3-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>A shifts from a fuller life to the economy. B sustains the connection between diverse experiences, wider access to travel and happiness.</li><li>“Conventional wisdom” introduces the idea that diverse experiences make people happier. “Unforgettable moments” shows what travel can offer, and the final relative clause links those moments to happiness.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-4" aria-labelledby="title-4">
+      <header class="part-head"><span aria-hidden="true">4</span><h3 id="title-4">A → B · Body 2: make causation explicit</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay A</h4><p>Other people think that low cost air travel is a negative trend because it pollutes the atmosphere. More affordable airline tickets allow people to travel more. More planes are going to fly around and the air will be dirtier. This will have a negative effect on the atmosphere and make people less healthy. That is why many believe cheaper air travel is not positive and I agree with them.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay B</summary><p>Other people believe that cheaper air travel is a negative development, since more planes will cause more polluting exhaust fumes, and I agree with that. Cheaper air travel will increase the demand, which means more planes will fly around. This in turn will increase the amount of exhaust fumes in the air, which will have a devastating effect on our atmosphere. That is why many believe that affordability of air travel is not beneficial, and I share the same viewpoint.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-4-1">Both versions contain a causal chain. Which links does B make more explicit, and what does each link contribute?</label>
+          <textarea id="note-4-1" data-save="note-4-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-4-2">Compare the language for pollution and its effects. Where does B gain lexical range, and where does cohesion still depend on overt signposting?</label>
+          <textarea id="note-4-2" data-save="note-4-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>B: cheaper travel → higher demand → more flights → more exhaust fumes → atmospheric damage.</li><li>“Increase the demand”, “exhaust fumes” and “devastating effect” give B more precise language. “This in turn” makes the next step explicit. B relies heavily on these signposts and uses relatively little reference or substitution.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-5" aria-labelledby="title-5">
+      <header class="part-head"><span aria-hidden="true">5</span><h3 id="title-5">A → B · Conclusion: close the argument</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay A</h4><p>In conclusion, cheaper air travel is a bad ideas because it will create more pollution.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay B</summary><p>In conclusion, while some people are sure cheaper air travel is beneficial since it will make many much happier, I agree with those who argue that it will have a negative effect on the environment.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-5-1">Compare each ending with its own introduction. Which one recovers the reasoning behind both views as well as the writer’s choice?</label>
+          <textarea id="note-5-1" data-save="note-5-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-5-2">Across A and B, which changes matter more than adding sophisticated words? Support your judgement with two earlier passages.</label>
+          <textarea id="note-5-2" data-save="note-5-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>B’s conclusion returns to the same logic as its introduction. Cheaper flights can make life fuller, but the writer gives more weight to environmental harm.</li><li>B gives reasons for the writer’s position and develops them through clearer steps. Its more precise vocabulary and varied grammar help the reader follow those steps.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-6" aria-labelledby="title-6">
+      <header class="part-head"><span aria-hidden="true">6</span><h3 id="title-6">B → C · Introduction and position</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay B</h4><p>These days travelling by a plane has become more affordable than it used to be. While some people believe it is a positive trend as it will make people live fuller live, I agree with those who are sure that it is a negative development because cheaper flights will cause harm to environment.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay C</summary><p>Travelling by air has become much more affordable than it used to be in the past. While some are sure it is a positive trend since it may give many a chance to lead a richer, more satisfying way of life, I side with those who insist on cheaper air travel being a negative development, as the irreparable harm will be done not only to the environment, but people as well.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-6-1">What extra dimension does C build into the disagreement? Explain how it changes the scope of the argument, beyond a synonym change.</label>
+          <textarea id="note-6-1" data-save="note-6-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-6-2">Compare the benefits and costs as framed here. How do the richer lexical choices support a more layered position?</label>
+          <textarea id="note-6-2" data-save="note-6-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>Band 8.0. C presents the benefit of a richer life and extends the objection to harm to both the environment and people. That gives the essay two consequences to develop.</li><li>“richer, more satisfying way of life” illustrates vocabulary supporting the argument, beyond a simple positive/negative contrast.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-7" aria-labelledby="title-7">
+      <header class="part-head"><span aria-hidden="true">7</span><h3 id="title-7">B → C · Body 1: acknowledge, then weigh</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay B</h4><p>Some people believe that less expensive air travel is beneficial, since it will provide more people with an opportunity to live happier, fuller life. It is conventional wisdom that the more diverse experiences a person has, the happier they are. Of course, travel can be quite a bright experience in a person's lifetime, however, few people have a chance to travel. Thus, with more affordable air travel, more people have a chance to fill their lives with unforgettable moments, which will make them happier.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay C</summary><p>Some people believe that the reduction in the price of airline tickets is a positive trend as it will allow more people to live a more eventful life, thus contributing to the overall satisfaction with life. Due to high costs of air travel in the past, many people were deprived of the opportunity to see a variety of places, which resulted in them leading a much less colourful, more monotonous life. Since the situation has changed, more people now have an opportunity to see the world and make their lives filled with adventures. However, these newly-obtained opportunities pale in comparison with the repercussions the growing travel industry will have on other aspects of our lives.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-7-1">Trace how C moves from past restriction to present opportunity. How does this develop the benefit rather than simply repeat it?</label>
+          <textarea id="note-7-1" data-save="note-7-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-7-2">What argumentative work does C’s final sentence do? How can the writer acknowledge the positive view while limiting its force?</label>
+          <textarea id="note-7-2" data-save="note-7-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-7-3">What does “these newly-obtained opportunities” refer back to? Explain how reference and lexical substitution connect the evaluation to the preceding explanation.</label>
+          <textarea id="note-7-3" data-save="note-7-3" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-7-4">Choose two expressions that carry the argument. How would the reasoning lose precision if you treated them as interchangeable “advanced vocabulary”?</label>
+          <textarea id="note-7-4" data-save="note-7-4" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>C develops the benefit by showing how it came about. High fares once kept more people from travelling. Lower fares give more people opportunities to see new places and have a more eventful life.</li><li>“These newly-obtained opportunities pale in comparison with the repercussions” acknowledges the benefit and shows how the writer weighs it. The costs matter more in the writer’s judgement.</li><li>“These newly-obtained opportunities” refers to the chance to see the world and have more varied experiences. That phrase carries the idea into the writer’s judgement.</li><li>“Deprived of the opportunity” shows how high fares limited access to travel. “Pale in comparison” tells the reader how little weight the writer gives the benefit relative to the costs.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-8" aria-labelledby="title-8">
+      <header class="part-head"><span aria-hidden="true">8</span><h3 id="title-8">B → C · Body 2: connect cost and consequence</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay B</h4><p>Other people believe that cheaper air travel is a negative development, since more planes will cause more polluting exhaust fumes, and I agree with that. Cheaper air travel will increase the demand, which means more planes will fly around. This in turn will increase the amount of exhaust fumes in the air, which will have a devastating effect on our atmosphere. That is why many believe that affordability of air travel is not beneficial, and I share the same viewpoint.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay C</summary><p>Other people believe that the decrease in the cost of air travel is more of a negative tendency, since it will add to the pollution problem, harming the environment and, consequently, the people. With dropping prices, demand for air travel is likely to grow, thus causing more exhaust fumes to be emitted as a result of the increasingly growing number of flights. This is bound to take its toll on the condition of the environment, which in turn will have a detrimental effect on the health and well-being of many people, thus rendering the lower air travel costs a disadvantage. Many are assured that those problems are a big price to pay for the opportunity to make one’s life more eventful, and I side with this viewpoint.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-8-1">Map the consequences in each version. How does C develop the environmental objection into an argument about people, then weigh it against the benefit?</label>
+          <textarea id="note-8-1" data-save="note-8-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-8-2">Track “This”, “those problems” and “this viewpoint”. What prior meaning does each carry forward?</label>
+          <textarea id="note-8-2" data-save="note-8-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-8-3">Find a participle clause, a relative clause and a modal expression in C. How does each help express cause, consequence or likelihood?</label>
+          <textarea id="note-8-3" data-save="note-8-3" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>C extends the cost to health and well-being, then weighs it against a more eventful life.</li><li>“This” picks up the rise in flights and exhaust fumes. “Those problems” refers to environmental damage and its effects on people. “This viewpoint” refers to the judgement that those costs outweigh the benefit of a more eventful life.</li><li>The participle clause “thus causing more exhaust fumes to be emitted” gives a consequence. The relative clause “which in turn will have a detrimental effect” links environmental damage to health. “Is likely to grow” presents higher demand as probable.</li></ol>
+      </details>
+    </article>
+    <article class="part" id="part-9" aria-labelledby="title-9">
+      <header class="part-head"><span aria-hidden="true">9</span><h3 id="title-9">B → C · Conclusion and synthesis</h3></header>
+      <div class="excerpts">
+        <div class="excerpt"><h4>Essay B</h4><p>In conclusion, while some people are sure cheaper air travel is beneficial since it will make many much happier, I agree with those who argue that it will have a negative effect on the environment.</p></div>
+        <details class="excerpt reveal"><summary>Reveal Essay C</summary><p>In conclusion, although many people believe lowering prices of airline tickets is a benefit to society since that will allow people to live a more joyous, fulfilled life, I stand with those who argue that it will cause environmental problems which in turn may trigger health-related issues, thus making reduced air travel cost a negative development.</p></details>
+      </div>
+      <ol class="questions">
+        <li><label for="note-9-1">How does C’s conclusion bring together the benefit, the environmental cost and the human consequence? Check its consistency with the introduction and body.</label>
+          <textarea id="note-9-1" data-save="note-9-1" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-9-2">Looking across all three essays, distinguish a change in the idea, a change in its development, and a change in how language expresses it. Quote evidence for each.</label>
+          <textarea id="note-9-2" data-save="note-9-2" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-9-3">Why would extra linking words, longer sentences or memorised vocabulary alone fail to reproduce the improvements you have identified?</label>
+          <textarea id="note-9-3" data-save="note-9-3" rows="2" placeholder="Your notes"></textarea>
+        </li>
+        <li><label for="note-9-4">Which two principles will you apply to your next essay? Explain how you will check whether you have developed a claim and justified your position.</label>
+          <textarea id="note-9-4" data-save="note-9-4" rows="2" placeholder="Your notes"></textarea>
+        </li>
+      </ol>
+      <details class="answers">
+        <summary>Reveal answers</summary>
+        <ol><li>C’s conclusion returns to the same trade-off developed in the introduction and body. Cheaper flights can make life more fulfilling, but the writer gives greater weight to environmental damage and the health problems it can cause.</li><li>C adds a human consequence, “health and well-being”. It develops that idea by tracing the steps from lower prices to more flights, more fumes and environmental damage. The phrase “which in turn” connects the environmental damage to its effect on people.</li><li>Linking words help readers follow a relationship that the writer has already explained. In C, “which in turn” works because the paragraph has already shown how more flights can lead to environmental damage.</li><li>Choose two principles based on what you noticed in the essays. For example, trace a cause through to its consequence and show why one side carries more weight. In your next essay, check whether each step is clear enough for a reader to follow.</li></ol>
+      </details>
+    </article>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer><div class="wrap">
+    <p id="storage-notice"></p>
+    <p>Sources from class: <a href="https://miro.com/app/board/uXjVERzEEZ8=/?moveToWidget=3458764691036228786">Writing Task 2, Tasks 6 and 9</a> and <a href="https://miro.com/app/board/uXjVERzEEZ8=/?moveToWidget=3458764690602808634">What changes in a stronger essay?</a></p>
+  </div></footer>
+  <script>
+    (() => {
+      const savedFields = document.querySelectorAll('[data-save]');
+      const prefix = 'ielts-task2-homework-v1:';
+      const rows = [...document.querySelectorAll('.match-row')];
+      const summary = document.getElementById('match-status');
+      const notice = document.getElementById('storage-notice');
+      let storage;
+      try {
+        storage = window.localStorage;
+        storage.setItem(prefix + 'available', '1');
+        storage.removeItem(prefix + 'available');
+      } catch {
+        storage = null;
+      }
+      notice.textContent = storage
+        ? 'Your responses are saved in this browser.'
+        : 'Your responses stay on this page until you close it.';
+      function save(field) {
+        if (!storage) return;
+        try {
+          storage.setItem(prefix + field.dataset.save, field.value);
+        } catch {
+          notice.textContent = 'This browser could not save your latest changes.';
+        }
+      }
+      for (const field of savedFields) {
+        if (storage) {
+          try {
+            const value = storage.getItem(prefix + field.dataset.save);
+            if (value !== null) field.value = value;
+          } catch {
+            notice.textContent = 'This browser could not restore your earlier responses.';
+          }
+        }
+        field.addEventListener('input', () => save(field));
+      }
+      function clearFeedback(row) {
+        delete row.dataset.result;
+        row.querySelector('.match-feedback').textContent = '';
+      }
+      for (const row of rows) {
+        row.querySelector('select').addEventListener('change', () => {
+          clearFeedback(row);
+          summary.textContent = '';
+        });
+      }
+      document.getElementById('check-matches').addEventListener('click', () => {
+        let correct = 0;
+        let blank = 0;
+        for (const row of rows) {
+          const answer = row.querySelector('select').value;
+          const match = answer === row.dataset.answer;
+          if (match) correct += 1;
+          if (!answer) blank += 1;
+          row.dataset.result = match ? 'correct' : 'retry';
+          row.querySelector('.match-feedback').textContent =
+            match ? 'Correct' : answer ? 'Try again' : 'Choose a type';
+        }
+        summary.textContent = correct + ' of ' + rows.length + ' correct.'
+          + (blank ? ' ' + blank + ' left to match.' : '');
+      });
+      document.getElementById('clear-matches').addEventListener('click', () => {
+        for (const row of rows) {
+          const select = row.querySelector('select');
+          select.value = '';
+          save(select);
+          clearFeedback(row);
+        }
+        summary.textContent = 'Matches cleared.';
+        rows[0].querySelector('select').focus();
+      });
+    })();
+  </script>
+</body>
+</html>
