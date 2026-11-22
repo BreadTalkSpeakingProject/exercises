@@ -52,11 +52,6 @@
   button.secondary { background: transparent; border-color: #746b5e; color: var(--text); }
   button:hover { filter: brightness(1.12); }
   .score { margin-top: 0.65rem; color: var(--muted); font-size: 0.94rem; }
-  .speaking { padding-left: 1.35rem; margin-bottom: 0; }
-  .speaking li + li { margin-top: 0.55rem; }
-  details { margin: 0.85rem 0 0; }
-  summary { color: var(--accent); cursor: pointer; width: fit-content; }
-  details p { margin-top: 0.5rem; }
   .copy-status { margin-top: 0.55rem; color: var(--muted); }
   .copy-status:empty, .feedback:empty { display: none; }
 
@@ -70,20 +65,6 @@
 <main class="page">
   <header><h1>Common Mistakes Homework</h1></header>
   <div id="tasks"></div>
-
-  <section class="card" aria-labelledby="speaking-title">
-    <h2 id="speaking-title">Speak for 30 seconds</h2>
-    <p class="intro">Pick one question. Answer out loud and give a reason or an example.</p>
-    <ul class="speaking">
-      <li>What's a decision you need to make soon? What are the pros and cons?</li>
-      <li>Where can you concentrate best? Describe a specific place and explain what helps you there.</li>
-      <li>What would you do if a friend asked you for a favor while you were at work?</li>
-    </ul>
-    <details>
-      <summary>See a sample answer</summary>
-      <p>I need to make a decision about studying at home or at the library. It depends on how noisy it is at home. I can concentrate better at the library, but it takes me half an hour to get there.</p>
-    </details>
-  </section>
 
   <section class="card" aria-labelledby="results-title">
     <h2 id="results-title">Your results</h2>
@@ -155,7 +136,7 @@ const tasks = [
   },
   {
     title: "Fix the phrase",
-    instruction: "Type the corrected version of the highlighted words. Keep the rest of the sentence the same.",
+    instruction: "Type the corrected phrase or rewrite the full sentence. Keep the rest of the sentence the same.",
     items: [
       {
         before: "", phrase: "Are you agree", after: " that this pizza tastes better cold?",
@@ -245,7 +226,7 @@ function element(tag, text, className) {
 
 function normalize(value) {
   return value.normalize("NFKC").trim().toLowerCase().replace(/[‘’]/g, "'")
-    .replace(/[?!.,]+$/, "").replace(/\s+/g, " ");
+    .replace(/\s*[?!.,]+$/, "").replace(/\s+/g, " ");
 }
 
 function makeQuestion(question, bank, id) {
@@ -307,7 +288,11 @@ function makeQuestion(question, bank, id) {
   }
 
   item.append(feedback);
-  const answers = [question.answer, ...(question.alternatives || [])].map(normalize);
+  const acceptedPhrases = [question.answer, ...(question.alternatives || [])];
+  const acceptedSentences = question.phrase
+    ? acceptedPhrases.map(phrase => question.before + phrase + question.after)
+    : [];
+  const answers = [...acceptedPhrases, ...acceptedSentences].map(normalize);
   return { item, feedback, read, clear, promptText, question, answers, state: "unchecked" };
 }
 
