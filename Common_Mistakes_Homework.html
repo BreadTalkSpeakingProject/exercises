@@ -1,0 +1,433 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Common Mistakes Homework</title>
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #161616;
+    --surface: #21201e;
+    --field: #292724;
+    --line: #4b4740;
+    --text: #fff7e9;
+    --muted: #d0c7b9;
+    --accent: #ffcf78;
+    --good: #9ae3b4;
+    --bad: #ffb4a5;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; }
+  body { margin: 0; background: var(--bg); color: var(--text); line-height: 1.55; }
+  .page { width: min(100% - 2rem, 54rem); margin: 0 auto; padding: 2.6rem 0 3.2rem; }
+  header { padding: 0.8rem 0 1.3rem; border-bottom: 2px solid var(--accent); margin-bottom: 1.4rem; }
+  h1, h2 { font-family: Georgia, serif; letter-spacing: -0.025em; line-height: 1.12; }
+  h1 { font-size: clamp(2.1rem, 6vw, 4rem); margin: 0; }
+  h2 { font-size: clamp(1.55rem, 3.5vw, 2.05rem); margin: 0; }
+  p { margin: 0; }
+  .card { padding: clamp(1rem, 3.7vw, 1.8rem); background: var(--surface); border: 1px solid var(--line); border-radius: 1rem; margin-bottom: 1.15rem; }
+  .intro { color: var(--muted); margin-top: 0.55rem; }
+  .questions { padding: 0; margin: 0.9rem 0 0; list-style: none; counter-reset: item; }
+  .questions > li { border-top: 1px solid var(--line); padding: 0.9rem 0 0.9rem 2.1rem; position: relative; counter-increment: item; }
+  .questions > li::before { content: counter(item) "."; color: var(--accent); font-variant-numeric: tabular-nums; font-weight: 700; position: absolute; left: 0; top: 0.9rem; }
+  label.prompt, legend { display: block; font-weight: 600; padding: 0; }
+  .prompt strong { color: var(--accent); }
+  .item-note { color: var(--muted); font-size: 0.925rem; margin: 0.25rem 0; }
+  fieldset { margin: 0; padding: 0; min-inline-size: 0; border: 0; }
+  .choices { display: flex; gap: 0.45rem; flex-wrap: wrap; margin-top: 0.55rem; }
+  .option { display: inline-flex; align-items: center; gap: 0.48rem; min-height: 2.75rem; padding: 0.38rem 0.65rem; border: 1px solid var(--line); border-radius: 0.55rem; background: var(--field); cursor: pointer; overflow-wrap: anywhere; }
+  .option:has(input:checked) { border-color: var(--accent); }
+  input[type="radio"] { width: 1rem; height: 1rem; margin: 0; flex-shrink: 0; accent-color: var(--accent); }
+  input[type="text"], select, textarea { color: var(--text); background: var(--field); border: 1px solid #746b5e; border-radius: 0.55rem; padding: 0.55rem 0.65rem; font: inherit; width: min(100%, 26rem); }
+  input[type="text"], select { display: block; min-height: 2.75rem; margin-top: 0.55rem; }
+  textarea { display: block; width: 100%; min-height: 12rem; margin-top: 0.6rem; resize: vertical; }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+  .feedback { margin-top: 0.5rem; color: var(--muted); font-size: 0.94rem; }
+  .feedback[data-state="correct"] { color: var(--good); }
+  .feedback[data-state="incorrect"] { color: var(--bad); }
+  .controls { display: flex; flex-wrap: wrap; align-items: center; gap: 0.55rem; margin-top: 0.55rem; }
+  button { border: 1px solid transparent; border-radius: 0.55rem; color: #221709; background: var(--accent); padding: 0.52rem 0.82rem; min-height: 2.75rem; font: inherit; font-weight: 700; cursor: pointer; }
+  button.secondary { background: transparent; border-color: #746b5e; color: var(--text); }
+  button:hover { filter: brightness(1.12); }
+  .score { margin-top: 0.65rem; color: var(--muted); font-size: 0.94rem; }
+  .speaking { padding-left: 1.35rem; margin-bottom: 0; }
+  .speaking li + li { margin-top: 0.55rem; }
+  details { margin: 0.85rem 0 0; }
+  summary { color: var(--accent); cursor: pointer; width: fit-content; }
+  details p { margin-top: 0.5rem; }
+  .copy-status { margin-top: 0.55rem; color: var(--muted); }
+  .copy-status:empty, .feedback:empty { display: none; }
+
+  @media (max-width: 32rem) {
+    .page { padding-top: 1rem; width: calc(100% - 1.25rem); }
+    .questions > li { padding-left: 1.75rem; }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+  <header><h1>Common Mistakes Homework</h1></header>
+  <div id="tasks"></div>
+
+  <section class="card" aria-labelledby="speaking-title">
+    <h2 id="speaking-title">Speak for 30 seconds</h2>
+    <p class="intro">Pick one question. Answer out loud and give a reason or an example.</p>
+    <ul class="speaking">
+      <li>What's a decision you need to make soon? What are the pros and cons?</li>
+      <li>Where can you concentrate best? Describe a specific place and explain what helps you there.</li>
+      <li>What would you do if a friend asked you for a favor while you were at work?</li>
+    </ul>
+    <details>
+      <summary>See a sample answer</summary>
+      <p>I need to make a decision about studying at home or at the library. It depends on how noisy it is at home. I can concentrate better at the library, but it takes me half an hour to get there.</p>
+    </details>
+  </section>
+
+  <section class="card" aria-labelledby="results-title">
+    <h2 id="results-title">Your results</h2>
+    <p id="total" class="score" role="status"></p>
+    <div class="controls"><button id="copy" type="button">Copy Results</button></div>
+    <p id="copy-status" class="copy-status" role="status"></p>
+    <textarea id="copy-fallback" aria-label="Results to copy" readonly hidden></textarea>
+  </section>
+  <noscript><p>Turn on JavaScript in your browser to use this homework.</p></noscript>
+</main>
+
+<script>
+"use strict";
+
+const tasks = [
+  {
+    title: "From your lesson",
+    instruction: "Choose the phrase that completes each sentence in standard English.",
+    items: [
+      {
+        prompt: "“So what does that change?” “___ I need to choose a different date.”",
+        options: ["It mean", "It means", "It's mean"], answer: "It means",
+        explanation: "Use it + means. The verb takes -s after it."
+      },
+      {
+        prompt: "“Do you always listen to the same music?” “No, ___.”",
+        options: ["it's depends on my mood", "it depends from my mood", "it depends on my mood"],
+        answer: "it depends on my mood", explanation: "Use it depends on + the thing that affects your choice."
+      },
+      {
+        prompt: "I can't ___ because I don't know what happened.",
+        options: ["answer this question", "answer for this question", "answer to this question"],
+        answer: "answer this question", explanation: "With the verb answer, the question is the direct object."
+      },
+      {
+        prompt: "My residence permit is still valid. When ___, I'll go to Turkey.",
+        options: ["my permission end", "my permit will expire", "my permit expires"],
+        answer: "my permit expires", explanation: "A permit is an official document. Use the present simple after when for this future event."
+      },
+      {
+        prompt: "“Want to make dinner from scratch?” “Honestly, ___.”",
+        options: ["I'm too lazy for this", "I've too lazy for this", "I too lazy for this"],
+        answer: "I'm too lazy for this", explanation: "I'm too lazy for this is a natural way to say you don't want to put in the effort."
+      },
+      {
+        prompt: "I moved last month. The new neighborhood is starting to feel familiar, so I can say ___.",
+        options: ["I'm getting use to this new place", "I'm getting used to this new place", "I'm getting used this new place"],
+        answer: "I'm getting used to this new place", explanation: "Get used to something means it starts to feel normal or familiar."
+      }
+    ]
+  },
+  {
+    title: "Prepositions",
+    instruction: "Choose a preposition or select “No preposition.” Use American English.",
+    bank: ["in", "No preposition", "at", "on"],
+    items: [
+      { prompt: "I often watch short videos ___ Instagram.", answer: "on", explanation: "We say on Instagram." },
+      { prompt: "Let's discuss ___ the plan before we book anything.", answer: "No preposition", explanation: "Discuss takes a direct object." },
+      { prompt: "I usually get up ___ 7 a.m.", answer: "at", explanation: "Use at with a clock time." },
+      { prompt: "We spend most of our time outdoors ___ summer.", answer: "in", explanation: "Use in with a season." },
+      { prompt: "What we do tomorrow depends ___ the weather.", answer: "on", explanation: "Use depend on." },
+      { prompt: "We're planning to go abroad ___ next year.", answer: "No preposition", explanation: "Next year stands on its own." },
+      { prompt: "I don't like walking alone late ___ night.", answer: "at", explanation: "At night is the usual phrase here." },
+      { prompt: "I can't use my phone ___ work.", answer: "at", explanation: "At work means you're at your workplace or working." },
+      { prompt: "We usually have breakfast together ___ the weekend.", answer: "on", explanation: "On the weekend is standard in American English. At the weekend is common in British English." },
+      { prompt: "I'm tired. I think I'll go ___ home.", answer: "No preposition", explanation: "In go home, home already shows the destination." },
+      { prompt: "I'll meet you ___ the gate outside my friend's dacha.", answer: "at", explanation: "Use at for a specific meeting point." }
+    ]
+  },
+  {
+    title: "Fix the phrase",
+    instruction: "Type the corrected version of the highlighted words. Keep the rest of the sentence the same.",
+    items: [
+      {
+        before: "", phrase: "Are you agree", after: " that this pizza tastes better cold?",
+        answer: "Do you agree", explanation: "Use do + subject + agree in a present-simple question."
+      },
+      {
+        before: "I like ", phrase: "listening music", after: " on my way to work.",
+        answer: "listening to music", explanation: "Use listen to when you name what you listen to."
+      },
+      {
+        before: "We need a ", phrase: "more bigger", after: " apartment.",
+        answer: "bigger", explanation: "Bigger already shows a comparison."
+      },
+      {
+        before: "My iced latte ", phrase: "costed", after: " six dollars yesterday.",
+        answer: "cost", explanation: "When you mean how much you paid, the past tense of cost is cost."
+      },
+      {
+        before: "What chores ", phrase: "you hate do", after: " at home?",
+        note: "Use an -ing form after hate in this question.",
+        answer: "do you hate doing", explanation: "Start with do you for the question. Hate doing is a natural way to talk about activities you dislike."
+      },
+      {
+        before: "You ", phrase: "must to watch", after: " the last episode.",
+        answer: "must watch", explanation: "After must, use the base form of the verb."
+      },
+      {
+        before: "My best friend ", phrase: "hasn't", after: " headphones.",
+        note: "Use do or does to make the negative.",
+        answer: "doesn't have", alternatives: ["does not have"],
+        explanation: "Use doesn’t + have with my best friend."
+      }
+    ]
+  },
+  {
+    title: "Verbs that go together",
+    instruction: "Choose the phrase that best fits each situation.",
+    bank: ["give a compliment", "do chores", "make notes", "get a present", "make a mistake", "take an umbrella with you", "make a decision", "do me a favor"],
+    items: [
+      { prompt: "Can you ___ and hold the door while I carry these boxes in?", answer: "do me a favor", explanation: "Do someone a favor means help them with something. Favor is the US spelling. Favour is the UK spelling." },
+      { prompt: "I need to ___ before Friday. I can accept only one of the two job offers.", answer: "make a decision", explanation: "Use make a decision when you choose between options." },
+      { prompt: "Grab a pen and ___ during the meeting so you remember the key points.", answer: "make notes", explanation: "Make notes means write down important information. Take notes is also common." },
+      { prompt: "When you go out in the rain, ___ so you don't get wet.", answer: "take an umbrella with you", explanation: "Take something with you means carry it when you go somewhere." },
+      { prompt: "I hope I ___ from my family for my birthday. I'd love a book or a game.", answer: "get a present", explanation: "Get a present means receive a gift." },
+      { prompt: "We all have to ___ at home. I vacuum, and my brother does the laundry.", answer: "do chores", explanation: "Use do for household chores." },
+      { prompt: "Check the spelling of the name before pressing Send. It's easy to ___ when you're typing fast.", answer: "make a mistake", explanation: "The usual expression is make a mistake." },
+      { prompt: "If you like someone's new jacket, you can ___ and tell them it looks great.", answer: "give a compliment", explanation: "Give a compliment means say something nice about someone." }
+    ]
+  },
+  {
+    title: "Cereal, serial, or series?",
+    instruction: "Choose the word that fits the meaning of the sentence.",
+    bank: ["serial", "series", "cereal"],
+    items: [
+      { prompt: "I usually pour cold milk over my ___ at breakfast.", answer: "cereal", explanation: "Cereal is a breakfast food you can eat with milk." },
+      { prompt: "This detective is the main character in a TV ___.", answer: "series", explanation: "A TV series has a set of related episodes." },
+      { prompt: "The documentary is about a ___ killer.", answer: "serial", explanation: "Serial describes something that happens repeatedly. Serial and cereal sound the same." }
+    ]
+  },
+  {
+    title: "Word stress and sounds",
+    instruction: "Say the words out loud before choosing. Use American English pronunciation.",
+    items: [
+      { prompt: "Which word normally has first-syllable stress?", options: ["event", "comfortable", "cartoon", "specific"], answer: "comfortable", explanation: "Stress the first syllable in comfortable. The other words in this set have second-syllable stress." },
+      { prompt: "Which word uses /ʃ/, the sh sound, for ch?", options: ["character", "stomachache", "chef", "chemistry"], answer: "chef", explanation: "Chef starts with /ʃ/. The ch spelling in the other words represents /k/." },
+      { prompt: "Which word has a different vowel from the /oʊ/ in post?", options: ["cost", "yoga", "photo"], answer: "cost", explanation: "Cost can have /ɔ/ or /ɑ/, depending on the speaker. The first vowels in yoga and photo use /oʊ/." },
+      { prompt: "Which -ed ending adds a syllable?", options: ["watched", "looked", "stopped", "wanted"], answer: "wanted", explanation: "Wanted ends in /ɪd/. The other three end in /t/." },
+      { prompt: "Which word uses /t/ for the letters th?", options: ["thanks", "Thailand", "path", "gothic"], answer: "Thailand", explanation: "Thailand starts with /t/. The th in the other words is /θ/." },
+      { prompt: "Which word has /ʊ/, the vowel sound in book?", options: ["movie", "cut", "put", "rubles"], answer: "put", explanation: "Put has /ʊ/, cut has /ʌ/, and movie and rubles have /u/." },
+      { prompt: "Which is a common pronunciation of what when you stress the word?", options: ["/weɪt/", "/wʊt/", "/wʌt/"], answer: "/wʌt/", explanation: "/wʌt/ is the pronunciation you practiced in the lesson." },
+      { prompt: "Which pair of nouns has first-syllable stress in both words?", options: ["concert and incident", "event and process", "cartoon and incident"], answer: "concert and incident", explanation: "Say CON-cert and IN-ci-dent. PRO-cess also has first-syllable stress, and e-VENT has second-syllable stress." }
+    ]
+  }
+];
+
+const container = document.querySelector("#tasks");
+const overallScore = document.querySelector("#total");
+const copyStatus = document.querySelector("#copy-status");
+const fallback = document.querySelector("#copy-fallback");
+
+function element(tag, text, className) {
+  const node = document.createElement(tag);
+  if (text) node.textContent = text;
+  if (className) node.className = className;
+  return node;
+}
+
+function normalize(value) {
+  return value.normalize("NFKC").trim().toLowerCase().replace(/[‘’]/g, "'")
+    .replace(/[?!.,]+$/, "").replace(/\s+/g, " ");
+}
+
+function makeQuestion(question, bank, id) {
+  const item = element("li");
+  const feedback = element("p", "", "feedback");
+  feedback.id = id + "-feedback";
+  const isRadio = Boolean(question.options);
+  const prompt = element(isRadio ? "legend" : "label", question.prompt, "prompt");
+  const group = isRadio ? element("fieldset") : item;
+  const promptText = question.prompt || question.before + question.phrase + question.after;
+  if (!question.prompt) {
+    prompt.append(question.before, element("strong", question.phrase), question.after);
+  }
+
+  group.append(prompt);
+  const descriptions = [feedback.id];
+  if (question.note) {
+    const note = element("p", question.note, "item-note");
+    note.id = id + "-note";
+    descriptions.unshift(note.id);
+    group.append(note);
+  }
+
+  let read;
+  let clear;
+  if (isRadio) {
+    const choices = element("div", "", "choices");
+    group.setAttribute("aria-describedby", descriptions.join(" "));
+    for (const option of question.options) {
+      const label = element("label", "", "option");
+      const radio = element("input");
+      radio.type = "radio";
+      radio.name = id;
+      radio.value = option;
+      label.append(radio, element("span", option));
+      choices.append(label);
+    }
+    group.append(choices);
+    item.append(group);
+    read = () => group.querySelector("input:checked")?.value || "";
+    clear = () => { for (const input of group.querySelectorAll("input")) input.checked = false; };
+  } else {
+    const control = element(bank ? "select" : "input");
+    control.id = id;
+    control.setAttribute("aria-describedby", descriptions.join(" "));
+    prompt.htmlFor = id;
+    if (bank) {
+      control.append(new Option("Choose an answer", ""));
+      for (const option of bank) control.append(new Option(option, option));
+    } else {
+      control.type = "text";
+      control.autocomplete = "off";
+      control.spellcheck = false;
+      control.autocapitalize = "off";
+    }
+    item.append(control);
+    read = () => control.value.trim();
+    clear = () => { control.value = ""; };
+  }
+
+  item.append(feedback);
+  const answers = [question.answer, ...(question.alternatives || [])].map(normalize);
+  return { item, feedback, read, clear, promptText, question, answers, state: "unchecked" };
+}
+
+function setState(row, state) {
+  row.state = state;
+  row.feedback.dataset.state = state;
+  const solution = "Answer: " + row.question.answer + ". " + row.question.explanation;
+  if (state === "unchecked") row.feedback.textContent = "";
+  if (state === "blank") row.feedback.textContent = "Unanswered. " + solution;
+  if (state === "correct") row.feedback.textContent = "Correct. " + row.question.explanation;
+  if (state === "incorrect") row.feedback.textContent = "Incorrect. " + solution;
+}
+
+function renderTask(task, taskIndex) {
+  const section = element("section", "", "card");
+  const title = element("h2", (taskIndex + 1) + ". " + task.title);
+  title.id = "task-" + (taskIndex + 1);
+  section.setAttribute("aria-labelledby", title.id);
+  const questions = element("ol", "", "questions");
+  const rows = task.items.map((question, index) => {
+    const row = makeQuestion(question, task.bank, title.id + "-answer-" + (index + 1));
+    questions.append(row.item);
+    return row;
+  });
+
+  const controls = element("div", "", "controls");
+  const check = element("button", "Check answers");
+  const retry = element("button", "Try again", "secondary");
+  check.type = retry.type = "button";
+  controls.append(check, retry);
+  const score = element("p", "", "score");
+  score.setAttribute("role", "status");
+  section.append(title, element("p", task.instruction, "intro"), questions, controls, score);
+  container.append(section);
+
+  check.addEventListener("click", () => {
+    for (const row of rows) {
+      const value = row.read();
+      setState(row, value ? (row.answers.includes(normalize(value)) ? "correct" : "incorrect") : "blank");
+    }
+    refreshScores();
+  });
+
+  retry.addEventListener("click", () => {
+    for (const row of rows) {
+      row.clear();
+      setState(row, "unchecked");
+    }
+    refreshScores();
+    rows[0].item.querySelector("input, select").focus();
+  });
+
+  for (const row of rows) {
+    row.item.addEventListener("input", () => {
+      setState(row, "unchecked");
+      refreshScores();
+    });
+  }
+  return { title: title.textContent, rows, score };
+}
+
+function statistics(rows) {
+  const tally = { correct: 0, incorrect: 0, blank: 0, pending: 0 };
+  for (const row of rows) {
+    const status = row.state === "unchecked" ? (row.read() ? "pending" : "blank") : row.state;
+    tally[status]++;
+  }
+  return tally;
+}
+
+function scoreText(rows) {
+  const { correct, incorrect, blank, pending } = statistics(rows);
+  return correct + "/" + rows.length + " correct · " + incorrect + " incorrect · " +
+    blank + " unanswered · " + pending + " awaiting check";
+}
+
+const sections = tasks.map(renderTask);
+const allRows = sections.flatMap(section => section.rows);
+
+function refreshScores() {
+  for (const section of sections) section.score.textContent = scoreText(section.rows);
+  overallScore.textContent = "Total: " + scoreText(allRows);
+  copyStatus.textContent = "";
+  fallback.hidden = true;
+}
+
+function resultsText() {
+  const lines = [document.title, overallScore.textContent];
+  for (const section of sections) {
+    lines.push("", section.title + " — " + section.score.textContent);
+    section.rows.forEach((row, index) => {
+      if (row.state === "correct") return;
+      const response = row.read();
+      if (row.state === "incorrect") {
+        lines.push((index + 1) + ". " + row.promptText, "Your answer: " + response, "Correct answer: " + row.question.answer);
+      } else if (response) {
+        lines.push((index + 1) + ". " + row.promptText, "Awaiting check: " + response);
+      } else {
+        lines.push((index + 1) + ". " + row.promptText, "Unanswered.");
+      }
+    });
+  }
+  return lines.join("\n");
+}
+
+document.querySelector("#copy").addEventListener("click", async () => {
+  const report = resultsText();
+  try {
+    await navigator.clipboard.writeText(report);
+    copyStatus.textContent = "Results copied.";
+  } catch {
+    fallback.value = report;
+    fallback.hidden = false;
+    fallback.focus();
+    fallback.select();
+    copyStatus.textContent = "Copy the selected text to share your results.";
+  }
+});
+
+refreshScores();
+</script>
+</body>
+</html>
