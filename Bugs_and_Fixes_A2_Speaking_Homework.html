@@ -1,0 +1,657 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bugs and Fixes (A2) Homework</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --canvas: #151515;
+      --surface: #202020;
+      --field: #181818;
+      --border: #454545;
+      --text: #f0f0f0;
+      --muted: #c0c0c0;
+      --mono: "Source Code Pro", "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+      --sans: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--canvas);
+      font: 1rem/1.55 var(--sans);
+    }
+
+    main {
+      width: min(calc(100% - 2rem), 860px);
+      margin-inline: auto;
+      padding-block: clamp(2rem, 6vw, 4rem) 4rem;
+    }
+
+    header { margin-bottom: clamp(1.7rem, 4vw, 2.8rem); }
+
+    h1 {
+      max-width: 28ch;
+      margin: 0;
+      font: 700 clamp(1.8rem, 5vw, 3rem)/1.12 var(--mono);
+      letter-spacing: -.055em;
+    }
+
+    header::after {
+      display: block;
+      width: 3rem;
+      height: 3px;
+      margin-top: 1.1rem;
+      background: #f9da10;
+      content: "";
+    }
+
+    #tasks { display: grid; gap: 1.2rem; }
+
+    .task {
+      --accent: #c4b8f3;
+      --accent-border: #644fc1;
+      border: 1px solid var(--accent-border);
+      border-radius: 14px;
+      overflow: hidden;
+      background: var(--surface);
+    }
+
+    .green { --accent: #95dfb6; --accent-border: #299764; }
+    .red { --accent: #f9a9a9; --accent-border: #b62c30; }
+    .blue { --accent: #a8c7ff; --accent-border: #0b68cb; }
+    .orange { --accent: #ffaa7d; --accent-border: #dc6618; }
+
+    h2 {
+      margin: 0;
+      font: 650 1.05rem/1.35 var(--mono);
+      letter-spacing: -.025em;
+    }
+
+    .task-title {
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      padding: .85rem clamp(.9rem, 4vw, 1.55rem);
+      color: var(--accent);
+      background: color-mix(in srgb, var(--accent-border) 19%, #181818);
+      border-bottom: 1px solid var(--accent-border);
+    }
+
+    .task-number {
+      display: inline-grid;
+      flex: 0 0 1.85rem;
+      place-items: center;
+      width: 1.85rem;
+      height: 1.85rem;
+      border-radius: 5px;
+      color: #181818;
+      background: var(--accent);
+      font-size: .95rem;
+    }
+
+    .task-body { padding: 1rem clamp(.9rem, 4vw, 1.55rem) 1.15rem; }
+    .instructions { margin: 0 0 .5rem; color: var(--muted); }
+    .question { padding: .85rem 0; border-top: 1px solid #363636; }
+    .question:first-child { border-top: 0; }
+
+    .answer-line {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(11rem, 38%);
+      align-items: center;
+      gap: .5rem 1rem;
+    }
+
+    .prompt { display: flex; align-items: baseline; gap: .65rem; }
+    .item-number { flex: 0 0 1.5em; color: var(--accent); font: .82rem var(--mono); }
+    .gap { color: var(--accent); font-family: var(--mono); white-space: nowrap; }
+
+    select, button, textarea { font: inherit; }
+
+    select {
+      width: 100%;
+      min-width: 0;
+      min-height: 44px;
+      padding: .45rem .6rem;
+      border: 1px solid #5b5b5b;
+      border-radius: 7px;
+      color: var(--text);
+      background: var(--field);
+    }
+
+    select:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+      outline: 2px solid #f9da10;
+      outline-offset: 3px;
+    }
+
+    fieldset { min-inline-size: 0; margin: 0; padding: 0; border: 0; }
+    legend { width: 100%; padding: 0; margin-bottom: .45rem; }
+    .choices { display: grid; gap: .4rem; margin-left: 1.8rem; }
+
+    .option {
+      display: flex;
+      align-items: baseline;
+      gap: .65rem;
+      min-height: 44px;
+      padding: .55rem .7rem;
+      border: 1px solid #454545;
+      border-radius: 7px;
+      background: #1b1b1b;
+      cursor: pointer;
+    }
+
+    .option:hover, .option:has(input:checked) { border-color: var(--accent); }
+    .option:has(input:checked) { background: color-mix(in srgb, var(--accent-border) 16%, #191919); }
+
+    input[type="radio"] { flex: none; width: 1rem; height: 1rem; margin: 0; accent-color: var(--accent); }
+
+    .feedback { margin: .45rem 0 0 1.8rem; font-size: .9rem; color: var(--muted); }
+    .feedback strong { color: #f3d981; }
+    [data-state="correct"] .feedback strong { color: #a2e4ba; }
+    [data-state="wrong"] .feedback strong { color: #ffacaa; }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: .55rem;
+      margin-top: .3rem;
+    }
+
+    button {
+      min-height: 44px;
+      padding: .45rem .8rem;
+      color: #f0f0f0;
+      background: #252525;
+      border: 1px solid #606060;
+      border-radius: 7px;
+      font-weight: 650;
+      cursor: pointer;
+    }
+
+    button:hover { filter: brightness(1.14); }
+    button.primary { color: #181818; background: var(--accent, #f9da10); border-color: transparent; }
+    button:active { transform: translateY(1px); }
+
+    .task-score { margin: .5rem 0 0; color: var(--muted); font-size: .87rem; }
+    .task-score:empty, #copy-status:empty { display: none; }
+
+    .results {
+      padding: 1rem clamp(.9rem, 4vw, 1.55rem);
+      margin-top: 1.35rem;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: #1b1b1b;
+    }
+
+    #total-score { margin: .5rem 0 .8rem; }
+    #copy-status { color: var(--muted); font-size: .9rem; margin: .45rem 0 0; }
+
+    #results-text {
+      display: block;
+      width: 100%;
+      min-height: 11rem;
+      margin-top: .7rem;
+      padding: .65rem;
+      resize: vertical;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      color: var(--text);
+      background: var(--field);
+      font-family: var(--mono);
+    }
+
+
+    .story-text {
+      margin: .85rem 0;
+      padding: .35rem .85rem;
+      border: 1px solid #424242;
+      border-radius: 8px;
+      background: #1a1a1a;
+      line-height: 1.9;
+    }
+
+    .story-text p { margin: .55rem 0; }
+
+    .gap-answer {
+      display: inline-flex;
+      align-items: baseline;
+      gap: .24rem;
+      white-space: nowrap;
+      color: var(--accent);
+      font: 650 1rem var(--mono);
+    }
+
+    .gap-answer input {
+      width: 7rem;
+      min-height: 44px;
+      margin-block: .12rem;
+      padding: .2rem .4rem;
+      border: 1px solid #575757;
+      border-bottom: 2px solid var(--accent-border);
+      border-radius: 5px;
+      color: var(--text);
+      background: var(--field);
+      font: inherit;
+    }
+
+    .gap-answer[data-state="correct"] input { border-color: #a2e4ba; }
+    .gap-answer[data-state="wrong"] input { border-color: #ffacaa; }
+    .gap-answer[data-state="unanswered"] input { border-color: #f3d981; }
+    .gap-feedback .feedback { margin: .25rem 0; }
+
+    @media (max-width: 560px) {
+      .answer-line { grid-template-columns: minmax(0, 1fr); }
+      .choices { margin-left: 0; }
+      .feedback { margin-left: 0; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <header><h1>Bugs and Fixes (A2) Homework</h1></header>
+    <div id="tasks"></div>
+    <section class="results" aria-labelledby="results-title">
+      <h2 id="results-title">Results</h2>
+      <p id="total-score" role="status"></p>
+      <button id="copy" type="button" class="primary">Copy results</button>
+      <p id="copy-status" role="status"></p>
+      <textarea id="results-text" aria-label="Results to copy" readonly hidden></textarea>
+    </section>
+  </main>
+  <script>
+    'use strict';
+
+    const tasks = [
+      {
+        title: 'Complete the story',
+        theme: 'purple',
+        instructions: 'It’s one story. Read it from top to bottom and choose the words that fit each part.',
+        bank: ['crashed', 'got an error message', 'fixed', 'froze', 'failed', 'restarted'],
+        items: [
+          { prompt: 'Last night I tried to upload a video for school. The screen ___ and I couldn’t click anything.', answer: 'froze', tip: 'The app stayed open, but it didn’t respond.' },
+          { prompt: 'I closed the app and opened it again. In other words, I ___ it.', answer: 'restarted' },
+          { prompt: 'On my second try, the app ___ and closed suddenly when I chose the video.', answer: 'crashed', tip: 'A crash closes the app.' },
+          { prompt: 'I tried the school website instead. The upload ___ to finish. It stopped at 50%.', answer: 'failed' },
+          { prompt: 'I looked at the screen and ___. It said the video was too big.', answer: 'got an error message' },
+          { prompt: 'I made the video smaller and tried again. That ___ the problem, and the video uploaded.', answer: 'fixed' }
+        ]
+      },
+      {
+        title: 'Choose what to say',
+        theme: 'blue',
+        instructions: 'Choose the sentence that fits each situation.',
+        items: [
+          {
+            prompt: 'You tried to save a new profile photo, but the old one is still there. How do you explain the problem?',
+            choices: [
+              'The old photo disappeared when I tapped Save.',
+              'The app should save my new photo, but I still see the old one.',
+              'I can’t find the Save button on my profile.'
+            ],
+            answer: 'The app should save my new photo, but I still see the old one.',
+            tip: 'This says what you expected and what happened instead.'
+          },
+          {
+            prompt: 'Your friend has tried to upload a file in one browser. How can you suggest a different browser?',
+            choices: [
+              'What happens when you click Upload?',
+              'The upload didn’t work in this browser.',
+              'We could try another browser.'
+            ],
+            answer: 'We could try another browser.',
+            tip: '“We could try…” makes a suggestion.'
+          },
+          {
+            prompt: 'The app freezes as soon as you tap Search. Your friend wants to reproduce the bug. What do you tell them to do?',
+            choices: [
+              'Open the app and tap Search.',
+              'Open the app and change your profile photo.',
+              'Wait for a few minutes without opening the app.'
+            ],
+            answer: 'Open the app and tap Search.',
+            tip: 'Reproducing a bug means making the same problem happen again.'
+          },
+          {
+            prompt: 'You updated the app. It now does what it should. How do you say that?',
+            choices: [
+              'The app fails to open now.',
+              'The app works as expected now.',
+              'The app still shows an error.'
+            ],
+            answer: 'The app works as expected now.'
+          },
+          {
+            prompt: 'You want to know if the error appears on every try. What do you ask?',
+            choices: [
+              'Does it happen every time you click Upload?',
+              'Does it work with a photo?',
+              'Which browser are you using?'
+            ],
+            answer: 'Does it happen every time you click Upload?',
+            tip: '“Every time” asks how often the problem happens.'
+          }
+        ]
+      },
+      {
+        title: 'Read the story and fill in the gaps',
+        theme: 'orange',
+        instructions: 'Complete the story with words from the lesson. Type the whole word or only the letters after the first letter shown.',
+        paragraphs: [
+          'On Saturday, I wanted to play a game with my cousin. I opened it and tapped Play, but the screen ___. I could still see the menu, but nothing happened when I tapped a button. I closed the app and opened it again to ___ it. This time, it ___ as soon as I picked my character. It closed by itself and took me back to my home screen.',
+          'My cousin asked me to show him how to ___ the bug. We opened the game on his tablet and picked the same character. The game closed on his tablet too. He tried another character, and the game started, but it ___ to load the next level. An ___ message said we needed a newer version.',
+          'We decided to ___ the game on both devices. After that, the game worked as ___. We played together for an hour.'
+        ],
+        items: [
+          { prompt: 'I opened it and tapped Play, but the screen f___.', answer: 'froze' },
+          { prompt: 'I closed the app and opened it again to r___ it.', answer: 'restart' },
+          { prompt: 'This time, it c___ as soon as I picked my character.', answer: 'crashed' },
+          { prompt: 'My cousin asked me to show him how to r___ the bug.', answer: 'reproduce' },
+          { prompt: 'The game started, but it f___ to load the next level.', answer: 'failed' },
+          { prompt: 'An e___ message said we needed a newer version.', answer: 'error' },
+          { prompt: 'We decided to u___ the game on both devices.', answer: 'update' },
+          { prompt: 'After that, the game worked as e___.', answer: 'expected' }
+        ]
+      }
+    ];
+
+    const taskContainer = document.getElementById('tasks');
+    const totalScore = document.getElementById('total-score');
+    const copyButton = document.getElementById('copy');
+    const copyStatus = document.getElementById('copy-status');
+    const resultsText = document.getElementById('results-text');
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text) node.textContent = text;
+      return node;
+    }
+
+    function button(text, className) {
+      const control = element('button', className, text);
+      control.type = 'button';
+      return control;
+    }
+
+    function promptContent(prompt, index) {
+      const label = element('span', 'prompt');
+      const number = element('span', 'item-number', String(index + 1) + '.');
+      number.setAttribute('aria-hidden', 'true');
+      const words = element('span');
+      const parts = prompt.split('___');
+      words.append(document.createTextNode(parts[0]));
+      if (parts.length > 1) {
+        const blank = element('span', 'gap', '____');
+        blank.setAttribute('aria-label', 'blank');
+        words.append(blank, document.createTextNode(parts[1]));
+      }
+      label.append(number, words);
+      return label;
+    }
+
+    function renderQuestion(task, item, index, taskIndex) {
+      const question = element('div', 'question');
+      const id = 'answer-' + taskIndex + '-' + index;
+      const feedback = element('p', 'feedback');
+      feedback.id = id + '-feedback';
+      feedback.hidden = true;
+      const label = promptContent(item.prompt, index);
+      let read;
+      let reset;
+
+      if (task.bank) {
+        const line = element('div', 'answer-line');
+        const inputLabel = element('label');
+        inputLabel.htmlFor = id;
+        inputLabel.append(label);
+        const select = element('select');
+        select.id = id;
+        select.setAttribute('aria-describedby', feedback.id);
+        const placeholder = element('option', '', 'Choose an answer');
+        placeholder.value = '';
+        select.append(placeholder);
+
+        for (const answer of task.bank) {
+          const option = element('option', '', answer);
+          option.value = answer;
+          select.append(option);
+        }
+
+        line.append(inputLabel, select);
+        question.append(line);
+        read = () => select.value;
+        reset = () => { select.value = ''; };
+      } else {
+        const fieldset = element('fieldset');
+        const legend = element('legend');
+        legend.append(label);
+        const choiceList = element('div', 'choices');
+        fieldset.setAttribute('aria-describedby', feedback.id);
+        const inputs = item.choices.map((choice) => {
+          const option = element('label', 'option');
+          const input = element('input');
+          input.type = 'radio';
+          input.name = id;
+          input.value = choice;
+          option.append(input, element('span', '', choice));
+          choiceList.append(option);
+          return input;
+        });
+        fieldset.append(legend, choiceList);
+        question.append(fieldset);
+        read = () => inputs.find((input) => input.checked)?.value || '';
+        reset = () => { inputs.forEach((input) => { input.checked = false; }); };
+      }
+
+      question.append(feedback);
+      return {
+        question, feedback, item, read, reset, result: null,
+        matches: response => response === item.answer
+      };
+    }
+
+    function renderPassage(task, taskIndex) {
+      const questions = element('div', 'questions');
+      const text = element('div', 'story-text');
+      const messages = element('div', 'gap-feedback');
+      messages.setAttribute('aria-live', 'polite');
+      const views = [];
+
+      for (const paragraph of task.paragraphs) {
+        const line = element('p');
+        const parts = paragraph.split('___');
+        line.append(document.createTextNode(parts[0]));
+
+        for (const continuation of parts.slice(1)) {
+          const item = task.items[views.length];
+          const label = 'Gap ' + (views.length + 1);
+          const question = element('span', 'gap-answer');
+          const initial = element('span', '', item.answer[0]);
+          initial.setAttribute('aria-hidden', 'true');
+          const feedback = element('p', 'feedback');
+          feedback.id = 'answer-' + taskIndex + '-' + views.length + '-feedback';
+          feedback.hidden = true;
+
+          const input = element('input');
+          input.type = 'text';
+          input.spellcheck = false;
+          input.autocomplete = 'off';
+          input.setAttribute('autocapitalize', 'off');
+          input.setAttribute('aria-label', label + ', first letter ' + item.answer[0]);
+          input.setAttribute('aria-describedby', feedback.id);
+          question.append(initial, input);
+          line.append(question, document.createTextNode(continuation));
+          messages.append(feedback);
+
+          views.push({
+            question, feedback, item, label, result: null, eventName: 'input',
+            read: () => input.value.trim(),
+            reset: () => { input.value = ''; },
+            matches: response => {
+              const word = response.toLowerCase();
+              return word === item.answer || word === item.answer.slice(1);
+            }
+          });
+        }
+
+        text.append(line);
+      }
+
+      questions.append(text, messages);
+      return { questions, views };
+    }
+
+    function setFeedback(view, result) {
+      view.result = result;
+      view.feedback.replaceChildren();
+      view.feedback.hidden = result === null;
+      if (result === null) {
+        delete view.question.dataset.state;
+        return;
+      }
+
+      view.question.dataset.state = result;
+      if (view.label) view.feedback.append(view.label + '. ');
+      if (result === 'unanswered') {
+        view.feedback.append(element('strong', '', 'Unanswered. '), view.label ? 'Enter the missing word and check again.' : 'Choose an answer and check again.');
+        return;
+      }
+
+      const tip = view.item.tip ? ' ' + view.item.tip : '';
+      if (result === 'wrong') {
+        view.feedback.append(element('strong', '', 'Incorrect. '), 'The answer is ' + view.item.answer + tip);
+      } else {
+        view.feedback.append(element('strong', '', 'Correct.'), view.label ? ' ' + view.item.answer : tip);
+      }
+    }
+
+    function counts(views) {
+      const result = { correct: 0, wrong: 0, unchecked: 0, unanswered: 0, total: views.length };
+      for (const view of views) {
+        const state = view.read() ? (view.result || 'unchecked') : 'unanswered';
+        result[state] += 1;
+      }
+      return result;
+    }
+
+    function summary({ correct, wrong, unchecked, unanswered, total }) {
+      const details = [correct + '/' + total + ' correct'];
+      if (wrong) details.push(wrong + ' incorrect');
+      if (unchecked) details.push(unchecked + ' unchecked');
+      if (unanswered) details.push(unanswered + ' unanswered');
+      return details.join(' · ');
+    }
+
+    function refreshTotal() {
+      totalScore.textContent = summary(counts(sections.flatMap((section) => section.views)));
+      copyStatus.textContent = '';
+      resultsText.hidden = true;
+    }
+
+    function renderQuestionList(task, taskIndex) {
+      const questions = element('div', 'questions');
+      const views = task.items.map((item, index) => renderQuestion(task, item, index, taskIndex));
+      questions.append(...views.map((view) => view.question));
+      return { questions, views };
+    }
+
+    function renderTask(task, index) {
+      const section = element('section', 'task ' + task.theme);
+      const title = element('h2', 'task-title');
+      title.id = 'task-' + (index + 1);
+      section.setAttribute('aria-labelledby', title.id);
+      const number = element('span', 'task-number', String(index + 1));
+      number.setAttribute('aria-hidden', 'true');
+      title.append(number, element('span', '', task.title));
+
+      const body = element('div', 'task-body');
+      const { questions, views } = task.paragraphs
+        ? renderPassage(task, index + 1)
+        : renderQuestionList(task, index + 1);
+
+      const actions = element('div', 'actions');
+      const check = button('Check answers', 'primary');
+      const retry = button('Try again');
+      check.setAttribute('aria-label', 'Check answers for task ' + (index + 1));
+      retry.setAttribute('aria-label', 'Try task ' + (index + 1) + ' again');
+      actions.append(check, retry);
+      const score = element('p', 'task-score');
+      score.setAttribute('role', 'status');
+
+      function showScore() {
+        score.textContent = summary(counts(views));
+        refreshTotal();
+      }
+
+      for (const view of views) {
+        view.question.addEventListener(view.eventName || 'change', () => {
+          setFeedback(view, null);
+          showScore();
+        });
+      }
+
+      check.addEventListener('click', () => {
+        for (const view of views) {
+          const response = view.read();
+          setFeedback(view, response ? (view.matches(response) ? 'correct' : 'wrong') : 'unanswered');
+        }
+        showScore();
+      });
+
+      retry.addEventListener('click', () => {
+        for (const view of views) {
+          view.reset();
+          setFeedback(view, null);
+        }
+        showScore();
+      });
+
+      body.append(element('p', 'instructions', task.instructions), questions, actions, score);
+      section.append(title, body);
+      return { section, views, task };
+    }
+
+    const sections = tasks.map(renderTask);
+    taskContainer.append(...sections.map(({ section }) => section));
+    refreshTotal();
+
+
+    function formatReport() {
+      const lines = [document.title, 'Total: ' + totalScore.textContent];
+      for (const [index, { task, views }] of sections.entries()) {
+        lines.push('', (index + 1) + '. ' + task.title + ' — ' + summary(counts(views)));
+        for (const [number, view] of views.entries()) {
+          if (view.result !== 'wrong') continue;
+          lines.push(
+            '  ' + (number + 1) + '. ' + view.item.prompt,
+            '     Your answer: ' + view.read(),
+            '     Correct answer: ' + view.item.answer
+          );
+        }
+      }
+      return lines.join('\n');
+    }
+
+    copyButton.addEventListener('click', async () => {
+      const report = formatReport();
+      try {
+        await navigator.clipboard.writeText(report);
+        resultsText.hidden = true;
+        copyStatus.textContent = 'Results copied.';
+      } catch {
+        resultsText.value = report;
+        resultsText.hidden = false;
+        resultsText.focus();
+        resultsText.select();
+        copyStatus.textContent = 'The results are selected. Copy them with your device’s copy command.';
+      }
+    });
+  </script>
+</body>
+</html>
