@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<title>A Day in the Life — Homework</title>
+<style>
+  :root { --paper:#f5f0e8; --surface:#fffdf9; --ink:#292022; --muted:#685855; --accent:#63383b; --accent-dark:#442329; --line:#ddd0c8; --soft:#f2e8df; --good:#205642; --good-bg:#e7f2ea; --bad:#852e34; --bad-bg:#fbe9e8; --empty:#655129; --empty-bg:#f6efdb; }
+  * { box-sizing:border-box; }
+  html { scroll-behavior:smooth; }
+  body { margin:0; background:var(--paper); color:var(--ink); font:1rem/1.56 system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; }
+  .shell { width:min(100% - 2rem, 57rem); margin:auto; padding:clamp(1.7rem,5vw,4.1rem) 0 4rem; }
+  header { margin-bottom:1.35rem; }
+  h1 { margin:0; color:var(--accent-dark); font:700 clamp(2.12rem,6vw,3.5rem)/1.08 Georgia,serif; letter-spacing:-.035em; }
+  .summary, details { background:var(--surface); border:1px solid var(--line); border-radius:1rem; }
+  .summary { margin-bottom:1.25rem; padding:clamp(.85rem,3vw,1.3rem); display:flex; flex-wrap:wrap; gap:.85rem 1.25rem; align-items:center; justify-content:space-between; }
+  .summary > div { min-width:0; }
+  #overall-score { margin:0; font-size:1.13rem; font-weight:750; }
+  #overall-breakdown, #copy-status { margin:.12rem 0 0; color:var(--muted); font-size:.91rem; }
+  #copy-status:empty { display:none; }
+  .copy-box { width:100%; }
+  .copy-box label { display:block; margin:.35rem 0; font-weight:650; }
+  textarea { display:block; width:100%; min-height:11rem; resize:vertical; }
+  details { margin-bottom:.8rem; scroll-margin-top:1rem; }
+  summary { cursor:pointer; list-style:none; min-height:3.7rem; display:flex; align-items:center; gap:.65rem .9rem; padding:.9rem clamp(.8rem,2.6vw,1.35rem); border-radius:inherit; }
+  summary::-webkit-details-marker { display:none; }
+  summary:hover { background:#faf3eb; }
+  summary::after { content:"+"; color:var(--accent); font-size:1.4rem; line-height:1; flex:none; }
+  details[open] > summary::after { content:"−"; }
+  .section-number { display:grid; place-items:center; flex:0 0 2rem; height:2rem; border-radius:.6rem; background:var(--soft); color:var(--accent-dark); font-weight:750; }
+  .task-name { font-weight:725; flex:1; min-width:0; }
+  .count { color:var(--muted); font-size:.85rem; white-space:nowrap; }
+  .task-body { padding:0 clamp(.85rem,3vw,1.45rem) 1.3rem; }
+  .instruction { color:var(--muted); margin:.18rem 0 .9rem; }
+  .questions { margin:0; padding:0; list-style:none; }
+  .question { display:grid; grid-template-columns:1.8rem minmax(0,1fr); padding:.82rem 0; border-top:1px solid var(--line); }
+  .question::before { content:attr(data-number) "."; font-weight:720; color:var(--accent); }
+  .prompt { display:block; margin:0 0 .52rem; }
+  .prompt strong { color:var(--bad); }
+  .readings { display:grid; grid-template-columns:1fr 1fr; gap:.7rem; margin:.2rem 0 1rem; }
+  .text-card { background:var(--soft); border-radius:.65rem; padding:.85rem 1rem; }
+  .text-card h3 { margin:0; color:var(--accent-dark); font-size:1rem; }
+  .text-card p { margin:.3rem 0 0; }
+  .starter { margin:-.18rem 0 .5rem; color:var(--muted); font-size:.93rem; }
+  button, input, select, textarea { font:inherit; }
+  button { cursor:pointer; border:1px solid transparent; border-radius:.55rem; padding:.57rem .92rem; min-height:2.75rem; font-weight:670; color:white; background:var(--accent); }
+  button:hover { background:var(--accent-dark); }
+  .secondary, .chunk { background:var(--surface); color:var(--accent-dark); border-color:#bfa9a3; }
+  .secondary:hover, .chunk:hover { background:var(--soft); }
+  select, input[type="text"], textarea { padding:.58rem .68rem; min-height:2.8rem; border:1px solid #ab9792; border-radius:.52rem; color:var(--ink); background:#fffefb; max-width:100%; }
+  input[type="text"] { width:min(100%,15rem); }
+  input.wide { width:min(100%,34rem); }
+  select { width:min(100%,18rem); }
+  fieldset { border:none; min-width:0; margin:0; padding:0; }
+  legend { padding:0; max-width:100%; }
+  .options { display:flex; flex-wrap:wrap; gap:.42rem; }
+  .option { display:inline-flex; align-items:center; min-height:2.75rem; gap:.48rem; border:1px solid #bfa9a3; border-radius:.55rem; padding:.35rem .76rem; cursor:pointer; }
+  .option:hover, .option:has(input:checked) { background:var(--soft); border-color:var(--accent); }
+  input[type="radio"] { accent-color:var(--accent); margin:0; }
+  .chunk-bank, .chosen { display:flex; flex-wrap:wrap; gap:.38rem; }
+  .chunk { padding:.34rem .63rem; min-height:2.65rem; font-weight:550; max-width:100%; }
+  .chunk[aria-disabled="true"] { opacity:.43; cursor:default; }
+  .chosen { margin-top:.47rem; min-height:3.35rem; padding:.35rem .4rem; border:1px dashed #bfa9a3; border-radius:.55rem; align-items:center; }
+  .chosen .chunk { background:#f0e0d5; }
+  .placeholder { color:var(--muted); font-size:.88rem; padding:.2rem .28rem; }
+  .feedback { margin:.48rem 0 0; padding:.37rem .6rem; border-radius:.4rem; font-size:.93rem; overflow-wrap:anywhere; }
+  .feedback[hidden] { display:none; }
+  .feedback.correct { background:var(--good-bg); color:var(--good); }
+  .feedback.wrong { background:var(--bad-bg); color:var(--bad); }
+  .feedback.empty { background:var(--empty-bg); color:var(--empty); }
+  .tools { display:flex; flex-wrap:wrap; gap:.48rem; margin-top:1rem; }
+  .section-score { margin:.6rem 0 0; font-size:.92rem; color:var(--muted); }
+  :focus-visible { outline:3px solid #8a474d; outline-offset:3px; }
+  @media (max-width:38rem) {
+    .shell { width:calc(100% - 1.2rem); }
+    summary { gap:.45rem; }
+    .count { margin-left:auto; }
+    .readings { grid-template-columns:1fr; }
+    .question { grid-template-columns:1.45rem minmax(0,1fr); }
+  }
+  @media (max-width:27rem) { .summary { display:grid; } }
+  @media (prefers-reduced-motion:reduce) { html { scroll-behavior:auto; } }
+</style>
+</head>
+<body>
+<main class="shell">
+  <header><h1>A Day in the Life — Homework</h1></header>
+  <section class="summary" aria-label="Homework results">
+    <div>
+      <p id="overall-score" aria-live="polite"></p>
+      <p id="overall-breakdown"></p>
+      <p id="copy-status" role="status"></p>
+    </div>
+    <button id="copy" type="button">Copy Results</button>
+    <div id="copy-box" class="copy-box" hidden>
+      <label for="copy-text">Select and copy your results</label>
+      <textarea id="copy-text" readonly></textarea>
+    </div>
+  </section>
+  <div id="tasks"></div>
+  <noscript>Please enable JavaScript in your browser to check your answers.</noscript>
+</main>
+<script>
+'use strict';
+const title = 'A Day in the Life — Homework';
+const messageBank = ['plays', 'have', 'does', 'watch', 'goes', 'do', 'watches', 'go', 'has', 'play'];
+
+const item = (prompt, answer, extra = {}) => ({prompt, answer, ...extra});
+const choose = (prompt, answer, options) => item(prompt, answer, {options});
+const build = (answer, chunks) => item('Build the sentence.', answer, {chunks});
+const fix = (before, wrong, after, answer, note) => item(before + wrong + after, answer, {before, wrong, after, note});
+const change = (prompt, start, answer) => item(prompt, answer, {start});
+
+const tasks = [
+  {
+    name: 'Choose the verb form', kind: 'radio',
+    instruction: 'Look at who does the activity. Choose the correct form.',
+    items: [
+      choose('My brother ___ to bed at ten.', 'goes', ['go', 'goes']),
+      choose('Mia and I ___ breakfast at home.', 'have', ['have', 'has']),
+      choose('On Sundays, I ___ housework before lunch.', 'do', ['does', 'do']),
+      choose('Elena ___ tea after dinner.', 'drinks', ['drink', 'drinks']),
+      choose('My colleagues ___ films together on Fridays.', 'watch', ['watches', 'watch']),
+      choose('My mother ___ dinner on Saturdays.', 'cooks', ['cooks', 'cook']),
+      choose('We ___ football after work.', 'play', ['play', 'plays']),
+      choose('Sam ___ up at eleven on Sundays.', 'wakes', ['wakes', 'wake']),
+      choose('You ___ English on Mondays.', 'learn', ['learns', 'learn']),
+      choose('On Friday mornings, my boss ___ a meeting.', 'has', ['has', 'have'])
+    ]
+  },
+  {
+    name: 'Write one word', kind: 'type',
+    instruction: 'Use the verb in brackets. Write only the missing word.',
+    items: [
+      item('My partner ___ a cup of coffee every morning. (drink)', 'drinks'),
+      item('My parents ___ to bed at the same time. (go)', 'go'),
+      item('After work, I ___ a film with my sister. (watch)', 'watch'),
+      item('My dad ___ housework after breakfast. (do)', 'does'),
+      item('We ___ dinner together on Fridays. (cook)', 'cook'),
+      item('Anton ___ football at the weekend. (play)', 'plays'),
+      item('Before class, Lia ___ breakfast at a café. (have)', 'has'),
+      item('They ___ up late on Saturdays. (wake)', 'wake'),
+      item('My neighbour ___ shopping after lunch. (go)', 'goes'),
+      item('At the weekend, my cousin ___ the guitar. (learn)', 'learns')
+    ]
+  },
+  {
+    name: 'Put the words in order', kind: 'order',
+    instruction: 'Tap the chunks to build a sentence. Start with the person or people. Put words like often or usually right before the verb. Tap a chunk in your sentence to remove it.',
+    items: [
+      build('She usually goes shopping on Fridays.', ['shopping on Fridays', 'goes', 'She', 'usually']),
+      build('My friends have dinner after work.', ['dinner after work', 'My friends', 'have']),
+      build('He often watches a film in the evening.', ['often', 'a film in the evening', 'He', 'watches']),
+      build('We sometimes do housework after lunch.', ['do', 'We', 'housework after lunch', 'sometimes']),
+      build('My sister plays football on Mondays.', ['plays', 'football on Mondays', 'My sister']),
+      build('I always cook dinner at home.', ['dinner at home', 'always', 'cook', 'I']),
+      build('My teacher has a meeting before class.', ['a meeting before class', 'has', 'My teacher']),
+      build('They learn English on Mondays.', ['learn', 'They', 'English on Mondays'])
+    ]
+  },
+  {
+    name: 'Fix the verb', kind: 'type',
+    instruction: 'The bold word is wrong. Write the correct word.',
+    items: [
+      fix('My aunt ', 'watch', ' YouTube after lunch.', 'watches', 'Use watches with she.'),
+      fix('We ', 'goes', ' to bed at eleven.', 'go', 'Use go with we.'),
+      fix('My sister ', 'do', ' exercise before work.', 'does', 'Use does with she.'),
+      fix('I ', 'has', ' dinner at home on Tuesdays.', 'have', 'Use have with I.'),
+      fix('He ', 'wake', ' up at six on Mondays.', 'wakes', 'Use wakes with he.'),
+      fix('My colleagues ', 'drinks', ' coffee before the meeting.', 'drink', 'Use drink with they.'),
+      fix('Nina ', 'cook', ' dinner for her family.', 'cooks', 'Use cooks with she.'),
+      fix('You ', 'plays', ' video games after class.', 'play', 'Use play with you.')
+    ]
+  },
+  {
+    name: 'Change who does it', kind: 'type',
+    instruction: 'Start with the new words. Keep the rest of the sentence the same except for the verb. Write the whole sentence.',
+    items: [
+      change('I go shopping after work.', 'Eva', 'Eva goes shopping after work.'),
+      change('She has a meeting every Friday.', 'My colleagues', 'My colleagues have a meeting every Friday.'),
+      change('They do housework on Sundays.', 'Omar', 'Omar does housework on Sundays.'),
+      change('My friend plays football at the weekend.', 'We', 'We play football at the weekend.'),
+      change('I watch a film on Saturday evenings.', 'Maya', 'Maya watches a film on Saturday evenings.'),
+      change('She wakes up at seven on Mondays.', 'I', 'I wake up at seven on Mondays.'),
+      change('We drink coffee after breakfast.', 'Leo', 'Leo drinks coffee after breakfast.'),
+      change('My brother cooks dinner at home.', 'My parents', 'My parents cook dinner at home.')
+    ]
+  },
+  {
+    name: 'Read and check the facts', kind: 'radio',
+    instruction: 'Read about Alex and Mina. Is each sentence true or false?',
+    readings: [
+      ['Alex', 'On Fridays, Alex wakes up at seven. He has breakfast at home and drinks tea. He has a meeting at ten. After work, he goes shopping. In the evening, he cooks dinner and watches a film.'],
+      ['Mina', 'On Fridays, Mina wakes up at eight. She has breakfast at a café and drinks coffee. She learns English at ten. After class, she does exercise. In the evening, she has dinner with friends and goes to bed at eleven.']
+    ],
+    items: [
+      item('Alex drinks coffee with breakfast.', 'False', {note:'He drinks tea.'}),
+      item('Mina learns English at ten.', 'True'),
+      item('Alex goes shopping after work.', 'True'),
+      item('Mina wakes up at seven.', 'False', {note:'She wakes up at eight.'}),
+      item('Mina goes to bed at eleven.', 'True'),
+      item('Alex has breakfast at a café.', 'False', {note:'He has breakfast at home.'}),
+      item('Alex watches a film in the evening.', 'True'),
+      item('Mina does exercise before class.', 'False', {note:'She does exercise after class.'})
+    ],
+    bank: ['True', 'False']
+  },
+  {
+    name: 'Finish the Friday messages', kind: 'select', bank: messageBank,
+    instruction: 'Two people describe their Fridays. Choose the missing verb for each line.',
+    items: [
+      item('Lena: At nine, I ___ a meeting with my team.', 'have'),
+      item('Lena: My brother washes the dishes and cleans the kitchen. He ___ all the housework himself.', 'does'),
+      item('Lena: Later, he ___ football in the park. He’s the goalkeeper.', 'plays'),
+      item('Lena: After work, we ___ shopping together.', 'go'),
+      item('Max: My sister ___ to bed early because she works on Saturdays.', 'goes'),
+      item('Max: Before dinner, I ___ exercise at home.', 'do'),
+      item('Max: My sister ___ dinner at a café with her friends.', 'has'),
+      item('Max: After dinner, she ___ a film on TV that starts at eight.', 'watches')
+    ]
+  }
+];
+const storageKey = 'a-day-in-the-life-homework-v2';
+const total = tasks.reduce((sum, task) => sum + task.items.length, 0);
+
+function normalize(value) {
+  return String(value).trim().toLowerCase().replace(/[‘’]/g, "'").replace(/[.!?]+$/, '').replace(/\s+/g, ' ');
+}
+function readStorage() {
+  try {
+    const current = JSON.parse(localStorage.getItem(storageKey));
+    if (Array.isArray(current)) return current;
+    const previous = JSON.parse(localStorage.getItem('a-day-in-the-life-homework-v1'));
+    return Array.isArray(previous) ? previous.slice(1) : [];
+  }
+  catch { return []; }
+}
+const saved = readStorage();
+const state = tasks.map((task, t) => task.items.map((question, q) => {
+  const old = saved[t]?.[q];
+  const available = question.options || task.bank;
+  let value = task.kind === 'order' ? [] : '';
+  if (task.kind === 'order') {
+    if (Array.isArray(old?.value)) value = [...new Set(old.value.filter(i => Number.isInteger(i) && i >= 0 && i < question.chunks.length))];
+  } else if (typeof old?.value === 'string' && (!available || old.value === '' || available.includes(old.value))) {
+    value = old.value;
+  }
+  return {value, checked: old?.checked === true && old.value !== undefined};
+}));
+const views = [];
+
+function saveProgress() {
+  try { localStorage.setItem(storageKey, JSON.stringify(state)); }
+  catch { /* The current page stays usable when storage is disabled. */ }
+}
+function answerText(t, q) {
+  const value = state[t][q].value;
+  const task = tasks[t];
+  return task.kind === 'order' ? value.map(i => task.items[q].chunks[i]).join(' ') : value.trim();
+}
+function status(t, q) {
+  if (!state[t][q].checked) return 'unchecked';
+  const response = answerText(t, q);
+  if (!response) return 'empty';
+  return normalize(response) === normalize(tasks[t].items[q].answer) ? 'correct' : 'wrong';
+}
+function counts(t) {
+  const result = {correct:0, wrong:0, empty:0, unchecked:0};
+  tasks[t].items.forEach((_, q) => result[status(t, q)]++);
+  return result;
+}
+function statsLine(s) {
+  return [s.wrong + ' incorrect', s.empty + ' unanswered', s.unchecked + ' not checked'].join(' · ');
+}
+function el(name, props, text) {
+  const node = document.createElement(name);
+  if (text !== undefined) node.textContent = text;
+  if (props) for (const [key, value] of Object.entries(props)) node.setAttribute(key, value);
+  return node;
+}
+function action(text, cls, call) {
+  const button = el('button', {type:'button', class:cls}, text);
+  button.addEventListener('click', call);
+  return button;
+}
+function updateTotals() {
+  const totals = {correct:0, wrong:0, empty:0, unchecked:0};
+  tasks.forEach((task, t) => {
+    const s = counts(t);
+    for (const key of Object.keys(totals)) totals[key] += s[key];
+    const allUnchecked = s.unchecked === task.items.length;
+    views[t].summary.textContent = allUnchecked ? String(task.items.length) + ' questions' : s.correct + '/' + task.items.length;
+    views[t].score.textContent = allUnchecked ? 'Not checked yet.' : s.correct + '/' + task.items.length + ' correct · ' + statsLine(s);
+  });
+  document.querySelector('#overall-score').textContent = totals.correct + ' of ' + total + ' correct';
+  document.querySelector('#overall-breakdown').textContent = statsLine(totals);
+}
+function hideCopyResult() {
+  document.querySelector('#copy-box').hidden = true;
+  document.querySelector('#copy-status').textContent = '';
+}
+function renderFeedback(t, q) {
+  const stateName = status(t, q);
+  const question = tasks[t].items[q];
+  const p = views[t].feedback[q];
+  const messages = {
+    correct:'Correct.',
+    wrong:'Incorrect. Correct answer: ' + question.answer + (question.note ? ' ' + question.note : ''),
+    empty:'Unanswered. Try this one when you’re ready.'
+  };
+  p.hidden = stateName === 'unchecked';
+  p.className = 'feedback ' + stateName;
+  p.textContent = messages[stateName] || '';
+}
+function edit(t, q, value) {
+  state[t][q].value = value;
+  state[t][q].checked = false;
+  renderFeedback(t, q);
+  updateTotals();
+  hideCopyResult();
+  saveProgress();
+}
+function check(t) {
+  state[t].forEach((record, q) => { record.checked = true; renderFeedback(t, q); });
+  updateTotals();
+  hideCopyResult();
+  saveProgress();
+}
+function retry(t) {
+  const task = tasks[t];
+  state[t].forEach((record, q) => {
+    record.value = task.kind === 'order' ? [] : '';
+    record.checked = false;
+    views[t].reset[q]();
+    renderFeedback(t, q);
+  });
+  updateTotals();
+  hideCopyResult();
+  saveProgress();
+}
+function promptNode(tag, question, id) {
+  const p = el(tag, {class:'prompt', id});
+  if (question.wrong) p.append(question.before, el('strong', null, question.wrong), question.after);
+  else p.textContent = question.prompt;
+  return p;
+}
+function questionControls(holder, t, q) {
+  const task = tasks[t];
+  const question = task.items[q];
+  const key = (t + 1) + '-' + (q + 1);
+  const name = 'question-' + key;
+  const feedbackId = 'feedback-' + key;
+  const promptId = 'prompt-' + key;
+  if (question.start) {
+    const lead = el('p', {class:'starter', id:'starter-' + key}, 'Start with: ' + question.start);
+    const label = promptNode('label', question, promptId);
+    label.htmlFor = name;
+    holder.append(label, lead);
+  }
+  if (task.kind === 'radio') {
+    const group = el('fieldset', {'aria-describedby':feedbackId});
+    group.append(promptNode('legend', question, promptId));
+    const options = el('div', {class:'options'});
+    const radios = (question.options || task.bank).map(answer => {
+      const label = el('label', {class:'option'});
+      const input = el('input', {type:'radio', name, value:answer});
+      input.checked = state[t][q].value === answer;
+      input.addEventListener('change', () => edit(t, q, input.value));
+      label.append(input, answer);
+      options.append(label);
+      return input;
+    });
+    group.append(options);
+    holder.append(group);
+    return () => radios.forEach(radio => { radio.checked = false; });
+  }
+  if (task.kind === 'select') {
+    const label = promptNode('label', question, promptId);
+    label.htmlFor = name;
+    const control = el('select', {id:name,'aria-describedby':feedbackId});
+    control.append(el('option', {value:''}, 'Choose an answer'));
+    task.bank.forEach(answer => control.append(el('option', {value:answer}, answer)));
+    control.value = state[t][q].value;
+    control.addEventListener('change', () => edit(t, q, control.value));
+    holder.append(label, control);
+    return () => { control.value = ''; };
+  }
+  if (task.kind === 'type') {
+    if (!question.start) {
+      const label = promptNode('label', question, promptId);
+      label.htmlFor = name;
+      holder.append(label);
+    }
+    const description = (question.start ? 'starter-' + key + ' ' : '') + feedbackId;
+    const input = el('input', {type:'text', id:name, autocomplete:'off', spellcheck:'false', autocapitalize:'off', 'aria-describedby':description, class:question.start ? 'wide' : ''});
+    input.value = state[t][q].value;
+    input.addEventListener('input', () => edit(t, q, input.value));
+    holder.append(input);
+    return () => { input.value = ''; };
+  }
+  const bank = el('div', {class:'chunk-bank', role:'group', 'aria-label':'Available chunks for question ' + (q + 1)});
+  const chosen = el('div', {class:'chosen', role:'group', 'aria-label':'Your sentence for question ' + (q + 1), 'aria-describedby':feedbackId});
+  function renderOrder() {
+    const selected = state[t][q].value;
+    buttons.forEach((button, i) => button.setAttribute('aria-disabled', String(selected.includes(i))));
+    chosen.replaceChildren();
+    if (!selected.length) chosen.append(el('span', {class:'placeholder'}, 'Your sentence appears here'));
+    selected.forEach(i => {
+      const button = action(question.chunks[i], 'chunk', () => {
+        edit(t, q, state[t][q].value.filter(j => j !== i));
+        renderOrder();
+        buttons[i].focus();
+      });
+      button.setAttribute('aria-label', 'Remove ' + question.chunks[i]);
+      chosen.append(button);
+    });
+  }
+  const buttons = question.chunks.map((chunk, i) => {
+    const button = action(chunk, 'chunk', () => {
+      if (state[t][q].value.includes(i)) return;
+      edit(t, q, [...state[t][q].value, i]);
+      renderOrder();
+    });
+    bank.append(button);
+    return button;
+  });
+  holder.append(bank, chosen);
+  renderOrder();
+  return renderOrder;
+}
+function makeTask(task, t) {
+  const box = el('details', {id:'task-' + (t + 1)});
+  box.open = t === 0 || state[t].some(record => record.checked || record.value.length > 0);
+  const bar = el('summary');
+  const count = el('span', {class:'count'});
+  bar.append(el('span', {class:'section-number'}, t + 1), el('span', {class:'task-name'}, task.name), count);
+  const inside = el('div', {class:'task-body'});
+  inside.append(el('p', {class:'instruction'}, task.instruction));
+  if (task.readings) {
+    const readings = el('div', {class:'readings'});
+    task.readings.forEach(([name, text]) => {
+      const article = el('article', {class:'text-card'});
+      article.append(el('h3', null, name), el('p', null, text));
+      readings.append(article);
+    });
+    inside.append(readings);
+  }
+  const list = el('ol', {class:'questions'});
+  const view = {summary:count, feedback:[], reset:[], score:el('p', {class:'section-score', role:'status'})};
+  views.push(view);
+  task.items.forEach((question, q) => {
+    const li = el('li', {class:'question','data-number':q + 1});
+    const holder = el('div');
+    view.reset.push(questionControls(holder, t, q));
+    const p = el('p', {class:'feedback', id:'feedback-' + (t + 1) + '-' + (q + 1), hidden:''});
+    holder.append(p);
+    view.feedback.push(p);
+    renderFeedback(t, q);
+    li.append(holder);
+    list.append(li);
+  });
+  const controls = el('div', {class:'tools'});
+  controls.append(action('Check answers', 'primary', () => check(t)), action('Try again', 'secondary', () => retry(t)));
+  inside.append(list, controls, view.score);
+  box.append(bar, inside);
+  return box;
+}
+function reportQuestion(task, question) {
+  if (task.kind === 'order') return 'Order these chunks: ' + question.chunks.join(' / ');
+  if (question.start) return question.prompt + ' → Start with: ' + question.start;
+  return question.prompt;
+}
+function makeReport() {
+  const all = {correct:0, wrong:0, empty:0, unchecked:0};
+  const reports = tasks.map((task, t) => {
+    const s = counts(t);
+    for (const key of Object.keys(all)) all[key] += s[key];
+    const out = [String(t + 1) + '. ' + task.name + ': ' + s.correct + '/' + task.items.length + ' correct (' + statsLine(s) + ')'];
+    task.items.forEach((question, q) => {
+      const result = status(t, q);
+      const own = answerText(t, q);
+      if (result === 'wrong') out.push('  ' + (q + 1) + ') ' + reportQuestion(task, question) + '\n     Your answer: ' + own + '\n     Correct answer: ' + question.answer);
+      else if (result === 'empty') out.push('  ' + (q + 1) + ') Unanswered: ' + reportQuestion(task, question));
+      else if (result === 'unchecked' && own) out.push('  ' + (q + 1) + ') Not checked: ' + reportQuestion(task, question) + '\n     Your answer: ' + own);
+    });
+    const blankUnchecked = task.items.flatMap((_, q) => status(t, q) === 'unchecked' && !answerText(t, q) ? [q + 1] : []);
+    if (blankUnchecked.length) out.push('  Not checked, no answer: ' + blankUnchecked.join(', '));
+    return out.join('\n');
+  });
+  return [title, 'Total: ' + all.correct + '/' + total + ' correct (' + statsLine(all) + ')', ...reports].join('\n\n');
+}
+async function copyResults() {
+  const report = makeReport();
+  const message = document.querySelector('#copy-status');
+  try {
+    if (!navigator.clipboard?.writeText) throw new Error('Clipboard unavailable');
+    await navigator.clipboard.writeText(report);
+    document.querySelector('#copy-box').hidden = true;
+    message.textContent = 'Results copied.';
+  } catch {
+    const box = document.querySelector('#copy-box');
+    const text = document.querySelector('#copy-text');
+    box.hidden = false;
+    text.value = report;
+    text.focus();
+    text.select();
+    message.textContent = 'Automatic copying is unavailable. Your results are selected below.';
+  }
+}
+const area = document.querySelector('#tasks');
+tasks.forEach((task, t) => area.append(makeTask(task, t)));
+document.querySelector('#copy').addEventListener('click', copyResults);
+updateTotals();
+</script>
+</body>
+</html>
