@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Conditionals and Qualifying Claims</title>
+<style>
+:root{color-scheme:light;--canvas:#f5f0e5;--paper:#fffdf7;--text:#203938;--deep:#173f46;--muted:#516661;--line:#d5ddd1;--mint:#e4eee8;--gold:#e1b98a;--good:#1e664c;--bad:#9f402d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--canvas);color:var(--text);font:1rem/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+header{background:var(--deep);color:var(--paper);border-bottom:5px solid var(--gold);padding:clamp(2rem,6vw,4.6rem) 0}
+.wrap{width:min(calc(100% - 2rem),59rem);margin-inline:auto}
+h1,h2{font-family:Georgia,serif;line-height:1.12;font-weight:500;letter-spacing:-.025em;margin:0}
+h1{font-size:clamp(2.05rem,6vw,4.2rem)}
+h2{font-size:clamp(1.55rem,4vw,2.25rem)}
+h3{font-size:1.06rem;margin:0 0 .25rem}
+main{padding:1.65rem 0 2.4rem}
+section{margin-top:1.3rem}
+.panel{padding:clamp(1rem,3vw,1.75rem);background:var(--paper);border:1px solid var(--line);border-radius:13px}
+p{margin:.35rem 0 .7rem}
+.instructions,.context,.why,.score,footer{color:var(--muted)}
+.reference{background:var(--mint);padding:1rem clamp(1rem,3vw,1.4rem);border-radius:11px}
+.reference h2{font:700 1.03rem/1.3 system-ui,sans-serif}
+.reference dl{margin:.45rem 0 0}
+.reference dl div{display:grid;grid-template-columns:10.5rem 1fr;gap:.8rem;padding:.35rem 0;border-top:1px solid #cbdccf}
+.reference dt{font-weight:700}.reference dd{margin:0}
+.items{margin:.75rem 0 0;padding-left:1.65rem}
+.items>li{padding:.8rem 0 .8rem .2rem;border-top:1px solid var(--line)}
+.items>li::marker{font-weight:700;color:var(--deep)}
+label{display:block}
+select,input,textarea,button{font:inherit;color:var(--text)}
+select,input,textarea{background:white;border:1px solid #9eafa6;border-radius:7px;padding:.47rem .6rem}
+select{display:block;width:min(100%,34rem);margin-top:.5rem}
+input{width:min(100%,12.5rem)}
+textarea{display:block;width:100%;min-height:4rem;resize:vertical;margin:.55rem 0}
+:focus-visible{outline:3px solid #8d612f;outline-offset:3px}
+.gap{display:inline-flex;align-items:center;flex-wrap:wrap;gap:.28rem .4rem;vertical-align:middle;max-width:100%}
+.cue{font-size:.86rem;color:var(--muted)}
+.sentence{line-height:2.25}
+.claim{font-family:Georgia,serif;font-size:1.15rem;border-left:3px solid var(--gold);padding-left:.75rem}
+details{background:var(--mint);padding:.65rem .85rem;border-radius:7px;margin-top:.65rem}
+summary{cursor:pointer;font-weight:650}
+details p{margin:.6rem 0 .2rem}
+.actions{display:flex;flex-wrap:wrap;gap:.55rem .75rem;align-items:center;margin-top:.7rem}
+button{background:var(--deep);color:white;border:1px solid var(--deep);border-radius:7px;padding:.55rem .82rem;cursor:pointer;font-weight:650}
+button:hover{box-shadow:0 0 0 2px #c0a271}
+button.secondary{color:var(--deep);background:transparent}
+.score{margin:0;font-size:.9rem}
+.feedback{font-size:.88rem;margin:.25rem 0 0;color:var(--muted)}
+.feedback:empty{display:none}
+[data-result=correct]{border:2px solid var(--good)}
+[data-result=incorrect]{border:2px solid var(--bad)}
+[data-result=unanswered]{border:2px solid #8d612f}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+[hidden]{display:none!important}
+footer{font-size:.9rem;margin-top:1.2rem}
+a{color:#27585b;text-underline-offset:.18em}
+@media(max-width:35rem){.reference dl div{grid-template-columns:1fr;gap:0}.gap{display:inline-flex;margin-block:.2rem}.score{flex-basis:100%}}
+</style>
+</head>
+<body>
+<header><div class="wrap"><h1>Conditionals and Qualifying Claims</h1></div></header>
+<main class="wrap">
+<div class="reference">
+<h2>Choose the time relationship</h2>
+<dl>
+<div><dt>Second conditional</dt><dd>Imagined now or future · <b>if + past simple</b> → <b>would + base verb</b></dd></div>
+<div><dt>Third conditional</dt><dd>Past choice → past result · <b>if + had + past participle</b> → <b>would have + past participle</b></dd></div>
+<div><dt>Mixed conditional</dt><dd>Past choice → present result · <b>if + had + past participle</b> → <b>would + base verb</b></dd></div>
+</dl></div>
+<section class="panel" data-graded>
+<h2>1. Match the time relationship</h2>
+<p class="instructions">Choose the type of conditional for each sentence.</p>
+<ol class="items"><li><label for="type-1">If I had checked my notes before the quiz, I would have spotted the mistake.</label><select id="type-1" data-answer="third" data-question="If I had checked my notes before the quiz, I would have spotted the mistake." data-why="Both checking and spotting the mistake are imagined past events." aria-describedby="type-1-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-1-feedback" aria-live="polite"></p></li>
+<li><label for="type-2">If I had more free time on Saturdays, I would volunteer at the community centre.</label><select id="type-2" data-answer="second" data-question="If I had more free time on Saturdays, I would volunteer at the community centre." data-why="The speaker imagines having more time now and says what they would do with it." aria-describedby="type-2-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-2-feedback" aria-live="polite"></p></li>
+<li><label for="type-3">If I had organised my files last week, I would know where to find my notes now.</label><select id="type-3" data-answer="mixed" data-question="If I had organised my files last week, I would know where to find my notes now." data-why="Organising the files is a past action. Knowing where to find the notes is a present result." aria-describedby="type-3-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-3-feedback" aria-live="polite"></p></li>
+<li><label for="type-4">If I had set an alarm, I would have woken up in time for the class.</label><select id="type-4" data-answer="third" data-question="If I had set an alarm, I would have woken up in time for the class." data-why="Both setting the alarm and waking up refer to the past." aria-describedby="type-4-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-4-feedback" aria-live="polite"></p></li>
+<li><label for="type-5">If I had moved closer to the library, I could walk there now.</label><select id="type-5" data-answer="mixed" data-question="If I had moved closer to the library, I could walk there now." data-why="The move is in the past. Being able to walk to the library is the imagined result now." aria-describedby="type-5-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-5-feedback" aria-live="polite"></p></li>
+<li><label for="type-6">If I could redesign the park, I would add more places to sit.</label><select id="type-6" data-answer="second" data-question="If I could redesign the park, I would add more places to sit." data-why="The speaker is imagining a situation now and what they would do." aria-describedby="type-6-feedback"><option value="">Choose a meaning</option><option value="mixed">Mixed conditional · a past choice and its present result</option><option value="second">Second conditional · an imagined situation now or in the future</option><option value="third">Third conditional · a different past and its imagined past result</option></select><p class="feedback" id="type-6-feedback" aria-live="polite"></p></li></ol><div class="actions"><button type="button" data-action="check">Check answers</button><button type="button" class="secondary" data-action="retry">Try again</button><p class="score" data-score role="status"></p></div>
+</section>
+<section class="panel" data-graded>
+<h2>2. Complete the conditionals</h2>
+<p class="instructions">Read the situation and complete both verb phrases. Use <b>would</b> for the result. Full forms and contractions both count. For example, either <b>had finished</b> or <b>I’d finished</b> is accepted when the subject is I.</p>
+<ol class="items"><li><p class="context">You didn’t join a conversation group last month. You still feel nervous speaking. Imagine the effect of joining.</p><p class="sentence">If I <span class="gap"><label class="sr-only" for="form-1-1">Sentence 1, gap 1, join</label><input type="text" spellcheck="false" autocomplete="off" id="form-1-1" data-answer="had joined" data-question="If I _____ the conversation group last month, I _____ more confident now. (gap 1: join)" data-why="Joining the group is the past choice. Feeling more confident is the imagined result now." data-subject="i" aria-describedby="form-1-1-feedback"><span class="cue">(join)</span></span> the conversation group last month, I <span class="gap"><label class="sr-only" for="form-1-2">Sentence 1, gap 2, feel</label><input type="text" spellcheck="false" autocomplete="off" id="form-1-2" data-answer="would feel" data-question="If I _____ the conversation group last month, I _____ more confident now. (gap 2: feel)" data-why="Joining the group is the past choice. Feeling more confident is the imagined result now." data-subject="i" aria-describedby="form-1-2-feedback"><span class="cue">(feel)</span></span> more confident now.</p><p class="feedback" id="form-1-1-feedback" aria-live="polite"></p><p class="feedback" id="form-1-2-feedback" aria-live="polite"></p></li>
+<li><p class="context">You lost your study notes when your laptop stopped working. Imagine you had a backup.</p><p class="sentence">If I <span class="gap"><label class="sr-only" for="form-2-1">Sentence 2, gap 1, back up</label><input type="text" spellcheck="false" autocomplete="off" id="form-2-1" data-answer="had backed up" data-question="If I _____ my notes before my laptop stopped working, I _____ them afterwards. (gap 1: back up)" data-why="The backup and the imagined recovery both refer to the past." data-subject="i" aria-describedby="form-2-1-feedback"><span class="cue">(back up)</span></span> my notes before my laptop stopped working, I <span class="gap"><label class="sr-only" for="form-2-2">Sentence 2, gap 2, recover</label><input type="text" spellcheck="false" autocomplete="off" id="form-2-2" data-answer="would have recovered" data-question="If I _____ my notes before my laptop stopped working, I _____ them afterwards. (gap 2: recover)" data-why="The backup and the imagined recovery both refer to the past." data-subject="i" aria-describedby="form-2-2-feedback"><span class="cue">(recover)</span></span> them afterwards.</p><p class="feedback" id="form-2-1-feedback" aria-live="polite"></p><p class="feedback" id="form-2-2-feedback" aria-live="polite"></p></li>
+<li><p class="context">The library closes before you finish work. Imagine it stays open later.</p><p class="sentence">If it <span class="gap"><label class="sr-only" for="form-3-1">Sentence 3, gap 1, stay</label><input type="text" spellcheck="false" autocomplete="off" id="form-3-1" data-answer="stayed" data-question="If it _____ open later, I _____ there after work. (gap 1: stay)" data-why="The opening hours and your study routine are both hypothetical now." data-subject="it" aria-describedby="form-3-1-feedback"><span class="cue">(stay)</span></span> open later, I <span class="gap"><label class="sr-only" for="form-3-2">Sentence 3, gap 2, study</label><input type="text" spellcheck="false" autocomplete="off" id="form-3-2" data-answer="would study" data-question="If it _____ open later, I _____ there after work. (gap 2: study)" data-why="The opening hours and your study routine are both hypothetical now." data-subject="i" aria-describedby="form-3-2-feedback"><span class="cue">(study)</span></span> there after work.</p><p class="feedback" id="form-3-1-feedback" aria-live="polite"></p><p class="feedback" id="form-3-2-feedback" aria-live="polite"></p></li>
+<li><p class="context">You gave away your bike, so you walk to work now. Imagine you still had it.</p><p class="sentence">If I <span class="gap"><label class="sr-only" for="form-4-1">Sentence 4, gap 1, not give away</label><input type="text" spellcheck="false" autocomplete="off" id="form-4-1" data-answer="had not given away" data-question="If I _____ my bike, I probably _____ to work now. (gap 1: not give away)" data-why="Giving away the bike was a past choice. Walking to work is the present result." data-subject="i" aria-describedby="form-4-1-feedback"><span class="cue">(not give away)</span></span> my bike, I probably <span class="gap"><label class="sr-only" for="form-4-2">Sentence 4, gap 2, not be walking</label><input type="text" spellcheck="false" autocomplete="off" id="form-4-2" data-answer="would not be walking" data-question="If I _____ my bike, I probably _____ to work now. (gap 2: not be walking)" data-why="Giving away the bike was a past choice. Walking to work is the present result." data-subject="i" data-fixed-adverb="probably" aria-describedby="form-4-2-feedback"><span class="cue">(not be walking)</span></span> to work now.</p><p class="feedback" id="form-4-1-feedback" aria-live="polite"></p><p class="feedback" id="form-4-2-feedback" aria-live="polite"></p></li>
+<li><p class="context">You don’t have a quiet room where you can practise the piano.</p><p class="sentence">If I <span class="gap"><label class="sr-only" for="form-5-1">Sentence 5, gap 1, have</label><input type="text" spellcheck="false" autocomplete="off" id="form-5-1" data-answer="had" data-question="If I _____ a quiet room, I _____ the piano every day. (gap 1: have)" data-why="Had is the past form of have. It describes an imagined situation now." data-subject="i" aria-describedby="form-5-1-feedback"><span class="cue">(have)</span></span> a quiet room, I <span class="gap"><label class="sr-only" for="form-5-2">Sentence 5, gap 2, practise</label><input type="text" spellcheck="false" autocomplete="off" id="form-5-2" data-answer="would practise|would practice" data-question="If I _____ a quiet room, I _____ the piano every day. (gap 2: practise)" data-why="Had is the past form of have. It describes an imagined situation now." data-subject="i" aria-describedby="form-5-2-feedback"><span class="cue">(practise)</span></span> the piano every day.</p><p class="feedback" id="form-5-1-feedback" aria-live="polite"></p><p class="feedback" id="form-5-2-feedback" aria-live="polite"></p></li>
+<li><p class="context">You took the wrong bus and missed the start of a workshop. Imagine catching the right bus.</p><p class="sentence">If I <span class="gap"><label class="sr-only" for="form-6-1">Sentence 6, gap 1, take</label><input type="text" spellcheck="false" autocomplete="off" id="form-6-1" data-answer="had taken" data-question="If I _____ the right bus, I _____ before the workshop started. (gap 1: take)" data-why="Taking the bus and arriving on time are both imagined past events." data-subject="i" aria-describedby="form-6-1-feedback"><span class="cue">(take)</span></span> the right bus, I <span class="gap"><label class="sr-only" for="form-6-2">Sentence 6, gap 2, arrive</label><input type="text" spellcheck="false" autocomplete="off" id="form-6-2" data-answer="would have arrived" data-question="If I _____ the right bus, I _____ before the workshop started. (gap 2: arrive)" data-why="Taking the bus and arriving on time are both imagined past events." data-subject="i" aria-describedby="form-6-2-feedback"><span class="cue">(arrive)</span></span> before the workshop started.</p><p class="feedback" id="form-6-1-feedback" aria-live="polite"></p><p class="feedback" id="form-6-2-feedback" aria-live="polite"></p></li></ol><div class="actions"><button type="button" data-action="check">Check answers</button><button type="button" class="secondary" data-action="retry">Try again</button><p class="score" data-score role="status"></p></div>
+</section>
+<section class="panel">
+<h2>3. Qualify a claim</h2>
+<p class="instructions">Write your own version, then compare it with the suggested answer.</p>
+<ol class="items"><li><h3>Limit a generalisation</h3><p class="claim">Studying with a friend always improves your results.</p><label for="rewrite-1">Use tend to, may or not necessarily. Give a reason for your revised claim.</label><textarea id="rewrite-1" rows="3" data-open="Limit a generalisation" placeholder="Write your version"></textarea><details><summary>Show suggested answer</summary><p>Studying with a friend may improve your results because you can explain difficult ideas to each other.</p><p class="why">May makes the improvement a possibility. The reason shows how studying together could help.</p></details></li>
+<li><h3>Add a condition</h3><p class="claim">Recorded lessons make it easy for everyone to catch up.</p><label for="rewrite-2">Use provided that or as long as. Say what must be true for the recordings to help.</label><textarea id="rewrite-2" rows="3" data-open="Add a condition" placeholder="Write your version"></textarea><details><summary>Show suggested answer</summary><p>Recorded lessons can help students catch up as long as the sound is clear enough to follow.</p><p class="why">Clear sound is a specific condition students need in order to follow the recording.</p></details></li>
+<li><h3>Acknowledge a benefit</h3><p class="claim">Schools should replace all paper textbooks with digital ones.</p><label for="rewrite-3">Use although or even if to acknowledge a possible benefit. Then give your own view.</label><textarea id="rewrite-3" rows="3" data-open="Acknowledge a benefit" placeholder="Write your version"></textarea><details><summary>Show suggested answer</summary><p>Although digital textbooks may be easier to carry, schools should keep some paper copies available for students who prefer reading on paper.</p><p class="why">The first clause acknowledges a benefit. The main clause gives a specific recommendation.</p></details></li>
+<li><h3>Link a consequence</h3><p class="claim">A community centre has moved its classes to the evening. This could help people who work during the day attend.</p><label for="rewrite-4">Join the sentences with which. Make it clear what could help more people attend.</label><textarea id="rewrite-4" rows="3" data-open="Link a consequence" placeholder="Write your version"></textarea><details><summary>Show suggested answer</summary><p>A community centre has moved its classes to the evening, which could help people who work during the day attend.</p><p class="why">Which refers to moving the classes to the evening. Could shows that the consequence is possible.</p></details></li></ol>
+</section>
+<section class="panel" aria-labelledby="results-title">
+<h2 id="results-title">Results</h2>
+<p id="total-status" role="status"></p>
+<button type="button" id="copy-results">Copy Results</button>
+<p id="copy-status" role="status"></p>
+<div id="copy-fallback" hidden><label for="results-text">Results to copy</label><textarea id="results-text" rows="8" readonly></textarea></div>
+</section>
+<footer>Source material from class. <a href="https://miro.com/app/board/uXjVERzEEZ8=/?moveToWidget=3458764691251444318">Speaking with Precision</a> and <a href="https://miro.com/app/board/uXjVERzEEZ8=/?moveToWidget=3458764691251716701">Speaking Parts 1 and 3</a>. The practice examples are new.</footer>
+</main>
+<script>
+(() => {
+  const sections = [...document.querySelectorAll('[data-graded]')].map(section => ({
+    title: section.querySelector('h2').textContent,
+    score: section.querySelector('[data-score]'),
+    check: section.querySelector('[data-action=check]'),
+    retry: section.querySelector('[data-action=retry]'),
+    fields: [...section.querySelectorAll('[data-answer]')]
+  }));
+  const checked = new Set();
+  const status = document.getElementById('total-status');
+  const copyStatus = document.getElementById('copy-status');
+  const manual = document.getElementById('copy-fallback');
+  const copyText = document.getElementById('results-text');
+  const openFields = [...document.querySelectorAll('[data-open]')];
+
+  function normalize(text) {
+    return text.trim().toLowerCase().replace(/[‘’]/g, "'").replace(/\s+/g, ' ').replace(/[.!?]$/, '');
+  }
+  function normalizeAnswer(field, answer) {
+    let value = normalize(field.value);
+    const { subject, fixedAdverb } = field.dataset;
+    if (!subject) return value;
+    if (value === subject || value.startsWith(subject + ' ') || value.startsWith(subject + "'")) {
+      value = value.slice(subject.length).trimStart();
+    }
+    if (fixedAdverb) {
+      value = value.split(' ').filter(word => word !== fixedAdverb).join(' ');
+    }
+    value = value.replace(/^'d've /, "'d have ");
+    const auxiliary = /^(had|would) /.exec(answer)?.[1];
+    if (auxiliary) value = value.replace(/^'d /, auxiliary + ' ');
+    if (answer.startsWith('would have ')) value = value.replace(/^would've /, 'would have ');
+    return value.replace(/^hadn't /, 'had not ').replace(/^wouldn't /, 'would not ');
+  }
+  function result(field) {
+    if (!field.value.trim()) return 'unanswered';
+    if (!checked.has(field)) return 'unchecked';
+    return field.dataset.answer.split('|').some(answer => normalize(answer) === normalizeAnswer(field, normalize(answer)))
+      ? 'correct' : 'incorrect';
+  }
+  function label(field, value) {
+    if (field.tagName !== 'SELECT') return value;
+    return [...field.options].find(option => option.value === value)?.textContent ?? value;
+  }
+  function solution(field) {
+    return label(field, field.dataset.answer.split('|')[0]);
+  }
+  function score(fields) {
+    const counts = { correct: 0, incorrect: 0, unanswered: 0, unchecked: 0 };
+    fields.forEach(field => { counts[result(field)] += 1; });
+    return counts.correct + '/' + fields.length + ' correct · ' + counts.incorrect
+      + ' incorrect · ' + counts.unanswered + ' unanswered · ' + counts.unchecked + ' unchecked';
+  }
+  function refresh() {
+    sections.forEach(section => { section.score.textContent = score(section.fields); });
+    status.textContent = 'Total · ' + score(sections.flatMap(section => section.fields));
+  }
+  function clear(field) {
+    checked.delete(field);
+    delete field.dataset.result;
+    document.getElementById(field.id + '-feedback').textContent = '';
+  }
+  for (const section of sections) {
+    for (const field of section.fields) {
+      field.addEventListener('input', () => { clear(field); refresh(); });
+    }
+    section.check.addEventListener('click', () => {
+      for (const field of section.fields) {
+        checked.add(field);
+        const value = result(field);
+        field.dataset.result = value;
+        const comment = value === 'correct' ? 'Correct.' : value === 'incorrect'
+          ? 'Correct answer: ' + solution(field) + '.' : 'Unanswered. Suggested answer: ' + solution(field) + '.';
+        document.getElementById(field.id + '-feedback').textContent =
+          (field.tagName === 'SELECT' ? '' : 'Gap ' + field.id.split('-').pop() + ' · ') + comment + ' ' + field.dataset.why;
+      }
+      refresh();
+    });
+    section.retry.addEventListener('click', () => {
+      for (const field of section.fields) { field.value = ''; clear(field); }
+      refresh();
+      section.fields[0].focus();
+    });
+  }
+  function report() {
+    const lines = [document.title, status.textContent];
+    for (const section of sections) {
+      lines.push('', section.title, score(section.fields));
+      for (const field of section.fields) {
+        const value = result(field);
+        if (value === 'correct') continue;
+        const response = field.value.trim() ? label(field, field.value) : '—';
+        const correct = value === 'incorrect' ? ' | Correct answer: ' + solution(field) : '';
+        lines.push('[' + value + '] ' + field.dataset.question + ' | My answer: ' + response + correct);
+      }
+    }
+    lines.push('', 'Open responses');
+    for (const field of openFields) lines.push(field.dataset.open + ': ' + (field.value.trim() || 'Unanswered'));
+    return lines.join('\n');
+  }
+  document.getElementById('copy-results').addEventListener('click', async () => {
+    const value = report();
+    try {
+      await navigator.clipboard.writeText(value);
+      manual.hidden = true;
+      copyStatus.textContent = 'Results copied.';
+    } catch {
+      manual.hidden = false;
+      copyText.value = value;
+      copyText.focus();
+      copyText.select();
+      copyStatus.textContent = 'Select and copy the results below.';
+    }
+  });
+  refresh();
+})();
+</script>
+</body></html>
